@@ -1,0 +1,150 @@
+.editWrapper {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 8fr 1fr;
+    grid-gap: 0vw;
+}
+
+.lastSentenceNumber {
+    grid-column: 1/2;
+    grid-row: 1/2;
+    color: black;
+    background-color: yellowgreen;
+}
+
+.editLine {
+    grid-column: 2/3;
+    grid-row: 1/3;
+    color: lightgreen;
+    background-color: darkred;
+}
+
+.readingSentenceNumber {
+    grid-column: 3/4;
+    grid-row: 1/2;
+    background-color: darkblue;
+}
+
+.sentencesWrapper {
+    display: grid;
+    grid-template-rows: 1vh 30vh 8vh 6vh 30vh;
+    grid-template-columns: 90% 10%;
+    grid-gap: 0vw;
+    background-color: lightgreen;
+    color: darkgreen;
+}
+
+.topMargin {
+    grid-column: 1/3;
+    grid-row: 1/2;
+    background-color: cyan;
+}
+
+.topSentences {
+    grid-column: 1/2;
+    grid-row: 2/3;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.topSentences>div {
+    height: 100%;
+    width: 100%;
+}
+
+.buttonUp {
+    grid-column: 2/3;
+    grid-row: 2/3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    font-size: larger;
+    margin-top: 2vh;
+    margin-right: 1vw;
+}
+
+.buttonUp img {
+    height: 5vh;
+    width: auto;
+}
+
+.buttonText {
+    font-size: larger;
+}
+
+.engReadingSentence {
+    grid-column: 1/3;
+    grid-row: 3/4;
+}
+
+.engReadingFlex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.engReadingSentence>div {
+    color: darkblue;
+    height: 100%;
+    width: 100%;
+}
+
+.rusReadingSentence {
+    grid-column: 1/3;
+    grid-row: 4/5;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.rusReadingSentence>div {
+    color: green;
+    font-size: smaller;
+    height: 100%;
+    width: 100%;
+}
+
+.bottomSentences {
+    grid-column: 1/2;
+    grid-row: 5/6;
+}
+
+.linearGradient {
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.linearGradient>div {
+    height: 100%;
+    width: 100%;
+}
+
+.buttonDown {
+    grid-column: 2/3;
+    grid-row: 5/6;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.buttonDownContent {
+    align-items: center;
+    height: fit-content;
+    font-size: larger;
+    margin-bottom: 2vh;
+    margin-right: 1vw;
+}
+
+.buttonDownContent img {
+    height: 5vh;
+    width: auto;
+}
