@@ -7,7 +7,7 @@ namespace BooksTextsSplit.Models
 {
     public class TextSentence
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         public int LanguageId { get; set; }
 
