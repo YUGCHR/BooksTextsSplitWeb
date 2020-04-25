@@ -18,7 +18,7 @@ class ToReadAndTranslateContainerAPI extends React.Component {
     fetchSentences = (languageId) => {
         this.props.toggleIsFetching(true);
         Axios
-            .get(`https://localhost:5001/api/BookTexts/count/${languageId}`)
+            .get(`/api/BookTexts/count/${languageId}`)
             .then(Response => {
                 
                 this.props.toggleIsFetching(false);
@@ -30,7 +30,7 @@ class ToReadAndTranslateContainerAPI extends React.Component {
             });
         this.props.toggleIsFetching(true);
         Axios
-            .get(`https://localhost:5001/api/BookTexts/BookText/${languageId}`)
+            .get(`/api/BookTexts/BookText/${languageId}`)
             .then(Response => {
                 this.props.toggleIsFetching(false);
                 this.props.setSentences(Response.data.sentences, languageId);

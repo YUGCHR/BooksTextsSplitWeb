@@ -19,7 +19,7 @@ let loadedBookTitle = (loadedTextTitle, engTextTitle, languageId, isTextLoaded) 
 let loadedButtonsNames = (setButtonCaption, loadText, languageId, isTextLoaded) => {
     return <div>
         <button className={s.loadButtons}
-            disabled={isTextLoaded[languageId]}
+            /* disabled={isTextLoaded[languageId]} */
             onClick={(e) => { loadText(languageId); }}>
             {setButtonCaption(languageId)}
         </button>

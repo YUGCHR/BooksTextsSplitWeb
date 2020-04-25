@@ -111,41 +111,45 @@ initialState.engSentences = engEmptyLines.concat(initialState.engSentences).conc
 initialState.rusSentences = rusEmptyLines.concat(initialState.rusSentences).concat(rusEmptyLines); // emptu lines on top - (text) - empty lines on bottom
 
 let n = 1;
-initialState.engSentences = initialState.engSentences.map(u => ({ ...u, id: n++ }));
-//n = 1; - server needs id-s without doubling
-initialState.rusSentences = initialState.rusSentences.map(u => ({ ...u, id: n++ }));
+initialState.engSentences = initialState.engSentences.map(u => ({...u, sentenceId: n++ }));
+n = 1;
+initialState.rusSentences = initialState.rusSentences.map(u => ({...u, sentenceId: n++ }));
 
 const uploadBooksReducer = (state = initialState, action) => {
 
     switch (action.type) {
-        case TOGGLE_IS_LOADING: {
-            /* return { ...state, isEngLoaded: action.isEngLoaded } */
-            let stateCopy = { ...state };
-            stateCopy.isTextLoaded = { ...state.isTextLoaded };
-            stateCopy.isTextLoaded[action.languageId] = action.isTextLoaded;
-            return stateCopy;
-        }
-        case SET_SENTENCES_COUNT: {
-            let stateCopy = { ...state };
-            stateCopy.sentencesCount = { ...state.sentencesCount };
-            stateCopy.sentencesCount[action.languageId] = action.count;
-            return stateCopy;
-        }
-        case SET_BOOK_TITLE: {
-            let stateCopy = { ...state };
-            stateCopy.bookTitle = { ...state.bookTitle };
-            switch (action.languageId) {
-                case 0:
-                    stateCopy.bookTitle[action.languageId] = stateCopy.engTextTitle[action.bookId];
-                    return stateCopy;
-                case 1:
-                    stateCopy.bookTitle[action.languageId] = stateCopy.rusTextTitle[action.bookId];
-                    return stateCopy;
+        case TOGGLE_IS_LOADING:
+            {
+                /* return { ...state, isEngLoaded: action.isEngLoaded } */
+                let stateCopy = {...state };
+                stateCopy.isTextLoaded = {...state.isTextLoaded };
+                stateCopy.isTextLoaded[action.languageId] = action.isTextLoaded;
+                return stateCopy;
             }
-        }
-        case TOGGLE_IS_FETCHING: {
-            return { ...state, isFetching: action.isFetching };
-        }
+        case SET_SENTENCES_COUNT:
+            {
+                let stateCopy = {...state };
+                stateCopy.sentencesCount = {...state.sentencesCount };
+                stateCopy.sentencesCount[action.languageId] = action.count;
+                return stateCopy;
+            }
+        case SET_BOOK_TITLE:
+            {
+                let stateCopy = {...state };
+                stateCopy.bookTitle = {...state.bookTitle };
+                switch (action.languageId) {
+                    case 0:
+                        stateCopy.bookTitle[action.languageId] = stateCopy.engTextTitle[action.bookId];
+                        return stateCopy;
+                    case 1:
+                        stateCopy.bookTitle[action.languageId] = stateCopy.rusTextTitle[action.bookId];
+                        return stateCopy;
+                }
+            }
+        case TOGGLE_IS_FETCHING:
+            {
+                return {...state, isFetching: action.isFetching };
+            }
         default:
             return state;
     }

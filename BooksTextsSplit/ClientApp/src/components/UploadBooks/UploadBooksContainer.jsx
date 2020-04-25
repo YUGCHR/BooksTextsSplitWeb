@@ -25,7 +25,7 @@ class UploadBooksContainerAPI extends React.Component {
     fetchSentencesCount = (languageId) => {
         this.props.toggleIsFetching(true);
         Axios
-            .get(`https://localhost:5001/api/BookTexts/count/${languageId}`)
+            .get(`/api/BookTexts/count/${languageId}`)
             .then(Response => {
                 this.props.toggleIsFetching(false);
                 this.props.setSentencesCount(Response.data.sentencesCount, languageId);
@@ -45,10 +45,11 @@ class UploadBooksContainerAPI extends React.Component {
             allSentences.text = this.props.rusSentences;
         };
 //withCredentials: true, { headers: {"API-KEY": "6dd517b6-826d-4942-ab0a-022445b74fcd"} }
-        if (this.props.sentencesCount[languageId] === 0) {
+        //if (this.props.sentencesCount[languageId] === 0) {
             this.props.toggleIsFetching(true);
+            debugger;
             Axios
-                .post('https://localhost:5001/api/BookTexts', allSentences, { withCredentials: true, headers: {"API-KEY": "6dd517b6-826d-4942-ab0a-022445b74fcd"} } )
+                .post('/api/BookTexts', allSentences )
                 .then(Response => {
                     /* (Response.data.totalCount - to add! */
                     this.props.toggleIsFetching(false);
@@ -56,8 +57,8 @@ class UploadBooksContainerAPI extends React.Component {
                     this.props.toggleIsLoading(true, languageId);
                     this.props.setBookTitle(0, languageId);//add bookId property when the books pair was selected
                 });
-        }
-        else { alert('cannot load once more') }
+        //}
+        //else { alert('cannot load once more') }
     }
 
     render() {

@@ -63,14 +63,24 @@ namespace BooksTextsSplit.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<TextSentence>> PostTodoItem([FromBody]BookTextRequest textWrapper)
+        public async Task<ActionResult<TextSentence>> PostBookText([FromBody]BookTextRequest textWrapper)
         {
+
+            try
+            {
+
+            
             foreach (var s in textWrapper.Text) 
             {
                 s.Id = Guid.NewGuid().ToString();
                 await _context.AddItemAsync(s);
             }
 
+            }
+            catch(Exception ex)
+            {
+                return Ok(ex.Message);
+            }
 
             //_context.BookTexts.AddRange(textWrapper.Text);
             //await _context.SaveChangesAsync();
