@@ -46,8 +46,7 @@ class UploadBooksContainerAPI extends React.Component {
         };
 //withCredentials: true, { headers: {"API-KEY": "6dd517b6-826d-4942-ab0a-022445b74fcd"} }
         //if (this.props.sentencesCount[languageId] === 0) {
-            this.props.toggleIsFetching(true);
-            debugger;
+            this.props.toggleIsFetching(true);           
             Axios
                 .post('/api/BookTexts', allSentences )
                 .then(Response => {

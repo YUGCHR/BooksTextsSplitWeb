@@ -19,8 +19,7 @@ class ToReadAndTranslateContainerAPI extends React.Component {
         this.props.toggleIsFetching(true);
         Axios
             .get(`/api/BookTexts/count/${languageId}`)
-            .then(Response => {
-                
+            .then(Response => {                
                 this.props.toggleIsFetching(false);
                 this.props.setSentencesCount(Response.data.sentencesCount, languageId);            
                 this.props.sentencesCount[languageId] === 0

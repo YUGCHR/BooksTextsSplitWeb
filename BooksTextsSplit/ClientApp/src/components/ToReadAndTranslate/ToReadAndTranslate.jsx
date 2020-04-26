@@ -16,7 +16,12 @@ const showSentences = (langSentences, startSentence, sentencesOnPageTop) => {
 const showCurrentSentenceContext = (currentLangSentence) => {
     if (currentLangSentence) {
         return <div>
-            {'id = ' + currentLangSentence.sentenceId + ' / ' + currentLangSentence.sentenceText}
+            {'chapterName = '
+            + currentLangSentence.chapterName
+            + 'id = ' 
+            + currentLangSentence.sentenceId 
+            + ' / ' 
+            + currentLangSentence.sentenceText}
         </div>
     };
 }
