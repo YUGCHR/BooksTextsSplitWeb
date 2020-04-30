@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BooksTextsSplit.Models;
 using BooksTextsSplit.Services;
+using System.IO;
 
 namespace BooksTextsSplit.Controllers
 {
@@ -65,17 +66,13 @@ namespace BooksTextsSplit.Controllers
         [HttpPost]
         public async Task<ActionResult<TextSentence>> PostBookText([FromBody]BookTextRequest textWrapper)
         {
-
             try
-            {
-
-            
+            {            
             foreach (var s in textWrapper.Text) 
             {
                 s.Id = Guid.NewGuid().ToString();
                 await _context.AddItemAsync(s);
             }
-
             }
             catch(Exception ex)
             {
@@ -93,26 +90,63 @@ namespace BooksTextsSplit.Controllers
             return Ok(new { ids = textWrapper.Text.Select(i => i.Id), totalCount = new TotalCount((await _context.GetItemsAsync("SELECT * FROM c")).Where(i => i.LanguageId == textWrapper.LanguageId).Count()) });
         }
 
-        // DELETE: api/BookTexts/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<TextSentence>> DeleteTodoItem(long id)
-        //{
-        //    var todoItem = await _context.BookTexts.FindAsync(id);
-        //    if (todoItem == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost("UploadFile")]
+        public async Task<IActionResult> UploadFile([FromForm]IFormFile bookFile)
+        {
+            if (bookFile != null)
+            {
+                StreamReader reader = new StreamReader(bookFile.OpenReadStream());
+                string text = reader.ReadToEnd();
 
 
-        //    _context.BookTexts.Remove(todoItem);
-        //    await _context.SaveChangesAsync();
+                ISharedDataAccess bookData = new SharedDataAccess();
+                IFileManager manager = new FileManager(bookData);
 
-        //    return todoItem;
-        //}
+                IMessageService msgService = new FakeMessageService();// - вывод на печать включить (+ в самом методе включить)
+                                                                      //IMessageService msgService = Mock.Of<IMessageService>();// - вывод на печать отключить
+                ITextAnalysisLogicExtension analysisLogic = new TextAnalysisLogicExtension(bookData, msgService);
+                ISentencesDividingAnalysis sentenceAnalyser = new SentencesDividingAnalysis(bookData, msgService, analysisLogic);
+                //IAnalysisLogicParagraph paragraphAnalysis = new noneAnalysisLogicParagraph(bookData, msgService, analysisLogic);
+                IChapterDividingAnalysis chapterAnalyser = new ChapterDividingAnalysis(bookData, msgService, analysisLogic);
+                IAllBookAnalysis bookAnalysis = new AllBookAnalysis(manager, bookData, msgService, analysisLogic, chapterAnalyser, sentenceAnalyser);
 
-        //private bool TodoItemExists(long id)
-        //{
-        //    return _context.BookTexts.Any(e => e.Id == id);
-        //}
-    }
+                int desiredTextLanguage = 0;
+                bookData.SetFileToDo((int)WhatNeedDoWithFiles.AnalyseText, desiredTextLanguage);//создание нужной инструкции ToDo
+                //bookData.SetFilePath(_filePath, desiredTextLanguage);
+                string fileContent = text;
+                bookData.SetFileContent(fileContent, desiredTextLanguage);
+
+                string hash = bookAnalysis.AnalyseTextBook();
+
+                string hashName = "Control hash of the text File:";
+
+
+
+                return Ok(text);
+            }
+
+            return Problem("bad file");
+        }
+
+                // DELETE: api/BookTexts/5
+                //[HttpDelete("{id}")]
+                //public async Task<ActionResult<TextSentence>> DeleteTodoItem(long id)
+                //{
+                //    var todoItem = await _context.BookTexts.FindAsync(id);
+                //    if (todoItem == null)
+                //    {
+                //        return NotFound();
+                //    }
+
+                //    _context.BookTexts.Remove(todoItem);
+                //    await _context.SaveChangesAsync();
+
+                //    return todoItem;
+                //}
+
+                //private bool TodoItemExists(long id)
+                //{
+                //    return _context.BookTexts.Any(e => e.Id == id);
+                //}
+            }
 }

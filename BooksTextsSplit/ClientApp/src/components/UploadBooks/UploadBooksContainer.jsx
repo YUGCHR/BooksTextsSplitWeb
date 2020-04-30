@@ -1,7 +1,7 @@
 import React from 'react';
 import Axios from 'axios';
 import { connect } from 'react-redux';
-import { toggleIsLoading, setSentencesCount, setBookTitle, toggleIsFetching } from '../../redux/load-reducer';
+import { toggleIsLoading, setSentencesCount, setFileName, toggleIsFetching } from '../../redux/load-reducer';
 import UploadBooks from './UploadBooks';
 import Preloader from '../common/preloader/Preloader';
 
@@ -10,8 +10,8 @@ class UploadBooksContainerAPI extends React.Component {
     constructor(props) { super(props); }
 
     componentDidMount() {
-        this.fetchSentencesCount(0);
-        this.fetchSentencesCount(1);
+        /* this.fetchSentencesCount(0);
+        this.fetchSentencesCount(1); */
     }
 
     setButtonCaption = (languageId) => {
@@ -32,30 +32,35 @@ class UploadBooksContainerAPI extends React.Component {
                 this.props.sentencesCount[languageId] === 0
                     ? this.props.toggleIsLoading(false, languageId)
                     : this.props.toggleIsLoading(true, languageId);
-                    if (this.props.sentencesCount[languageId] !== 0) {this.props.setBookTitle(0, languageId)}
+                if (this.props.sentencesCount[languageId] !== 0) { this.props.setBookTitle(0, languageId) }
             });
     }
-//toDo - to select the book pair first - instead straight text load
-    loadText = (languageId) => {
-        let allSentences = { text: [], languageId: languageId };
-        if (languageId === 0) {
-            allSentences.text = this.props.engSentences;
-        };
-        if (languageId === 1) {
-            allSentences.text = this.props.rusSentences;
-        };
-//withCredentials: true, { headers: {"API-KEY": "6dd517b6-826d-4942-ab0a-022445b74fcd"} }
-        //if (this.props.sentencesCount[languageId] === 0) {
-            this.props.toggleIsFetching(true);           
-            Axios
-                .post('/api/BookTexts', allSentences )
-                .then(Response => {
-                    /* (Response.data.totalCount - to add! */
-                    this.props.toggleIsFetching(false);
-                    this.props.setSentencesCount(Response.data.totalCount.sentencesCount, languageId);
-                    this.props.toggleIsLoading(true, languageId);
-                    this.props.setBookTitle(0, languageId);//add bookId property when the books pair was selected
+
+    fileUploadHandler = () => {
+        
+        console.log(this.props.selectedFile);
+        const formData = new FormData();
+        formData.append(
+            "bookFile",
+            this.props.selectedFile,
+            this.props.selectedFile.name
+        );
+
+        Axios
+            .post('/api/BookTexts/UploadFile', formData)
+            .then(Response => {
+                console.log(Response);
+                /* (Response.data.totalCount - to add! */
                 });
+        //withCredentials: true, { headers: {"API-KEY": "6dd517b6-826d-4942-ab0a-022445b74fcd"} }
+        //if (this.props.sentencesCount[languageId] === 0) {
+        /* this.props.toggleIsFetching(true);
+        
+        /* this.props.toggleIsFetching(false);
+        this.props.setSentencesCount(Response.data.totalCount.sentencesCount, languageId);
+        this.props.toggleIsLoading(true, languageId);
+        this.props.setBookTitle(0, languageId);//add bookId property when the books pair was selected
+    }); */
         //}
         //else { alert('cannot load once more') }
     }
@@ -64,13 +69,13 @@ class UploadBooksContainerAPI extends React.Component {
         return <>
             {this.props.isFetching ? <Preloader /> : null}
             <UploadBooks
+                setFileName={this.props.setFileName}
+                fileUploadHandler={this.fileUploadHandler}
+                uploadFile={this.uploadFile}
                 loadText={this.loadText}
                 setButtonCaption={this.setButtonCaption}
                 fetchSentencesCount={this.fetchSentencesCount}
-
                 engTextTitle={this.props.engTextTitle}
-                engSentences={this.props.engSentences}
-                rusSentences={this.props.rusSentences}
                 sentencesCount={this.props.sentencesCount}
                 isTextLoaded={this.props.isTextLoaded}
                 creativeArrayLanguageId={this.props.creativeArrayLanguageId}
@@ -85,22 +90,26 @@ class UploadBooksContainerAPI extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
+        selectedFile: state.uploadBooksPage.selectedFile,
         sentencesCount: state.uploadBooksPage.sentencesCount,
         isTextLoaded: state.uploadBooksPage.isTextLoaded,
         engTextTitle: state.uploadBooksPage.engTextTitle,
-        engSentences: state.uploadBooksPage.engSentences,
-        rusSentences: state.uploadBooksPage.rusSentences,
         creativeArrayLanguageId: state.uploadBooksPage.creativeArrayLanguageId,
         bookTitle: state.uploadBooksPage.bookTitle,
         buttonsCaptions: state.uploadBooksPage.buttonsCaptions,
         buttonsTextsParts: state.uploadBooksPage.buttonsTextsParts,
         loadedTextTitle: state.uploadBooksPage.loadedTextTitle,
-        isFetching: state.uploadBooksPage.isFetching
+        isFetching: state.uploadBooksPage.isFetching,
+
+        files: state.uploadBooksPage.files,
+        uploading: state.uploadBooksPage.uploading,
+        uploadProgress: state.uploadBooksPage.uploadProgress,
+        successfullUploaded: state.uploadBooksPage.successfullUploaded
     }
 }
 
 let UploadBooksContainer = connect(mapStateToProps,
-    { toggleIsLoading, setSentencesCount, setBookTitle, toggleIsFetching })
+    { toggleIsLoading, setSentencesCount, setFileName, toggleIsFetching })
     (UploadBooksContainerAPI);
 
 export default UploadBooksContainer;
