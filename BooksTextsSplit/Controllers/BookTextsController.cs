@@ -99,26 +99,26 @@ namespace BooksTextsSplit.Controllers
                 string text = reader.ReadToEnd();
 
 
-                ISharedDataAccess bookData = new SharedDataAccess();
-                IFileManager manager = new FileManager(bookData);
+                //ISharedDataAccess bookData = new SharedDataAccess();
+                //IFileManager manager = new FileManager(bookData);
 
-                IMessageService msgService = new FakeMessageService();// - вывод на печать включить (+ в самом методе включить)
-                                                                      //IMessageService msgService = Mock.Of<IMessageService>();// - вывод на печать отключить
-                ITextAnalysisLogicExtension analysisLogic = new TextAnalysisLogicExtension(bookData, msgService);
-                ISentencesDividingAnalysis sentenceAnalyser = new SentencesDividingAnalysis(bookData, msgService, analysisLogic);
-                //IAnalysisLogicParagraph paragraphAnalysis = new noneAnalysisLogicParagraph(bookData, msgService, analysisLogic);
-                IChapterDividingAnalysis chapterAnalyser = new ChapterDividingAnalysis(bookData, msgService, analysisLogic);
-                IAllBookAnalysis bookAnalysis = new AllBookAnalysis(manager, bookData, msgService, analysisLogic, chapterAnalyser, sentenceAnalyser);
+                //IMessageService msgService = new FakeMessageService();// - вывод на печать включить (+ в самом методе включить)
+                //                                                      //IMessageService msgService = Mock.Of<IMessageService>();// - вывод на печать отключить
+                //ITextAnalysisLogicExtension analysisLogic = new TextAnalysisLogicExtension(bookData, msgService);
+                //ISentencesDividingAnalysis sentenceAnalyser = new SentencesDividingAnalysis(bookData, msgService, analysisLogic);
+                ////IAnalysisLogicParagraph paragraphAnalysis = new noneAnalysisLogicParagraph(bookData, msgService, analysisLogic);
+                //IChapterDividingAnalysis chapterAnalyser = new ChapterDividingAnalysis(bookData, msgService, analysisLogic);
+                //IAllBookAnalysis bookAnalysis = new AllBookAnalysis(manager, bookData, msgService, analysisLogic, chapterAnalyser, sentenceAnalyser);
 
-                int desiredTextLanguage = 0;
-                bookData.SetFileToDo((int)WhatNeedDoWithFiles.AnalyseText, desiredTextLanguage);//создание нужной инструкции ToDo
-                //bookData.SetFilePath(_filePath, desiredTextLanguage);
-                string fileContent = text;
-                bookData.SetFileContent(fileContent, desiredTextLanguage);
+                //int desiredTextLanguage = 0;
+                //bookData.SetFileToDo((int)WhatNeedDoWithFiles.AnalyseText, desiredTextLanguage);//создание нужной инструкции ToDo
+                ////bookData.SetFilePath(_filePath, desiredTextLanguage);
+                //string fileContent = text;
+                //bookData.SetFileContent(fileContent, desiredTextLanguage);
 
-                string hash = bookAnalysis.AnalyseTextBook();
+                //string hash = bookAnalysis.AnalyseTextBook();
 
-                string hashName = "Control hash of the text File:";
+                //string hashName = "Control hash of the text File:";
 
 
 
