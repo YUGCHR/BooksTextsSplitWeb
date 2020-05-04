@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace BooksTextsSplit
 {
-    public interface ISharedDataAccess
+    public interface IAllBookData
     {        
         int GetFileToDo(int i);
         int SetFileToDo(int fileToDo, int i);
@@ -40,7 +40,7 @@ namespace BooksTextsSplit
         int SetNotices(int desiredTextLanguage, int noticeIndex, int noticeNumber, string noticeName);        
     }
 
-    public class SharedDataAccess : ISharedDataAccess
+    public class AllBookData : IAllBookData
     {
         //private readonly IMessageService _messageService;
 
@@ -60,10 +60,8 @@ namespace BooksTextsSplit
         private List<List<string>> noticesNames = new List<List<string>>(); //массив названий замечаний
         private List<List<int>> noticesNumbers = new List<List<int>>(); //массив номеров замечаний
 
-        public SharedDataAccess()//IMessageService service 
-        {
-            //_messageService = service;
-
+        public AllBookData()//IMessageService service 
+        {            
             filesQuantity = DConst.FilesQuantity;
 
             filesToDo = new int[filesQuantity];

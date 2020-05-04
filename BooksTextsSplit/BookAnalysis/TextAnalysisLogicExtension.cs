@@ -20,18 +20,16 @@ namespace BooksTextsSplit
 
     public class TextAnalysisLogicExtension : ITextAnalysisLogicExtension
     {
-        private readonly ISharedDataAccess _bookData;
-        private readonly IMessageService _msgService;
+        private readonly IAllBookData _bookData;        
         
         readonly private int filesQuantity;
         readonly private int showMessagesLevel;
         readonly private string strCRLF;
         
 
-        public TextAnalysisLogicExtension(ISharedDataAccess bookData, IMessageService msgService)
+        public TextAnalysisLogicExtension(IAllBookData bookData)
         {
-            _bookData = bookData;
-            _msgService = msgService;            
+            _bookData = bookData;                        
 
             filesQuantity = DConst.FilesQuantity;
             showMessagesLevel = DConst.ShowMessagesLevel;
@@ -84,8 +82,6 @@ namespace BooksTextsSplit
                     int addParagraphTextCount = _bookData.AddParagraphText(desiredTextLanguage, currentTextParagraph);//также возвращает количество уже существующих элементов
                     //нельзя, он позже понадобится чистым (подумать над этим) - здесь выгрузить данные из временного массива проблем в массив Notice, весь абзац (или найденные кавычки?) в Name, а в Number - что-то отрицательное, например количество кавычек (тут еще нет кавычек, но можно приспособить проверку)
                     allParagraphsWithTextCount++;
-                    _msgService.ShowTrace(MethodBase.GetCurrentMethod().ToString(), "Current Paragraph[" + i.ToString() + "] --> " + TextOnParagraphsPortioned[i] + "---control<CR>---" + DConst.StrCRLF +
-                        "currentTextParagraphIsEmpty = " + currentTextParagraphIsEmpty.ToString(), CurrentClassName, DConst.ShowMessagesLevel);
                 }
             }
             return allParagraphsWithTextCount;
@@ -109,8 +105,6 @@ namespace BooksTextsSplit
                     changedEllipsisVariationCount++;
                 }
             }
-            _msgService.ShowTrace(MethodBase.GetCurrentMethod().ToString(), "Found and changed Ellipsis Variation Count = " + changedEllipsisVariationCount.ToString(), CurrentClassName, DConst.ShowMessagesLevel);
-
             return textToAnalyse;
         }
 
@@ -138,10 +132,6 @@ namespace BooksTextsSplit
                     currentChapterNumber = savedChapterNumber;//перенесли номер главы в переменную для создания полной маркировки абзаца (§§§§§00001§§§-Paragraph-of-CHAPTER-001)
                     currentChapterParagraphsNumbersCount = 1;//сбросили счетчик номеров абзаца - в каждой главе абзацы нумеруем заново с 1 (ну, так подумалось, что лучше)
                     cpiWithChapterName = true;//флаг для пропуска абзаца с именем главы - чтобы не нумеровать его еще и как абзац
-
-                    _msgService.ShowTrace(MethodBase.GetCurrentMethod().ToString(), "textParagraph[" + cpi.ToString() + "] = " + DConst.StrCRLF + currentParagraph + DConst.StrCRLF +
-                        "currentChapterNumber - " + currentChapterNumber.ToString() + DConst.StrCRLF + "cpiWithChapterName - " + cpiWithChapterName.ToString() + DConst.StrCRLF +
-                        "currentChapterParagraphsNumbersCount - " + currentChapterParagraphsNumbersCount.ToString(), CurrentClassName, DConst.ShowMessagesLevel);
                 }
                 bool textParagraphIsEmpty = String.IsNullOrEmpty(currentParagraph);
                 if (!textParagraphIsEmpty && !cpiWithChapterName)//если абзац НЕ пустой и НЕ является именем главы, то будем его нумеровать
@@ -161,10 +151,6 @@ namespace BooksTextsSplit
 
                     currentChapterParagraphsNumbersCount++;//начинаем нумерацию с 1 (не забыть потом сбросить счетчик) - и потом удалить коммент
                     totalParagraphsNumbersCount++;
-
-                    _msgService.ShowTrace(MethodBase.GetCurrentMethod().ToString(), "textParagraph[" + cpi.ToString() + "] = " + DConst.StrCRLF + currentParagraph + DConst.StrCRLF +
-                        "ParagraphTextMarks - " + paragraphTextMarks + DConst.StrCRLF +
-                        "newCurrentParagraph - " + newCurrentParagraph, CurrentClassName, DConst.ShowMessagesLevel);
                 }
                 cpiWithChapterName = false;
             }

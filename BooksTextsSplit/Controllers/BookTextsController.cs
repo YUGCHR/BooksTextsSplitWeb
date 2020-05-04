@@ -98,32 +98,27 @@ namespace BooksTextsSplit.Controllers
                 StreamReader reader = new StreamReader(bookFile.OpenReadStream());
                 string text = reader.ReadToEnd();
 
+                IAllBookData _bookData = new AllBookData();                
+                ITextAnalysisLogicExtension analysisLogic = new TextAnalysisLogicExtension(_bookData);
+                ISentencesDividingAnalysis sentenceAnalyser = new SentencesDividingAnalysis(_bookData, analysisLogic);
+                //IAnalysisLogicParagraph paragraphAnalysis = new noneAnalysisLogicParagraph(bookData, msgService, analysisLogic);
+                IChapterDividingAnalysis chapterAnalyser = new ChapterDividingAnalysis(_bookData, analysisLogic);
+                IAllBookAnalysis bookAnalysis = new AllBookAnalysis(_bookData, analysisLogic, chapterAnalyser, sentenceAnalyser);
 
-                //ISharedDataAccess bookData = new SharedDataAccess();
-                //IFileManager manager = new FileManager(bookData);
+                int desiredTextLanguage = 0;
+                _bookData.SetFileToDo((int)WhatNeedDoWithFiles.AnalyseText, desiredTextLanguage);//создание нужной инструкции ToDo
+                //bookData.SetFilePath(_filePath, desiredTextLanguage);
+                string fileContent = text;
+                _bookData.SetFileContent(fileContent, desiredTextLanguage);
 
-                //IMessageService msgService = new FakeMessageService();// - вывод на печать включить (+ в самом методе включить)
-                //                                                      //IMessageService msgService = Mock.Of<IMessageService>();// - вывод на печать отключить
-                //ITextAnalysisLogicExtension analysisLogic = new TextAnalysisLogicExtension(bookData, msgService);
-                //ISentencesDividingAnalysis sentenceAnalyser = new SentencesDividingAnalysis(bookData, msgService, analysisLogic);
-                ////IAnalysisLogicParagraph paragraphAnalysis = new noneAnalysisLogicParagraph(bookData, msgService, analysisLogic);
-                //IChapterDividingAnalysis chapterAnalyser = new ChapterDividingAnalysis(bookData, msgService, analysisLogic);
-                //IAllBookAnalysis bookAnalysis = new AllBookAnalysis(manager, bookData, msgService, analysisLogic, chapterAnalyser, sentenceAnalyser);
-
-                //int desiredTextLanguage = 0;
-                //bookData.SetFileToDo((int)WhatNeedDoWithFiles.AnalyseText, desiredTextLanguage);//создание нужной инструкции ToDo
-                ////bookData.SetFilePath(_filePath, desiredTextLanguage);
-                //string fileContent = text;
-                //bookData.SetFileContent(fileContent, desiredTextLanguage);
-
-                //string hash = bookAnalysis.AnalyseTextBook();
-
-                //string hashName = "Control hash of the text File:";
-
-
-
-                return Ok(text);
+                string hash = bookAnalysis.AnalyseTextBook();
+                
+                return Ok(hash);
             }
+
+            //
+            // var result = _bookAnalysis.Analyze(text);
+            // _cosmosService.Save(result);
 
             return Problem("bad file");
         }
