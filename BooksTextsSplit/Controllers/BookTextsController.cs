@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BooksTextsSplit.Models;
 using BooksTextsSplit.Services;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace BooksTextsSplit.Controllers
 {
@@ -111,12 +112,11 @@ namespace BooksTextsSplit.Controllers
                 string fileContent = text;
                 _bookData.SetFileContent(fileContent, desiredTextLanguage);
 
-                string hash = bookAnalysis.AnalyseTextBook();
-                
+                TextSentence[] hash = bookAnalysis.AnalyseTextBook();
 
+                string json = JsonConvert.SerializeObject(hash);
 
-
-                return Ok(hash);
+                return Ok(json);
             }
 
             //

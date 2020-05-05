@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Security.Cryptography;
+using BooksTextsSplit.Models;
 
 namespace BooksTextsSplit
 {
     public interface IAllBookAnalysis
     {
-        string AnalyseTextBook();        
+        TextSentence[] AnalyseTextBook();        
 
         event EventHandler AnalyseInvokeTheMain;
     }
@@ -36,12 +37,12 @@ namespace BooksTextsSplit
             _sentenceAnalyser = sentenceAnalyser;//предложения
         }
 
-        public string AnalyseTextBook() // типа Main в логике анализа текста
+        public TextSentence[] AnalyseTextBook() // типа Main в логике анализа текста
         {
             int desiredTextLanguage = _analysisLogic.GetDesiredTextLanguage();//возвращает номер языка, если на нем есть AnalyseText или AnalyseChapterName
             if (desiredTextLanguage == (int)MethodFindResult.NothingFound)
             {
-                return desiredTextLanguage.ToString();//типа, нечего анализировать
+                return null;//типа, нечего анализировать
             }
            
             if (_bookData.GetFileToDo(desiredTextLanguage) == (int)WhatNeedDoWithFiles.AnalyseText)//если первоначальный анализ текста, без подсказки пользователя о названии глав, ищем главы самостоятельно
@@ -54,7 +55,7 @@ namespace BooksTextsSplit
 
                 int portionBookTextResult = _analysisLogic.PortionBookTextOnParagraphs(desiredTextLanguage, textToAnalyse);//делит текст на абзацы по EOL, сохраняет в List в AllBookData (возвращает количество строк с текстом)
 
-                int paragraphTextLength = _bookData.GetParagraphTextLength(desiredTextLanguage);
+                int paragraphTextLength = _bookData.GetParagraphTextLength(desiredTextLanguage);                
 
                 int allEmptyParagraphsCount = paragraphTextLength - portionBookTextResult;
 
@@ -78,7 +79,15 @@ namespace BooksTextsSplit
                 }
 
                 string tracedFileContent = appendFileContent.ToString();
-                
+                int textSentencesLength = _bookData.GetTextSentenceLength();
+                TextSentence[] textSentences = new TextSentence[textSentencesLength];
+
+                for (int tsi = 0; tsi < textSentencesLength; tsi++)
+                {
+                    textSentences[tsi] = _bookData.GetTextSentence(tsi);
+                }
+
+
                 string hashSavedFile = GetMd5Hash(tracedFileContent);
 
                 //следующий блок - в отдельный метод - это потом что-то решить, что делать, если не удалось найти номера глав - сначала найти такой пример
@@ -86,10 +95,10 @@ namespace BooksTextsSplit
                     
                     if (AnalyseInvokeTheMain != null) AnalyseInvokeTheMain(this, EventArgs.Empty);//пошли узнавать у пользователя, как маркируются главы
 
-                return tracedFileContent;
+                return textSentences;
             }
 
-            return "-100";//desiredTextLanguage.ToString();//типа, нечего анализировать
+            return null;//desiredTextLanguage.ToString();//типа, нечего анализировать
         }        
 
         public static string CurrentClassName

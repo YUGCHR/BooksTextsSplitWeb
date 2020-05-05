@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Collections;
+using BooksTextsSplit.Models;
 
 namespace BooksTextsSplit
 {
@@ -58,6 +59,7 @@ namespace BooksTextsSplit
                     int currentParagraphNumber = FindTextPartNumber(currentParagraph, DConst.beginParagraphMark, DConst.paragraptNumberTotalDigits);//тут уже знаем, что в начале абзаца есть нужный маркер и сразу ищем номер (FindTextPartNumber находится в AnalysisLogicCultivation)
 
                     //на всякий случай тут можно проверять, что индекс следующего абзаца (+1 к текущему) не уткнется в конец файла
+                    
                     string sentenceTextMarksWithOtherNumbers = FindParagrapNumberForSentenceNumber(desiredTextLanguage, currentParagraph, currentParagraphNumber);//получили строку типа -Paragraph-3-of-Chapter-3 - удалены марки, но сохранены номера главы и абзаца
                                         
                     string nextParagraph = _bookData.GetParagraphText(desiredTextLanguage, nextParagraphIndex);//достаем следующий абзац только при необходимости - когда точно знаем, что там текст, который надо делить                    
@@ -85,7 +87,7 @@ namespace BooksTextsSplit
 
                     int[] SentenceDelimitersIndexesArray = RemoveNegativeSentenceDelimitersIndexes(allIndexResults);//сжали ветку массива с точками - удалили отрицательный и сохранили в обычный временный массив
 
-                    string[] paragraphSentences = DivideTextToSentencesByDelimiters(nextParagraph, SentenceDelimitersIndexesArray);//разделили текст на предложения согласно оставшимся разделителям
+                    string[] paragraphSentences = DivideTextToSentencesByDelimiters(desiredTextLanguage, currentParagraphNumber, sentenceTextMarksWithOtherNumbers, nextParagraph, SentenceDelimitersIndexesArray);//разделили текст на предложения согласно оставшимся разделителям
                     
                     paragraphSentences = EnumerateDividedSentences(desiredTextLanguage, sentenceTextMarksWithOtherNumbers, paragraphSentences);//пронумеровали разделенные предложения - еще в том же массиве
 
@@ -248,14 +250,19 @@ namespace BooksTextsSplit
         }
 
         //все непонятки можно (нужно) записать в освободившийся массив ChapterNumber - кстати, их все надо чистить перед анализом следующего языка/текста - или можно завести аналогичный цифровой массив ParagraghNumber - чистить не надо, он на 2 языка
-        public string[] DivideTextToSentencesByDelimiters(string textParagraph, int[] sentenceDelimitersIndexesArray)//разобраться с константами и почему не совпадает по сумме часть предложений
+        public string[] DivideTextToSentencesByDelimiters(int languageId, int paragraphId, string sentenceTextMarksWithOtherNumbers, string textParagraph, int[] sentenceDelimitersIndexesArray)//разобраться с константами и почему не совпадает по сумме часть предложений
         {
+            int currentChapterNumber = 0;
             int foundSentenceCount = 0;
             int textParagraphLength = textParagraph.Length;
             int sentenceDelimitersIndexesCount = sentenceDelimitersIndexesArray.Length;
-            
+            TextSentence textSentence = new TextSentence();
             string[] tempParagraphSentences = new string[sentenceDelimitersIndexesCount];//временный массив для хранения свежеподеленных предложений
-            
+
+            int sentenceTextMarksWithOtherNumbersCount = sentenceTextMarksWithOtherNumbers.Length;
+            bool partNumberFound = Int32.TryParse(sentenceTextMarksWithOtherNumbers.Substring(sentenceTextMarksWithOtherNumbersCount-3), out currentChapterNumber);
+            //¶¶¶¶¶00001¶¶¶-Sentence-of-Paragraph-00002-of-Chapter-000
+
             int startIndexSentence = 0;
 
             for (int i = 0; i < sentenceDelimitersIndexesCount; i++)
@@ -285,6 +292,17 @@ namespace BooksTextsSplit
                 if (tempParagraphSentences[i].Length > 0)
                 {
                     paragraphSentences[foundSentenceCount] = tempParagraphSentences[i];
+                    textSentence.Id = ""; //string
+                    textSentence.LanguageId = languageId; //int
+                    textSentence.BookId = 1; //int
+                    textSentence.BookName = "Vernor Vinge - A Fire Upon the Deep"; //string
+                    textSentence.ChapterId = currentChapterNumber; //int
+                    textSentence.ChapterName = currentChapterNumber.ToString(); //string
+                    textSentence.ParagraphId = paragraphId; //int
+                    textSentence.ParagraphName = "reserved"; //string
+                    textSentence.SentenceId = foundSentenceCount;
+                    textSentence.SentenceText = paragraphSentences[foundSentenceCount];
+                    int countSentences = _bookData.AddTextSentence(textSentence);
                     foundSentenceCount++;
                 }
             }
