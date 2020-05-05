@@ -112,11 +112,26 @@ namespace BooksTextsSplit.Controllers
                 string fileContent = text;
                 _bookData.SetFileContent(fileContent, desiredTextLanguage);
 
-                TextSentence[] hash = bookAnalysis.AnalyseTextBook();
+                TextSentence[] textSentences = bookAnalysis.AnalyseTextBook();
+                int textSentencesLength = textSentences.Length;
+                string json = JsonConvert.SerializeObject(textSentences);
 
-                string json = JsonConvert.SerializeObject(hash);
+                try
+                {
+                    for (int tsi = 0; tsi < textSentencesLength; tsi++)                       
+                    {
+                        textSentences[tsi].Id = Guid.NewGuid().ToString();
+                        await _context.AddItemAsync(textSentences[tsi]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Ok(ex.Message);
+                }
 
-                return Ok(json);
+                //return Ok(json);
+                return Ok(textSentencesLength);
+           
             }
 
             //
