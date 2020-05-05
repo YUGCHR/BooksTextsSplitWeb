@@ -86,7 +86,7 @@ namespace BooksTextsSplit
                     
                     if (AnalyseInvokeTheMain != null) AnalyseInvokeTheMain(this, EventArgs.Empty);//пошли узнавать у пользователя, как маркируются главы
 
-                return hashSavedFile;
+                return tracedFileContent;
             }
 
             return "-100";//desiredTextLanguage.ToString();//типа, нечего анализировать

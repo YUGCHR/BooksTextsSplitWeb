@@ -113,6 +113,9 @@ namespace BooksTextsSplit.Controllers
 
                 string hash = bookAnalysis.AnalyseTextBook();
                 
+
+
+
                 return Ok(hash);
             }
 

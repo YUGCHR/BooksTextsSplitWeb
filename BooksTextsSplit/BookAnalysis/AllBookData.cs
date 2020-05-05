@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using BooksTextsSplit.Models;
 
 namespace BooksTextsSplit
 {
@@ -35,6 +36,11 @@ namespace BooksTextsSplit
         int AddParagraphText(int desiredTextLanguage, string paragraphText);//тоже возвращает количество элементов
         int RemoveAtParagraphText(int desiredTextLanguage, int paragraphCount);//удаляет элемент списка с индексом paragraphCount
 
+        TextSentence GetTextSentence(int sentenceCount);
+        int GetTextSentenceLength();
+        int SetTextSentence(int sentenceCount, TextSentence textSentence);
+        int AddTextSentence(TextSentence textSentence);        
+
         int GetNoticeNumber(int desiredTextLanguage, int noticeIndex);
         string GetNoticeName(int desiredTextLanguage, int noticeIndex);
         int SetNotices(int desiredTextLanguage, int noticeIndex, int noticeNumber, string noticeName);        
@@ -52,9 +58,10 @@ namespace BooksTextsSplit
 
         private string[] filesPath;
         private string[] selectedTexts;
-        private string[] filesContents;
-        
-        private List<List<string>> paragraphsTexts = new List<List<string>>(); //инициализация динамического двумерного массива с абзацами (на двух языках + когда-то результат)        
+        private string[] filesContents;        
+
+        private List<List<string>> paragraphsTexts = new List<List<string>>(); //инициализация динамического двумерного массива с абзацами (на двух языках + когда-то результат)
+        private List<TextSentence> textSentences = new List<TextSentence>(); //общий массив для всех языков
 
         //два массива для замечаний - добавление и удаление ячеек синхронизировано с paragraphsTexts, так что, у них всегда одинаковая длина, а чтение-запись производится синхронно в оба эти массивы (потом можно заменить на общих класс для всех трех массивов)
         private List<List<string>> noticesNames = new List<List<string>>(); //массив названий замечаний
@@ -74,7 +81,7 @@ namespace BooksTextsSplit
 
             paragraphsTexts.Add(new List<string>());
             paragraphsTexts.Add(new List<string>()); //добавление второй строки для абзацев второго языка (пока нужно всего 2 строки)
-            
+            //textSentence.Add(new List <TextSentence> );
             noticesNames.Add(new List<string>());
             noticesNames.Add(new List<string>());
 
@@ -331,6 +338,33 @@ namespace BooksTextsSplit
             noticesNumbers[desiredTextLanguage].RemoveAt(paragraphCount);
             return paragraphsTexts[desiredTextLanguage].Count;//получение и возврат новой длины списка
         }
+        #endregion
+
+        #region textSentences
+        //группа класса TextSentence
+        public TextSentence GetTextSentence(int sentenceCount)
+        {
+            return textSentences[sentenceCount];
+        }
+
+        public int GetTextSentenceLength()
+        {
+            return textSentences.Count;
+        }
+
+        public int SetTextSentence(int sentenceCount, TextSentence textSentence)
+        {
+            textSentences[sentenceCount] = textSentence;
+            return 0;
+        }
+
+        //как сделать метод добавления Insert (int index, T item); - и, главное, зачем
+
+        public int AddTextSentence(TextSentence textSentence)
+        {
+            textSentences.Add(textSentence);//добавление нового элемента в строку            
+            return textSentences.Count;
+        }        
         #endregion
 
         #region Notices
