@@ -2,17 +2,16 @@ import React from 'react';
 import Axios from 'axios';
 import ReactScrollWheelHandler from 'react-scroll-wheel-handler';
 import { connect } from 'react-redux';
-import { scrollLineUp, scrollLineDown, toggleIsLoading, setSentencesCount, setSentences, toggleIsFetching } from '../../redux/read-reducer';
-import ToReadAndTranslate from './ToReadAndTranslate';
+import { toggleIsLoading, setSentencesCount, setSentences, toggleIsFetching } from '../../redux/select-reducer';
+import SelectTexts from './SelectTexts';
 import Preloader from '../common/preloader/Preloader';
 
-class ToReadAndTranslateContainerAPI extends React.Component {
+class SelectTextsContainerAPI extends React.Component {
 
     constructor(props) { super(props); }
 
     componentDidMount() {       
-        this.fetchSentences(0);
-        this.fetchSentences(1);
+        this.fetchSentences(0);        
     }
 
     fetchSentences = (languageId) => {
@@ -29,7 +28,7 @@ class ToReadAndTranslateContainerAPI extends React.Component {
             });
         this.props.toggleIsFetching(true);
         debugger;
-        Axios
+        Axios        
             .get(`/api/BookTexts/BookText/${languageId}`)
             .then(Response => {
                 this.props.toggleIsFetching(false);
@@ -40,11 +39,7 @@ class ToReadAndTranslateContainerAPI extends React.Component {
     render() {
         return <>        
             {this.props.isFetching ? <Preloader /> : null}
-            <ToReadAndTranslate
-                lastSentenceNumber={this.props.lastSentenceNumber}
-                readingSentenceNumber={this.props.readingSentenceNumber}
-                sentencesOnPageTop={this.props.sentencesOnPageTop}
-                sentencesOnPageBottom={this.props.sentencesOnPageBottom}
+            <SelectTexts                
                 sentencesCount={this.props.sentencesCount}
                 engSentences={this.props.engSentences}
                 rusSentences={this.props.rusSentences}
@@ -57,18 +52,17 @@ class ToReadAndTranslateContainerAPI extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        lastSentenceNumber: state.readAndTranslatePage.lastSentenceNumber,
-        readingSentenceNumber: state.readAndTranslatePage.readingSentenceNumber,
-        sentencesOnPageTop: state.readAndTranslatePage.sentencesOnPageTop,
-        sentencesOnPageBottom: state.readAndTranslatePage.sentencesOnPageBottom,
-        sentencesCount: state.readAndTranslatePage.sentencesCount,
-        engSentences: state.readAndTranslatePage.engSentences,
-        rusSentences: state.readAndTranslatePage.rusSentences
+        lastSentenceNumber: state.selectTextsPage.lastSentenceNumber,
+        readingSentenceNumber: state.selectTextsPage.readingSentenceNumber,
+        sentencesOnPageTop: state.selectTextsPage.sentencesOnPageTop,
+        sentencesOnPageBottom: state.selectTextsPage.sentencesOnPageBottom,
+        sentencesCount: state.selectTextsPage.sentencesCount,
+        engSentences: state.selectTextsPage.engSentences
     }
 }
 
-let ToReadAndTranslateContainer = connect(mapStateToProps,
-    { scrollLineUp, scrollLineDown, toggleIsLoading, setSentencesCount, setSentences, toggleIsFetching })
-    (ToReadAndTranslateContainerAPI);
+let SelectTextsContainer = connect(mapStateToProps,
+    { toggleIsLoading, setSentencesCount, setSentences, toggleIsFetching })
+    (SelectTextsContainerAPI);
 
-export default ToReadAndTranslateContainer;
+export default SelectTextsContainer;

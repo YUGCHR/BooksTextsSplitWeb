@@ -87,7 +87,6 @@ namespace BooksTextsSplit
                     textSentences[tsi] = _bookData.GetTextSentence(tsi);
                 }
 
-
                 string hashSavedFile = GetMd5Hash(tracedFileContent);
 
                 //следующий блок - в отдельный метод - это потом что-то решить, что делать, если не удалось найти номера глав - сначала найти такой пример

@@ -20,6 +20,9 @@ namespace BooksTextsSplit.Models
         [JsonProperty(PropertyName = "bookName")]
         public string BookName { get; set; }
 
+        [JsonProperty(PropertyName = "bookSentenceId")]
+        public int BookSentenceId { get; set; }
+
         [JsonProperty(PropertyName = "chapterId")]
         public int ChapterId { get; set; }
 

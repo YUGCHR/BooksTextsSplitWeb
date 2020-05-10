@@ -10,8 +10,8 @@ class UploadBooksContainerAPI extends React.Component {
     constructor(props) { super(props); }
 
     componentDidMount() {
-        /* this.fetchSentencesCount(0);
-        this.fetchSentencesCount(1); */
+        this.fetchSentencesCount(0);
+        this.fetchSentencesCount(1);
     }
 
     setButtonCaption = (languageId) => {
@@ -32,7 +32,7 @@ class UploadBooksContainerAPI extends React.Component {
                 this.props.sentencesCount[languageId] === 0
                     ? this.props.toggleIsLoading(false, languageId)
                     : this.props.toggleIsLoading(true, languageId);
-                if (this.props.sentencesCount[languageId] !== 0) { this.props.setBookTitle(0, languageId) }
+                /* if (this.props.sentencesCount[languageId] !== 0) { this.props.setBookTitle(0, languageId) } */
             });
     }
 
