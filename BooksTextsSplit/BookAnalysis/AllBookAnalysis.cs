@@ -87,7 +87,7 @@ namespace BooksTextsSplit
                     textSentences[tsi] = _bookData.GetTextSentence(tsi);
                 }
 
-                string hashSavedFile = GetMd5Hash(tracedFileContent);
+                string hashSavedFile = _analysisLogic.GetMd5Hash(tracedFileContent);
 
                 //следующий блок - в отдельный метод - это потом что-то решить, что делать, если не удалось найти номера глав - сначала найти такой пример
                 _bookData.SetFileToDo((int)WhatNeedDoWithFiles.SelectChapterName, desiredTextLanguage);//сообщаем Main, что надо поменять название на кнопке на Select
@@ -103,20 +103,6 @@ namespace BooksTextsSplit
         public static string CurrentClassName
         {
             get { return MethodBase.GetCurrentMethod().DeclaringType.Name; }
-        }
-
-        public string GetMd5Hash(string fileContent)
-        {
-            MD5 md5Hasher = MD5.Create(); //создаем объект класса MD5 - он создается не через new, а вызовом метода Create            
-            byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(fileContent));//преобразуем входную строку в массив байт и вычисляем хэш
-            StringBuilder sBuilder = new StringBuilder();//создаем новый Stringbuilder (изменяемую строку) для набора байт
-            for (int i = 0; i < data.Length; i++)// Преобразуем каждый байт хэша в шестнадцатеричную строку
-            {
-                sBuilder.Append(data[i].ToString("x2"));//указывает, что нужно преобразовать элемент в шестнадцатиричную строку длиной в два символа
-            }
-            string pasHash = sBuilder.ToString();
-
-            return pasHash;
-        }
+        }        
     }    
 }

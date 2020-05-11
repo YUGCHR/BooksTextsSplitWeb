@@ -87,7 +87,9 @@ namespace BooksTextsSplit
 
                     int[] SentenceDelimitersIndexesArray = RemoveNegativeSentenceDelimitersIndexes(allIndexResults);//сжали ветку массива с точками - удалили отрицательный и сохранили в обычный временный массив
 
-                    string[] paragraphSentences = DivideTextToSentencesByDelimiters(desiredTextLanguage, currentParagraphNumber, sentenceTextMarksWithOtherNumbers, nextParagraph, SentenceDelimitersIndexesArray);//разделили текст на предложения согласно оставшимся разделителям
+                    string[] paragraphSentences = DivideTextToSentencesByDelimiters(nextParagraph, SentenceDelimitersIndexesArray);//разделили текст на предложения согласно оставшимся разделителям
+
+                    int addedTextSentencesCount = addDividedtoTextSentence(desiredTextLanguage, currentParagraphNumber, sentenceTextMarksWithOtherNumbers, paragraphSentences);
 
                     paragraphSentences = EnumerateDividedSentences(desiredTextLanguage, sentenceTextMarksWithOtherNumbers, paragraphSentences);//пронумеровали разделенные предложения - еще в том же массиве
 
@@ -250,17 +252,13 @@ namespace BooksTextsSplit
         }
 
         //все непонятки можно (нужно) записать в освободившийся массив ChapterNumber - кстати, их все надо чистить перед анализом следующего языка/текста - или можно завести аналогичный цифровой массив ParagraghNumber - чистить не надо, он на 2 языка
-        public string[] DivideTextToSentencesByDelimiters(int languageId, int paragraphId, string sentenceTextMarksWithOtherNumbers, string textParagraph, int[] sentenceDelimitersIndexesArray)//разобраться с константами и почему не совпадает по сумме часть предложений
-        {
-            int currentChapterNumber = 0;
+        public string[] DivideTextToSentencesByDelimiters(string textParagraph, int[] sentenceDelimitersIndexesArray)//разобраться с константами и почему не совпадает по сумме часть предложений
+        {           
             int foundSentenceCount = 0;
             int textParagraphLength = textParagraph.Length;
             int sentenceDelimitersIndexesCount = sentenceDelimitersIndexesArray.Length;
             string[] tempParagraphSentences = new string[sentenceDelimitersIndexesCount]; //временный массив для хранения свежеподеленных предложений (с пустыми строками)
 
-            int sentenceTextMarksWithOtherNumbersCount = sentenceTextMarksWithOtherNumbers.Length;
-            bool partNumberFound = Int32.TryParse(sentenceTextMarksWithOtherNumbers.Substring(sentenceTextMarksWithOtherNumbersCount - 3), out currentChapterNumber);
-            
             int startIndexSentence = 0;
 
             for (int i = 0; i < sentenceDelimitersIndexesCount; i++)
@@ -285,6 +283,25 @@ namespace BooksTextsSplit
             }
             string[] paragraphSentences = new string[foundSentenceCount];
             foundSentenceCount = 0;
+            
+            for (int i = 0; i < sentenceDelimitersIndexesCount; i++)
+            {
+                if (tempParagraphSentences[i].Length > 0)
+                {
+                    paragraphSentences[foundSentenceCount] = tempParagraphSentences[i];                    
+                    foundSentenceCount++;
+                }
+            }
+            return paragraphSentences;//где-то тут можно сложить все символы предложений и сравнить их с исходным количеством символов, только их надо как-то сохранить, после разделения на абзацы
+        }
+
+        public int addDividedtoTextSentence(int languageId, int paragraphId, string sentenceTextMarksWithOtherNumbers, string[] paragraphSentences)
+        {
+            int addedTextSentencesCount = 0;            
+            int paragraphSentencesCount = paragraphSentences.Length;
+
+            int sentenceTextMarksWithOtherNumbersCount = sentenceTextMarksWithOtherNumbers.Length;
+            bool partNumberFound = Int32.TryParse(sentenceTextMarksWithOtherNumbers.Substring(sentenceTextMarksWithOtherNumbersCount - 3), out int currentChapterNumber);
 
             int globalCountSentences = 0;
             int textSentenceLength = _bookData.GetTextSentenceLength();
@@ -293,31 +310,29 @@ namespace BooksTextsSplit
                 TextSentence previousTextSentence = _bookData.GetTextSentence(textSentenceLength - 1);
                 globalCountSentences = previousTextSentence.BookSentenceId + 1;
             }
-            for (int i = 0; i < sentenceDelimitersIndexesCount; i++)
+
+            for (int i = 0; i < paragraphSentencesCount; i++)
             {
-                if (tempParagraphSentences[i].Length > 0)
+                TextSentence textSentence = new TextSentence
                 {
-                    paragraphSentences[foundSentenceCount] = tempParagraphSentences[i];
-                    TextSentence textSentence = new TextSentence
-                    {
-                        Id = "", //string
-                        LanguageId = languageId, //int
-                        BookId = 1, //int
-                        BookName = "Vernor Vinge - A Fire Upon the Deep", //string
-                        BookSentenceId = globalCountSentences, //int - global sentences count in the whole book
-                        ChapterId = currentChapterNumber, //int
-                        ChapterName = currentChapterNumber.ToString(), //string
-                        ParagraphId = paragraphId, //int
-                        ParagraphName = "reserved", //string
-                        SentenceId = foundSentenceCount,
-                        SentenceText = paragraphSentences[foundSentenceCount]
-                    };
-                    int countSentences = _bookData.AddTextSentence(textSentence);
-                    globalCountSentences++;
-                    foundSentenceCount++;
-                }
+                    Id = "", //string
+                    LanguageId = languageId, //int
+                    BookId = 1, //int
+                    BookName = "Vernor Vinge - A Fire Upon the Deep", //string
+                    BookSentenceId = globalCountSentences, //int - global sentences count in the whole book
+                    ChapterId = currentChapterNumber, //int
+                    ChapterName = currentChapterNumber.ToString(), //string
+                    ParagraphId = paragraphId, //int
+                    ParagraphName = "reserved", //string
+                    SentenceId = i,
+                    SentenceText = paragraphSentences[i]
+                };
+                int countSentences = _bookData.AddTextSentence(textSentence);
+                addedTextSentencesCount = i;
+                globalCountSentences++;
             }
-            return paragraphSentences;//где-то тут можно сложить все символы предложений и сравнить их с исходным количеством символов, только их надо как-то сохранить, после разделения на абзацы
+            
+            return addedTextSentencesCount;
         }
 
         public int CalcLengthSentenceToDivide(bool currentSymbolIsUpper, bool lastSentenceDelimiterFound, int currertSentenceDelimitersIndexesArray, int startIndexSentence, int textParagraphLength)//считаем два варианта длины предложения - если не последнее и если последнее
