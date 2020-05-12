@@ -8,12 +8,12 @@ using System.Diagnostics;
 using BooksTextsSplit.Models;
 using FluentAssertions;
 
-namespace BooksTextsSplit.Tests
+namespace BooksTextsSplit.UnitTests
 {
     [TestClass()]
     public class SentencesDividingAnalysisTests
     {
-        private readonly ITextAnalysisLogicExtension _analysisLogic;
+        //private readonly ITextAnalysisLogicExtension _analysisLogic;
 
         [TestMethod()]        
         [DataRow("hash here", 0, 1, "-Paragraph-00001-of-Chapter-000", "How to explain? How to describe? Even the omniscient viewpoint quails.", new int[] { 14, 31, 69 })]
@@ -37,7 +37,7 @@ namespace BooksTextsSplit.Tests
             var target = new SentencesDividingAnalysis(bookData, analysisLogic);
             int textSentenceLengthBefore = bookData.GetTextSentenceLength();
             
-            string[] paragraphSentences = target.DivideTextToSentencesByDelimiters(languageId, paragraphId, sentenceTextMarksWithOtherNumbers, textParagraph, sentenceDelimitersIndexesArray);//разделили текст на предложения согласно оставшимся разделителям
+            string[] paragraphSentences = target.DivideTextToSentencesByDelimiters(textParagraph, sentenceDelimitersIndexesArray);//разделили текст на предложения согласно оставшимся разделителям
             int textSentenceLengthAfter = bookData.GetTextSentenceLength();
             int addedTextSentencesCount = textSentenceLengthAfter - textSentenceLengthBefore;
             if(addedTextSentencesCount > 0)

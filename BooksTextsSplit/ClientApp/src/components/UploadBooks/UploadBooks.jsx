@@ -13,7 +13,8 @@ const UploadBooks = (props) => {
         </p>
         <div>
             <input type="file" onChange={fileSelectorHandler} />
-            <button onClick={props.fileUploadHandler}>UPLOAD</button>
+            <button onClick={() => { props.fileUploadHandler(0) }}>UPLOAD ENGLISH</button>
+            <button onClick={() => { props.fileUploadHandler(1) }}>UPLOAD RUSSIAN</button>
         </div>
         <div>
             <h4>

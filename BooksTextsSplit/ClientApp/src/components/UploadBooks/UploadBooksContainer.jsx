@@ -36,8 +36,7 @@ class UploadBooksContainerAPI extends React.Component {
             });
     }
 
-    fileUploadHandler = () => {
-        
+    fileUploadHandler = (languageId) => {        
         console.log(this.props.selectedFile);
         const formData = new FormData();
         formData.append(
@@ -45,7 +44,10 @@ class UploadBooksContainerAPI extends React.Component {
             this.props.selectedFile,
             this.props.selectedFile.name
         );
-
+        formData.append(
+            "language",
+            languageId
+        );
         Axios
             .post('/api/BookTexts/UploadFile', formData)
             .then(Response => {

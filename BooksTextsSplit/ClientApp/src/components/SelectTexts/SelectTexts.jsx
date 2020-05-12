@@ -4,7 +4,7 @@ import s from './SelectTexts.module.css'
 const showSentences = (sentences) => {    
     return sentences.map((sts) => {
         return <div /* className={s.oneSentence} */>
-            {sts.bookSentenceId + ' - '} {sts.chapterId + ' - '} {sts.paragraphId + ' - '} {sts.sentenceId + ' - '} {sts.sentenceText}
+            {sts.languageId + ' - '} {sts.bookSentenceId + ' - '} {sts.chapterId + ' - '} {sts.paragraphId + ' - '} {sts.sentenceId + ' - '} {sts.sentenceText}
         </div>
     })
 };

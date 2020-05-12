@@ -27,7 +27,7 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("count")]
         public async Task<ActionResult<TotalCount>> GetTotalCount()
         {
-            return new TotalCount( (await _context.GetItemsAsync("SELECT * FROM c")).Count() );
+            return new TotalCount((await _context.GetItemsAsync("SELECT * FROM c")).Count() );
             //return new TotalCount { sentencesCount = 5 };
         }
 
@@ -42,7 +42,7 @@ namespace BooksTextsSplit.Controllers
 
         // GET: api/BookTexts
         [HttpGet]
-        public async Task<  ActionResult<     IEnumerable<TextSentence>      >> GetBookTexts()
+        public async Task<ActionResult<IEnumerable<TextSentence>>> GetBookTexts()
         {
             return (await _context.GetItemsAsync("SELECT * FROM c")).OrderBy(i => i.Id).ToList();
         }
@@ -91,8 +91,11 @@ namespace BooksTextsSplit.Controllers
             return Ok(new { ids = textWrapper.Text.Select(i => i.Id), totalCount = new TotalCount((await _context.GetItemsAsync("SELECT * FROM c")).Where(i => i.LanguageId == textWrapper.LanguageId).Count()) });
         }
 
+        // POST: api/BookTexts/UploadFile
         [HttpPost("UploadFile")]
-        public async Task<IActionResult> UploadFile([FromForm]IFormFile bookFile)
+        // POST: api/BookTexts/UploadFile?language=0
+        //public async Task<IActionResult> UploadFile([FromForm]IFormFile bookFile, [FromQuery] int language)
+        public async Task<IActionResult> UploadFile([FromForm]IFormFile bookFile, [FromForm] int language)
         {
             if (bookFile != null)
             {
@@ -105,8 +108,8 @@ namespace BooksTextsSplit.Controllers
                 //IAnalysisLogicParagraph paragraphAnalysis = new noneAnalysisLogicParagraph(bookData, msgService, analysisLogic);
                 IChapterDividingAnalysis chapterAnalyser = new ChapterDividingAnalysis(_bookData, analysisLogic);
                 IAllBookAnalysis bookAnalysis = new AllBookAnalysis(_bookData, analysisLogic, chapterAnalyser, sentenceAnalyser);
-
-                int desiredTextLanguage = 0;
+                
+                int desiredTextLanguage = language;
                 _bookData.SetFileToDo((int)WhatNeedDoWithFiles.AnalyseText, desiredTextLanguage);//создание нужной инструкции ToDo
                 //bookData.SetFilePath(_filePath, desiredTextLanguage);
                 string fileContent = text;
