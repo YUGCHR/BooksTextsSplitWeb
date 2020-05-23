@@ -4,8 +4,7 @@ const TOGGLE_IS_FETCHING = 'TOGGLE-IS-FETCHING';
 const TOGGLE_IS_LOADING = 'TOGGLE-IS-LOADING';
 
 let initialState = {
-    selectedFile: null,
-    files: [],
+    selectedFiles: [{name:'eng'}, {name:'rus'}],
     uploading: false,
     uploadProgress: {},
     successfullUploaded: false,
@@ -60,11 +59,7 @@ const uploadBooksReducer = (state = initialState, action) => {
             }
         case SET_FILE_NAME:
             {
-                let stateCopy = {...state };
-                stateCopy.selectedFile = {...state.selectedFile };
-                stateCopy.selectedFile = action.file;
-                console.log(stateCopy.selectedFile);
-                return stateCopy;
+                return {...state, selectedFiles: action.files};
             }
         case TOGGLE_IS_FETCHING:
             {
@@ -77,7 +72,7 @@ const uploadBooksReducer = (state = initialState, action) => {
 
 export const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
 export const setSentencesCount = (count, languageId) => ({ type: SET_SENTENCES_COUNT, count, languageId });
-export const setFileName = (file) => ({ type: SET_FILE_NAME, file });
+export const setFileName = (files) => ({ type: SET_FILE_NAME, files });
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 
 export default uploadBooksReducer;

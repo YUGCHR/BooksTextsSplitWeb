@@ -7,13 +7,10 @@ namespace BooksTextsSplit.Models
 {
     public class TotalCount
     {
-
         public TotalCount(int count)
         {
             sentencesCount = count;
         }
         public int sentencesCount { get; set; }
-
-
     }
 }

@@ -19,7 +19,7 @@ let initialState = {
 }
 
 initialState.readingSentenceNumber = initialState.sentencesOnPageTop;
-let lastSentenceNumber = initialState.lastSentenceNumber;
+//initialState.lastSentenceNumber;
 
 const readAndTranslateReducer = (state = initialState, action) => {    
     let sentencesOnPageTop = initialState.sentencesOnPageTop;    
@@ -32,6 +32,7 @@ const readAndTranslateReducer = (state = initialState, action) => {
             return stateCopy;
         }
         case SCROLL_LINE_DOWN: {
+            let lastSentenceNumber = action.engSentenceCount;
             let newSentenceNumberPlus = action.newSentenceNumber < (lastSentenceNumber + sentencesOnPageTop - 1)
                 ? action.newSentenceNumber + 1
                 : action.newSentenceNumber;
@@ -78,7 +79,7 @@ const readAndTranslateReducer = (state = initialState, action) => {
 }
 
 export const scrollLineUp = (newSentenceNumber) => ({ type: SCROLL_LINE_UP, newSentenceNumber });
-export const scrollLineDown = (newSentenceNumber) => ({ type: SCROLL_LINE_DOWN, newSentenceNumber });
+export const scrollLineDown = (newSentenceNumber, engSentenceCount) => ({ type: SCROLL_LINE_DOWN, newSentenceNumber, engSentenceCount });
 export const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
 export const setSentencesCount = (count, languageId) => ({ type: SET_SENTENCES_COUNT, count, languageId });
 export const setSentences = (sentences, languageId) => ({ type: SET_SENTENCES, sentences, languageId });

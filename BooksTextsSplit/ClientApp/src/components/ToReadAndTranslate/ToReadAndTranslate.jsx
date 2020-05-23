@@ -18,8 +18,8 @@ const showCurrentSentenceContext = (currentLangSentence) => {
         return <div>
             {'chapterName = '
             + currentLangSentence.chapterName
-            + 'id = ' 
-            + currentLangSentence.sentenceId 
+            + ' / id = ' 
+            + currentLangSentence.bookSentenceId 
             + ' / ' 
             + currentLangSentence.sentenceText}
         </div>
@@ -33,7 +33,7 @@ let ToReadAndTranslate = (props) => {
     return (<div>
         <div className={s.editWrapper}>
             <div className={s.lastSentenceNumber}>
-                {props.lastSentenceNumber}
+                {props.sentencesCount[0]}
             </div>
             <div className={s.editLine}>
                 Edit line
@@ -45,7 +45,7 @@ let ToReadAndTranslate = (props) => {
         <div></div>
         <ReactScrollWheelHandler
             upHandler={() => { props.scrollLineUp(r) }}
-            downHandler={() => { props.scrollLineDown(r) }}
+            downHandler={() => { props.scrollLineDown(r, props.sentencesCount[0]) }}
             timeout={100} >
             <div className={s.sentencesWrapper}>
                 <div className={s.topMargin}></div>
@@ -67,7 +67,7 @@ let ToReadAndTranslate = (props) => {
                     </div>
                 </div>
                 <div className={s.buttonDown}>
-                <button onClick={() => { props.scrollLineDown(r) }} className={s.buttonDownContent}>Line Down<img src={bottomArrow} /></button>
+                <button onClick={() => { props.scrollLineDown(r, props.sentencesCount[0])}} className={s.buttonDownContent}>Line Down<img src={bottomArrow} /></button>
                 </div>
             </div>
         </ReactScrollWheelHandler>

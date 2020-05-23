@@ -15,7 +15,7 @@ namespace BooksTextsSplit.Models
         public int LanguageId { get; set; }
 
         [JsonProperty(PropertyName = "bookId")]
-        public int BookId { get; set; }
+        public int BookId { get; set; } // means BooksPairId - pair of English and Russian book
 
         [JsonProperty(PropertyName = "bookName")]
         public string BookName { get; set; }
