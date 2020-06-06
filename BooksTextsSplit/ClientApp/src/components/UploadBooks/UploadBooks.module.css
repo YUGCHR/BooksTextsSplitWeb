@@ -1,0 +1,32 @@
+.selectedFiles {
+    display: grid;
+    grid-template-rows: 
+     1fr
+     1fr 
+     1fr
+     1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 0vw;
+}
+
+.selectedHeader {
+    grid-column: 1/4;
+    grid-row: 1/2;
+    color: black;
+    background-color: yellowgreen;
+}
+
+.selectedFilesTable {
+    grid-column: 1/4;
+    grid-row: 2/4;
+    color: black;
+    background-color: yellowgreen;
+}
+
+.eachFileHeader{
+    font-size: larger;
+}
+
+.radioBlock{
+    grid-column: 3/4;
+}

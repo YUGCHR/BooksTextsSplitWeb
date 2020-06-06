@@ -2,9 +2,10 @@ import React from "react";
 import Axios from "axios";
 import { connect } from "react-redux";
 import {
-  toggleIsLoading,
+  toggleIsLoading,  
   setSentencesCount,
   setFileName,
+  radioOptionChange,
   toggleIsFetching,
 } from "../../redux/load-reducer";
 import UploadBooks from "./UploadBooks";
@@ -74,13 +75,15 @@ class UploadBooksContainerAPI extends React.Component {
         {this.props.isFetching ? <Preloader /> : null}
         <UploadBooks
           selectedFiles={this.props.selectedFiles}
+          selectedRadioLanguage={this.props.selectedRadioLanguage}
           setFileName={this.props.setFileName}
+          radioOptionChange={this.props.radioOptionChange}
           fileUploadHandler={this.fileUploadHandler}
           uploadFile={this.uploadFile}
           loadText={this.loadText}
           setButtonCaption={this.setButtonCaption}
           fetchSentencesCount={this.fetchSentencesCount}
-          engTextTitle={this.props.engTextTitle}
+          engTextTitle={this.props.engTextTitle}          
           sentencesCount={this.props.sentencesCount}
           isTextLoaded={this.props.isTextLoaded}
           creativeArrayLanguageId={this.props.creativeArrayLanguageId}
@@ -97,6 +100,7 @@ class UploadBooksContainerAPI extends React.Component {
 let mapStateToProps = (state) => {
   return {
     selectedFiles: state.uploadBooksPage.selectedFiles,
+    selectedRadioLanguage: state.uploadBooksPage.selectedRadioLanguage,
     sentencesCount: state.uploadBooksPage.sentencesCount,
     isTextLoaded: state.uploadBooksPage.isTextLoaded,
     engTextTitle: state.uploadBooksPage.engTextTitle,
@@ -114,9 +118,10 @@ let mapStateToProps = (state) => {
 };
 
 let UploadBooksContainer = connect(mapStateToProps, {
-  toggleIsLoading,
+  toggleIsLoading,  
   setSentencesCount,
   setFileName,
+  radioOptionChange,
   toggleIsFetching,
 })(UploadBooksContainerAPI);
 

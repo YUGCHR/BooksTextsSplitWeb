@@ -37,14 +37,14 @@ namespace BooksTextsSplit.Integration_Tests
             var target = new SentencesDividingAnalysis(bookData, analysisLogic);
             int textSentenceLengthBefore = bookData.GetTextSentenceLength();
 
-            string[] paragraphSentences = target.DivideTextToSentencesByDelimiters(languageId, paragraphId, sentenceTextMarksWithOtherNumbers, textParagraph, sentenceDelimitersIndexesArray);//разделили текст на предложения согласно оставшимся разделителям
+            string[] paragraphSentences = target.DivideTextToSentencesByDelimiters(textParagraph, sentenceDelimitersIndexesArray);//разделили текст на предложения согласно оставшимся разделителям
             int textSentenceLengthAfter = bookData.GetTextSentenceLength();
             int addedTextSentencesCount = textSentenceLengthAfter - textSentenceLengthBefore;
             if (addedTextSentencesCount > 0)
             {
 
             }
-            TextSentence previousTextSentence = bookData.GetTextSentence(textSentenceLength - 1);
+            //TextSentence previousTextSentence = bookData.GetTextSentence(textSentenceLength - 1);
             string resultTextSentenceHash = analysisLogic.GetMd5Hash(expTextSentenceHash);
 
             Trace.WriteLine("resultTextSentenceHash: " + resultTextSentenceHash);

@@ -44,7 +44,7 @@ namespace BooksTextsSplit.UnitTests
             {
 
             }
-            TextSentence previousTextSentence = bookData.GetTextSentence(textSentenceLength - 1);
+            //TextSentence previousTextSentence = bookData.GetTextSentence(textSentenceLength - 1);
             string resultTextSentenceHash = analysisLogic.GetMd5Hash(expTextSentenceHash);
 
             Trace.WriteLine("resultTextSentenceHash: " + resultTextSentenceHash);
