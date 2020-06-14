@@ -76,6 +76,10 @@ class UploadBooksContainerAPI extends React.Component {
         <UploadBooks
           selectedFiles={this.props.selectedFiles}
           selectedRadioLanguage={this.props.selectedRadioLanguage}
+          radioButtonsLabels={this.props.radioButtonsLabels}
+          radioButtonsNames={this.props.radioButtonsNames}
+          radioButtonsValues={this.props.radioButtonsValues}
+          radioButtonsIds={this.props.radioButtonsIds}
           setFileName={this.props.setFileName}
           radioOptionChange={this.props.radioOptionChange}
           fileUploadHandler={this.fileUploadHandler}
@@ -101,6 +105,10 @@ let mapStateToProps = (state) => {
   return {
     selectedFiles: state.uploadBooksPage.selectedFiles,
     selectedRadioLanguage: state.uploadBooksPage.selectedRadioLanguage,
+    radioButtonsLabels: state.uploadBooksPage.radioButtonsLabels,
+    radioButtonsNames: state.uploadBooksPage.radioButtonsNames,
+    radioButtonsValues: state.uploadBooksPage.radioButtonsValues,
+    radioButtonsIds: state.uploadBooksPage.radioButtonsIds,
     sentencesCount: state.uploadBooksPage.sentencesCount,
     isTextLoaded: state.uploadBooksPage.isTextLoaded,
     engTextTitle: state.uploadBooksPage.engTextTitle,

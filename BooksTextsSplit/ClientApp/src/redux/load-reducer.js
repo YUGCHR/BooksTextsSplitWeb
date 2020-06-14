@@ -6,7 +6,11 @@ const RADIO_IS_CHANGED = "RADIO-IS-CHANGED";
 
 let initialState = {
   selectedFiles: [{ name: "eng" }, { name: "rus" }],
-  selectedRadioLanguage: '1',
+  selectedRadioLanguage: ["1", "2"],
+  radioButtonsLabels: [ "Book with English test", "Book with Russian test", "I do not know book language" ],
+  radioButtonsNames: [ "radioEnglish", "radioRussian" ],
+  radioButtonsValues: [ "1", "2", "3" ],
+  radioButtonsIds: [ ["eng1", "eng2", "eng3"], ["rus1", "rus2", "rus3"] ],
   uploading: false,
   uploadProgress: {},
   successfullUploaded: false,
@@ -101,7 +105,11 @@ const uploadBooksReducer = (state = initialState, action) => {
     }
     case RADIO_IS_CHANGED: {
         debugger;
-      return { ...state, selectedRadioLanguage: action.option };
+      let stateCopy = { ...state };
+      stateCopy.selectedRadioLanguage = { ...state.selectedRadioLanguage };
+      stateCopy.selectedRadioLanguage[action.languageId] = action.option;
+      return stateCopy;
+      //return { ...state, selectedRadioLanguage[action.languageId]: action.option };
     }
     case TOGGLE_IS_FETCHING: {
       return { ...state, isFetching: action.isFetching };
@@ -114,7 +122,7 @@ const uploadBooksReducer = (state = initialState, action) => {
 export const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
 export const setSentencesCount = (count, languageId) => ({ type: SET_SENTENCES_COUNT, count, languageId });
 export const setFileName = (files) => ({ type: SET_FILE_NAME, files });
-export const radioOptionChange = (option) => ({ type: RADIO_IS_CHANGED, option });
+export const radioOptionChange = (option, languageId) => ({ type: RADIO_IS_CHANGED, option, languageId });
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 
 export default uploadBooksReducer;
