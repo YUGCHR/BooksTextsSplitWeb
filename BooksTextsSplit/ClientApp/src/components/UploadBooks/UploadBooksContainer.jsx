@@ -40,7 +40,7 @@ class UploadBooksContainerAPI extends React.Component {
     });
   };
 
-  fileUploadHandler = (languageId) => {
+  fileUploadHandler = () => {
     for (let i = 0; i < this.props.selectedFiles.length; i++) {
       const formData = new FormData();
       console.log(this.props.selectedFiles[i]);
@@ -49,7 +49,7 @@ class UploadBooksContainerAPI extends React.Component {
         this.props.selectedFiles[i],
         this.props.selectedFiles[i].name
       );
-      formData.append("language", languageId);
+      formData.append("language", this.props.selectedFiles[i].languageId);
 
       Axios.post("/api/BookTexts/UploadFile", formData).then((Response) => {
         console.log(Response);
@@ -80,6 +80,7 @@ class UploadBooksContainerAPI extends React.Component {
           radioButtonsNames={this.props.radioButtonsNames}
           radioButtonsValues={this.props.radioButtonsValues}
           radioButtonsIds={this.props.radioButtonsIds}
+          filesLanguageIds={this.props.filesLanguageIds}
           setFileName={this.props.setFileName}
           radioOptionChange={this.props.radioOptionChange}
           fileUploadHandler={this.fileUploadHandler}
@@ -109,6 +110,7 @@ let mapStateToProps = (state) => {
     radioButtonsNames: state.uploadBooksPage.radioButtonsNames,
     radioButtonsValues: state.uploadBooksPage.radioButtonsValues,
     radioButtonsIds: state.uploadBooksPage.radioButtonsIds,
+    filesLanguageIds: state.uploadBooksPage.filesLanguageIds,
     sentencesCount: state.uploadBooksPage.sentencesCount,
     isTextLoaded: state.uploadBooksPage.isTextLoaded,
     engTextTitle: state.uploadBooksPage.engTextTitle,

@@ -2,6 +2,7 @@ import React from "react";
 import s from "./UploadBooks.module.css";
 
 const UploadBooks = (props) => {
+
   let fileSelectorHandler = (event) => {
     props.setFileName(event.target.files);
   };
@@ -13,13 +14,14 @@ const UploadBooks = (props) => {
   };
 
   let createRadioButtons = (radioButtonsValues, i) => {
+    //debugger;
     return radioButtonsValues.map((v, j) => {
       return (
         <div className={s.radioBlock}>
           <div className="radio">
             <label>
               <input type="radio" name={i} id={props.radioButtonsIds[(i, j)]} value={v} checked={props.selectedRadioLanguage[i] === v} onChange={handleOptionChange} />
-              {props.radioButtonsLabels[j]}
+              {props.radioButtonsLabels[j]} {" / languageId = " + props.filesLanguageIds[i]}
             </label>
           </div>
         </div>
@@ -31,6 +33,7 @@ const UploadBooks = (props) => {
     console.log(chosenFiles);
     //if(chosenFiles[0].size) {
     return Array.from(chosenFiles).map((f, i) => {
+      f.languageId = props.filesLanguageIds[i];
       return (
         <div>
           <p>
@@ -47,13 +50,14 @@ const UploadBooks = (props) => {
   };
 
   let showFilesToUpload = (chosenFiles) => {
-    return Array.from(chosenFiles).map((sf, j) => {
-      debugger;
+    return Array.from(chosenFiles).map((sf, n) => {
+      //debugger;
       return (
         <div>
           <p>
-            <div className={s.showFilesToUpload}> File To Upload No: {j} </div>
+            <div className={s.showFilesToUpload}> File To Upload No: {n} </div>
             <div>File name: {" " + sf.name}</div>
+            <div>File language: {" " + sf.languageId}</div>
           </p>
         </div>
       );
@@ -78,7 +82,7 @@ const UploadBooks = (props) => {
       <div className={s.showFilesToUpload}>
         <button
           onClick={() => {
-            showFilesToUpload(props.selectedFiles);
+            props.fileUploadHandler();
           }}
         >
           UPLOAD SELECTED FILES
