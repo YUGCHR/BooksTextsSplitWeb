@@ -1,3 +1,4 @@
+const SET_DB_SENTENCES_COUNT = "SET-DB-SENTENCES-COUNT";
 const SET_SENTENCES_COUNT = "SET-SENTENCES-COUNT";
 const SET_FILE_NAME = "SET-FILE-NAME";
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
@@ -73,7 +74,8 @@ let initialState = {
   ],
   rusSentences: [],
   sentencesOnPageTop: 10,
-  sentencesCount: [777, 888], //engSentencesCount: 777, rusSentencesCount: 888
+  sentencesCount: [111, 222, 333, 444, 555],
+  dbSentencesCount: [777, 888], //engSentencesCount: 777, rusSentencesCount: 888
   emptyVariable: null,
   isTextLoaded: [false, false],
   creativeArrayLanguageId: [0, 1], //engLanguageId = 0; rusLanguageId = 1;
@@ -95,10 +97,16 @@ const uploadBooksReducer = (state = initialState, action) => {
       stateCopy.isTextLoaded[action.languageId] = action.isTextLoaded;
       return stateCopy;
     }
+    case SET_DB_SENTENCES_COUNT: {
+      let stateCopy = { ...state };
+      stateCopy.dbSentencesCount = { ...state.dbSentencesCount };
+      stateCopy.dbSentencesCount[action.languageId] = action.count;
+      return stateCopy;
+    }
     case SET_SENTENCES_COUNT: {
       let stateCopy = { ...state };
       stateCopy.sentencesCount = { ...state.sentencesCount };
-      stateCopy.sentencesCount[action.languageId] = action.count;
+      stateCopy.sentencesCount[action.index] = action.count;
       return stateCopy;
     }
     case SET_FILE_NAME: {
@@ -124,7 +132,8 @@ const uploadBooksReducer = (state = initialState, action) => {
 };
 
 export const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
-export const setSentencesCount = (count, languageId) => ({ type: SET_SENTENCES_COUNT, count, languageId });
+export const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
+export const setSentencesCount = (count, index) => ({ type: SET_SENTENCES_COUNT, count, index });
 export const setFileName = (files) => ({ type: SET_FILE_NAME, files });
 export const radioOptionChange = (option, i) => ({ type: RADIO_IS_CHANGED, option, i });
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });

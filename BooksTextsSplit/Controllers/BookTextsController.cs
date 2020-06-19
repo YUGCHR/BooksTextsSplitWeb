@@ -119,18 +119,18 @@ namespace BooksTextsSplit.Controllers
                 int textSentencesLength = textSentences.Length;
                 string json = JsonConvert.SerializeObject(textSentences);
 
-                try
-                {
-                    for (int tsi = 0; tsi < textSentencesLength; tsi++)                       
-                    {
-                        textSentences[tsi].Id = Guid.NewGuid().ToString();
-                        await _context.AddItemAsync(textSentences[tsi]);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return Ok(ex.Message);
-                }
+                //try
+                //{
+                //    for (int tsi = 0; tsi < textSentencesLength; tsi++)                       
+                //    {
+                //        textSentences[tsi].Id = Guid.NewGuid().ToString();
+                //        await _context.AddItemAsync(textSentences[tsi]);
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    return Ok(ex.Message);
+                //}
 
                 //return Ok(json);
                 return Ok(textSentencesLength);

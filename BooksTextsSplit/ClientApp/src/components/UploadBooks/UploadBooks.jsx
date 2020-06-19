@@ -34,22 +34,19 @@ const UploadBooks = (props) => {
     return Array.from(chosenFiles).map((f, i) => {
       f.languageId = props.filesLanguageIds[i];
       return (
-        <div>
-          <div>
-            <div className={s.eachFileHeader}> {i} </div>
-            <div>{" " + f.name}</div>
-            <div>{" " + f.lastModifiedDate}</div>
-            <div>{" " + Math.round(f.size / 1024) + " KB"}</div>
-            <div>{" " + f.type}</div>
-
-            {createRadioButtons(props.radioButtonsValues, i)}
-          </div>
+        <div className={s.selectedFilesTableRow2}>
+          <div> {i} </div>
+          <div>{" " + f.name}</div>
+          <div>{" " + f.lastModifiedDate}</div>
+          <div>{" " + Math.round(f.size / 1024) + " KB"}</div>
+          <div>{" " + f.type}</div>
+          <div>{createRadioButtons(props.radioButtonsValues, i)}</div>
         </div>
       );
     });
   };
 
-  let showFilesToUpload = (chosenFiles) => {
+  let showFilesToUpload = (chosenFiles, sentencesCount) => {
     return Array.from(chosenFiles).map((sf, n) => {
       //debugger;
       return (
@@ -58,6 +55,7 @@ const UploadBooks = (props) => {
             <div className={s.showFilesToUpload}> File To Upload No: {n} </div>
             <div>File name: {" " + sf.name}</div>
             <div>File language: {" " + sf.languageId}</div>
+            <div>Uploaded sentences count: {" " + sentencesCount[n]}</div>
           </p>
         </div>
       );
@@ -81,22 +79,21 @@ const UploadBooks = (props) => {
             <div className={s.selectFilesButton}>
               <input type="file" onChange={fileSelectorHandler} multiple />
             </div>
-            <div className={s.selectedHeader}>
-              <div>SELECTED BOOKS FILES -</div>
-            </div>
-            <div className={s.selectedFilesTable}>
-              <div className={s.selectedFilesTableFlexRows}>
-                <div className={s.selectedFilesTable1}>
-                  <div>File No: </div>
-                  <div>File name: </div>
-                  <div>Last modified: </div>
-                  <div>File size: </div>
-                  <div>File type: </div>
-                </div>
-                <div className={s.selectedFilesTable2}>
-                  <div>{showSelectedFiles(props.selectedFiles)}</div>
-                </div>
+            <div className={s.selectedBooksPlace}>
+              <div className={s.selectedBooksContainer}>
+                <div className={s.selectedBooksHeader}>SELECTED BOOKS FILES -</div>
               </div>
+
+              <div className={s.selectedFilesTableRow1}>
+                <div>File No: </div>
+                <div>File name: </div>
+                <div>Last modified: </div>
+                <div>File size: </div>                
+                <div>Choose file language: </div>
+              </div>
+
+              {/* <div className={s.selectedFilesTableFlexColumns}> */}
+              <div>{showSelectedFiles(props.selectedFiles)}</div>
             </div>
           </div>
         </div>
@@ -111,17 +108,18 @@ const UploadBooks = (props) => {
             >
               UPLOAD SELECTED FILES
             </button>
-            <div>{showFilesToUpload(props.selectedFiles)}</div>
+            <div>{showFilesToUpload(props.selectedFiles, props.sentencesCount)}</div>
+            {/* <div>{showUploadedSentenceCount()}</div> */}
           </div>
         </div>
         <div className={s.dbCount}>
           <div>
             <div className={s.dbCountHeader}>Sentences count in Cosmos DB -</div>
           </div>
-          <div>English sentences count ={" " + props.sentencesCount[0]}</div>
-          <div>Russian sentences count ={" " + props.sentencesCount[1]}</div>
+          <div>English sentences count ={" " + props.dbSentencesCount[0]}</div>
+          <div>Russian sentences count ={" " + props.dbSentencesCount[1]}</div>
           <div>
-            <p>Total records in Cosmos DB ={" " + (props.sentencesCount[0] + props.sentencesCount[1])}</p>
+            <p>Total records in Cosmos DB ={" " + (props.dbSentencesCount[0] + props.dbSentencesCount[1])}</p>
           </div>
         </div>
       </div>
