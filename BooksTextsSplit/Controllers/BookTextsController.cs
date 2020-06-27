@@ -31,8 +31,8 @@ namespace BooksTextsSplit.Controllers
             //return new TotalCount { sentencesCount = 5 };
         }
 
-        // GET: api/Count/languageId
-        // api/count/5?param=2
+        // GET: api/BookTexts/Count/languageId
+        // api/BookTexts/count/5/?param=2
         [HttpGet("count/{languageId}")]
         public async Task<ActionResult<TotalCount>> GetTotalCount(int languageId, [FromQuery] int param)
         {
@@ -45,6 +45,17 @@ namespace BooksTextsSplit.Controllers
         public async Task<ActionResult<IEnumerable<TextSentence>>> GetBookTexts()
         {
             return (await _context.GetItemsAsync("SELECT * FROM c")).OrderBy(i => i.Id).ToList();
+        }
+
+        // GET: api/BookTexts/BookUploadVersion/?bookId=1&languageId=0
+        [HttpGet("BookUploadVersion")]
+        public async Task<ActionResult<UploadedVersions>> GetBookUploadVersion([FromQuery] int bookId, [FromQuery] int languageId)
+        {
+            
+            var findVersions = new UploadedVersions((await _context.GetItemsAsync($"SELECT * FROM c WHERE c.uploadVersion > 0 AND c.bookId = {bookId} AND c.languageId = {languageId} ORDER BY c.uploadVersion")).Select(s => s.UploadVersion).ToArray());
+            int a = 0;
+            return findVersions;
+            //return new UploadedVersions(  ( await _context.GetItemsAsync("SELECT * FROM c")).Select(s => s.UploadVersion).ToArray()   );
         }
 
         // GET: api/BookTexts/BookText/languageId
@@ -95,10 +106,12 @@ namespace BooksTextsSplit.Controllers
         [HttpPost("UploadFile")]
         // POST: api/BookTexts/UploadFile?language=0
         //public async Task<IActionResult> UploadFile([FromForm]IFormFile bookFile, [FromQuery] int language)
-        public async Task<IActionResult> UploadFile([FromForm]IFormFile bookFile, [FromForm] int language)
+        public async Task<IActionResult> UploadFile([FromForm]IFormFile bookFile, [FromForm] int languageId, [FromForm] int bookId, 
+            [FromForm] int authorNameId, [FromForm] string authorName, [FromForm] int bookNameId, [FromForm] string bookName, [FromForm] int lastUploadedVersion)
         {
             if (bookFile != null)
             {
+                string fileName = bookFile.FileName;                
                 StreamReader reader = new StreamReader(bookFile.OpenReadStream());
                 string text = reader.ReadToEnd();
 
@@ -109,7 +122,7 @@ namespace BooksTextsSplit.Controllers
                 IChapterDividingAnalysis chapterAnalyser = new ChapterDividingAnalysis(_bookData, analysisLogic);
                 IAllBookAnalysis bookAnalysis = new AllBookAnalysis(_bookData, analysisLogic, chapterAnalyser, sentenceAnalyser);
                 
-                int desiredTextLanguage = language;
+                int desiredTextLanguage = languageId;
                 _bookData.SetFileToDo((int)WhatNeedDoWithFiles.AnalyseText, desiredTextLanguage);//создание нужной инструкции ToDo
                 //bookData.SetFilePath(_filePath, desiredTextLanguage);
                 string fileContent = text;
@@ -118,19 +131,28 @@ namespace BooksTextsSplit.Controllers
                 TextSentence[] textSentences = bookAnalysis.AnalyseTextBook();
                 int textSentencesLength = textSentences.Length;
                 string json = JsonConvert.SerializeObject(textSentences);
+                int currentUploadingVersion = lastUploadedVersion + 1;
 
-                //try
-                //{
-                //    for (int tsi = 0; tsi < textSentencesLength; tsi++)                       
-                //    {
-                //        textSentences[tsi].Id = Guid.NewGuid().ToString();
-                //        await _context.AddItemAsync(textSentences[tsi]);
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-                //    return Ok(ex.Message);
-                //}
+                try
+                {
+                    for (int tsi = 0; tsi < textSentencesLength; tsi++)
+                    {                        
+                        textSentences[tsi].Id = Guid.NewGuid().ToString();
+                        textSentences[tsi].BookId = bookId;
+                        textSentences[tsi].AuthorNameId = authorNameId;
+                        textSentences[tsi].AuthorName = authorName;
+                        textSentences[tsi].BookNameId = bookNameId;
+                        textSentences[tsi].BookName = bookName;
+
+                        textSentences[tsi].UploadVersion = currentUploadingVersion;
+
+                        //await _context.AddItemAsync(textSentences[tsi]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Ok(ex.Message);
+                }
 
                 //return Ok(json);
                 return Ok(textSentencesLength);

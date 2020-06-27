@@ -313,17 +313,17 @@ namespace BooksTextsSplit
 
             for (int i = 0; i < paragraphSentencesCount; i++)
             {
-                TextSentence textSentence = new TextSentence
+                TextSentence textSentence = new TextSentence // array for uploading db is filling with values
                 {
-                    Id = "", //string
+                    //Id = "", //string - global Id in controller
                     LanguageId = languageId, //int
-                    BookId = 1, //int
-                    BookName = "Vernor Vinge - A Fire Upon the Deep", //string
+                    //BookId = 1, //int - in controller
+                    //BookName = "Vernor Vinge - A Fire Upon the Deep", //string - in controller
                     BookSentenceId = globalCountSentences, //int - global sentences count in the whole book
                     ChapterId = currentChapterNumber, //int
-                    ChapterName = currentChapterNumber.ToString(), //string
+                    ChapterName = currentChapterNumber.ToString(), //string - necessary to assign value found in the book
                     ParagraphId = paragraphId, //int
-                    ParagraphName = "reserved", //string
+                    ParagraphName = "-1 - reserved", //string
                     SentenceId = i,
                     SentenceText = paragraphSentences[i]
                 };

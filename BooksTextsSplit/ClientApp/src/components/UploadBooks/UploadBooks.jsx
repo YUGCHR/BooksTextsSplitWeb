@@ -33,6 +33,12 @@ const UploadBooks = (props) => {
     //if(chosenFiles[0].size) {
     return Array.from(chosenFiles).map((f, i) => {
       f.languageId = props.filesLanguageIds[i];
+      f.bookId = props.booksTitles[i][0].bookId;
+      f.authorNameId = props.booksTitles[i][0].authorNameId;
+      f.authorName = props.booksTitles[i][0].authorName;
+      f.bookNameId = props.booksTitles[i][0].bookNameId;
+      f.bookName = props.booksTitles[i][0].bookName;
+     
       return (
         <div className={s.selectedFilesTableRow2}>
           <div> {i} </div>

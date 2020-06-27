@@ -14,14 +14,26 @@ namespace BooksTextsSplit.Models
         [JsonProperty(PropertyName = "languageId")]
         public int LanguageId { get; set; }
 
+        [JsonProperty(PropertyName = "uploadVersion")]
+        public int UploadVersion { get; set; } // means BooksPairId - pair of English and Russian book
+
         [JsonProperty(PropertyName = "bookId")]
         public int BookId { get; set; } // means BooksPairId - pair of English and Russian book
+
+        [JsonProperty(PropertyName = "authorNameId")]
+        public int AuthorNameId { get; set; }        
+
+        [JsonProperty(PropertyName = "authorName")]
+        public string AuthorName { get; set; }
+
+        [JsonProperty(PropertyName = "bookNameId")]
+        public int BookNameId { get; set; }
 
         [JsonProperty(PropertyName = "bookName")]
         public string BookName { get; set; }
 
         [JsonProperty(PropertyName = "bookSentenceId")]
-        public int BookSentenceId { get; set; }
+        public int BookSentenceId { get; set; } // end-to-end numbering of all books sentences
 
         [JsonProperty(PropertyName = "chapterId")]
         public int ChapterId { get; set; }
