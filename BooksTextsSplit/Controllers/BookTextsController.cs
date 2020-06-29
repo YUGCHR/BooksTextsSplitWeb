@@ -146,7 +146,7 @@ namespace BooksTextsSplit.Controllers
 
                         textSentences[tsi].UploadVersion = currentUploadingVersion;
 
-                        //await _context.AddItemAsync(textSentences[tsi]);
+                        await _context.AddItemAsync(textSentences[tsi]);
                     }
                 }
                 catch (Exception ex)
