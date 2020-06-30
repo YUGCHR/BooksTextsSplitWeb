@@ -7,10 +7,12 @@ namespace BooksTextsSplit.Models
 {
     public class UploadedVersions
     {
-        public UploadedVersions(int[] versions)
+        public UploadedVersions(int[] versions, int maxUploadedVersion)
         {
-            allUploadedVersions = versions;
+            AllUploadedVersions = versions;            
+            MaxUploadedVersion = maxUploadedVersion;
         }
-        public int[] allUploadedVersions { get; set; }
+        public int[] AllUploadedVersions { get; set; }
+        public int MaxUploadedVersion { get; set; }
     }
 }

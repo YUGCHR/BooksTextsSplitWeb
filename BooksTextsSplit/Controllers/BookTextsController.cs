@@ -51,9 +51,21 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("BookUploadVersion")]
         public async Task<ActionResult<UploadedVersions>> GetBookUploadVersion([FromQuery] int bookId, [FromQuery] int languageId)
         {
-            
-            var findVersions = new UploadedVersions((await _context.GetItemsAsync($"SELECT * FROM c WHERE c.uploadVersion > 0 AND c.bookId = {bookId} AND c.languageId = {languageId} ORDER BY c.uploadVersion")).Select(s => s.UploadVersion).ToArray());
-            int a = 0;
+
+            var versions = (await _context.GetItemsAsync($"SELECT * FROM c WHERE c.uploadVersion > 0 AND c.bookId = {bookId} AND c.languageId = {languageId} ORDER BY c.uploadVersion")).Select(s => s.UploadVersion).ToArray();
+
+            int versionsLength = versions.Length;
+            int maxUploadedVersion = 0;
+
+            for (int i = 0; i < versionsLength; i++)
+            {
+                if (versions[i] > maxUploadedVersion)
+                {
+                    maxUploadedVersion = versions[i];
+                }
+            }
+
+            var findVersions = new UploadedVersions(versions, maxUploadedVersion);            
             return findVersions;
             //return new UploadedVersions(  ( await _context.GetItemsAsync("SELECT * FROM c")).Select(s => s.UploadVersion).ToArray()   );
         }
@@ -148,18 +160,21 @@ namespace BooksTextsSplit.Controllers
 
                         await _context.AddItemAsync(textSentences[tsi]);
                     }
+
+                    //ParallelOptions p = new ParallelOptions {MaxDegreeOfParallelism = 2 };
+                    //Parallel.ForEach(textSentences, p, async s => { await _context.AddItemAsync(s); });
+
+                    //await Task.WhenAll(textSentences.Select(s => _context.AddItemAsync(s)));
+                    //await Task.WhenAll(textSentences.Select(async s => await _context.AddItemAsync(s)));
                 }
                 catch (Exception ex)
                 {
                     return Ok(ex.Message);
                 }
-
                 //return Ok(json);
-                return Ok(textSentencesLength);
-           
+                return Ok(textSentencesLength);           
             }
 
-            //
             // var result = _bookAnalysis.Analyze(text);
             // _cosmosService.Save(result);
 

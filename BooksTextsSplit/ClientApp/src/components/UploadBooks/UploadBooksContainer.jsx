@@ -31,67 +31,19 @@ class UploadBooksContainerAPI extends React.Component {
     });
   };
 
-  fetchAllUploadedVersions = (bookId, languageId) => { // this function does not use now (yet?)
+  fetchLastUploadedVersions = (formData, i) => {
     this.props.toggleIsFetching(true);
-    //let bookId = this.props.selectedFiles[i].bookId;
-    //let languageId = this.props.selectedFiles[i].languageId;
-    Axios.get(`api/BookTexts/BookUploadVersion/?bookId=${bookId}&languageId=${languageId}`) // to find all previously uploaded versions of the file with this bookId
-      .then((Response) => {
-        this.props.toggleIsFetching(false);
-        console.log(Response);
-        debugger;
-        if (Response.data.allUploadedVersions.length === 0) {
-          // if there are no records with this bookId - it is need to return 0
-          return 0; // or -1 if the first version must be 0
-        }
-        this.props.findMaxUploadedVersion(Response.data.allUploadedVersions, bookId, languageId);
-        console.log(this.props.maxUploadedVersion);
-        return this.props.maxUploadedVersion;
-      });
-  };
-
-  failureCallback = () => {
-    console.log(this.props.maxUploadedVersion);
-  };
-
-  fileUploadHandler = () => {
-    for (let i = 0; i < this.props.selectedFiles.length; i++) {
-      const formData = new FormData();
-      // console.log(this.props.selectedFiles[i]);
-      formData.append("bookFile", this.props.selectedFiles[i], this.props.selectedFiles[i].name);
-      formData.append("languageId", this.props.selectedFiles[i].languageId);
-      formData.append("bookId", this.props.selectedFiles[i].bookId);
-      formData.append("authorNameId", this.props.selectedFiles[i].authorNameId);
-      formData.append("authorName", this.props.selectedFiles[i].authorName);
-      formData.append("bookNameId", this.props.selectedFiles[i].bookNameId);
-      formData.append("bookName", this.props.selectedFiles[i].bookName);
-
-      // this.fetchAllUploadedVersions(this.props.selectedFiles[i].bookId, this.props.selectedFiles[i].languageId)
-
-      this.props.toggleIsFetching(true);
-      let bookId = this.props.selectedFiles[i].bookId;
-      let languageId = this.props.selectedFiles[i].languageId;
+    let bookId = this.props.selectedFiles[i].bookId;
+    let languageId = this.props.selectedFiles[i].languageId;
+    return (
       Axios.get(`api/BookTexts/BookUploadVersion/?bookId=${bookId}&languageId=${languageId}`) // to find all previously uploaded versions of the file with this bookId
         .then((Response) => {
           this.props.toggleIsFetching(false);
           console.log(Response);
-          return Response.data.allUploadedVersions;
+          formData.append("lastUploadedVersion", Response.data.maxUploadedVersion);
+          return formData;
         })
-        .then((v) => {
-          if (v.length === 0) {
-            // if there are no records with this bookId - it is need to return 0
-            return 0; // or -1 if the first version must be 0
-          }
-          //debugger;
-          this.props.findMaxUploadedVersion(v, bookId, languageId);
-          console.log(this.props.maxUploadedVersion);
-          return this.props.maxUploadedVersion;
-        })
-        .then((m) => {
-          formData.append("lastUploadedVersion", m);
-          return 1; // add if (result === 1) in the next then
-        })
-        .then((i) => {
+        /* .then((i) => {
           if (i != 1) {
           return -1;
           }        
@@ -113,10 +65,51 @@ class UploadBooksContainerAPI extends React.Component {
             this.fetchSentencesCount(i);
             console.log(this.props.dbSentencesCount[i]);
             debugger;
-        })
-        .catch(this.failureCallback);      
+        }) */
+        .catch(this.failureCallback)
+      //return formData;
+    );
   };
-}
+
+  failureCallback = () => {
+    console.log(this.props.maxUploadedVersion);
+  };
+
+  fileUploadHandler = () => {
+    for (let i = 0; i < this.props.selectedFiles.length; i++) {
+      const formData = new FormData();
+      formData.append("bookFile", this.props.selectedFiles[i], this.props.selectedFiles[i].name);
+      formData.append("languageId", this.props.selectedFiles[i].languageId);
+      formData.append("bookId", this.props.selectedFiles[i].bookId);
+      formData.append("authorNameId", this.props.selectedFiles[i].authorNameId);
+      formData.append("authorName", this.props.selectedFiles[i].authorName);
+      formData.append("bookNameId", this.props.selectedFiles[i].bookNameId);
+      formData.append("bookName", this.props.selectedFiles[i].bookName);
+
+      this.fetchLastUploadedVersions(formData, i)
+        .then((f) => {
+          this.props.toggleIsFetching(true);
+          return Axios.post("/api/BookTexts/UploadFile", f);
+        })
+        .then((r) => {
+          this.props.toggleIsFetching(false);
+          console.log(r.data);
+          this.props.setSentencesCount(r.data, i); //totalCount
+          console.log(this.props.sentencesCount[i]);
+          //debugger;
+          return this.props.sentencesCount[i];
+        })
+        .then((s) => {
+          if (s < 0) {
+            return -1;
+          }
+          this.fetchSentencesCount(i);
+          console.log(this.props.dbSentencesCount[i]);
+          //debugger;
+        })
+        .catch(this.failureCallback);
+    }
+  };
 
   render() {
     return (
