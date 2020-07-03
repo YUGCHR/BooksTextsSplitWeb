@@ -2,7 +2,7 @@ import React from 'react';
 import Axios from 'axios';
 import ReactScrollWheelHandler from 'react-scroll-wheel-handler';
 import { connect } from 'react-redux';
-import { toggleIsLoading, setSentencesCount, setSentences, toggleIsFetching } from '../../redux/select-reducer';
+import { setSentencesCount, setSentences, toggleIsFetching } from '../../redux/select-reducer';
 import SelectTexts from './SelectTexts';
 import Preloader from '../common/preloader/Preloader';
 
@@ -11,10 +11,10 @@ class SelectTextsContainerAPI extends React.Component {
     constructor(props) { super(props); }
 
     componentDidMount() {       
-        this.fetchSentences(0);        
+        //this.fetchSentences(0);        
     }
 
-    fetchSentences = (languageId) => {
+    /* fetchSentences = (languageId) => {
         this.props.toggleIsFetching(true);
         Axios
             .get(`/api/BookTexts/count/${languageId}`)
@@ -35,7 +35,7 @@ class SelectTextsContainerAPI extends React.Component {
                 this.props.setSentences(Response.data.sentences, languageId);
             });
     }
-
+ */
     render() {
         return <>        
             {this.props.isFetching ? <Preloader /> : null}
@@ -62,7 +62,7 @@ let mapStateToProps = (state) => {
 }
 
 let SelectTextsContainer = connect(mapStateToProps,
-    { toggleIsLoading, setSentencesCount, setSentences, toggleIsFetching })
+    { setSentencesCount, setSentences, toggleIsFetching })
     (SelectTextsContainerAPI);
 
 export default SelectTextsContainer;

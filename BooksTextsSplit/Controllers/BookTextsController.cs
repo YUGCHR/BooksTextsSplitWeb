@@ -158,7 +158,7 @@ namespace BooksTextsSplit.Controllers
 
                         textSentences[tsi].UploadVersion = currentUploadingVersion;
 
-                        await _context.AddItemAsync(textSentences[tsi]);
+                        //await _context.AddItemAsync(textSentences[tsi]);
                     }
 
                     //ParallelOptions p = new ParallelOptions {MaxDegreeOfParallelism = 2 };
@@ -181,25 +181,34 @@ namespace BooksTextsSplit.Controllers
             return Problem("bad file");
         }
 
-                // DELETE: api/BookTexts/5
-                //[HttpDelete("{id}")]
-                //public async Task<ActionResult<TextSentence>> DeleteTodoItem(long id)
-                //{
-                //    var todoItem = await _context.BookTexts.FindAsync(id);
-                //    if (todoItem == null)
-                //    {
-                //        return NotFound();
-                //    }
+        // DELETE: api/BookTexts/a9da6acc-a5fa-4ed7-be90-4b0ec5d7c7cb/?bookId=1&languageId=0&uploadVersion=5
+        [HttpDelete("{id}")]
+        public async Task <ActionResult <IEnumerable <TextSentence>>> DeleteTextSentence(string id, [FromQuery] int bookId, [FromQuery] int languageId, [FromQuery] int uploadVersion)
+        {
+            try
+            {
+                var sentences = (await _context.GetItemsAsync("SELECT * FROM c")).Where(i => i.Id == id).ToArray();
 
-                //    _context.BookTexts.Remove(todoItem);
-                //    await _context.SaveChangesAsync();
+                var sentence = sentences[0];
 
-                //    return todoItem;
-                //}
+                if (sentence.BookId == bookId) 
+                {
+                    if (sentence.LanguageId == languageId)
+                    {
+                        if (sentence.UploadVersion == uploadVersion)
+                        {
+                            await _context.DeleteItemAsync(id);
+                        }
+                    }
+                }
 
-                //private bool TodoItemExists(long id)
-                //{
-                //    return _context.BookTexts.Any(e => e.Id == id);
-                //}
+                return Ok(sentence);
             }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
+        }        
+    }
 }
+

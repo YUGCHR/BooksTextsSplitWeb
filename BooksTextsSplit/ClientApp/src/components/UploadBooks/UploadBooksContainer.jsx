@@ -35,40 +35,25 @@ class UploadBooksContainerAPI extends React.Component {
     this.props.toggleIsFetching(true);
     let bookId = this.props.selectedFiles[i].bookId;
     let languageId = this.props.selectedFiles[i].languageId;
-    return (
-      Axios.get(`api/BookTexts/BookUploadVersion/?bookId=${bookId}&languageId=${languageId}`) // to find all previously uploaded versions of the file with this bookId
-        .then((Response) => {
-          this.props.toggleIsFetching(false);
-          console.log(Response);
-          formData.append("lastUploadedVersion", Response.data.maxUploadedVersion);
-          return formData;
-        })
-        /* .then((i) => {
-          if (i != 1) {
-          return -1;
-          }        
-            this.props.toggleIsFetching(true);
-            return Axios.post("/api/BookTexts/UploadFile", formData)        
-        })
-        .then((r) => {
-          this.props.toggleIsFetching(false);
-          console.log(r.data);          
-          this.props.setSentencesCount(r.data, i); //totalCount
-          console.log(this.props.sentencesCount[i]);
-          debugger;
-          return this.props.sentencesCount[i];
-        })
-        .then((s) => {
-          if (s < 0) {
-            return -1;
-            }
-            this.fetchSentencesCount(i);
-            console.log(this.props.dbSentencesCount[i]);
-            debugger;
-        }) */
-        .catch(this.failureCallback)
-      //return formData;
-    );
+    return Axios.get(`api/BookTexts/BookUploadVersion/?bookId=${bookId}&languageId=${languageId}`) // to find all previously uploaded versions of the file with this bookId
+      .then((Response) => {
+        this.props.toggleIsFetching(false);
+        console.log(Response);
+        formData.append("lastUploadedVersion", Response.data.maxUploadedVersion);
+        return formData;
+      })
+      .catch(this.failureCallback);
+  };
+
+  postBooksTexts = (formData, i) => {
+    this.props.toggleIsFetching(true);
+    Axios.post("/api/BookTexts/UploadFile", formData).then((Response) => {
+      this.props.toggleIsFetching(false);
+      console.log(Response.data);
+      this.props.setSentencesCount(Response.data, i); //totalCount
+      console.log(this.props.sentencesCount[i]);
+      return this.props.sentencesCount[i];
+    });
   };
 
   failureCallback = () => {
@@ -76,36 +61,28 @@ class UploadBooksContainerAPI extends React.Component {
   };
 
   fileUploadHandler = () => {
+    // it is possible to pass selectedFiles as parameter
     for (let i = 0; i < this.props.selectedFiles.length; i++) {
       const formData = new FormData();
       formData.append("bookFile", this.props.selectedFiles[i], this.props.selectedFiles[i].name);
-      formData.append("languageId", this.props.selectedFiles[i].languageId);
+      formData.append("languageId", this.props.selectedFiles[i].languageId); // it is possible to pass data in array instead file properties
       formData.append("bookId", this.props.selectedFiles[i].bookId);
       formData.append("authorNameId", this.props.selectedFiles[i].authorNameId);
       formData.append("authorName", this.props.selectedFiles[i].authorName);
       formData.append("bookNameId", this.props.selectedFiles[i].bookNameId);
       formData.append("bookName", this.props.selectedFiles[i].bookName);
 
-      this.fetchLastUploadedVersions(formData, i)
-        .then((f) => {
-          this.props.toggleIsFetching(true);
-          return Axios.post("/api/BookTexts/UploadFile", f);
+      this.fetchLastUploadedVersions(formData, i) // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
+        .then((formData) => {
+          this.postBooksTexts(formData, i);
         })
-        .then((r) => {
-          this.props.toggleIsFetching(false);
-          console.log(r.data);
-          this.props.setSentencesCount(r.data, i); //totalCount
-          console.log(this.props.sentencesCount[i]);
-          //debugger;
-          return this.props.sentencesCount[i];
-        })
-        .then((s) => {
-          if (s < 0) {
+        .then((sentencesCount) => {
+          if (sentencesCount < 0) {
             return -1;
           }
           this.fetchSentencesCount(i);
           console.log(this.props.dbSentencesCount[i]);
-          //debugger;
+          return this.props.dbSentencesCount[i];
         })
         .catch(this.failureCallback);
     }
