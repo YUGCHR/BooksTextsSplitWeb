@@ -1,9 +1,9 @@
-const SET_SENTENCES_COUNT = 'SET-SENTENCES-COUNT';
+const SET_ALL_BOOKS_IDS = 'SET-ALL-BOOKS-IDS';
 const SET_SENTENCES = 'SET-SENTENCES';
 const TOGGLE_IS_FETCHING = 'TOGGLE-IS-FETCHING';
 
 let initialState = {    
-    allBookIdsWithNames: [],
+    allFirstBookSentenceIds: [],
     sentencesCount: [777, 888], //engSentencesCount: 777, rusSentencesCount: 888
     emptyVariable: null,
     isTextLoaded: [false, false],
@@ -13,38 +13,15 @@ let initialState = {
 const selectTextsReducer = (state = initialState, action) => {
 
     switch (action.type) {        
-        case SET_SENTENCES_COUNT:
+        case SET_ALL_BOOKS_IDS:
             {
-                // let allBookIdsWithNames = state.allBookIdsWithNames;
-                // action.bookIds.map((id, i) => {
-                //     if( id > 0)
-                //     {
-                //         {allBookIdsWithNames[i] = id};
-                //     }
-                // })
-                // console.log(allBookIdsWithNames);
-                //debugger;
-                // let actionBookIds = action.bookIds;
-                // return { ...state, actionBookIds };
-
-
-
-                let stateCopy = {...state };
-                //stateCopy.engSentences = {...state.engSentences };
-                stateCopy.allBookIdsWithNames = action.bookIds;
-
-// console.log('state',state.allBookIdsWithNames);
-// console.log('copy',stateCopy.allBookIdsWithNames);
-
-
-                return stateCopy;
+                // console.log('state', state.allBookIdsWithNames);
+                // console.log('copy', stateCopy.allBookIdsWithNames);
+                return {...state, allFirstBookSentenceIds: action.allFirstBookSentenceIds };
             }
             case SET_SENTENCES:
                 {
-                    let stateCopy = {...state };
-                    stateCopy.engSentences = {...state.engSentences };
-                    stateCopy.engSentences = action.sentences;
-                    return stateCopy;
+                    return {...state, engSentences: action.sentences };
                 }        
         case TOGGLE_IS_FETCHING:
             {
@@ -56,9 +33,8 @@ const selectTextsReducer = (state = initialState, action) => {
 }
 
 
-export const setAllBookIdsWithNames = (bookIds) => ({ type: SET_SENTENCES_COUNT, bookIds });
+export const setAllBookIdsWithNames = (allFirstBookSentenceIds) => ({ type: SET_ALL_BOOKS_IDS, allFirstBookSentenceIds });
 export const setSentences = (sentences, languageId) => ({ type: SET_SENTENCES, sentences, languageId });
-
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 
 export default selectTextsReducer;

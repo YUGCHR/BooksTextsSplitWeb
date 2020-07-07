@@ -21,8 +21,8 @@ class SelectTextsContainerAPI extends React.Component {
       .then((Response) => {
         this.props.toggleIsFetching(false);
         console.log(Response);        
-        console.log('axios: sending this to props:', Response.data.allSortedBooksIds)
-        this.props.setAllBookIdsWithNames(Response.data.allSortedBooksIds);
+        console.log('axios: sending this to props:', Response.data.allFirstBookSentenceIds)
+        this.props.setAllBookIdsWithNames(Response.data.allFirstBookSentenceIds);
         console.log('axios: finished sending to props');
         let s = Response.data.sortedBooksIdsLength;
         //debugger;
@@ -59,7 +59,7 @@ class SelectTextsContainerAPI extends React.Component {
  */
   render() {
 
-    console.log('container render starts', this.props.allBookIdsWithNames.length, this.props.allBookIdsWithNames);
+    console.log('container render starts', this.props.allFirstBookSentenceIds.length, this.props.allFirstBookSentenceIds);
     
     return (
       <>
@@ -70,7 +70,7 @@ class SelectTextsContainerAPI extends React.Component {
           rusSentences={this.props.rusSentences}
           scrollLineUp={this.props.scrollLineUp}
           scrollLineDown={this.props.scrollLineDown}
-          allBookIdsWithNames={this.props.allBookIdsWithNames}
+          allFirstBookSentenceIds={this.props.allFirstBookSentenceIds}
           isFetching={this.props.isFetching}
           fetchAllBookIdsWithNames={this.fetchAllBookIdsWithNames}
         />
@@ -87,7 +87,7 @@ let mapStateToProps = (state) => {
     sentencesOnPageBottom: state.selectTextsPage.sentencesOnPageBottom,
     sentencesCount: state.selectTextsPage.sentencesCount,
     isFetching: state.uploadBooksPage.isFetching,
-    allBookIdsWithNames: state.selectTextsPage.allBookIdsWithNames,
+    allFirstBookSentenceIds: state.selectTextsPage.allFirstBookSentenceIds,
   };
 };
 

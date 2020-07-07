@@ -7,12 +7,12 @@ namespace BooksTextsSplit.Models
 {
     public class AllBooksIds
     {
-        public AllBooksIds(int[] sortedBookIds, int sortedBookIdsLength)
+        public AllBooksIds(List<TextSentence> firstBookSentenceIds, int sortedBooksIdsIndex)
         {
-            AllSortedBooksIds = sortedBookIds;
-            SortedBooksIdsLength = sortedBookIdsLength;
+            AllFirstBookSentenceIds = firstBookSentenceIds;
+            SortedBooksIdsLength = sortedBooksIdsIndex;
         }
-        public int[] AllSortedBooksIds { get; set; }
+        public List<TextSentence> AllFirstBookSentenceIds { get; set; }
         public int SortedBooksIdsLength { get; set; }
     }
 }

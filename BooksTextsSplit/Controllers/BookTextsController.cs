@@ -88,25 +88,26 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("BooksIds")]
         public async Task<ActionResult<AllBooksIds>> GetBooksIds()
         {
-            var booksIds = (await _context.GetItemsAsync($"SELECT * FROM c ORDER BY c.bookId")).Select(s => s.BookId).ToArray();
+            var allFirstBookSentenceIdsSortedByBooksId = (await _context.GetItemsAsync($"SELECT * FROM c WHERE c.bookSentenceId = 1 ORDER BY c.bookId")).ToList(); // select the first sentences of all books and all books versions
+            //Select(s => s.BookId)
 
-            int booksIdsLength = booksIds.Length;
-            int sortedBooksIdsLength = booksIds[booksIdsLength - 1];
-            int[] sortedBooksIds = new int[sortedBooksIdsLength];
+            //int booksIdsLength = booksIds.Length;
+            //int sortedBooksIdsLength = booksIds[booksIdsLength - 1];
+            List<TextSentence> firstBookSentenceIds = new List<TextSentence>();
+            //int[] sortedBooksIds = new int[sortedBooksIdsLength];
             int sortedBooksIdsIndex = 0;
-            sortedBooksIds[0] = booksIds[0];
+            firstBookSentenceIds.Add(allFirstBookSentenceIdsSortedByBooksId[0]);
 
-            for (int i = 1; i < booksIdsLength; i++)
+            foreach (TextSentence s in allFirstBookSentenceIdsSortedByBooksId)
             {
-                if (booksIds[i] > booksIds[i-1])
+                if (s.BookId > firstBookSentenceIds[sortedBooksIdsIndex].BookId)
                 {
                     sortedBooksIdsIndex++;
-                    sortedBooksIds[sortedBooksIdsIndex] = booksIds[i];
+                    firstBookSentenceIds.Add(s);
                 }
-            }
-            sortedBooksIdsLength = sortedBooksIds.Length;
+            }            
 
-            var findbooksIds = new AllBooksIds(sortedBooksIds, sortedBooksIdsLength);
+            var findbooksIds = new AllBooksIds(firstBookSentenceIds, sortedBooksIdsIndex);
             return findbooksIds;
             //return new UploadedVersions(  ( await _context.GetItemsAsync("SELECT * FROM c")).Select(s => s.UploadVersion).ToArray()   );
         }

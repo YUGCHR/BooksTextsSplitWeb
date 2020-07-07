@@ -12,13 +12,13 @@ import s from "./SelectTexts.module.css";
   });
 }; */
 
-let bookIds = (arrr) => {  
+let bookIds = (allFirstBookSentenceIds) => {  
  // debugger;
-  console.log('bookids started', arrr.length, arrr);
-  return arrr.map((id) => {
-    console.log('inside bookids:', id);
+  console.log('bookIds started', allFirstBookSentenceIds.length, allFirstBookSentenceIds);
+  return allFirstBookSentenceIds.map((id) => {
+    console.log('inside bookIds:', id.bookId);
     //debugger;
-    return <div>Fetched book Id = {id}</div>;
+    return <div>Fetched book Id = {id.bookId}</div>;
   });
 };
 
@@ -68,7 +68,7 @@ const SelectTexts = (props) => {
     <div className={s.selectPage}>
       <div className={s.pageName}>SELECT BOOKS CONTROL PANEL</div>
       <div className={s.chooseBooks}>{showChooseHeader()}</div>   
-      <div className={s.fetchedBooksIds}>{bookIds(props.allBookIdsWithNames)}</div>   
+      <div className={s.fetchedBooksIds}>{bookIds(props.allFirstBookSentenceIds)}</div>   
       <div className={s.showButton}>
         {/* <button
               onClick={() => showBooksNamesTable()}>SHOW Books IDs</button> */}
