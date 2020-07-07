@@ -1,11 +1,39 @@
 import React from "react";
 import s from "./SelectTexts.module.css";
 
-const showSentences = (sentences) => {
-  return sentences.map((sts) => {
-    return <div /* className={s.oneSentence} */></div>;
+/* let createBooksNames = (props) => {
+  return props.allBookIdsWithNames.map((id) => {
+    debugger;
+    return (
+      <div>
+        <div>bookId = {id}</div>
+      </div>
+    );
+  });
+}; */
+
+let bookIds = (arrr) => {  
+ // debugger;
+  console.log('bookids started', arrr.length, arrr);
+  return arrr.map((id) => {
+    console.log('inside bookids:', id);
+    //debugger;
+    return <div>Fetched book Id = {id}</div>;
   });
 };
+
+
+
+let showChooseHeader = () => {
+  return <div>CHOOSE BOOKS PAIR BY BookId</div>
+}
+
+/* let createBooksNamesTable = (props) => {
+props.fetchAllBookIdsWithNames().then((s) => {
+  createBooksNames(props);
+  return s;
+});
+}; */
 
 /* let createDropDownList = (dropDownListValues, i) => {
     //debugger;
@@ -24,11 +52,35 @@ const showSentences = (sentences) => {
   }; */
 
 const SelectTexts = (props) => {
+
+  /* let showBooksNamesTable = () => {  
+    createBooksNamesTable();
+  };
+   */
+
+  /* let showBooksNamesTable = () => {
+    return bookIds(props.allBookIdsWithNames);
+  } */
+
+  console.log('select texts', props);
+
   return (
-    <div>
+    <div className={s.selectPage}>
       <div className={s.pageName}>SELECT BOOKS CONTROL PANEL</div>
-      <div className={s.chooseBooks}>CHOOSE BOOKS PAIR BY BookId</div>      
-      <div className={s.dropDownList}>
+      <div className={s.chooseBooks}>{showChooseHeader()}</div>   
+      <div className={s.fetchedBooksIds}>{bookIds(props.allBookIdsWithNames)}</div>   
+      <div className={s.showButton}>
+        {/* <button
+              onClick={() => showBooksNamesTable()}>SHOW Books IDs</button> */}
+      </div>
+      
+    </div>
+  );
+};
+
+export default SelectTexts;
+
+/* <div className={s.dropDownList}>
        <div>
           <legend>Selecting BookId</legend>
           <div>
@@ -41,13 +93,4 @@ const SelectTexts = (props) => {
              </select>
           </div>
        </div>
-       </div>
-      <div>{/* <button onClick={props.fetchSentences}>LOAD ALL</button> */}</div>
-      <div></div>
-      <div>English sentences</div>
-      <div>{showSentences(props.engSentences)}</div>
-    </div>
-  );
-};
-
-export default SelectTexts;
+       </div> */

@@ -1,0 +1,38 @@
+.selectPage{
+    display: grid;
+    grid-template-rows: 1fr auto auto auto;
+    grid-template-columns: auto auto auto;
+    grid-gap: 0vw;
+    color: cyan;
+    background-color: green;
+}
+
+.pageName{
+    grid-column: 1/2;
+    grid-row: 1/2;
+    font-size: larger;
+    color: black;
+    background-color: yellow;
+}
+
+.chooseBooks{
+    grid-column: 1/2;
+    grid-row: 3/4;
+    font-size: larger;
+    color: black;
+    background-color: yellowgreen;
+}
+
+.showButton{
+    grid-column: 1/2;
+    grid-row: 2/3;
+    color: black;
+    background-color: red;
+}
+
+.fetchedBooksIds{
+    grid-column: 2/3;
+    grid-row: 2/4;
+    color: black;
+    background-color: whitesmoke;
+}

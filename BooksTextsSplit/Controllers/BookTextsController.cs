@@ -83,7 +83,34 @@ namespace BooksTextsSplit.Controllers
 
             return bookText;
         }
-        
+
+        // GET: api/BookTexts/BooksIds/
+        [HttpGet("BooksIds")]
+        public async Task<ActionResult<AllBooksIds>> GetBooksIds()
+        {
+            var booksIds = (await _context.GetItemsAsync($"SELECT * FROM c ORDER BY c.bookId")).Select(s => s.BookId).ToArray();
+
+            int booksIdsLength = booksIds.Length;
+            int sortedBooksIdsLength = booksIds[booksIdsLength - 1];
+            int[] sortedBooksIds = new int[sortedBooksIdsLength];
+            int sortedBooksIdsIndex = 0;
+            sortedBooksIds[0] = booksIds[0];
+
+            for (int i = 1; i < booksIdsLength; i++)
+            {
+                if (booksIds[i] > booksIds[i-1])
+                {
+                    sortedBooksIdsIndex++;
+                    sortedBooksIds[sortedBooksIdsIndex] = booksIds[i];
+                }
+            }
+            sortedBooksIdsLength = sortedBooksIds.Length;
+
+            var findbooksIds = new AllBooksIds(sortedBooksIds, sortedBooksIdsLength);
+            return findbooksIds;
+            //return new UploadedVersions(  ( await _context.GetItemsAsync("SELECT * FROM c")).Select(s => s.UploadVersion).ToArray()   );
+        }
+
         // POST: api/BookTexts
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.

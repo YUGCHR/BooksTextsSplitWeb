@@ -1,20 +1,41 @@
-import React from 'react';
-import Axios from 'axios';
-import ReactScrollWheelHandler from 'react-scroll-wheel-handler';
-import { connect } from 'react-redux';
-import { setSentencesCount, setSentences, toggleIsFetching } from '../../redux/select-reducer';
-import SelectTexts from './SelectTexts';
-import Preloader from '../common/preloader/Preloader';
-
+import React from "react";
+import Axios from "axios";
+import ReactScrollWheelHandler from "react-scroll-wheel-handler";
+import { connect } from "react-redux";
+import { setAllBookIdsWithNames, setSentences, toggleIsFetching } from "../../redux/select-reducer";
+import SelectTexts from "./SelectTexts";
+import Preloader from "../common/preloader/Preloader";
 class SelectTextsContainerAPI extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-    constructor(props) { super(props); }
+  componentDidMount() {
+    this.fetchAllBookIdsWithNames();
+  }
 
-    componentDidMount() {       
-        //this.fetchSentences(0);        
-    }
+  fetchAllBookIdsWithNames = () => {
+    //debugger;
+    this.props.toggleIsFetching(true);
+    return Axios.get(`api/BookTexts/BooksIds/`)
+      .then((Response) => {
+        this.props.toggleIsFetching(false);
+        console.log(Response);        
+        console.log('axios: sending this to props:', Response.data.allSortedBooksIds)
+        this.props.setAllBookIdsWithNames(Response.data.allSortedBooksIds);
+        console.log('axios: finished sending to props');
+        let s = Response.data.sortedBooksIdsLength;
+        //debugger;
+        return s;
+      })
+      .catch(this.failureCallback);
+  };  
 
-    /* fetchSentences = (languageId) => {
+  failureCallback = () => {
+    console.log(this.props.maxUploadedVersion);
+  };
+
+  /* fetchSentences = (languageId) => {
         this.props.toggleIsFetching(true);
         Axios
             .get(`/api/BookTexts/count/${languageId}`)
@@ -36,33 +57,40 @@ class SelectTextsContainerAPI extends React.Component {
             });
     }
  */
-    render() {
-        return <>        
-            {this.props.isFetching ? <Preloader /> : null}
-            <SelectTexts                
-                sentencesCount={this.props.sentencesCount}
-                engSentences={this.props.engSentences}
-                rusSentences={this.props.rusSentences}
-                scrollLineUp={this.props.scrollLineUp}
-                scrollLineDown={this.props.scrollLineDown}                
-            />
-        </>
-    }
+  render() {
+
+    console.log('container render starts', this.props.allBookIdsWithNames.length, this.props.allBookIdsWithNames);
+    
+    return (
+      <>
+        {this.props.isFetching ? <Preloader /> : null}
+        <SelectTexts
+          sentencesCount={this.props.sentencesCount}
+          engSentences={this.props.engSentences}
+          rusSentences={this.props.rusSentences}
+          scrollLineUp={this.props.scrollLineUp}
+          scrollLineDown={this.props.scrollLineDown}
+          allBookIdsWithNames={this.props.allBookIdsWithNames}
+          isFetching={this.props.isFetching}
+          fetchAllBookIdsWithNames={this.fetchAllBookIdsWithNames}
+        />
+      </>
+    );
+  }
 }
 
 let mapStateToProps = (state) => {
-    return {
-        lastSentenceNumber: state.selectTextsPage.lastSentenceNumber,
-        readingSentenceNumber: state.selectTextsPage.readingSentenceNumber,
-        sentencesOnPageTop: state.selectTextsPage.sentencesOnPageTop,
-        sentencesOnPageBottom: state.selectTextsPage.sentencesOnPageBottom,
-        sentencesCount: state.selectTextsPage.sentencesCount,
-        engSentences: state.selectTextsPage.engSentences
-    }
-}
+  return {
+    lastSentenceNumber: state.selectTextsPage.lastSentenceNumber,
+    readingSentenceNumber: state.selectTextsPage.readingSentenceNumber,
+    sentencesOnPageTop: state.selectTextsPage.sentencesOnPageTop,
+    sentencesOnPageBottom: state.selectTextsPage.sentencesOnPageBottom,
+    sentencesCount: state.selectTextsPage.sentencesCount,
+    isFetching: state.uploadBooksPage.isFetching,
+    allBookIdsWithNames: state.selectTextsPage.allBookIdsWithNames,
+  };
+};
 
-let SelectTextsContainer = connect(mapStateToProps,
-    { setSentencesCount, setSentences, toggleIsFetching })
-    (SelectTextsContainerAPI);
+let SelectTextsContainer = connect(mapStateToProps, { setAllBookIdsWithNames, setSentences, toggleIsFetching })(SelectTextsContainerAPI);
 
 export default SelectTextsContainer;
