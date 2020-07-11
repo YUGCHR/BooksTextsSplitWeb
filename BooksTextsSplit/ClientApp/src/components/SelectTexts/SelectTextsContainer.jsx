@@ -17,12 +17,15 @@ class SelectTextsContainerAPI extends React.Component {
   fetchAllBookIdsWithNames = () => {
     //debugger;
     this.props.toggleIsFetching(true);
-    return Axios.get(`api/BookTexts/BooksIds/`)
+    let where = "bookSentenceId";
+    let whereValue = 1;
+    let orderBy = "bookId";
+    return Axios.get(`api/BookTexts/BooksIds/?where=${where}&whereValue=${whereValue}&orderBy=${orderBy}`)
       .then((Response) => {
         this.props.toggleIsFetching(false);
         console.log(Response);        
-        console.log('axios: sending this to props:', Response.data.allFirstBookSentenceIds)
-        this.props.setAllBookIdsWithNames(Response.data.allFirstBookSentenceIds);
+        console.log('axios: sending this to props:', Response.data.allBookNamesSortedByIds)
+        this.props.setAllBookIdsWithNames(Response.data.allBookNamesSortedByIds, Response.data.allEngBooksNames, Response.data.allRusBooksNames);
         console.log('axios: finished sending to props');
         let s = Response.data.sortedBooksIdsLength;
         //debugger;
@@ -59,7 +62,7 @@ class SelectTextsContainerAPI extends React.Component {
  */
   render() {
 
-    console.log('container render starts', this.props.allFirstBookSentenceIds.length, this.props.allFirstBookSentenceIds);
+    console.log('container render starts', this.props.allBookNamesSortedByIds.length, this.props.allBookNamesSortedByIds);
     
     return (
       <>
@@ -70,7 +73,9 @@ class SelectTextsContainerAPI extends React.Component {
           rusSentences={this.props.rusSentences}
           scrollLineUp={this.props.scrollLineUp}
           scrollLineDown={this.props.scrollLineDown}
-          allFirstBookSentenceIds={this.props.allFirstBookSentenceIds}
+          allBookNamesSortedByIds={this.props.allBookNamesSortedByIds}
+          allEngBooksNames={this.props.allEngBooksNames}
+          allRusBooksNames={this.props.allRusBooksNames}
           isFetching={this.props.isFetching}
           fetchAllBookIdsWithNames={this.fetchAllBookIdsWithNames}
         />
@@ -87,7 +92,9 @@ let mapStateToProps = (state) => {
     sentencesOnPageBottom: state.selectTextsPage.sentencesOnPageBottom,
     sentencesCount: state.selectTextsPage.sentencesCount,
     isFetching: state.uploadBooksPage.isFetching,
-    allFirstBookSentenceIds: state.selectTextsPage.allFirstBookSentenceIds,
+    allBookNamesSortedByIds: state.selectTextsPage.allBookNamesSortedByIds,
+    allEngBooksNames: state.selectTextsPage.allEngBooksNames,
+    allRusBooksNames: state.selectTextsPage.allRusBooksNames
   };
 };
 

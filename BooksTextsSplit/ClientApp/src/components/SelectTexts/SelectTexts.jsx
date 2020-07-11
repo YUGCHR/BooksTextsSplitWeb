@@ -12,21 +12,63 @@ import s from "./SelectTexts.module.css";
   });
 }; */
 
-let bookIds = (allFirstBookSentenceIds) => {  
- // debugger;
-  console.log('bookIds started', allFirstBookSentenceIds.length, allFirstBookSentenceIds);
-  return allFirstBookSentenceIds.map((id) => {
-    console.log('inside bookIds:', id.bookId);
+let bookIds = (allBookNamesSortedByIds, allEngBooksNames, allRusBooksNames) => {
+  // debugger;
+  console.log("bookIds started", allBookNamesSortedByIds.length, allBookNamesSortedByIds);
+  return (
+     /* (
+  allEngBooksNames.map((id, i) => {
+    console.log("inside bookIds:", id.bookId);
     //debugger;
-    return <div>Fetched book Id = {id.bookId}</div>;
-  });
-};
-
-
+    return (
+      <div>
+        <div>
+          Fetched {" bookId = " + id.bookId} {" languageId = " + id.languageId} {" uploadVersion = " + id.uploadVersion}
+        </div>
+        <div>
+          Book No: {" " + i + " "} name - {id.authorName + " "} {id.bookName}
+        </div>
+        <div> ----------------------------------------------------------------------- </div>
+      </div>
+    ); 
+    }));
+  allRusBooksNames.map((id, i) => {
+    console.log("inside bookIds:", id.bookId);
+    //debugger;
+    return (
+      <div>
+        <div>
+          Fetched {" bookId = " + id.bookId} {" languageId = " + id.languageId} {" uploadVersion = " + id.uploadVersion}
+        </div>
+        <div>
+          Book No: {" " + i + " "} name - {id.authorName + " "} {id.bookName}
+        </div>
+        <div> ----------------------------------------------------------------------- </div>
+      </div>
+    );
+  }));
+}; */
+  
+  allBookNamesSortedByIds.map((id, i) => {
+    console.log("inside bookIds:", id.bookId);
+    //debugger;
+    return (
+      <div>
+        <div>
+          Fetched {" bookId = " + id.bookId} {" languageId = " + id.languageId} {" uploadVersion = " + id.uploadVersion}
+        </div>
+        <div>
+          Book No: {" " + i + " "} name - {id.authorName + " "} {id.bookName}
+        </div>
+        <div> ----------------------------------------------------------------------- </div>
+      </div>
+    );
+  })
+  )};
 
 let showChooseHeader = () => {
-  return <div>CHOOSE BOOKS PAIR BY BookId</div>
-}
+  return <div>CHOOSE BOOKS PAIR BY BookId</div>;
+};
 
 /* let createBooksNamesTable = (props) => {
 props.fetchAllBookIdsWithNames().then((s) => {
@@ -52,7 +94,6 @@ props.fetchAllBookIdsWithNames().then((s) => {
   }; */
 
 const SelectTexts = (props) => {
-
   /* let showBooksNamesTable = () => {  
     createBooksNamesTable();
   };
@@ -62,18 +103,15 @@ const SelectTexts = (props) => {
     return bookIds(props.allBookIdsWithNames);
   } */
 
-  console.log('select texts', props);
+  console.log("select texts", props);
 
   return (
     <div className={s.selectPage}>
       <div className={s.pageName}>SELECT BOOKS CONTROL PANEL</div>
-      <div className={s.chooseBooks}>{showChooseHeader()}</div>   
-      <div className={s.fetchedBooksIds}>{bookIds(props.allFirstBookSentenceIds)}</div>   
-      <div className={s.showButton}>
-        {/* <button
-              onClick={() => showBooksNamesTable()}>SHOW Books IDs</button> */}
-      </div>
-      
+      <div className={s.chooseBooks}>{showChooseHeader()}</div>
+      <div className={s.fetchedBooksIds}>{bookIds(props.allBookNamesSortedByIds, props.allEngBooksNames, props.allRusBooksNames)}</div>
+      <div className={s.showButton}>{/* <button
+              onClick={() => showBooksNamesTable()}>SHOW Books IDs</button> */}</div>
     </div>
   );
 };

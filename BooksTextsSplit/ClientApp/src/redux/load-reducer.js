@@ -25,7 +25,7 @@ let initialState = {
   successfullUploaded: false,
   booksTitles: [
     [
-      { bookId: 77, languageId: 0, authorNameId: 101, authorName: "1 Vernor Vinge", bookNameId: 1001, bookName: "1 A Fire Upon the Deep" },
+      { bookId: 1, languageId: 0, authorNameId: 101, authorName: "1 Vernor Vinge", bookNameId: 1001, bookName: "1 A Fire Upon the Deep" },
       { bookId: 2, languageId: 0, authorNameId: 102, authorName: "2 Vernor Vinge", bookNameId: 1002, bookName: "2 A Fire Upon the Deep" },
       { bookId: 3, languageId: 0, authorNameId: 103, authorName: "3 Vernor Vinge", bookNameId: 1003, bookName: "3 A Fire Upon the Deep" },
       {
@@ -46,7 +46,7 @@ let initialState = {
       },
     ],
     [
-      { bookId: 77, languageId: 1, authorNameId: 101, authorName: "1 Вернор Виндж", bookNameId: 1001, bookName: "1 Пламя над бездной" },
+      { bookId: 1, languageId: 1, authorNameId: 101, authorName: "1 Вернор Виндж", bookNameId: 1001, bookName: "1 Пламя над бездной" },
       { bookId: 2, languageId: 1, authorNameId: 102, authorName: "2 Вернор Виндж", bookNameId: 1002, bookName: "2 Пламя над бездной" },
       { bookId: 3, languageId: 1, authorNameId: 103, authorName: "3 Вернор Виндж", bookNameId: 1003, bookName: "3 Пламя над бездной" },
       {
