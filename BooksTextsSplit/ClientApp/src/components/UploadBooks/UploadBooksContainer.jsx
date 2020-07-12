@@ -47,13 +47,14 @@ class UploadBooksContainerAPI extends React.Component {
 
   postBooksTexts = (formData, i) => {
     this.props.toggleIsFetching(true);
-    Axios.post("/api/BookTexts/UploadFile", formData).then((Response) => {
-      this.props.toggleIsFetching(false);
-      console.log(Response.data);
-      this.props.setSentencesCount(Response.data, i); //totalCount
-      console.log(this.props.sentencesCount[i]);
-      return this.props.sentencesCount[i];
-    });
+    Axios.post("/api/BookTexts/UploadFile", formData) //post returns response before all records have loaded in db
+      .then((Response) => {
+        this.props.toggleIsFetching(false);
+        console.log(Response.data);
+        this.props.setSentencesCount(Response.data, i); //totalCount
+        console.log(this.props.sentencesCount[i]);
+        return this.props.sentencesCount[i];
+      });
   };
 
   failureCallback = () => {

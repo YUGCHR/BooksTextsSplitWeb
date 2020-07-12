@@ -1,38 +1,97 @@
-.selectPage{
-    display: grid;
-    grid-template-rows: 1fr auto auto auto;
-    grid-template-columns: auto auto auto;
-    grid-gap: 0vw;
-    color: cyan;
-    background-color: green;
+.selectPage {
+  
+  color: cyan;
+  background-color: green;
 }
 
-.pageName{
-    grid-column: 1/2;
-    grid-row: 1/2;
-    font-size: larger;
-    color: black;
-    background-color: yellow;
+.pageName {
+  grid-column: 1/2;
+  grid-row: 1/2;
+  font-size: larger;
+  color: black;
+  background-color: yellow;
 }
 
-.chooseBooks{
-    grid-column: 1/2;
-    grid-row: 2/3;
-    font-size: larger;
-    color: black;
-    background-color: yellowgreen;
+.chooseBooks {
+  grid-column: 1/2;
+  grid-row: 2/3;
+  font-size: larger;
+  color: black;
+  background-color: yellowgreen;
 }
 
-.selectButton{
+.selectButton {
+  grid-column: 3/4;
+  grid-row: 2/3;
+  color: black;
+  background-color: red;
+}
+
+.fetchedBooksIds {
+  
+  color: black;
+  background-color: whitesmoke;
+}
+
+.flexPlaceBooks {
+    grid-column: 1/5;
+  grid-row: 3/4;
+  display: grid;
+  /* grid-template-rows: auto; */
+  grid-template-columns: 10fr 1fr 10fr;
+  grid-gap: 0vw;
+  color: magenta;
+  background-color: yellow;
+}
+
+.fetchedEnglishBooksIds {
+  grid-column: 1/2;
+  /* grid-row: 1/2; */
+  color: whitesmoke;
+  background-color: green;
+  text-align: center;  
+}
+
+.fetchedRussianBooksIds {
     grid-column: 3/4;
-    grid-row: 2/3;
-    color: black;
-    background-color: red;
+    /* grid-row: 1/2; */
+    color: yellow;
+    background-color: cyan;
+    text-align: center;  
 }
 
-.fetchedBooksIds{
-    grid-column: 1/2;
-    grid-row: 3/4;
-    color: black;
-    background-color: whitesmoke;
+.testHeader{
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 1vw;
+  font-size: larger;
+  color: yellow;
+  background-color: cyan;
+  text-align: center;  
 }
+
+.testTable{
+  grid-column: 1/4;
+  grid-row:1/2;
+  font-size: larger;
+  color: whitesmoke;
+  background-color: blue;
+}
+
+.testItem1{
+  grid-column: 1/2;
+  grid-row:2/5;
+  font-size: larger;
+  color: black;
+  background-color: yellow;
+}
+
+.testItem2{
+  grid-column: 3/4;
+  grid-row: 2/5;
+  font-size: larger;
+  color: yellow;
+  background-color: magenta;
+}
+

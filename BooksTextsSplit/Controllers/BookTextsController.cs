@@ -11,6 +11,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Reflection;
 using System.ComponentModel.Design;
+using System.Data;
 
 namespace BooksTextsSplit.Controllers
 {
@@ -88,60 +89,44 @@ namespace BooksTextsSplit.Controllers
 
         // GET: api/BookTexts/BooksIds/?where="bookSentenceId" & whereValue=1 & orderBy="bookId"
         [HttpGet("BooksIds")]
-        public async Task<ActionResult<AllBooksIds>> GetBooksIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] string orderBy)
+        public async Task<ActionResult<AllBooksIds>> GetBooksIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] string orderBy, [FromQuery] bool needPostSelect, [FromQuery] string postWhere, [FromQuery] int postWhereValue)
         {
-            bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy);
+            bool areWhereOrderByRealProperties = false; //AreParamsRealTextSentenceProperties(where, orderBy);
 
             if (areWhereOrderByRealProperties)
             {
-                var allFirstBookSentenceIdsSortedByBooksId = (await _context.GetItemsAsync($"SELECT * FROM c WHERE c.{where} = {whereValue} ORDER BY c.{orderBy}")).ToList(); // select the first sentences of all books and all books versions
+                var requestedSelectResult = (await _context.GetItemsAsync($"SELECT * FROM c WHERE c.{where} = {whereValue} ORDER BY c.{orderBy}")).ToList(); // select the first sentences of all books and all books versions
 
-                //int booksIdsLength = booksIds.Length;
-                //int sortedBooksIdsLength = booksIds[booksIdsLength - 1];
-                List<TextSentence> bookNamesSortedByIds = new List<TextSentence>();
-                //TextSentence engBooksNames = new TextSentence();
-                //TextSentence rusBooksNames = new TextSentence();
-                //int[] sortedBooksIds = new int[sortedBooksIdsLength];
-                int sortedBooksIdsIndex = 0;
-                //int uploadBookVersion = 0;
-                //int rusBooksNamesIndex = 0;
-                //firstBookSentenceIds.Add(allFirstBookSentenceIdsSortedByBooksId[0]);
-                int nextVersionOfBookId = 0;
-
-                //for to find first uploadVersion only - new List
-                //int versionOfBookId = allFirstBookSentenceIdsSortedByBooksId[i].UploadVersion;
-                //int versionOfBookIdControl = allFirstBookSentenceIdsSortedByBooksId[i + 1].UploadVersion;
-                //if (versionOfBookId != versionOfBookIdControl)
-                //{
-                //    return null;
-                //}
-                //else
-                //{
-                //    nextVersionOfBookId = versionOfBookId;
-                //}
-
-                int allFirstBookSentenceIdsSortedByBooksIdLength = allFirstBookSentenceIdsSortedByBooksId.Count();
-                for (int i = 0; i < allFirstBookSentenceIdsSortedByBooksIdLength - 1; i += 2)
+                needPostSelect = true;
+                postWhere = "UploadVersion";
+                postWhereValue = 1; // UploadVersion == 0 will be for seperate method (to set the book header) - may be
+                List<TextSentence> requestedSelectResultSorted = new List<TextSentence>();
+                int sortedBooksIdsCount = 0;
+                if (needPostSelect)
                 {
-                    var s0 = allFirstBookSentenceIdsSortedByBooksId[i];
-                    var s1 = allFirstBookSentenceIdsSortedByBooksId[i + 1];
-                    if (s0.LanguageId == 1 && s1.LanguageId == 0)// && s.UploadVersion == uploadBookVersion)
+                    foreach (var r in requestedSelectResult)
                     {
-                        allFirstBookSentenceIdsSortedByBooksId[i] = s1;
-                        allFirstBookSentenceIdsSortedByBooksId[i + 1] = s0;
+                        if (r.UploadVersion == postWhereValue) //it needs to get property name from postWhere
+                        {
+                            requestedSelectResultSorted.Add(r);
+                            sortedBooksIdsCount++;
+                        }
                     }
-
-                    //if (s.BookId > firstBookSentenceIds[sortedBooksIdsIndex].BookId && s.LanguageId == 1)
-                    //{
-                    //    sortedBooksIdsIndex++;
-                    //    firstBookSentenceIds.Add(s);
-                    //}
-                    bookNamesSortedByIds.Add(allFirstBookSentenceIdsSortedByBooksId[i]);
-                    sortedBooksIdsIndex++;
-
                 }
 
-                var findbooksIds = new AllBooksIds(bookNamesSortedByIds, sortedBooksIdsIndex);
+                int requestedSelectResultSortedLength = requestedSelectResultSorted.Count(); //here try to sort laguageId in right order (0, 1)
+                for (int i = 0; i < requestedSelectResultSortedLength - 1; i += 2)
+                {
+                    var s0 = requestedSelectResultSorted[i];
+                    var s1 = requestedSelectResultSorted[i + 1];
+                    if (s0.LanguageId == 0 && s1.LanguageId == 1)// && s.UploadVersion == uploadBookVersion)
+                    {
+                        requestedSelectResultSorted[i] = s1;
+                        requestedSelectResultSorted[i + 1] = s0;
+                    }
+                }
+
+                var findbooksIds = new AllBooksIds(requestedSelectResultSorted, sortedBooksIdsCount);
                 return findbooksIds;
             }
             else
@@ -151,14 +136,30 @@ namespace BooksTextsSplit.Controllers
             //return new UploadedVersions(  ( await _context.GetItemsAsync("SELECT * FROM c")).Select(s => s.UploadVersion).ToArray()   );
         }
 
+        public static object GetProperty(object obj, string propertyName) 
+        {
+            PropertyInfo pinfo = obj.GetType().GetProperty(propertyName);
+
+            // note the null propagation ?.
+            return pinfo?.GetValue(obj);
+        }
+
+        public static object GetPropertyGeneric<T>(T obj, string propertyName) 
+        {
+            PropertyInfo pinfo = typeof(T).GetProperty(propertyName);
+
+            // note the null propagation ?.
+            return pinfo?.GetValue(obj);
+        }
+
         public static bool IsPropertyOf<T>(string propertyName)
         {
-          return typeof(T).GetProperties().Any(p => string.Equals(propertyName, p.Name, StringComparison.InvariantCultureIgnoreCase));
+            return typeof(T).GetProperties().Any(p => string.Equals(propertyName, p.Name, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public static bool AreParamsRealPropertiesOf<T>(string[] testingProperties)
-        {            
-            int passedTestsCount = 0;            
+        {
+            int passedTestsCount = 0;
             StringComparison comparison = StringComparison.InvariantCultureIgnoreCase; //Enum.GetValues(typeof(StringComparison)); - for StringComparison[]
             //bool exists = sample.GetType().GetProperties().Any(p => String.Equals(where, p.Name, comparison));
             foreach (var test in testingProperties)
@@ -167,9 +168,9 @@ namespace BooksTextsSplit.Controllers
                 {
                     bool w = String.Equals(test, prop.Name, comparison);
                     if (w)
-                    {                        
+                    {
                         passedTestsCount++;
-                    }                    
+                    }
                 }
             }
             return (passedTestsCount) == testingProperties.Length; //if all testingProperties are real it returns true
@@ -234,7 +235,7 @@ namespace BooksTextsSplit.Controllers
                 TextSentence[] textSentences = bookAnalysis.AnalyseTextBook();
                 int textSentencesLength = textSentences.Length;
                 string json = JsonConvert.SerializeObject(textSentences);
-                int currentUploadingVersion = lastUploadedVersion + 1;
+                int currentUploadingVersion = lastUploadedVersion + 1;               
 
                 try
                 {

@@ -62,7 +62,7 @@ class SelectTextsContainerAPI extends React.Component {
  */
   render() {
 
-    console.log('container render starts', this.props.allBookNamesSortedByIds.length, this.props.allBookNamesSortedByIds);
+    //console.log('container render starts', this.props.allBookNamesSortedByIds.length, this.props.allBookNamesSortedByIds);
     
     return (
       <>
