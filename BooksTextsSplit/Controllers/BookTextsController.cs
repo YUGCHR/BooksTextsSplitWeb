@@ -91,7 +91,7 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("BooksIds")]
         public async Task<ActionResult<AllBooksIds>> GetBooksIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] string orderBy, [FromQuery] bool needPostSelect, [FromQuery] string postWhere, [FromQuery] int postWhereValue)
         {
-            bool areWhereOrderByRealProperties = false; //AreParamsRealTextSentenceProperties(where, orderBy);
+            bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy);
 
             if (areWhereOrderByRealProperties)
             {
@@ -114,20 +114,16 @@ namespace BooksTextsSplit.Controllers
                     }
                 }
 
-                int requestedSelectResultSortedLength = requestedSelectResultSorted.Count(); //here try to sort laguageId in right order (0, 1)
-                for (int i = 0; i < requestedSelectResultSortedLength - 1; i += 2)
+                IEnumerable<IGrouping<int, TextSentence>> pairings = requestedSelectResultSorted.GroupBy(r => r.BookId);
+                
+                AllBooksIds foundbooksIds = new AllBooksIds
                 {
-                    var s0 = requestedSelectResultSorted[i];
-                    var s1 = requestedSelectResultSorted[i + 1];
-                    if (s0.LanguageId == 0 && s1.LanguageId == 1)// && s.UploadVersion == uploadBookVersion)
+                    AllBookNamesSortedByIds = pairings.Select(p => new BookEntry
                     {
-                        requestedSelectResultSorted[i] = s1;
-                        requestedSelectResultSorted[i + 1] = s0;
-                    }
-                }
-
-                var findbooksIds = new AllBooksIds(requestedSelectResultSorted, sortedBooksIdsCount);
-                return findbooksIds;
+                        BookId = p.Key,
+                        BookNames = p.OrderBy(s => s.LanguageId).Select(s => new SentenceWithId { LanguageId = s.LanguageId, Sentence = s } ).ToList() } ).ToList() };
+                    
+                return foundbooksIds;
             }
             else
             {

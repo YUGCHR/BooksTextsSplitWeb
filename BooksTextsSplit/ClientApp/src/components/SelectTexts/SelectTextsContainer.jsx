@@ -2,7 +2,7 @@ import React from "react";
 import Axios from "axios";
 import ReactScrollWheelHandler from "react-scroll-wheel-handler";
 import { connect } from "react-redux";
-import { setAllBookIdsWithNames, setSentences, toggleIsFetching } from "../../redux/select-reducer";
+import { setAllBookIdsWithNames, setSentences, toggleIsSelectingBookId, toggleIsSelectingUploadVersion, toggleIsFetching } from "../../redux/select-reducer";
 import SelectTexts from "./SelectTexts";
 import Preloader from "../common/preloader/Preloader";
 class SelectTextsContainerAPI extends React.Component {
@@ -20,19 +20,20 @@ class SelectTextsContainerAPI extends React.Component {
     let where = "bookSentenceId";
     let whereValue = 1;
     let orderBy = "bookId";
+    //api/BookTexts/BooksIds/?where=bookSentenceId&whereValue=1&orderBy=bookId
     return Axios.get(`api/BookTexts/BooksIds/?where=${where}&whereValue=${whereValue}&orderBy=${orderBy}`)
       .then((Response) => {
         this.props.toggleIsFetching(false);
-        console.log(Response);        
-        console.log('axios: sending this to props:', Response.data.allBookNamesSortedByIds)
+        console.log(Response);
+        console.log("axios: sending this to props:", Response.data.allBookNamesSortedByIds);
         this.props.setAllBookIdsWithNames(Response.data.allBookNamesSortedByIds, Response.data.allEngBooksNames, Response.data.allRusBooksNames);
-        console.log('axios: finished sending to props');
+        console.log("axios: finished sending to props");
         let s = Response.data.sortedBooksIdsLength;
         //debugger;
         return s;
       })
       .catch(this.failureCallback);
-  };  
+  };
 
   failureCallback = () => {
     console.log(this.props.maxUploadedVersion);
@@ -61,9 +62,8 @@ class SelectTextsContainerAPI extends React.Component {
     }
  */
   render() {
-
     //console.log('container render starts', this.props.allBookNamesSortedByIds.length, this.props.allBookNamesSortedByIds);
-    
+
     return (
       <>
         {this.props.isFetching ? <Preloader /> : null}
@@ -76,8 +76,12 @@ class SelectTextsContainerAPI extends React.Component {
           allBookNamesSortedByIds={this.props.allBookNamesSortedByIds}
           allEngBooksNames={this.props.allEngBooksNames}
           allRusBooksNames={this.props.allRusBooksNames}
+          isSelectingBookId={this.props.isSelectingBookId}
+          isSelectingUploadVersion={this.props.isSelectingUploadVersion}
           isFetching={this.props.isFetching}
           fetchAllBookIdsWithNames={this.fetchAllBookIdsWithNames}
+          toggleIsSelectingBookId={this.props.toggleIsSelectingBookId}
+          toggleIsSelectingUploadVersion={this.props.toggleIsSelectingUploadVersion}
         />
       </>
     );
@@ -91,13 +95,15 @@ let mapStateToProps = (state) => {
     sentencesOnPageTop: state.selectTextsPage.sentencesOnPageTop,
     sentencesOnPageBottom: state.selectTextsPage.sentencesOnPageBottom,
     sentencesCount: state.selectTextsPage.sentencesCount,
-    isFetching: state.uploadBooksPage.isFetching,
+    isSelectingBookId: state.selectTextsPage.isSelectingBookId,
+    isSelectingUploadVersion: state.selectTextsPage.isSelectingUploadVersion,  
+    isFetching: state.selectTextsPage.isFetching,
     allBookNamesSortedByIds: state.selectTextsPage.allBookNamesSortedByIds,
     allEngBooksNames: state.selectTextsPage.allEngBooksNames,
-    allRusBooksNames: state.selectTextsPage.allRusBooksNames
+    allRusBooksNames: state.selectTextsPage.allRusBooksNames,
   };
 };
 
-let SelectTextsContainer = connect(mapStateToProps, { setAllBookIdsWithNames, setSentences, toggleIsFetching })(SelectTextsContainerAPI);
+let SelectTextsContainer = connect(mapStateToProps, { setAllBookIdsWithNames, setSentences, toggleIsSelectingBookId, toggleIsSelectingUploadVersion, toggleIsFetching })(SelectTextsContainerAPI);
 
 export default SelectTextsContainer;

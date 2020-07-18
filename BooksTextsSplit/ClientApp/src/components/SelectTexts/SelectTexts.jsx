@@ -1,164 +1,93 @@
 import React from "react";
 import s from "./SelectTexts.module.css";
 
-/* let createBooksNames = (props) => {
-  return props.allBookIdsWithNames.map((id) => {
-    debugger;
-    return (
-      <div>
-        <div>bookId = {id}</div>
-      </div>
-    );
-  });
-}; */
-
-/* let bookIds = (allBookNamesSortedByIds, allEngBooksNames, allRusBooksNames) => {
-  // debugger;
-  //console.log("bookIds started", allBookNamesSortedByIds.length, allBookNamesSortedByIds);
+let showSelectButton = (props, bookId) => {
+  console.log("showSelectButton", bookId);
+  //debugger;
   return (
-    /* (
-  allEngBooksNames.map((id, i) => {
-    console.log("inside bookIds:", id.bookId);
-    //debugger;
-    return (
-      <div>
-        <div>
-          Fetched {" bookId = " + id.bookId} {" languageId = " + id.languageId} {" uploadVersion = " + id.uploadVersion}
-        </div>
-        <div>
-          Book No: {" " + i + " "} name - {id.authorName + " "} {id.bookName}
-        </div>
-        <div> ----------------------------------------------------------------------- </div>
-      </div>
-    ); 
-    }));
-  allRusBooksNames.map((id, i) => {
-    console.log("inside bookIds:", id.bookId);
-    //debugger;
-    return (
-      <div>
-        <div>
-          Fetched {" bookId = " + id.bookId} {" languageId = " + id.languageId} {" uploadVersion = " + id.uploadVersion}
-        </div>
-        <div>
-          Book No: {" " + i + " "} name - {id.authorName + " "} {id.bookName}
-        </div>
-        <div> ----------------------------------------------------------------------- </div>
-      </div>
-    );
-  }));
-}; */
-/*
-    allBookNamesSortedByIds.map((id, i) => {
-      let placeBooks;
-      if (id.languageId === 0) {
-        placeBooks = s.fetchedEnglishBooksIds;
-      }
-      if (id.languageId === 1) {
-        placeBooks = s.fetchedRussianBooksIds;
-      }
-      console.log("inside bookIds:", id.bookId);
-      debugger;
-      return (
-        <div className={placeBooks}>
-          <div>
-            Fetched {" bookId = " + id.bookId} {" languageId = " + id.languageId} {" uploadVersion = " + id.uploadVersion}
-          </div>
-          <div>
-            Book No: {" " + i + " "} name - {id.authorName + " "} {id.bookName}
-          </div>
-          <div> ----------------------------------------------------------------------- </div>
-        </div>
-      );
-    })
+    <div>
+      <button className={s.testItemButton} onClick={() => {bookIdSelected(props, bookId)}}>
+        Select {bookId}
+      </button>
+    </div>
   );
-}; */
-
-let showChooseHeader = () => {
-  return <div>CHOOSE BOOKS PAIR BY BookId</div>;
 };
 
-/* let createBooksNamesTable = (props) => {
-props.fetchAllBookIdsWithNames().then((s) => {
-  createBooksNames(props);
-  return s;
-});
-}; */
+let bookIdSelected = (props, bookId) => {
+  props.toggleIsSelectingBookId(false);
+  props.toggleIsSelectingUploadVersion(true);
+  return(
+    {bookId}
+  );
+};
 
-/* let createDropDownList = (dropDownListValues, i) => {
-    //debugger;
-    return radioButtonsValues.map((v, j) => {
+let bookIds = (props) => {
+  if (props.isSelectingBookId) {
+    return props.allBookNamesSortedByIds.map((id, i) => {
+      let bookId = id.bookId;
+      let bookNames = id.bookNames;
+      console.log("bookNames", bookNames);
+
       return (
-        <div className={s.radioBlock}>
-          <div className="radio">
-            <label>
-              <input type="radio" name={i} id={props.radioButtonsIds[(i, j)]} value={v} checked={props.selectedRadioLanguage[i] === v} onChange={handleOptionChange} />
-              {props.radioButtonsLabels[j]} {" / languageId = " + props.filesLanguageIds[i]}
-            </label>
-          </div>
+        <div className={s.testGridContainer3}>
+          <div className={s.testItemEng}>{showEngBookName(bookNames[0], bookId, i)}</div>
+          <div className={s.testItemRus}>{showEngBookName(bookNames[1], bookId, i)}</div>
+          <div>{showSelectButton(props, bookId)}</div>
         </div>
       );
     });
-  }; */
+  }
+};
+
+let uploadVersions = (allBookNamesSortedByIds, isSelectingUploadVersion) => {
+  if (isSelectingUploadVersion) {
+    return allBookNamesSortedByIds.map((id, i) => {
+      let bookId = id.bookId;
+      let bookNames = id.bookNames;
+      console.log("bookNames", bookNames);
+
+      return (
+        <div className={s.testGridContainer3}>
+          <div className={s.testItemEng}>{showEngBookName(bookNames[0], bookId, i)}</div>
+          <div className={s.testItemRus}>{showEngBookName(bookNames[1], bookId, i)}</div>
+          <div>{showSelectButton(bookId)}</div>
+        </div>
+      );
+    });
+  }
+};
+
+let showEngBookName = (bookName, bookId, i) => {
+  return (
+    <div className={s.testItemEng}>
+      <div>Fetched {" bookId = " + bookId} {" languageId = " + bookName.languageId} {" uploadVersion = " + bookName.sentence.uploadVersion}</div>
+      <div>Book No: {" " + i + " "} name - {bookName.sentence.authorName + " "} {bookName.sentence.bookName}</div>
+    </div>
+  );
+};
+
+let showChooseHeader = (props) => {
+  if (props.isSelectingBookId) {
+    return <div>CHOOSE BOOKS PAIR BY BookId</div>;
+  }
+  if (props.isSelectingUploadVersion) {
+    return <div>CHOOSE UPLOAD VERSION FOR BOOKS PAIR</div>;
+  }
+};
 
 const SelectTexts = (props) => {
-  /* let showBooksNamesTable = () => {  
-    createBooksNamesTable();
-  };
-   */
-
-  /* let showBooksNamesTable = () => {
-    return bookIds(props.allBookIdsWithNames);
-  } */
-
-  console.log("select texts", props);
+  console.log("select texts", props);  
 
   return (
-    <div className={s.selectPage}>
-      <div className={s.pageName}>SELECT BOOKS CONTROL PANEL</div>
-      <div className={s.chooseBooks}>{showChooseHeader()}</div>
-
-      {/* <div className={s.flexPlaceBooks}>
-        {bookIds(props.allBookNamesSortedByIds, props.allEngBooksNames, props.allRusBooksNames)}
-      </div> */}
-
-      <div className={s.showButton}>{/* <button
-              onClick={() => showBooksNamesTable()}>SHOW Books IDs</button> */}</div>
-
-      <div></div>
-      <div></div>
-      <div></div>
-
-      <div className={s.testHeader}>
-        <div className={s.testTable}>Header Table</div>
-        <div className={s.testItem1}>ENG-01</div>
-        <div className={s.testItem2}>RUS-01</div>
-        <div className={s.testItem1}>ENG-02</div>
-        <div className={s.testItem2}>RUS-02</div>
-        <div className={s.testItem1}>ENG-03</div>
-        <div className={s.testItem2}>RUS-03</div>
-        <div className={s.testItem1}>ENG-04</div>
-        <div className={s.testItem2}>RUS-04</div>
-        <div className={s.testItem1}>ENG-05</div>
-        <div className={s.testItem2}>RUS-05</div>
+    <div className={s.testGridContainer1}>
+      <div className={s.testItem1}>SELECT BOOKS CONTROL PANEL</div>
+      <div className={s.testItem2}>{showChooseHeader(props)}</div>
+      <div className={s.testGridContainerPlace2}>
+        <div className={s.testGridContainer2}>{bookIds(props)}</div>
+        <div className={s.testGridContainer2}>{uploadVersions(props)}</div>
       </div>
     </div>
   );
 };
 
 export default SelectTexts;
-
-/* <div className={s.dropDownList}>
-       <div>
-          <legend>Selecting BookId</legend>
-          <div>
-             <div>Existing BookId in DB</div>
-             <select id = "myList">
-               <option value = "1">one</option>
-               <option value = "2">two</option>
-               <option value = "3">three</option>
-               <option value = "4">four</option>
-             </select>
-          </div>
-       </div>
-       </div> */
