@@ -55,7 +55,6 @@
 
   align-items: flex-end;
   align-content: flex-end;
-  vertical-align: bottom;
   
   color: black;
   background-color: white;  
@@ -80,7 +79,10 @@
 }
 
 .testItemButton {
-  
+  align-items: end;
+  align-content: end;
+  align-self: end;
+  vertical-align: bottom;
   color: whitesmoke;
   background-color: darkgray;
 }

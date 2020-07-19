@@ -14,8 +14,9 @@ namespace BooksTextsSplit.Models
         //    //AllRusBooksNames = rusBooksNames;
         //    SortedBooksIdsLength = sortedBooksIdsIndex;
         //}
-        public List<BookEntry> AllBookNamesSortedByIds { get; set; }
-        //public List<TextSentence> AllEngBooksNames { get; set; }
+        public List<BookEntry> Version1BookNamesSortedByIds { get; set; }
+        public List<TextSentence> AllBookNamesSortedByIds { get; set; }
+
         //public List<TextSentence> AllRusBooksNames { get; set; }
         //public int SortedBooksIdsLength { get; set; }
     }

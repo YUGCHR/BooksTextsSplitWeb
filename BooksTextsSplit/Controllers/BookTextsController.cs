@@ -87,7 +87,7 @@ namespace BooksTextsSplit.Controllers
             return bookText;
         }
 
-        // GET: api/BookTexts/BooksIds/?where="bookSentenceId" & whereValue=1 & orderBy="bookId"
+        // GET: api/BookTexts/BooksIds/?where="bookSentenceId"&whereValue=1&orderBy="bookId"&needPostSelect=true&postWhere="UploadVersion"&postWhereValue=1
         [HttpGet("BooksIds")]
         public async Task<ActionResult<AllBooksIds>> GetBooksIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] string orderBy, [FromQuery] bool needPostSelect, [FromQuery] string postWhere, [FromQuery] int postWhereValue)
         {
@@ -95,7 +95,7 @@ namespace BooksTextsSplit.Controllers
 
             if (areWhereOrderByRealProperties)
             {
-                var requestedSelectResult = (await _context.GetItemsAsync($"SELECT * FROM c WHERE c.{where} = {whereValue} ORDER BY c.{orderBy}")).ToList(); // select the first sentences of all books and all books versions
+                List<TextSentence> requestedSelectResult = (await _context.GetItemsAsync($"SELECT * FROM c WHERE c.{where} = {whereValue} ORDER BY c.{orderBy}")).ToList(); // select the first sentences of all books and all books versions
 
                 needPostSelect = true;
                 postWhere = "UploadVersion";
@@ -115,14 +115,18 @@ namespace BooksTextsSplit.Controllers
                 }
 
                 IEnumerable<IGrouping<int, TextSentence>> pairings = requestedSelectResultSorted.GroupBy(r => r.BookId);
-                
+
                 AllBooksIds foundbooksIds = new AllBooksIds
                 {
-                    AllBookNamesSortedByIds = pairings.Select(p => new BookEntry
+                    Version1BookNamesSortedByIds = pairings.Select(p => new BookEntry
                     {
                         BookId = p.Key,
-                        BookNames = p.OrderBy(s => s.LanguageId).Select(s => new SentenceWithId { LanguageId = s.LanguageId, Sentence = s } ).ToList() } ).ToList() };
-                    
+                        BookNames = p.OrderBy(s => s.LanguageId).Select(s => new SentenceWithId { LanguageId = s.LanguageId, Sentence = s }).ToList()
+                    }
+                    ).ToList(),
+                    AllBookNamesSortedByIds = requestedSelectResult.OrderBy(li => li.BookId).ThenBy(uv => uv.UploadVersion).ThenBy(bi => bi.LanguageId).ToList()
+                };
+            
                 return foundbooksIds;
             }
             else
