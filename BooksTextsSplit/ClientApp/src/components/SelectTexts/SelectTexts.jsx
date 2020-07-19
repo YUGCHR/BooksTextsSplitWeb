@@ -5,20 +5,23 @@ let showSelectButton = (props, bookId) => {
   console.log("showSelectButton", bookId);
   //debugger;
   return (
-    <div>
-      <button className={s.testItemButton} onClick={() => {bookIdSelected(props, bookId)}}>
+    
+      <button
+        className={s.testItemButton}
+        onClick={() => {
+          bookIdSelected(props, bookId);
+        }}
+      >
         Select {bookId}
       </button>
-    </div>
+   
   );
 };
 
 let bookIdSelected = (props, bookId) => {
   props.toggleIsSelectingBookId(false);
   props.toggleIsSelectingUploadVersion(true);
-  return(
-    {bookId}
-  );
+  return { bookId };
 };
 
 let bookIds = (props) => {
@@ -32,25 +35,25 @@ let bookIds = (props) => {
         <div className={s.testGridContainer3}>
           <div className={s.testItemEng}>{showEngBookName(bookNames[0], bookId, i)}</div>
           <div className={s.testItemRus}>{showEngBookName(bookNames[1], bookId, i)}</div>
-          <div>{showSelectButton(props, bookId)}</div>
+          <div className={s.testItemButtonPlace}>{showSelectButton(props, bookId)}</div>
         </div>
       );
     });
   }
 };
 
-let uploadVersions = (allBookNamesSortedByIds, isSelectingUploadVersion) => {
-  if (isSelectingUploadVersion) {
-    return allBookNamesSortedByIds.map((id, i) => {
+let uploadVersions = (props) => {
+  if (props.isSelectingUploadVersion) {
+    return props.allBookNamesSortedByIds.map((id, i) => {
       let bookId = id.bookId;
       let bookNames = id.bookNames;
       console.log("bookNames", bookNames);
 
       return (
-        <div className={s.testGridContainer3}>
+        <div className={s.testGridContainer3}>uploadVersions here
           <div className={s.testItemEng}>{showEngBookName(bookNames[0], bookId, i)}</div>
           <div className={s.testItemRus}>{showEngBookName(bookNames[1], bookId, i)}</div>
-          <div>{showSelectButton(bookId)}</div>
+          <div className={s.testItemButtonPlace}>{showSelectButton(props, bookId)}</div>
         </div>
       );
     });
@@ -60,8 +63,12 @@ let uploadVersions = (allBookNamesSortedByIds, isSelectingUploadVersion) => {
 let showEngBookName = (bookName, bookId, i) => {
   return (
     <div className={s.testItemEng}>
-      <div>Fetched {" bookId = " + bookId} {" languageId = " + bookName.languageId} {" uploadVersion = " + bookName.sentence.uploadVersion}</div>
-      <div>Book No: {" " + i + " "} name - {bookName.sentence.authorName + " "} {bookName.sentence.bookName}</div>
+      <div>
+        Fetched {" bookId = " + bookId} {" languageId = " + bookName.languageId} {" uploadVersion = " + bookName.sentence.uploadVersion}
+      </div>
+      <div>
+        Book No: {" " + i + " "} name - {bookName.sentence.authorName + " "} {bookName.sentence.bookName}
+      </div>
     </div>
   );
 };
@@ -76,7 +83,7 @@ let showChooseHeader = (props) => {
 };
 
 const SelectTexts = (props) => {
-  console.log("select texts", props);  
+  console.log("select texts", props);
 
   return (
     <div className={s.testGridContainer1}>
