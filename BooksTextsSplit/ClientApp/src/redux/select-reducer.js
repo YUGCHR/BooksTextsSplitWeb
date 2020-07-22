@@ -5,9 +5,9 @@ const TOGGLE_IS_SELECTING_UPLOAD_VERSION = "TOGGLE-IS-SELECTING-UPLOAD-VERSION"
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
 
 let initialState = {
+  version1BookNamesSortedByIds: [],
   allBookNamesSortedByIds: [],
-  allEngBooksNames: [],
-  allRusBooksNames: [],
+  
   sentencesCount: [777, 888], //engSentencesCount: 777, rusSentencesCount: 888
   emptyVariable: null,
   isTextLoaded: [false, false],
@@ -21,7 +21,7 @@ const selectTextsReducer = (state = initialState, action) => {
     case SET_ALL_BOOKS_IDS: {
       // console.log('state', state.allBookIdsWithNames);
       // console.log('copy', stateCopy.allBookIdsWithNames);
-      return { ...state, allBookNamesSortedByIds: action.allBookNamesSortedByIds, allEngBooksNames: action.allEngBooksNames, allRusBooksNames: action.allRusBooksNames };
+      return { ...state, version1BookNamesSortedByIds: action.version1BookNamesSortedByIds, allBookNamesSortedByIds: action.allBookNamesSortedByIds };
     }
     case SET_SENTENCES: {
       return { ...state, engSentences: action.sentences };
@@ -40,7 +40,7 @@ const selectTextsReducer = (state = initialState, action) => {
   }
 };
 
-export const setAllBookIdsWithNames = (allBookNamesSortedByIds, allEngBooksNames, allRusBooksNames) => ({ type: SET_ALL_BOOKS_IDS, allBookNamesSortedByIds, allEngBooksNames, allRusBooksNames });
+export const setAllBookIdsWithNames = (version1BookNamesSortedByIds, allBookNamesSortedByIds) => ({ type: SET_ALL_BOOKS_IDS, version1BookNamesSortedByIds, allBookNamesSortedByIds });
 export const setSentences = (sentences, languageId) => ({ type: SET_SENTENCES, sentences, languageId });
 export const toggleIsSelectingBookId = (isSelectingBookId) => ({ type: TOGGLE_IS_SELECTING_BOOK_ID, isSelectingBookId });
 export const toggleIsSelectingUploadVersion = (isSelectingUploadVersion) => ({ type: TOGGLE_IS_SELECTING_UPLOAD_VERSION, isSelectingUploadVersion });

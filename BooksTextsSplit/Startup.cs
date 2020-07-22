@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using BooksTextsSplit.Services;
+using StackExchange.Redis;
 
 namespace BooksTextsSplit
 {
@@ -38,6 +39,8 @@ namespace BooksTextsSplit
             });
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+
+            services.AddSingleton<IDatabase>(ConnectionMultiplexer.Connect("localhost,abortConnect=false").GetDatabase());
         }
 
         /// <summary>

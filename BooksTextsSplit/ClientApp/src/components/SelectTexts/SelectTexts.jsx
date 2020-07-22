@@ -26,7 +26,7 @@ let bookIdSelected = (props, bookId) => {
 
 let bookIds = (props) => {
   if (props.isSelectingBookId) {
-    return props.allBookNamesSortedByIds.map((id, i) => {
+    return props.version1BookNamesSortedByIds.map((id, i) => {
       let bookId = id.bookId;
       let bookNames = id.bookNames;
       console.log("bookNames", bookNames);
@@ -44,7 +44,7 @@ let bookIds = (props) => {
 
 let uploadVersions = (props) => {
   if (props.isSelectingUploadVersion) {
-    return props.allBookNamesSortedByIds.map((id, i) => {
+    return props.version1BookNamesSortedByIds.map((id, i) => {
       let bookId = id.bookId;
       let bookNames = id.bookNames;
       console.log("bookNames", bookNames);

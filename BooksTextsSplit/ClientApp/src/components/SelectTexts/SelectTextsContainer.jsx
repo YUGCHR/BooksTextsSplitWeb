@@ -26,8 +26,8 @@ class SelectTextsContainerAPI extends React.Component {
       .then((Response) => {
         this.props.toggleIsFetching(false);
         console.log(Response);
-        console.log("axios: sending this to props:", Response.data.allBookNamesSortedByIds);
-        this.props.setAllBookIdsWithNames(Response.data.allBookNamesSortedByIds, Response.data.allEngBooksNames, Response.data.allRusBooksNames);
+        console.log("axios: sending this to props:", Response.data.version1BookNamesSortedByIds);
+        this.props.setAllBookIdsWithNames(Response.data.version1BookNamesSortedByIds, Response.data.allBookNamesSortedByIds);
         console.log("axios: finished sending to props");
         let s = Response.data.sortedBooksIdsLength;
         //debugger;
@@ -75,8 +75,8 @@ class SelectTextsContainerAPI extends React.Component {
           scrollLineUp={this.props.scrollLineUp}
           scrollLineDown={this.props.scrollLineDown}
           allBookNamesSortedByIds={this.props.allBookNamesSortedByIds}
-          allEngBooksNames={this.props.allEngBooksNames}
-          allRusBooksNames={this.props.allRusBooksNames}
+          version1BookNamesSortedByIds={this.props.version1BookNamesSortedByIds}
+          
           isSelectingBookId={this.props.isSelectingBookId}
           isSelectingUploadVersion={this.props.isSelectingUploadVersion}
           isFetching={this.props.isFetching}
@@ -100,8 +100,8 @@ let mapStateToProps = (state) => {
     isSelectingUploadVersion: state.selectTextsPage.isSelectingUploadVersion,  
     isFetching: state.selectTextsPage.isFetching,
     allBookNamesSortedByIds: state.selectTextsPage.allBookNamesSortedByIds,
-    allEngBooksNames: state.selectTextsPage.allEngBooksNames,
-    allRusBooksNames: state.selectTextsPage.allRusBooksNames,
+    version1BookNamesSortedByIds: state.selectTextsPage.version1BookNamesSortedByIds,
+    
   };
 };
 

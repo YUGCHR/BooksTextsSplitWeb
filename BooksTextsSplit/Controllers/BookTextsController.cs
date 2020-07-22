@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Reflection;
 using System.ComponentModel.Design;
 using System.Data;
+using StackExchange.Redis;
 
 namespace BooksTextsSplit.Controllers
 {
@@ -21,9 +22,11 @@ namespace BooksTextsSplit.Controllers
     public class BookTextsController : ControllerBase
     {
         private readonly ICosmosDbService _context;
-        public BookTextsController(ICosmosDbService cosmosDbService)
+        private readonly IDatabase _db;
+        public BookTextsController(ICosmosDbService cosmosDbService, IDatabase db)
         {
             _context = cosmosDbService;
+            _db = db;
         }
 
         // GET: api/Count/        
@@ -91,6 +94,8 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("BooksIds")]
         public async Task<ActionResult<AllBooksIds>> GetBooksIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] string orderBy, [FromQuery] bool needPostSelect, [FromQuery] string postWhere, [FromQuery] int postWhereValue)
         {
+            //db.StringSet(BitConverter.GetBytes(5), "asdf");
+
             bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy);
 
             if (areWhereOrderByRealProperties)
