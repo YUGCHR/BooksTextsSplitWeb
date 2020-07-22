@@ -90,12 +90,49 @@ namespace BooksTextsSplit.Controllers
             return bookText;
         }
 
+        // GET: api/BookTexts/FromDbWhere/?where="bookSentenceId"&whereValue=1
+        [HttpGet("FromDbWhere")]
+        public async Task<ActionResult<AllBooksIds>> GetFromDbWhere([FromQuery] string where, [FromQuery] int whereValue)
+        {
+            //db.StringSet(BitConverter.GetBytes(5), "asdf");
+
+            bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy);
+
+            if (areWhereOrderByRealProperties)
+            {
+                List<TextSentence> requestedSelectResult = (await _context.GetItemsAsync($"SELECT * FROM c WHERE c.{where} = {whereValue}")).ToList();
+
+                // 1. set requestedSelectResult to Redis with key "bookSentenceId"
+                // 2. set requestedSelectResult to Redis with key "bookId"
+
+                IEnumerable<IGrouping<int, TextSentence>> pairings = requestedSelectResult.GroupBy(r => r.BookId);
+
+                AllBooksIds foundbooksIds = new AllBooksIds
+                {
+                    Version1BookNamesSortedByIds = pairings.Select(p => new BookEntry
+                    {
+                        BookId = p.Key,
+                        BookNames = p.OrderBy(s => s.LanguageId).Select(s => new SentenceWithId { LanguageId = s.LanguageId, Sentence = s }).ToList()
+                    }
+                    ).ToList(),
+                    AllBookNamesSortedByIds = requestedSelectResult.OrderBy(li => li.BookId).ThenBy(uv => uv.UploadVersion).ThenBy(bi => bi.LanguageId).ToList()
+                };
+
+                return foundbooksIds;
+            }
+            else
+            {
+                return null;
+            }
+            //return new UploadedVersions(  ( await _context.GetItemsAsync("SELECT * FROM c")).Select(s => s.UploadVersion).ToArray()   );
+        }
+
         // GET: api/BookTexts/BooksIds/?where="bookSentenceId"&whereValue=1&orderBy="bookId"&needPostSelect=true&postWhere="UploadVersion"&postWhereValue=1
         [HttpGet("BooksIds")]
         public async Task<ActionResult<AllBooksIds>> GetBooksIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] string orderBy, [FromQuery] bool needPostSelect, [FromQuery] string postWhere, [FromQuery] int postWhereValue)
         {
             //db.StringSet(BitConverter.GetBytes(5), "asdf");
-
+            
             bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy);
 
             if (areWhereOrderByRealProperties)
