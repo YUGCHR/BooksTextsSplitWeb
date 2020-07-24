@@ -21,7 +21,7 @@ const selectTextsReducer = (state = initialState, action) => {
     case SET_ALL_BOOKS_IDS: {
       // console.log('state', state.allBookIdsWithNames);
       // console.log('copy', stateCopy.allBookIdsWithNames);
-      return { ...state, version1BookNamesSortedByIds: action.version1BookNamesSortedByIds, allBookNamesSortedByIds: action.allBookNamesSortedByIds };
+      return { ...state, version1BookNamesSortedByIds: action.version1BookNamesSortedByIds };
     }
     case SET_SENTENCES: {
       return { ...state, engSentences: action.sentences };
@@ -40,7 +40,7 @@ const selectTextsReducer = (state = initialState, action) => {
   }
 };
 
-export const setAllBookIdsWithNames = (version1BookNamesSortedByIds, allBookNamesSortedByIds) => ({ type: SET_ALL_BOOKS_IDS, version1BookNamesSortedByIds, allBookNamesSortedByIds });
+export const setAllBookIdsWithNames = (version1BookNamesSortedByIds) => ({ type: SET_ALL_BOOKS_IDS, version1BookNamesSortedByIds });
 export const setSentences = (sentences, languageId) => ({ type: SET_SENTENCES, sentences, languageId });
 export const toggleIsSelectingBookId = (isSelectingBookId) => ({ type: TOGGLE_IS_SELECTING_BOOK_ID, isSelectingBookId });
 export const toggleIsSelectingUploadVersion = (isSelectingUploadVersion) => ({ type: TOGGLE_IS_SELECTING_UPLOAD_VERSION, isSelectingUploadVersion });

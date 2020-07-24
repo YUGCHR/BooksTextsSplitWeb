@@ -32,10 +32,10 @@ class SelectTextsContainerAPI extends React.Component {
         this.props.toggleIsFetching(false);
         console.log(Response);
         console.log("axios: sending this to props:", Response.data.version1BookNamesSortedByIds);
-        this.props.setAllBookIdsWithNames(Response.data.version1BookNamesSortedByIds, Response.data.allBookNamesSortedByIds);
+        this.props.setAllBookIdsWithNames(Response.data.version1BookNamesSortedByIds);
         console.log("axios: finished sending to props");
         let s = Response.data.sortedBooksIdsLength;
-        //debugger;
+        debugger;
         return s;
       })
       .catch(this.failureCallback);

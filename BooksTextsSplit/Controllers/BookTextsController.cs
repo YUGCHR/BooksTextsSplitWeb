@@ -13,6 +13,7 @@ using System.Reflection;
 using System.ComponentModel.Design;
 using System.Data;
 using StackExchange.Redis;
+using CachingFramework.Redis;
 
 namespace BooksTextsSplit.Controllers
 {
@@ -21,12 +22,14 @@ namespace BooksTextsSplit.Controllers
 
     public class BookTextsController : ControllerBase
     {
+        private readonly RedisContext cache;
         private readonly ICosmosDbService _context;
-        private readonly IDatabase _db;
-        public BookTextsController(ICosmosDbService cosmosDbService, IDatabase db)
+       // private readonly IDatabase _db;
+        public BookTextsController(ICosmosDbService cosmosDbService, RedisContext c) //, IDatabase db)
         {
+            cache = c;
             _context = cosmosDbService;
-            _db = db;
+            //_db = db;
         }
 
         // GET: api/Count/        
@@ -92,7 +95,7 @@ namespace BooksTextsSplit.Controllers
 
         // GET: api/BookTexts/FromDbWhere/?where="bookSentenceId"&whereValue=1
         [HttpGet("FromDbWhere")]
-        public async Task<ActionResult<AllBooksIds>> GetFromDbWhere([FromQuery] string where, [FromQuery] int whereValue)
+        public async Task<ActionResult<BooksNamesListExistInDb>> GetFromDbWhere([FromQuery] string where, [FromQuery] int whereValue)
         {
             //db.StringSet(BitConverter.GetBytes(5), "asdf");
 
@@ -100,25 +103,51 @@ namespace BooksTextsSplit.Controllers
 
             if (areWhereOrderByRealProperties)
             {
-                List<TextSentence> requestedSelectResult = (await _context.GetItemsAsync($"SELECT * FROM c WHERE c.{where} = {whereValue}")).ToList();
+                List<TextSentence> requestedSelectResult = (await _context.GetItemsAsync
+                    ($"SELECT * FROM c WHERE c.{where} = {whereValue}"))
+                    .OrderBy(li => li.BookId)
+                    .ThenBy(uv => uv.UploadVersion)
+                    .ThenBy(bi => bi.LanguageId)
+                    .ToList();
 
-                // 1. set requestedSelectResult to Redis with key "bookSentenceId"
-                // 2. set requestedSelectResult to Redis with key "bookId"
+                // Set List to Redis
+                string bookSentenceIdKey = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookSentenceId:1
+               // RedisContext cache = new RedisContext();
+                cache.Cache.SetObject(bookSentenceIdKey, requestedSelectResult, TimeSpan.FromDays(1));
+                //_db.StringSet(bookSentenceIdKey, "requestedSelectResult");
+                //List<TextSentence> user = cache.Cache.GetObject<List<TextSentence>>(bookSentenceIdKey);
 
-                IEnumerable<IGrouping<int, TextSentence>> pairings = requestedSelectResult.GroupBy(r => r.BookId);
+                int startUploadVersion = 1;
+                string uploadVersionKey = "uploadVersion" + ":" + startUploadVersion.ToString(); // list с ключом uploadVersion:1 - выбрать из предыдущего where uploadVersion = 1
+                // UploadVersion will start from 1 and all versions == 0 it is needs to delete
+                List<TextSentence> toSelectBookNameFromAll = requestedSelectResult.Where(r => r.UploadVersion == startUploadVersion).ToList();
+                //foreach (var r in requestedSelectResult)
+                //{
+                //    if (r.UploadVersion == booksNamesUploadVersion) //it needs to get property name from postWhere
+                //    {
+                //        toSelectBookNameFromAll.Add(r);
+                //    }
+                //}
+                cache.Cache.SetObject(uploadVersionKey, toSelectBookNameFromAll, TimeSpan.FromDays(1));
 
-                AllBooksIds foundbooksIds = new AllBooksIds
+                // !!! to add newKey - List like BooksNamesListExistInDb - grouped by BookId, inside it List grouped by LanguageId and inside sorted by UploadVersion
+
+                string foundbooksIdsKey = "foundbooksIds" + ":" + startUploadVersion.ToString(); // list с ключом foundbooksIds:1
+                IEnumerable<IGrouping<int, TextSentence>> pairings = toSelectBookNameFromAll.GroupBy(r => r.BookId);
+                BooksNamesListExistInDb foundbooksIds = new BooksNamesListExistInDb
                 {
-                    Version1BookNamesSortedByIds = pairings.Select(p => new BookEntry
+                    Version1BookNamesSortedByIds = pairings.Select(p => new SentencesSortByLanguageIdSortByBookId
                     {
                         BookId = p.Key,
-                        BookNames = p.OrderBy(s => s.LanguageId).Select(s => new SentenceWithId { LanguageId = s.LanguageId, Sentence = s }).ToList()
+                        BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new SentenceSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()
                     }
-                    ).ToList(),
-                    AllBookNamesSortedByIds = requestedSelectResult.OrderBy(li => li.BookId).ThenBy(uv => uv.UploadVersion).ThenBy(bi => bi.LanguageId).ToList()
+                    ).ToList()                    
                 };
+                cache.Cache.SetObject(foundbooksIdsKey, foundbooksIds, TimeSpan.FromDays(1));
 
-                return foundbooksIds;
+                BooksNamesListExistInDb user = cache.Cache.GetObject<BooksNamesListExistInDb>(foundbooksIdsKey);
+
+                return user;
             }
             else
             {
@@ -129,10 +158,10 @@ namespace BooksTextsSplit.Controllers
 
         // GET: api/BookTexts/BooksIds/?where="bookSentenceId"&whereValue=1&orderBy="bookId"&needPostSelect=true&postWhere="UploadVersion"&postWhereValue=1
         [HttpGet("BooksIds")]
-        public async Task<ActionResult<AllBooksIds>> GetBooksIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] string orderBy, [FromQuery] bool needPostSelect, [FromQuery] string postWhere, [FromQuery] int postWhereValue)
+        public async Task<ActionResult<BooksNamesListExistInDb>> GetBooksIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] string orderBy, [FromQuery] bool needPostSelect, [FromQuery] string postWhere, [FromQuery] int postWhereValue)
         {
             //db.StringSet(BitConverter.GetBytes(5), "asdf");
-            
+
             bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy);
 
             if (areWhereOrderByRealProperties)
@@ -157,18 +186,16 @@ namespace BooksTextsSplit.Controllers
                 }
 
                 IEnumerable<IGrouping<int, TextSentence>> pairings = requestedSelectResultSorted.GroupBy(r => r.BookId);
-
-                AllBooksIds foundbooksIds = new AllBooksIds
+                BooksNamesListExistInDb foundbooksIds = new BooksNamesListExistInDb
                 {
-                    Version1BookNamesSortedByIds = pairings.Select(p => new BookEntry
+                    Version1BookNamesSortedByIds = pairings.Select(p => new SentencesSortByLanguageIdSortByBookId
                     {
                         BookId = p.Key,
-                        BookNames = p.OrderBy(s => s.LanguageId).Select(s => new SentenceWithId { LanguageId = s.LanguageId, Sentence = s }).ToList()
+                        BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new SentenceSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()
                     }
-                    ).ToList(),
-                    AllBookNamesSortedByIds = requestedSelectResult.OrderBy(li => li.BookId).ThenBy(uv => uv.UploadVersion).ThenBy(bi => bi.LanguageId).ToList()
+                    ).ToList()
                 };
-            
+
                 return foundbooksIds;
             }
             else
@@ -178,7 +205,7 @@ namespace BooksTextsSplit.Controllers
             //return new UploadedVersions(  ( await _context.GetItemsAsync("SELECT * FROM c")).Select(s => s.UploadVersion).ToArray()   );
         }
 
-        public static object GetProperty(object obj, string propertyName) 
+        public static object GetProperty(object obj, string propertyName)
         {
             PropertyInfo pinfo = obj.GetType().GetProperty(propertyName);
 
@@ -186,7 +213,7 @@ namespace BooksTextsSplit.Controllers
             return pinfo?.GetValue(obj);
         }
 
-        public static object GetPropertyGeneric<T>(T obj, string propertyName) 
+        public static object GetPropertyGeneric<T>(T obj, string propertyName)
         {
             PropertyInfo pinfo = typeof(T).GetProperty(propertyName);
 
@@ -277,7 +304,7 @@ namespace BooksTextsSplit.Controllers
                 TextSentence[] textSentences = bookAnalysis.AnalyseTextBook();
                 int textSentencesLength = textSentences.Length;
                 string json = JsonConvert.SerializeObject(textSentences);
-                int currentUploadingVersion = lastUploadedVersion + 1;               
+                int currentUploadingVersion = lastUploadedVersion + 1;
 
                 try
                 {

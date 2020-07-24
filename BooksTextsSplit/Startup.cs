@@ -11,6 +11,8 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using BooksTextsSplit.Services;
 using StackExchange.Redis;
+using CachingFramework.Redis;
+using System.Diagnostics.Contracts;
 
 namespace BooksTextsSplit
 {
@@ -40,7 +42,10 @@ namespace BooksTextsSplit
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
 
-            services.AddSingleton<IDatabase>(ConnectionMultiplexer.Connect("localhost,abortConnect=false").GetDatabase());
+            ConnectionMultiplexer muxer = ConnectionMultiplexer.Connect("localhost");
+            //services.AddSingleton<IDatabase>(muxer.GetDatabase());
+            //services.AddSingleton<CachingFramework.Redis.Contracts.Providers.ICacheProvider>(muxer);
+            services.AddSingleton<RedisContext>(new RedisContext(muxer));
         }
 
         /// <summary>
