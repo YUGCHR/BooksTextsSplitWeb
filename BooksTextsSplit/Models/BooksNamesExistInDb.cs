@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BooksTextsSplit.Models
 {
-    public class BooksNamesListExistInDb
+    public class BooksNamesExistInDb
     {
         public List<SentencesSortByLanguageIdSortByBookId> Version1BookNamesSortedByIds { get; set; }
         //public List<TextSentence> AllBookNamesSortedByIds { get; set; }        

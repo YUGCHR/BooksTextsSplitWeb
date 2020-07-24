@@ -95,7 +95,7 @@ namespace BooksTextsSplit.Controllers
 
         // GET: api/BookTexts/FromDbWhere/?where="bookSentenceId"&whereValue=1
         [HttpGet("FromDbWhere")]
-        public async Task<ActionResult<BooksNamesListExistInDb>> GetFromDbWhere([FromQuery] string where, [FromQuery] int whereValue)
+        public async Task<ActionResult<BooksNamesExistInDb>> GetFromDbWhere([FromQuery] string where, [FromQuery] int whereValue)
         {
             //db.StringSet(BitConverter.GetBytes(5), "asdf");
 
@@ -134,7 +134,7 @@ namespace BooksTextsSplit.Controllers
 
                 string foundbooksIdsKey = "foundbooksIds" + ":" + startUploadVersion.ToString(); // list с ключом foundbooksIds:1
                 IEnumerable<IGrouping<int, TextSentence>> pairings = toSelectBookNameFromAll.GroupBy(r => r.BookId);
-                BooksNamesListExistInDb foundbooksIds = new BooksNamesListExistInDb
+                BooksNamesExistInDb foundbooksIds = new BooksNamesExistInDb
                 {
                     Version1BookNamesSortedByIds = pairings.Select(p => new SentencesSortByLanguageIdSortByBookId
                     {
@@ -145,7 +145,7 @@ namespace BooksTextsSplit.Controllers
                 };
                 cache.Cache.SetObject(foundbooksIdsKey, foundbooksIds, TimeSpan.FromDays(1));
 
-                BooksNamesListExistInDb user = cache.Cache.GetObject<BooksNamesListExistInDb>(foundbooksIdsKey);
+                BooksNamesExistInDb user = cache.Cache.GetObject<BooksNamesExistInDb>(foundbooksIdsKey);
 
                 return user;
             }
@@ -158,7 +158,7 @@ namespace BooksTextsSplit.Controllers
 
         // GET: api/BookTexts/BooksIds/?where="bookSentenceId"&whereValue=1&orderBy="bookId"&needPostSelect=true&postWhere="UploadVersion"&postWhereValue=1
         [HttpGet("BooksIds")]
-        public async Task<ActionResult<BooksNamesListExistInDb>> GetBooksIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] string orderBy, [FromQuery] bool needPostSelect, [FromQuery] string postWhere, [FromQuery] int postWhereValue)
+        public async Task<ActionResult<BooksNamesExistInDb>> GetBooksIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] string orderBy, [FromQuery] bool needPostSelect, [FromQuery] string postWhere, [FromQuery] int postWhereValue)
         {
             //db.StringSet(BitConverter.GetBytes(5), "asdf");
 
@@ -186,7 +186,7 @@ namespace BooksTextsSplit.Controllers
                 }
 
                 IEnumerable<IGrouping<int, TextSentence>> pairings = requestedSelectResultSorted.GroupBy(r => r.BookId);
-                BooksNamesListExistInDb foundbooksIds = new BooksNamesListExistInDb
+                BooksNamesExistInDb foundbooksIds = new BooksNamesExistInDb
                 {
                     Version1BookNamesSortedByIds = pairings.Select(p => new SentencesSortByLanguageIdSortByBookId
                     {
