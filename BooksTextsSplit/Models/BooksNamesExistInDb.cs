@@ -7,17 +7,17 @@ namespace BooksTextsSplit.Models
 {
     public class BooksNamesExistInDb
     {
-        public List<SentencesSortByLanguageIdSortByBookId> Version1BookNamesSortedByIds { get; set; }
+        public List<BooksNamesSortByLanguageIdSortByBookId> BookNamesVersion1SortedByIds { get; set; }
         //public List<TextSentence> AllBookNamesSortedByIds { get; set; }        
     }
 
-    public class SentencesSortByLanguageIdSortByBookId
+    public class BooksNamesSortByLanguageIdSortByBookId
     {
         public int BookId { get; set; }
-        public IList<SentenceSortByLanguageId> BooksDescriptions { get; set; }
+        public IList<BooksNamesSortByLanguageId> BooksDescriptions { get; set; }
     }
 
-    public class SentenceSortByLanguageId
+    public class BooksNamesSortByLanguageId
     {
         public int LanguageId { get; set; }
         public TextSentence Sentence { get; set; }

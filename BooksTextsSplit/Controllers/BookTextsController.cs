@@ -129,25 +129,44 @@ namespace BooksTextsSplit.Controllers
                 //    }
                 //}
                 cache.Cache.SetObject(uploadVersionKey, toSelectBookNameFromAll, TimeSpan.FromDays(1));
-
-                // !!! to add newKey - List like BooksNamesListExistInDb - grouped by BookId, inside it List grouped by LanguageId and inside sorted by UploadVersion
-
+                                
                 string foundbooksIdsKey = "foundbooksIds" + ":" + startUploadVersion.ToString(); // list с ключом foundbooksIds:1
                 IEnumerable<IGrouping<int, TextSentence>> pairings = toSelectBookNameFromAll.GroupBy(r => r.BookId);
                 BooksNamesExistInDb foundbooksIds = new BooksNamesExistInDb
                 {
-                    Version1BookNamesSortedByIds = pairings.Select(p => new SentencesSortByLanguageIdSortByBookId
+                    BookNamesVersion1SortedByIds = pairings.Select(p => new BooksNamesSortByLanguageIdSortByBookId
                     {
                         BookId = p.Key,
-                        BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new SentenceSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()
+                        BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new BooksNamesSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()
                     }
                     ).ToList()                    
                 };
                 cache.Cache.SetObject(foundbooksIdsKey, foundbooksIds, TimeSpan.FromDays(1));
 
-                BooksNamesExistInDb user = cache.Cache.GetObject<BooksNamesExistInDb>(foundbooksIdsKey);
+                BooksNamesExistInDb getFoundbooksIds = cache.Cache.GetObject<BooksNamesExistInDb>(foundbooksIdsKey);
 
-                return user;
+                // !!! to add newKey - List like BooksNamesListExistInDb - grouped by BookId, inside it List grouped by LanguageId and inside sorted by UploadVersion
+                string foundBooksVersionsKey = "foundBooksVersions"; // list с ключом foundBooksVersions
+                IEnumerable<IGrouping<int, TextSentence>> allVersionsPairings = requestedSelectResult.GroupBy(r => r.BookId);
+                BooksVersionsExistInDb foundbooksVersion = new BooksVersionsExistInDb
+                {
+                    AllVersionsOfBooksNames = allVersionsPairings.Select(p => new BooksVersionsGroupedByLanguageIdGroupedByBookId
+                    {
+                        BookId = p.Key,
+                        BooksDescriptionsVersions = p.GroupBy(s => s.LanguageId).Select(s => new BooksVersionsGroupedByLanguageId
+                        {
+                            LanguageId = s.Key,
+                            Sentences = p.Where(sts => sts.LanguageId == p.Key).OrderBy(v => v.UploadVersion).ToList()
+                        }).ToList()
+                    }
+                    ).ToList()
+                };
+
+                cache.Cache.SetObject(foundBooksVersionsKey, foundbooksVersion, TimeSpan.FromDays(1));
+
+                //BooksVersionsExistInDb user = cache.Cache.GetObject<BooksVersionsExistInDb>(foundBooksVersionsKey);
+
+                return getFoundbooksIds;
             }
             else
             {
@@ -156,6 +175,18 @@ namespace BooksTextsSplit.Controllers
             //return new UploadedVersions(  ( await _context.GetItemsAsync("SELECT * FROM c")).Select(s => s.UploadVersion).ToArray()   );
         }
 
+        // GET: api/BookTexts/BookNameVersions/?where="bookId"&whereValue=1
+        [HttpGet("BookNameVersions")]
+        public ActionResult<BooksVersionsExistInDb> GetBookNameVersions([FromQuery] string where, [FromQuery] int whereValue) // async
+        {
+            string foundBooksVersionsKey = "foundBooksVersions";
+            BooksVersionsExistInDb getFoundbooksVersion = (cache.Cache.GetObject<BooksVersionsExistInDb>(foundBooksVersionsKey));
+            
+            return getFoundbooksVersion;
+        }
+
+
+        // SAMPLE with AreParamsRealTextSentenceProperties check
         // GET: api/BookTexts/BooksIds/?where="bookSentenceId"&whereValue=1&orderBy="bookId"&needPostSelect=true&postWhere="UploadVersion"&postWhereValue=1
         [HttpGet("BooksIds")]
         public async Task<ActionResult<BooksNamesExistInDb>> GetBooksIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] string orderBy, [FromQuery] bool needPostSelect, [FromQuery] string postWhere, [FromQuery] int postWhereValue)
@@ -186,12 +217,13 @@ namespace BooksTextsSplit.Controllers
                 }
 
                 IEnumerable<IGrouping<int, TextSentence>> pairings = requestedSelectResultSorted.GroupBy(r => r.BookId);
+
                 BooksNamesExistInDb foundbooksIds = new BooksNamesExistInDb
                 {
-                    Version1BookNamesSortedByIds = pairings.Select(p => new SentencesSortByLanguageIdSortByBookId
+                    BookNamesVersion1SortedByIds = pairings.Select(p => new BooksNamesSortByLanguageIdSortByBookId
                     {
                         BookId = p.Key,
-                        BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new SentenceSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()
+                        BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new BooksNamesSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()
                     }
                     ).ToList()
                 };
