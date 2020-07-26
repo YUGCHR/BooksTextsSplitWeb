@@ -131,10 +131,10 @@ namespace BooksTextsSplit.Controllers
                 cache.Cache.SetObject(uploadVersionKey, toSelectBookNameFromAll, TimeSpan.FromDays(1));
                                 
                 string foundbooksIdsKey = "foundbooksIds" + ":" + startUploadVersion.ToString(); // list с ключом foundbooksIds:1
-                IEnumerable<IGrouping<int, TextSentence>> pairings = toSelectBookNameFromAll.GroupBy(r => r.BookId);
+                IEnumerable<IGrouping<int, TextSentence>> allBooksNamesPairings = toSelectBookNameFromAll.GroupBy(r => r.BookId);
                 BooksNamesExistInDb foundbooksIds = new BooksNamesExistInDb
                 {
-                    BookNamesVersion1SortedByIds = pairings.Select(p => new BooksNamesSortByLanguageIdSortByBookId
+                    BookNamesVersion1SortedByIds = allBooksNamesPairings.Select(p => new BooksNamesSortByLanguageIdSortByBookId
                     {
                         BookId = p.Key,
                         BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new BooksNamesSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()
@@ -148,21 +148,17 @@ namespace BooksTextsSplit.Controllers
                 // !!! to add newKey - List like BooksNamesListExistInDb - grouped by BookId, inside it List grouped by LanguageId and inside sorted by UploadVersion
                 string foundBooksVersionsKey = "foundBooksVersions"; // list с ключом foundBooksVersions
                 IEnumerable<IGrouping<int, TextSentence>> allVersionsPairings = requestedSelectResult.GroupBy(r => r.BookId);
-                BooksVersionsExistInDb foundbooksVersion = new BooksVersionsExistInDb
+                BooksVersionsExistInDb foundBooksVersion = new BooksVersionsExistInDb
                 {
-                    AllVersionsOfBooksNames = allVersionsPairings.Select(p => new BooksVersionsGroupedByLanguageIdGroupedByBookId
+                    AllVersionsOfBooksNames = allVersionsPairings.Select(p => new BooksVersionsGroupedByBookId
                     {
                         BookId = p.Key,
-                        BooksDescriptionsVersions = p.GroupBy(s => s.LanguageId).Select(s => new BooksVersionsGroupedByLanguageId
-                        {
-                            LanguageId = s.Key,
-                            Sentences = p.Where(sts => sts.LanguageId == p.Key).OrderBy(v => v.UploadVersion).ToList()
-                        }).ToList()
+                        Sentences = p.OrderBy(s => s.LanguageId).ThenBy(s => s.UploadVersion).ToList()
                     }
                     ).ToList()
                 };
 
-                cache.Cache.SetObject(foundBooksVersionsKey, foundbooksVersion, TimeSpan.FromDays(1));
+                cache.Cache.SetObject(foundBooksVersionsKey, foundBooksVersion, TimeSpan.FromDays(1));
 
                 //BooksVersionsExistInDb user = cache.Cache.GetObject<BooksVersionsExistInDb>(foundBooksVersionsKey);
 
