@@ -183,7 +183,7 @@ namespace BooksTextsSplit.Controllers
         public async Task<ActionResult<BooksNamesExistInDb>> GetBooksNamesIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int startUploadVersion)
         {
             string foundbooksIdsKey = "foundbooksIds" + ":" + startUploadVersion.ToString(); // list с ключом foundbooksIds:1
-            //var user = context.Cache.FetchObject<User>(redisKey, () => GetUserFromDatabase(id));
+            //var user = context.Cache.FetchObject<User>(redisKey, () => GetUserFromDatabase(id)); - fetch data from Db if it is not in cache
             BooksNamesExistInDb getFoundbooksIds = await (cache.Cache.GetObjectAsync<BooksNamesExistInDb>(foundbooksIdsKey));
 
             return getFoundbooksIds;
