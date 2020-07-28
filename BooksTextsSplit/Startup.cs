@@ -13,6 +13,8 @@ using BooksTextsSplit.Services;
 using StackExchange.Redis;
 using CachingFramework.Redis;
 using System.Diagnostics.Contracts;
+using System;
+using System.Diagnostics;
 
 namespace BooksTextsSplit
 {
@@ -41,11 +43,19 @@ namespace BooksTextsSplit
             });
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-
-            ConnectionMultiplexer muxer = ConnectionMultiplexer.Connect("localhost");
+            try
+            {
+                ConnectionMultiplexer muxer = ConnectionMultiplexer.Connect("localhost");
+                services.AddSingleton<RedisContext>(new RedisContext(muxer));
+            }
+            catch (Exception ex)
+            {
+                string Message = ex.Message;
+                Console.WriteLine("\n\n Redis client did not start: \n\n" + Message + "\n\n");
+            }
             //services.AddSingleton<IDatabase>(muxer.GetDatabase());
             //services.AddSingleton<CachingFramework.Redis.Contracts.Providers.ICacheProvider>(muxer);
-            services.AddSingleton<RedisContext>(new RedisContext(muxer));
+
         }
 
         /// <summary>

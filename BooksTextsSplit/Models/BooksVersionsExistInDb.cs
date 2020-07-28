@@ -7,14 +7,21 @@ namespace BooksTextsSplit.Models
 {
     public class BooksVersionsExistInDb
     {
-        public List<BooksVersionsGroupedByBookId> AllVersionsOfBooksNames { get; set; }
+        public List<BooksVersionsGroupedByBookIdGroupByLanguageId> AllVersionsOfBooksNames { get; set; }
         //public List<TextSentence> AllBookNamesSortedByIds { get; set; }        
     }
 
-    public class BooksVersionsGroupedByBookId
+    public class BooksVersionsGroupedByBookIdGroupByLanguageId
     {
         public int BookId { get; set; }
+        public IEnumerable<IGrouping<int, TextSentence>> BookVersionsDescriptions { get; set; }
+    }
+
+    public class BooksVersionsGroupByLanguageId
+    {
+        public int LanguageId { get; set; }
         public IList<TextSentence> Sentences { get; set; }
+        
     }
 }
 

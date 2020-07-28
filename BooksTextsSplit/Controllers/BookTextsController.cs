@@ -24,7 +24,7 @@ namespace BooksTextsSplit.Controllers
     {
         private readonly RedisContext cache;
         private readonly ICosmosDbService _context;
-       // private readonly IDatabase _db;
+        // private readonly IDatabase _db;
         public BookTextsController(ICosmosDbService cosmosDbService, RedisContext c) //, IDatabase db)
         {
             cache = c;
@@ -112,7 +112,7 @@ namespace BooksTextsSplit.Controllers
 
                 // Set List to Redis
                 string bookSentenceIdKey = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookSentenceId:1
-               // RedisContext cache = new RedisContext();
+                                                                                // RedisContext cache = new RedisContext();
                 cache.Cache.SetObject(bookSentenceIdKey, requestedSelectResult, TimeSpan.FromDays(1));
                 //_db.StringSet(bookSentenceIdKey, "requestedSelectResult");
                 //List<TextSentence> user = cache.Cache.GetObject<List<TextSentence>>(bookSentenceIdKey);
@@ -129,7 +129,7 @@ namespace BooksTextsSplit.Controllers
                 //    }
                 //}
                 cache.Cache.SetObject(uploadVersionKey, toSelectBookNameFromAll, TimeSpan.FromDays(1));
-                                
+
                 string foundbooksIdsKey = "foundbooksIds" + ":" + startUploadVersion.ToString(); // list с ключом foundbooksIds:1
                 IEnumerable<IGrouping<int, TextSentence>> allBooksNamesPairings = toSelectBookNameFromAll.GroupBy(r => r.BookId);
                 BooksNamesExistInDb foundbooksIds = new BooksNamesExistInDb
@@ -139,7 +139,7 @@ namespace BooksTextsSplit.Controllers
                         BookId = p.Key,
                         BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new BooksNamesSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()
                     }
-                    ).ToList()                    
+                    ).ToList()
                 };
                 cache.Cache.SetObject(foundbooksIdsKey, foundbooksIds, TimeSpan.FromDays(1));
 
@@ -148,17 +148,25 @@ namespace BooksTextsSplit.Controllers
                 // !!! to add newKey - List like BooksNamesListExistInDb - grouped by BookId, inside it List grouped by LanguageId and inside sorted by UploadVersion
                 string foundBooksVersionsKey = "foundBooksVersions"; // list с ключом foundBooksVersions
                 IEnumerable<IGrouping<int, TextSentence>> allVersionsPairings = requestedSelectResult.GroupBy(r => r.BookId);
-                BooksVersionsExistInDb foundBooksVersion = new BooksVersionsExistInDb
-                {
-                    AllVersionsOfBooksNames = allVersionsPairings.Select(p => new BooksVersionsGroupedByBookId
-                    {
-                        BookId = p.Key,
-                        Sentences = p.OrderBy(s => s.LanguageId).ThenBy(s => s.UploadVersion).ToList()
-                    }
-                    ).ToList()
-                };
 
-                cache.Cache.SetObject(foundBooksVersionsKey, foundBooksVersion, TimeSpan.FromDays(1));
+                int stop = 1;
+
+                //BooksVersionsExistInDb foundBooksVersion = new BooksVersionsExistInDb
+                //{
+                //    AllVersionsOfBooksNames = allVersionsPairings.Select(p => new BooksVersionsGroupedByBookIdGroupByLanguageId
+                //    {
+                //        BookId = p.Key,
+                //        BookVersionsDescriptions = p.OrderBy(s => s.LanguageId).GroupBy(s => s.LanguageId).Select(g => new BooksVersionsGroupByLanguageId
+                //        {
+                //            LanguageId = g.Key,
+                //            Sentences = g.OrderBy(v => v.UploadVersion).Select(s => new TextSentence { NewSentence = s })
+                //        }
+                //        ).ToList()
+                //    }
+                //    ).ToList()
+                //};
+
+                //cache.Cache.SetObject(foundBooksVersionsKey, foundBooksVersion, TimeSpan.FromDays(1));
 
                 //BooksVersionsExistInDb user = cache.Cache.GetObject<BooksVersionsExistInDb>(foundBooksVersionsKey);
 
@@ -177,7 +185,7 @@ namespace BooksTextsSplit.Controllers
         {
             string foundBooksVersionsKey = "foundBooksVersions";
             BooksVersionsExistInDb getFoundbooksVersion = (cache.Cache.GetObject<BooksVersionsExistInDb>(foundBooksVersionsKey));
-            
+
             return getFoundbooksVersion;
         }
 
