@@ -21,6 +21,7 @@ class SelectTextsContainerAPI extends React.Component {
     let where = "bookSentenceId";
     let whereValue = 1;
     let orderBy = "bookId";
+    let startUpVersion = 1;
     
     //api/BookTexts/BooksIds/?where=bookSentenceId&whereValue=1&orderBy=bookId&needPostSelect=true&postWhere=UploadVersion&postWhereValue=1
     
@@ -28,8 +29,8 @@ class SelectTextsContainerAPI extends React.Component {
     //return Axios.get(`api/BookTexts/BooksIds/?where=${where}&whereValue=${whereValue}&orderBy=${orderBy}`)
 
     //FromDbWhere/?where="bookSentenceId"&whereValue=1
-    return Axios.get(`api/BookTexts/FromDbWhere/?where=${where}&whereValue=${whereValue}`)
-      .then((Response) => {
+    return Axios.get(`api/BookTexts/BooksNamesIds/?where=${where}&whereValue=${whereValue}&startUploadVersion=${startUpVersion}`)
+      .then((Response) => { 
         this.props.toggleIsFetching(false);
         console.log(Response);
         console.log("axios: sending this to props:", Response.data.bookNamesVersion1SortedByIds);
