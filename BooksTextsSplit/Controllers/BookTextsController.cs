@@ -147,26 +147,27 @@ namespace BooksTextsSplit.Controllers
 
                 // !!! to add newKey - List like BooksNamesListExistInDb - grouped by BookId, inside it List grouped by LanguageId and inside sorted by UploadVersion
                 string foundBooksVersionsKey = "foundBooksVersions"; // list с ключом foundBooksVersions
+
                 IEnumerable<IGrouping<int, TextSentence>> allVersionsPairings = requestedSelectResult.GroupBy(r => r.BookId);
 
-                int stop = 1;
+                BooksVersionsExistInDb foundBooksVersion = new BooksVersionsExistInDb
+                {
+                    AllVersionsOfBooksNames = allVersionsPairings.Select(p => new BooksVersionsGroupedByBookIdGroupByLanguageId
+                    {
+                        BookId = p.Key,
+                        BookVersionsDescriptions = p.GroupBy(l => l.LanguageId).Select(g => new BooksVersionsGroupByLanguageId
+                        {
+                            LanguageId = g.Key,
+                            Sentences = g.OrderBy(v => v.UploadVersion).Select(t => t).ToList()
+                        }
+                        ).OrderBy(s => s.LanguageId).ToList()
+                    }
+                    ).ToList()
+                };
 
-                //BooksVersionsExistInDb foundBooksVersion = new BooksVersionsExistInDb
-                //{
-                //    AllVersionsOfBooksNames = allVersionsPairings.Select(p => new BooksVersionsGroupedByBookIdGroupByLanguageId
-                //    {
-                //        BookId = p.Key,
-                //        BookVersionsDescriptions = p.OrderBy(s => s.LanguageId).GroupBy(s => s.LanguageId).Select(g => new BooksVersionsGroupByLanguageId
-                //        {
-                //            LanguageId = g.Key,
-                //            Sentences = g.OrderBy(v => v.UploadVersion).Select(s => new TextSentence { NewSentence = s })
-                //        }
-                //        ).ToList()
-                //    }
-                //    ).ToList()
-                //};
+                cache.Cache.SetObject(foundBooksVersionsKey, foundBooksVersion, TimeSpan.FromDays(1));
 
-                //cache.Cache.SetObject(foundBooksVersionsKey, foundBooksVersion, TimeSpan.FromDays(1));
+                //IEnumerable<IGrouping<int, TextSentence>> groupedByLanguageIds = foundBooksVersion.AllVersionsOfBooksNames.;
 
                 //BooksVersionsExistInDb user = cache.Cache.GetObject<BooksVersionsExistInDb>(foundBooksVersionsKey);
 

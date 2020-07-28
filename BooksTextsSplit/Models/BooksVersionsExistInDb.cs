@@ -14,14 +14,13 @@ namespace BooksTextsSplit.Models
     public class BooksVersionsGroupedByBookIdGroupByLanguageId
     {
         public int BookId { get; set; }
-        public IEnumerable<IGrouping<int, TextSentence>> BookVersionsDescriptions { get; set; }
+        public List<BooksVersionsGroupByLanguageId> BookVersionsDescriptions { get; set; } 
     }
 
     public class BooksVersionsGroupByLanguageId
     {
         public int LanguageId { get; set; }
         public IList<TextSentence> Sentences { get; set; }
-        
     }
 }
 
