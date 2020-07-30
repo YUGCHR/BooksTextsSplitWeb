@@ -93,6 +93,36 @@ namespace BooksTextsSplit.Controllers
             return bookText;
         }
         
+        //------------------------------------------------------------------------------------
+
+        // GET: api/BookTexts/BooksNamesIds/?where="bookId"&whereValue=1&startUploadVersion=1 - fetching list of all BookIds existing in Db
+        [HttpGet("BooksNamesIds")]
+        public async Task<ActionResult<BooksNamesExistInDb>> GetBooksNamesIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int startUploadVersion)
+        {
+            return await FetchBooksNamesIds(where, whereValue, startUploadVersion);
+        }
+
+        public async Task<BooksNamesExistInDb> FetchBooksNamesIds(string where, int whereValue, int startUploadVersion)
+        {
+            string bookSentenceIdKey = where + ":" + whereValue.ToString();
+            List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesSetFromDb(where, whereValue));
+
+            List<TextSentence> toSelectBookNameFromAll = requestedSelectResult.Where(r => r.UploadVersion == startUploadVersion).ToList();
+
+            IEnumerable<IGrouping<int, TextSentence>> allBooksNamesPairings = toSelectBookNameFromAll.GroupBy(r => r.BookId);
+            BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb
+            {
+                BookNamesVersion1SortedByIds = allBooksNamesPairings.Select(p => new BooksNamesSortByLanguageIdSortByBookId
+                {
+                    BookId = p.Key,
+                    BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new BooksNamesSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()
+                }
+                ).ToList()
+            };
+
+            return foundBooksIds;
+        }
+
         public async Task<List<TextSentence>> FetchBooksNamesSetFromDb(string where, int whereValue)
         {
             // bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy); - it is needs to add checking of parameters existing 
@@ -111,55 +141,17 @@ namespace BooksTextsSplit.Controllers
             return requestedSelectResult;
         }
 
-        // GET: api/BookTexts/BooksNamesIds/?where="bookId"&whereValue=1&startUploadVersion=1 - fetching list of all BookIds existing in Db
-        [HttpGet("BooksNamesIds")]
-        public async Task<ActionResult<BooksNamesExistInDb>> GetBooksNamesIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int startUploadVersion)
-        {
-            string bookSentenceIdKey = where + ":" + whereValue.ToString();
-            var requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesSetFromDb(where, whereValue));
-
-            //int startUploadVersion = 1;
-            //string uploadVersionKey = "uploadVersion" + ":" + startUploadVersion.ToString(); 
-            // list с ключом uploadVersion:1 - выбрать из предыдущего where uploadVersion = 1                                                                                             
-            // UploadVersion will start from 1 and all versions == 0 it is needs to delete
-
-            List<TextSentence> toSelectBookNameFromAll = requestedSelectResult.Where(r => r.UploadVersion == startUploadVersion).ToList();
-
-            //string foundbooksIdsKey = "foundbooksIds" + ":" + startUploadVersion.ToString(); // list с ключом foundbooksIds:1
-
-            IEnumerable<IGrouping<int, TextSentence>> allBooksNamesPairings = toSelectBookNameFromAll.GroupBy(r => r.BookId);
-            BooksNamesExistInDb foundbooksIds = new BooksNamesExistInDb
-            {
-                BookNamesVersion1SortedByIds = allBooksNamesPairings.Select(p => new BooksNamesSortByLanguageIdSortByBookId
-                {
-                    BookId = p.Key,
-                    BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new BooksNamesSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()
-                }
-                ).ToList()
-            };
-
-            //await cache.Cache.SetObjectAsync(foundbooksIdsKey, foundbooksIds, TimeSpan.FromDays(1));
-            //BooksNamesExistInDb getFoundbooksIds = cache.Cache.GetObject<BooksNamesExistInDb>(foundbooksIdsKey);
-
-
-            //string foundbooksIdsKey = "foundbooksIds" + ":" + startUploadVersion.ToString(); // list с ключом foundbooksIds:1
-            //var user = context.Cache.FetchObject<User>(redisKey, () => GetUserFromDatabase(id)); - fetch data from Db if it is not in cache
-            //BooksNamesExistInDb getFoundbooksIds = await (cache.Cache.GetObjectAsync<BooksNamesExistInDb>(foundbooksIdsKey));
-
-            return foundbooksIds;
-        }
-
         // GET: api/BookTexts/BookNameVersions/?where="bookId"&whereValue=(from selection) - 
         [HttpGet("BookNameVersions")]
         public async Task<ActionResult<BooksVersionsExistInDb>> GetBookNameVersions([FromQuery] string where, [FromQuery] int whereValue) // async
         {
             string bookSentenceIdKey = where + ":" + whereValue.ToString();
-            var requestedSelectResult = await cache.Cache.FetchObject<Task<List<TextSentence>>>(bookSentenceIdKey, () => FetchBooksNamesSetFromDb(where, whereValue));
+            List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesSetFromDb(where, whereValue));
 
 
 
-            // на память
-            string foundBooksVersionsKey = "foundBooksVersions"; // list с ключом foundBooksVersions
+            // на память - группировка по LanguageId внутри группировки по BookId
+            //string foundBooksVersionsKey = "foundBooksVersions"; // list с ключом foundBooksVersions
 
             IEnumerable<IGrouping<int, TextSentence>> allVersionsPairings = requestedSelectResult.GroupBy(r => r.BookId);
 
@@ -178,16 +170,15 @@ namespace BooksTextsSplit.Controllers
                 ).ToList()
             };
 
-            await cache.Cache.SetObjectAsync(foundBooksVersionsKey, foundBooksVersion, TimeSpan.FromDays(1));
-
+            //await cache.Cache.SetObjectAsync(foundBooksVersionsKey, foundBooksVersion, TimeSpan.FromDays(1));
             //BooksVersionsExistInDb user = cache.Cache.GetObject<BooksVersionsExistInDb>(foundBooksVersionsKey);
-
-
             //string bookSentenceIdKey = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookSentenceId:1
-            BooksVersionsExistInDb getFoundbooksVersion = await (cache.Cache.GetObjectAsync<BooksVersionsExistInDb>(foundBooksVersionsKey));
+            //BooksVersionsExistInDb getFoundbooksVersion = await (cache.Cache.GetObjectAsync<BooksVersionsExistInDb>(foundBooksVersionsKey));
 
-            return getFoundbooksVersion;
+            return foundBooksVersion;
         }
+
+        //------------------------------------------------------------------------------------
 
         // LEGACY !
         // SAMPLE with AreParamsRealTextSentenceProperties check
