@@ -1,21 +1,42 @@
 import React from "react";
 import s from "./SelectTexts.module.css";
 
+// TODO rename showSelectButton on showSelectBookIdButton
 let showSelectButton = (props, bookId) => {
   console.log("showSelectButton", bookId);
   //debugger;
   return (
-    
-      <button
-        className={s.testItemButton}
-        onClick={() => {
-          bookIdSelected(props, bookId);
-        }}
-      >
-        Select {bookId}
-      </button>
-   
+    <button
+      className={s.testItemButton}
+      onClick={() => {
+        bookIdSelected(props, bookId);
+      }}
+    >
+      Select {bookId}
+    </button>
   );
+};
+
+// TODO rename showSelectVersionButton on showSelectVersion(s?)Button(s?)
+let showSelectVersionButton = (props, i) => {
+  console.log("showSelectButton", i);
+  //debugger;
+  return (
+    <button
+      className={s.testItemButton}
+      onClick={() => {
+        bookVersionSelected(props, i);
+      }}
+    >
+      Select version - {i}
+    </button>
+  );
+};
+
+let bookVersionSelected = (props, i) => {
+  props.toggleIsSelectingBookId(false);
+  props.toggleIsSelectingUploadVersion(false);
+  return { i };
 };
 
 let bookIdSelected = (props, bookId) => {
@@ -24,13 +45,14 @@ let bookIdSelected = (props, bookId) => {
   return { bookId };
 };
 
+// TODO rename on choosePairBooksNames and id on booksNamesSortedById
+// TODO change 0, 1 on variable eng and rus (for example)
 let bookIds = (props) => {
   if (props.isSelectingBookId) {
     return props.bookNamesVersion1SortedByIds.map((id, i) => {
       let bookId = id.bookId;
       let bookNames = id.booksDescriptions;
       console.log("bookNames", bookNames);
-
       return (
         <div className={s.testGridContainer3}>
           <div className={s.testItemEng}>{showEngBookName(bookNames[0], bookId, i)}</div>
@@ -42,24 +64,7 @@ let bookIds = (props) => {
   }
 };
 
-let uploadVersions = (props) => {
-  if (props.isSelectingUploadVersion) {
-    return props.bookNamesVersion1SortedByIds.map((id, i) => {
-      let bookId = id.bookId;
-      let bookNames = id.booksDescriptions;
-      console.log("bookNames", bookNames);
-
-      return (
-        <div className={s.testGridContainer3}>uploadVersions here
-          <div className={s.testItemEng}>{showEngBookName(bookNames[0], bookId, i)}</div>
-          <div className={s.testItemRus}>{showEngBookName(bookNames[1], bookId, i)}</div>
-          <div className={s.testItemButtonPlace}>{showSelectButton(props, bookId)}</div>
-        </div>
-      );
-    });
-  }
-};
-
+// TODO rename on showBooksNames
 let showEngBookName = (bookName, bookId, i) => {
   return (
     <div className={s.testItemEng}>
@@ -68,6 +73,45 @@ let showEngBookName = (bookName, bookId, i) => {
       </div>
       <div>
         Book No: {" " + i + " "} name - {bookName.sentence.authorName + " "} {bookName.sentence.bookName}
+      </div>
+    </div>
+  );
+};
+
+// TODO rename on chooseSelectedBooksVersions and id on BookVersionsDescriptions
+// TODO change 0, 1 on variable eng and rus (for example)
+let uploadVersions = (props) => {
+  if (props.isSelectingUploadVersion) {
+    props.fetchAllVersionsOfSelectedBook();
+    //.then(r => {
+
+    return props.allVersionsOfBooksNames.map((id, i) => {
+      //let languageId = id.languageId;
+      let bookVersions = id.bookVersionsDescriptions;
+      console.log("bookVersions", bookVersions);
+      bookVersions.map((sentences, j) => {
+debugger;
+      return (
+        <div className={s.testGridContainer3}>
+          <div className={s.testItemEng}>{showBookVersions(sentences, j)}</div>
+          
+          <div className={s.testItemButtonPlace}>{showSelectVersionButton(props, j)}</div>
+        </div>
+      );
+    });
+    });
+  }
+};
+
+// show existing version of the selected book - separate lists for both languages
+let showBookVersions = (sentences, languageId, j) => {
+  return (
+    <div className={s.testItemEng}>
+      <div>
+        Fetched {" j = " + j} {" languageId = " + languageId} {" uploadVersion = " + sentences.uploadVersion}
+      </div>
+      <div>
+        Book No: {" " + j + " "} name - {sentences.authorName + " "} {sentences.bookName}
       </div>
     </div>
   );

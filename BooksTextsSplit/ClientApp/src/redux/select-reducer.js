@@ -20,8 +20,7 @@ let initialState = {
 const selectTextsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_ALL_BOOKS_IDS: {
-      console.log('state', state.bookNamesVersion1SortedByIds);      
-      debugger;
+      console.log('state', state.bookNamesVersion1SortedByIds);
       return { ...state, bookNamesVersion1SortedByIds: action.bookNamesVersion1SortedByIds };
     }
     case SET_ALL_BOOKS_VERSIONS:{

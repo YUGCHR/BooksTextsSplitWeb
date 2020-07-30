@@ -12,7 +12,7 @@ class SelectTextsContainerAPI extends React.Component {
 
   componentDidMount() {
     this.fetchAllBookIdsWithNames();
-    this.fetchAllVersionsOfSelectedBook();
+    //this.fetchAllVersionsOfSelectedBook();
   }
 
   fetchAllBookIdsWithNames = () => {
@@ -34,7 +34,7 @@ class SelectTextsContainerAPI extends React.Component {
         this.props.toggleIsFetching(false);
         console.log(Response);
         console.log("axios: sending this to props:", Response.data.bookNamesVersion1SortedByIds);
-        debugger;
+        //debugger;
         this.props.setAllBookIdsWithNames(Response.data.bookNamesVersion1SortedByIds);
         console.log("axios: finished sending to props");
         let s = Response.data.sortedBooksIdsLength;
