@@ -105,7 +105,7 @@ namespace BooksTextsSplit.Controllers
         public async Task<BooksNamesExistInDb> FetchBooksNamesIds(string where, int whereValue, int startUploadVersion)
         {
             string bookSentenceIdKey = where + ":" + whereValue.ToString();
-            List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesSetFromDb(where, whereValue));
+            List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesFromDb(where, whereValue));
 
             List<TextSentence> toSelectBookNameFromAll = requestedSelectResult.Where(r => r.UploadVersion == startUploadVersion).ToList();
 
@@ -123,7 +123,51 @@ namespace BooksTextsSplit.Controllers
             return foundBooksIds;
         }
 
-        public async Task<List<TextSentence>> FetchBooksNamesSetFromDb(string where, int whereValue)
+        // GET: api/BookTexts/BookNameVersions/?where="bookId"&whereValue=1&bookId=(from selection) - fetching list of all uploaded versions for selected BookIds
+        [HttpGet("BookNameVersions")]
+        public async Task<ActionResult<BooksVersionsExistInDb>> GetBookNameVersions([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int bookId)
+        {            
+            return await FetchBookNameVersions(where, whereValue, bookId);
+        }
+
+        public async Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId)
+        {
+            string bookSentenceIdKey = where + ":" + whereValue.ToString();
+            List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesFromDb(where, whereValue));
+
+            IEnumerable<IGrouping<int, TextSentence>> languageIdGrouping = requestedSelectResult.Where(r => r.BookId == bookId).ToList().GroupBy(r => r.LanguageId);
+
+            BooksVersionsExistInDb foundBooksVersion = new BooksVersionsExistInDb
+            {
+                SelectedBookIdAllVersions = languageIdGrouping.Select(p => new SelectedBookIdGroupByLanguageId
+                {
+                    LanguageId = p.Key,
+                    Sentences = p.OrderBy(v => v.UploadVersion).Select(s => s).ToList()
+                }
+                ).OrderBy(s => s.LanguageId).ToList()
+            };
+            #region for_memory_grouping_in_grouping
+            // на память - группировка по LanguageId внутри группировки по BookId
+            IEnumerable<IGrouping<int, TextSentence>> allVersionsPairings = requestedSelectResult.GroupBy(r => r.BookId);
+            BooksVersionsExistInDb_Memory foundBooksVersion_Memory = new BooksVersionsExistInDb_Memory
+            {
+                AllVersionsOfBooksNames = allVersionsPairings.Select(p => new BooksVersionsGroupedByBookIdGroupByLanguageId
+                {
+                    BookId = p.Key,
+                    BookVersionsDescriptions = p.GroupBy(l => l.LanguageId).Select(g => new BooksVersionsGroupByLanguageId_Memory
+                    {
+                        LanguageId = g.Key,
+                        Sentences = g.OrderBy(v => v.UploadVersion).Select(t => t).ToList()
+                    }
+                    ).OrderBy(s => s.LanguageId).ToList()
+                }
+                ).ToList()
+            };
+            #endregion
+            return foundBooksVersion;
+        }
+
+        public async Task<List<TextSentence>> FetchBooksNamesFromDb(string where, int whereValue)
         {
             // bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy); - it is needs to add checking of parameters existing 
 
@@ -141,44 +185,9 @@ namespace BooksTextsSplit.Controllers
             return requestedSelectResult;
         }
 
-        // GET: api/BookTexts/BookNameVersions/?where="bookId"&whereValue=(from selection) - 
-        [HttpGet("BookNameVersions")]
-        public async Task<ActionResult<BooksVersionsExistInDb>> GetBookNameVersions([FromQuery] string where, [FromQuery] int whereValue) // async
-        {
-            string bookSentenceIdKey = where + ":" + whereValue.ToString();
-            List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesSetFromDb(where, whereValue));
-
-
-
-            // на память - группировка по LanguageId внутри группировки по BookId
-            //string foundBooksVersionsKey = "foundBooksVersions"; // list с ключом foundBooksVersions
-
-            IEnumerable<IGrouping<int, TextSentence>> allVersionsPairings = requestedSelectResult.GroupBy(r => r.BookId);
-
-            BooksVersionsExistInDb foundBooksVersion = new BooksVersionsExistInDb
-            {
-                AllVersionsOfBooksNames = allVersionsPairings.Select(p => new BooksVersionsGroupedByBookIdGroupByLanguageId
-                {
-                    BookId = p.Key,
-                    BookVersionsDescriptions = p.GroupBy(l => l.LanguageId).Select(g => new BooksVersionsGroupByLanguageId
-                    {
-                        LanguageId = g.Key,
-                        Sentences = g.OrderBy(v => v.UploadVersion).Select(t => t).ToList()
-                    }
-                    ).OrderBy(s => s.LanguageId).ToList()
-                }
-                ).ToList()
-            };
-
-            //await cache.Cache.SetObjectAsync(foundBooksVersionsKey, foundBooksVersion, TimeSpan.FromDays(1));
-            //BooksVersionsExistInDb user = cache.Cache.GetObject<BooksVersionsExistInDb>(foundBooksVersionsKey);
-            //string bookSentenceIdKey = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookSentenceId:1
-            //BooksVersionsExistInDb getFoundbooksVersion = await (cache.Cache.GetObjectAsync<BooksVersionsExistInDb>(foundBooksVersionsKey));
-
-            return foundBooksVersion;
-        }
-
         //------------------------------------------------------------------------------------
+
+
 
         // LEGACY !
         // SAMPLE with AreParamsRealTextSentenceProperties check
