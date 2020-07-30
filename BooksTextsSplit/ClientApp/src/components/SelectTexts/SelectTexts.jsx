@@ -23,7 +23,6 @@ let showSelectVersionButton = (props, i) => {
   //debugger;
   return (
     <button
-      className={s.testItemButton}
       onClick={() => {
         bookVersionSelected(props, i);
       }}
@@ -42,6 +41,7 @@ let bookVersionSelected = (props, i) => {
 let bookIdSelected = (props, bookId) => {
   props.toggleIsSelectingBookId(false);
   props.toggleIsSelectingUploadVersion(true);
+  props.fetchAllVersionsOfSelectedBook(bookId);
   return { bookId };
 };
 
@@ -82,36 +82,47 @@ let showEngBookName = (bookName, bookId, i) => {
 // TODO change 0, 1 on variable eng and rus (for example)
 let uploadVersions = (props) => {
   if (props.isSelectingUploadVersion) {
-    props.fetchAllVersionsOfSelectedBook();
-    //.then(r => {
-
     return props.allVersionsOfBooksNames.map((id, i) => {
-      //let languageId = id.languageId;
-      let bookVersions = id.bookVersionsDescriptions;
-      console.log("bookVersions", bookVersions);
-      bookVersions.map((sentences, j) => {
-debugger;
       return (
-        <div className={s.testGridContainer3}>
-          <div className={s.testItemEng}>{showBookVersions(sentences, j)}</div>
-          
-          <div className={s.testItemButtonPlace}>{showSelectVersionButton(props, j)}</div>
+        <div>
+          <div>Show Version List</div>
         </div>
       );
     });
+  }
+};
+
+let uploadVersions1 = (props) => {
+  if (props.isSelectingUploadVersion) {
+    return props.allVersionsOfBooksNames.map((id, i) => {
+      let languageId = id.languageId;
+      let bookVersions = id.sentences;
+      console.log("bookVersions", bookVersions);
+      bookVersions.map((sentence, j) => {
+        debugger;
+        return (
+          <div>
+            <div>
+              {i} Show Version List {j}
+            </div>
+            <div>{showBookVersions(sentence, languageId, j)}</div>
+            <div>{showSelectVersionButton(props, j)}</div>
+          </div>
+        );
+      });
     });
   }
 };
 
 // show existing version of the selected book - separate lists for both languages
-let showBookVersions = (sentences, languageId, j) => {
+let showBookVersions = (sentence, languageId, j) => {
   return (
-    <div className={s.testItemEng}>
+    <div>
       <div>
-        Fetched {" j = " + j} {" languageId = " + languageId} {" uploadVersion = " + sentences.uploadVersion}
+        Fetched {" j = " + j} {" languageId = " + languageId} {" uploadVersion = " + sentence.uploadVersion}
       </div>
       <div>
-        Book No: {" " + j + " "} name - {sentences.authorName + " "} {sentences.bookName}
+        Book No: {" " + j + " "} name - {sentence.authorName + " "} {sentence.bookName}
       </div>
     </div>
   );

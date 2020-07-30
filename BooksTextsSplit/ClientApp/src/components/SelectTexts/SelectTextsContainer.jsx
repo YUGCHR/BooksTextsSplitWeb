@@ -48,19 +48,19 @@ class SelectTextsContainerAPI extends React.Component {
     console.log(this.props.maxUploadedVersion);
   };
 
-  fetchAllVersionsOfSelectedBook = () => {
+  fetchAllVersionsOfSelectedBook = (bookId) => {
     //debugger;
     this.props.toggleIsFetching(true);
-    let where = "bookId";
+    let where = "bookSentenceId";
     let whereValue = 1;    
 
     //api/BookTexts/BookNameVersions/?where="bookId"&whereValue=1
-    return Axios.get(`api/BookTexts/BookNameVersions/?where=${where}&whereValue=${whereValue}`)
+    return Axios.get(`api/BookTexts/BookNameVersions/?where=${where}&whereValue=${whereValue}&bookId=${bookId}`)
       .then((Response) => {
         this.props.toggleIsFetching(false);
         console.log("Response of BookNameVersions", Response);        
         //debugger;
-        this.props.setAllVersionsOfBookName(Response.data.allVersionsOfBooksNames);        
+        this.props.setAllVersionsOfBookName(Response.data.selectedBookIdAllVersions);        
         console.log("axios: finished sending to props");        
         return Response;
       })
