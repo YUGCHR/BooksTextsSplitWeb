@@ -40,8 +40,10 @@ let bookVersionSelected = (props, i) => {
 
 let bookIdSelected = (props, bookId) => {
   props.toggleIsSelectingBookId(false);
-  props.toggleIsSelectingUploadVersion(true);
-  props.fetchAllVersionsOfSelectedBook(bookId);
+
+  props.fetchAllVersionsOfSelectedBook(bookId).then((r) => {
+    props.toggleIsSelectingUploadVersion(true);
+  });
   return { bookId };
 };
 
@@ -82,23 +84,31 @@ let showEngBookName = (bookName, bookId, i) => {
 // TODO change 0, 1 on variable eng and rus (for example)
 let uploadVersions = (props) => {
   if (props.isSelectingUploadVersion) {
-    return props.allVersionsOfBooksNames.map((id, i) => {
-      return (
-        <div>
-          <div>Show Version List</div>
-        </div>
-      );
+    return props.allVersionsOfBooksNames.map((nd) => {
+      return showSentences(props, nd);
     });
   }
 };
 
+let showSentences = (props, nd) => {
+  return nd.sentences.map((id, i) => {
+    return (
+      <div>
+        <div>Show Version List</div>
+        <div>{showBookVersions0(id, i)}</div>
+        <div>{showSelectVersionButton(props, i)}</div>
+      </div>
+    );
+  });
+};
+
 let uploadVersions1 = (props) => {
   if (props.isSelectingUploadVersion) {
-    return props.allVersionsOfBooksNames.map((id, i) => {
+    props.allVersionsOfBooksNames.map((id, i) => {
       let languageId = id.languageId;
       let bookVersions = id.sentences;
       console.log("bookVersions", bookVersions);
-      bookVersions.map((sentence, j) => {
+      return bookVersions.map((sentence, j) => {
         debugger;
         return (
           <div>
@@ -115,7 +125,23 @@ let uploadVersions1 = (props) => {
 };
 
 // show existing version of the selected book - separate lists for both languages
+let showBookVersions0 = (id, j) => {
+  debugger;
+  return (
+    <div>
+      <div>
+        Fetched {" j = " + j} {" uploadVersion = " + id.uploadVersion}
+      </div>
+      <div>
+        Book No: {" " + j + " "} name - {id.authorName + " "} {id.bookName}
+      </div>
+    </div>
+  );
+};
+
 let showBookVersions = (sentence, languageId, j) => {
+  console.log("sentence", sentence);
+  debugger;
   return (
     <div>
       <div>
