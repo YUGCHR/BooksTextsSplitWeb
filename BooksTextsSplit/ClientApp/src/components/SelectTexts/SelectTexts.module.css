@@ -93,26 +93,24 @@
   grid-template-columns: auto auto;
   grid-auto-flow: row;  
   grid-gap: 20px;  
-  color: black;
-  background-color: white;  
 }
-/* 
-.gridItem30 {
+
+.versionLanguageStyle0 {
   grid-column: 1/2;
   grid-row: 1/2;  
   text-align: center;
   color: whitesmoke;
-  background-color: darkgrey;
+  background-color: darkred;
 }
 
-.gridItem31 {
+.versionLanguageStyle1 {
   grid-column: 2/3;
   grid-row: 1/2;  
   text-align: center;
   color: whitesmoke;
-  background-color: darkgrey;
-} */
-
+  background-color: darkblue;
+}
+/* 
 .versionItemsBlock{
   text-align: center;
   color: lightgreen;
@@ -121,6 +119,17 @@
 
 .versionItemText{
   text-align: center;
+  color: lightgreen;
+  background-color: darkgreen;
+}
+ */
+.versionButtonPlace{
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto auto auto;
+  grid-auto-flow: column;
+  margin: auto;
+  grid-gap: 5px;  
   color: lightgreen;
   background-color: darkgreen;
 }

@@ -17,17 +17,38 @@ let showSelectButton = (props, bookId) => {
   );
 };
 
-// TODO rename showSelectVersionButton on showSelectVersion(s?)Button(s?)
 let showSelectVersionButton = (props, i) => {
-  console.log("showSelectButton", i);
-  //debugger;
   return (
     <button
       onClick={() => {
         bookVersionSelected(props, i);
       }}
     >
-      Select version - {i}
+      Select version {i} for reading
+    </button>
+  );
+};
+
+let showEditVersionButton = (props, i) => {
+  return (
+    <button
+      onClick={() => {
+        bookVersionSelected(props, i);
+      }}
+    >
+      Select version {i} for editing
+    </button>
+  );
+};
+
+let showDeleteVersionButton = (props, i) => {
+  return (
+    <button
+      onClick={() => {
+        bookVersionSelected(props, i);
+      }}
+    >
+      Select version {i} TO DELETE!
     </button>
   );
 };
@@ -83,8 +104,10 @@ let showBooksNames = (bookName, bookId, i) => {
 let chooseSelectedBooksVersions = (props) => {
   if (props.isSelectingUploadVersion) {
     return props.allVersionsOfBooksNames.map((nd, n) => {
+      let versionLanguageStyle = "s.versionLanguageStyle" + n;
       return (
-        <div>
+        <div className={versionLanguageStyle}>
+          <div> All version of books with languageId = {n}</div>
           <div className={s.versionItemsBlock}> {sentencesMap(props, nd, n)}</div>
         </div>
       );
@@ -97,7 +120,11 @@ let sentencesMap = (props, nd, n) => {
     return (
       <div>
         <div>{showBookVersions(id, i)}</div>
-        <div>{showSelectVersionButton(props, i)}</div>
+        <div className={s.versionButtonPlace}>
+          <div>{showSelectVersionButton(props, i)}</div>
+          <div>{showEditVersionButton(props, i)}</div>
+          <div>{showDeleteVersionButton(props, i)}</div>
+        </div>
       </div>
     );
   });
