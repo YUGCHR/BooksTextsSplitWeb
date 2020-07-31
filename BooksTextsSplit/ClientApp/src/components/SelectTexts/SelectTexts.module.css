@@ -86,3 +86,41 @@
   color: whitesmoke;
   background-color: darkgray;
 }
+
+.versionGridContainer{
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: auto auto;
+  grid-auto-flow: row;  
+  grid-gap: 20px;  
+  color: black;
+  background-color: white;  
+}
+/* 
+.gridItem30 {
+  grid-column: 1/2;
+  grid-row: 1/2;  
+  text-align: center;
+  color: whitesmoke;
+  background-color: darkgrey;
+}
+
+.gridItem31 {
+  grid-column: 2/3;
+  grid-row: 1/2;  
+  text-align: center;
+  color: whitesmoke;
+  background-color: darkgrey;
+} */
+
+.versionItemsBlock{
+  text-align: center;
+  color: lightgreen;
+  background-color: darkgreen;
+}
+
+.versionItemText{
+  text-align: center;
+  color: lightgreen;
+  background-color: darkgreen;
+}

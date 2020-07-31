@@ -57,8 +57,8 @@ let bookIds = (props) => {
       console.log("bookNames", bookNames);
       return (
         <div className={s.testGridContainer3}>
-          <div className={s.testItemEng}>{showEngBookName(bookNames[0], bookId, i)}</div>
-          <div className={s.testItemRus}>{showEngBookName(bookNames[1], bookId, i)}</div>
+          <div className={s.testItemEng}>{showBooksNames(bookNames[0], bookId, i)}</div>
+          <div className={s.testItemRus}>{showBooksNames(bookNames[1], bookId, i)}</div>
           <div className={s.testItemButtonPlace}>{showSelectButton(props, bookId)}</div>
         </div>
       );
@@ -66,10 +66,9 @@ let bookIds = (props) => {
   }
 };
 
-// TODO rename on showBooksNames
-let showEngBookName = (bookName, bookId, i) => {
+let showBooksNames = (bookName, bookId, i) => {
   return (
-    <div className={s.testItemEng}>
+    <div className={s.versionItemText}>
       <div>
         Fetched {" bookId = " + bookId} {" languageId = " + bookName.languageId} {" uploadVersion = " + bookName.sentence.uploadVersion}
       </div>
@@ -80,75 +79,40 @@ let showEngBookName = (bookName, bookId, i) => {
   );
 };
 
-// TODO rename on chooseSelectedBooksVersions and id on BookVersionsDescriptions
-// TODO change 0, 1 on variable eng and rus (for example)
-let uploadVersions = (props) => {
+// TODO rename nd/id on something
+let chooseSelectedBooksVersions = (props) => {
   if (props.isSelectingUploadVersion) {
-    return props.allVersionsOfBooksNames.map((nd) => {
-      return showSentences(props, nd);
+    return props.allVersionsOfBooksNames.map((nd, n) => {
+      return (
+        <div>
+          <div className={s.versionItemsBlock}> {sentencesMap(props, nd, n)}</div>
+        </div>
+      );
     });
   }
 };
 
-let showSentences = (props, nd) => {
+let sentencesMap = (props, nd, n) => {
   return nd.sentences.map((id, i) => {
     return (
       <div>
-        <div>Show Version List</div>
-        <div>{showBookVersions0(id, i)}</div>
+        <div>{showBookVersions(id, i)}</div>
         <div>{showSelectVersionButton(props, i)}</div>
       </div>
     );
   });
 };
 
-let uploadVersions1 = (props) => {
-  if (props.isSelectingUploadVersion) {
-    props.allVersionsOfBooksNames.map((id, i) => {
-      let languageId = id.languageId;
-      let bookVersions = id.sentences;
-      console.log("bookVersions", bookVersions);
-      return bookVersions.map((sentence, j) => {
-        debugger;
-        return (
-          <div>
-            <div>
-              {i} Show Version List {j}
-            </div>
-            <div>{showBookVersions(sentence, languageId, j)}</div>
-            <div>{showSelectVersionButton(props, j)}</div>
-          </div>
-        );
-      });
-    });
-  }
-};
-
 // show existing version of the selected book - separate lists for both languages
-let showBookVersions0 = (id, j) => {
-  debugger;
+let showBookVersions = (id, j) => {
+  //debugger;
   return (
-    <div>
+    <div className={s.versionItemText}>
       <div>
         Fetched {" j = " + j} {" uploadVersion = " + id.uploadVersion}
       </div>
       <div>
         Book No: {" " + j + " "} name - {id.authorName + " "} {id.bookName}
-      </div>
-    </div>
-  );
-};
-
-let showBookVersions = (sentence, languageId, j) => {
-  console.log("sentence", sentence);
-  debugger;
-  return (
-    <div>
-      <div>
-        Fetched {" j = " + j} {" languageId = " + languageId} {" uploadVersion = " + sentence.uploadVersion}
-      </div>
-      <div>
-        Book No: {" " + j + " "} name - {sentence.authorName + " "} {sentence.bookName}
       </div>
     </div>
   );
@@ -172,7 +136,7 @@ const SelectTexts = (props) => {
       <div className={s.testItem2}>{showChooseHeader(props)}</div>
       <div className={s.testGridContainerPlace2}>
         <div className={s.testGridContainer2}>{bookIds(props)}</div>
-        <div className={s.testGridContainer2}>{uploadVersions(props)}</div>
+        <div className={s.versionGridContainer}>{chooseSelectedBooksVersions(props)}</div>
       </div>
     </div>
   );
