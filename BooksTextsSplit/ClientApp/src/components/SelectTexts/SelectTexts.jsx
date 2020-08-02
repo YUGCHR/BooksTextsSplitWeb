@@ -51,12 +51,12 @@ let bookIds = (props) => {
       let bookId = id.bookId;
       let bookNames = id.booksDescriptions;
       console.log("bookNames", bookNames);
-      return (
+      return (        
         <div className={s.testGridContainer3}>
           <div className={s.testItemEng}>{showBooksNames(bookNames[0], bookId, i)}</div>
           <div className={s.testItemRus}>{showBooksNames(bookNames[1], bookId, i)}</div>
           <div className={s.testItemButtonPlace}>{showSelectButton(props, bookId)}</div>
-        </div>
+        </div>       
       );
     });
   }
@@ -79,9 +79,9 @@ let showBooksNames = (bookName, bookId, i) => {
 // Render Book Version - Map by languageId
 let chooseSelectedBooksVersions = (props) => {
   if (props.isSelectingUploadVersion) {
-    return props.allVersionsOfBooksNames.map((nd, n) => {
-      let versionLanguageStyle = `s.versionLanguageStyle${n}`;
-      return (<div className={versionLanguageStyle}>
+    return props.allVersionsOfBooksNames.map((nd, n) => {      
+      let versionLanguageStyle = `versionLanguageStyle${n}`;
+      return (<div className={s[versionLanguageStyle]}>
           <div className={s.versionItemsHeader}> All version of books with languageId = {n}</div>
           <div className={s.versionItemsBlock}> {sentencesMap(props, nd, n)}</div>
         </div>
@@ -141,9 +141,9 @@ const SelectTexts = (props) => {
     <div className={s.testGridContainer1}>
       <div className={s.testItem1}>SELECT BOOKS CONTROL PANEL</div>
       <div className={s.testItem2}>{showChooseHeader(props)}</div>
-      <div className={props.gridContainerPlace2}>
-        <div className={s.testGridContainer2}>{bookIds(props)}</div>      
-        <div className={s.versionsGridContainer}>{chooseSelectedBooksVersions(props)}</div>
+      <div className={s.gridContainerPlace2}>
+        <div className={`${s.gridContainerPlace2} ${s.testContainer2}`}>{bookIds(props)}</div>      
+        <div className={`${s.gridContainerPlace2} ${s.versionsContainer}`}>{chooseSelectedBooksVersions(props)}</div>
       </div>
     </div>
   );
