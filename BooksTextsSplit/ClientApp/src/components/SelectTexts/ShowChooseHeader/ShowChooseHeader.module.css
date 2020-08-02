@@ -1,0 +1,22 @@
+.chooseBooksHeader{
+    color: lightgreen;
+    background-color: darkgreen;
+}
+
+.uploadHeaderContainer{
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 7fr 3fr;
+    grid-auto-flow: row;
+    margin: auto;
+    grid-gap: 5px;  
+    color: lightgreen;
+    background-color: darkgreen;
+  }
+
+  .returnToBookIdButton{
+    margin: auto;   
+    color: blue;
+    background-color: darkgray;
+  }
+  

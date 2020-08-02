@@ -1,0 +1,43 @@
+.testGridContainer3 {
+  display: grid;
+  grid-template-rows: 5fr;
+  grid-template-columns: 5fr 5fr 2fr;
+  grid-auto-flow: column;  
+  grid-column-gap: 10px;
+  grid-row-gap: 0.3em;
+
+  align-items: flex-end;
+  align-content: flex-end;
+  
+  color: black;
+  background-color: white;  
+}
+
+.testItemEng {
+  text-align: center;
+  color: lightgreen;
+  background-color: darkgreen;
+}
+
+.testItemRus {  
+  text-align: center;
+  color: greenyellow;
+  background-color: darkgreen;
+}
+
+.testItemButtonPlace {
+  height: 100%;
+  
+  color: red;
+  background-color: darkgreen;
+}
+
+.testItemButton {
+  align-items: end;
+  align-content: end;
+  align-self: end;
+  vertical-align: bottom;
+  color: whitesmoke;
+  background-color: darkgray;
+}
+
