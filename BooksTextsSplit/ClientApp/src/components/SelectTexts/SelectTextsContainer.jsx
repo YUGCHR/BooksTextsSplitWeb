@@ -110,6 +110,7 @@ class SelectTextsContainerAPI extends React.Component {
           fetchAllVersionsOfSelectedBook={this.fetchAllVersionsOfSelectedBook}
           toggleIsSelectingBookId={this.props.toggleIsSelectingBookId}
           toggleIsSelectingUploadVersion={this.props.toggleIsSelectingUploadVersion}
+          gridContainerPlace2={this.props.gridContainerPlace2}
         />
       </>
     );
@@ -128,7 +129,8 @@ let mapStateToProps = (state) => {
     isFetching: state.selectTextsPage.isFetching,
     allBookNamesSortedByIds: state.selectTextsPage.allBookNamesSortedByIds,
     bookNamesVersion1SortedByIds: state.selectTextsPage.bookNamesVersion1SortedByIds,
-    allVersionsOfBooksNames: state.selectTextsPage.allVersionsOfBooksNames
+    allVersionsOfBooksNames: state.selectTextsPage.allVersionsOfBooksNames,
+    gridContainerPlace2: state.selectTextsPage.gridContainerPlace2
   };
 };
 

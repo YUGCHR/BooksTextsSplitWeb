@@ -14,7 +14,8 @@ let initialState = {
   isTextLoaded: [false, false],
   isSelectingBookId: true,
   isSelectingUploadVersion: false,
-  isFetching: false,  
+  isFetching: false,
+  gridContainerPlace2: "s.testGridContainerPlace2"
 };
 
 const selectTextsReducer = (state = initialState, action) => {
@@ -30,10 +31,10 @@ const selectTextsReducer = (state = initialState, action) => {
       return { ...state, engSentences: action.sentences };
     }
     case TOGGLE_IS_SELECTING_BOOK_ID: {
-      return { ...state, isSelectingBookId: action.isSelectingBookId };
+      return { ...state, isSelectingBookId: action.isSelectingBookId, gridContainerPlace2: action.gridContainerPlace2 };
     }
     case TOGGLE_IS_SELECTING_UPLOAD_VERSION: {
-      return { ...state, isSelectingUploadVersion: action.isSelectingUploadVersion };
+      return { ...state, isSelectingUploadVersion: action.isSelectingUploadVersion, gridContainerPlace2: action.gridContainerPlace2 };
     }
     case TOGGLE_IS_FETCHING: {
       return { ...state, isFetching: action.isFetching };
@@ -47,8 +48,10 @@ export const setAllBookIdsWithNames = (bookNamesVersion1SortedByIds) => ({ type:
 export const setAllVersionsOfBookName = (allVersionsOfBooksNames) => ({ type: SET_ALL_BOOKS_VERSIONS, allVersionsOfBooksNames });
 
 export const setSentences = (sentences, languageId) => ({ type: SET_SENTENCES, sentences, languageId });
-export const toggleIsSelectingBookId = (isSelectingBookId) => ({ type: TOGGLE_IS_SELECTING_BOOK_ID, isSelectingBookId });
-export const toggleIsSelectingUploadVersion = (isSelectingUploadVersion) => ({ type: TOGGLE_IS_SELECTING_UPLOAD_VERSION, isSelectingUploadVersion });
+
+export const toggleIsSelectingBookId = (isSelectingBookId, gridContainerPlace2) => ({ type: TOGGLE_IS_SELECTING_BOOK_ID, isSelectingBookId, gridContainerPlace2 });
+export const toggleIsSelectingUploadVersion = (isSelectingUploadVersion, gridContainerPlace2) => ({ type: TOGGLE_IS_SELECTING_UPLOAD_VERSION, isSelectingUploadVersion, gridContainerPlace2 });
+
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 
 export default selectTextsReducer;

@@ -67,8 +67,9 @@
 }
 
 .testItemRus {  
-  color: darkgray;  
-  background-color: yellow;
+  text-align: center;
+  color: greenyellow;
+  background-color: darkgreen;
 }
 
 .testItemButtonPlace {
@@ -87,42 +88,55 @@
   background-color: darkgray;
 }
 
-.versionGridContainer{
+.versionGridContainerPlace {
+  margin-top: 5px;
+  grid-column: 1/3;
+  grid-row: 3/4;
+}
+
+.versionsGridContainer{
   display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: auto auto;
-  grid-auto-flow: row;  
-  grid-gap: 20px;  
+  grid-template-rows: 1fr;
+  grid-template-columns: 5fr 5fr 2fr;  
+  grid-gap: 10px;
+  color: yellow;
+  background-color: magenta;
 }
 
 .versionLanguageStyle0 {
   grid-column: 1/2;
   grid-row: 1/2;  
-  text-align: center;
-  color: whitesmoke;
-  background-color: darkred;
+  text-align: right;
+  color: red;
+  background-color: white;
 }
 
 .versionLanguageStyle1 {
-  grid-column: 2/3;
+  grid-column: 2/4;
   grid-row: 1/2;  
-  text-align: center;
-  color: whitesmoke;
-  background-color: darkblue;
+  text-align: left;
+  color: blue;
+  background-color: white;
 }
-/* 
+
+.versionItemsHeader{
+  text-align: center;
+  color: lightgreen;
+  background-color: green;
+}
+
 .versionItemsBlock{
   text-align: center;
   color: lightgreen;
-  background-color: darkgreen;
+  background-color: cyan;
 }
 
 .versionItemText{
   text-align: center;
   color: lightgreen;
-  background-color: darkgreen;
+  background-color: red;
 }
- */
+
 .versionButtonPlace{
   display: grid;
   grid-template-rows: auto;
@@ -132,4 +146,37 @@
   grid-gap: 5px;  
   color: lightgreen;
   background-color: darkgreen;
+}
+
+.uploadHeaderContainer{
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 7fr 3fr;
+  grid-auto-flow: row;
+  margin: auto;
+  grid-gap: 5px;  
+  color: lightgreen;
+  background-color: darkgreen;
+}
+
+.returnToBookIdButton{
+  margin: auto;   
+  color: blue;
+  background-color: darkgray;
+}
+
+.selectVersionButton{
+  color: lightgreen;
+  background-color: darkgreen;
+}
+
+.editVersionButton{
+  color: darkgreen;
+  background-color: lightgreen;
+}
+
+.deleteVersionButton{
+  
+  color: red;
+  background-color: darkred;
 }
