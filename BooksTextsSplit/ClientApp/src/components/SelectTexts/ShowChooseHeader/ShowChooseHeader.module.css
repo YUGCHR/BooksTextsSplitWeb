@@ -20,3 +20,19 @@
     background-color: darkgray;
   }
   
+  .quickViewContainer{
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 7fr 3fr;
+    grid-auto-flow: row;
+    margin: auto;
+    grid-gap: 5px;  
+    color: lightgreen;
+    background-color: darkgreen;
+  }
+
+  .returnToUploadVersion{
+    margin: auto;   
+    color: blue;
+    background-color: darkgray;
+  }

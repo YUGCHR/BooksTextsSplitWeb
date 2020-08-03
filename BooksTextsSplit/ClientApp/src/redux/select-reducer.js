@@ -1,8 +1,10 @@
 const SET_ALL_BOOKS_IDS = "SET-ALL-BOOKS-IDS";
 const SET_ALL_BOOKS_VERSIONS = "SET-ALL-BOOKS-VERSIONS";
+const SET_BOOKS_PAIR_TEXTS = "SET-BOOKS-PAIR-TEXTS";
 const SET_SENTENCES = "SET-SENTENCES";
 const TOGGLE_IS_SELECTING_BOOK_ID = "TOGGLE-IS-SELECTING-BOOK-ID"
 const TOGGLE_IS_SELECTING_UPLOAD_VERSION = "TOGGLE-IS-SELECTING-UPLOAD-VERSION"
+const TOGGLE_IS_QUICK_VIEW = "TOGGLE-IS-QUICK-VIEW"
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
 
 let initialState = {
@@ -14,8 +16,10 @@ let initialState = {
   isTextLoaded: [false, false],
   isSelectingBookId: true,
   isSelectingUploadVersion: false,
+  isQuickViewBooksPair: false,
   isFetching: false,
-  gridContainerPlace2: "s.testGridContainerPlace2"
+  //gridContainerPlace2: "s.testGridContainerPlace2",
+  booksPairTexts: [],
 };
 
 const selectTextsReducer = (state = initialState, action) => {
@@ -27,14 +31,20 @@ const selectTextsReducer = (state = initialState, action) => {
     case SET_ALL_BOOKS_VERSIONS:{
       return { ...state, allVersionsOfBooksNames: action.allVersionsOfBooksNames };
     }
+    case SET_BOOKS_PAIR_TEXTS:{
+      return { ...state, booksPairTexts: action.booksPairTexts };
+    }
     case SET_SENTENCES: {
       return { ...state, engSentences: action.sentences };
     }
     case TOGGLE_IS_SELECTING_BOOK_ID: {
-      return { ...state, isSelectingBookId: action.isSelectingBookId, gridContainerPlace2: action.gridContainerPlace2 };
+      return { ...state, isSelectingBookId: action.isSelectingBookId }; // gridContainerPlace2: action.gridContainerPlace2 };
     }
     case TOGGLE_IS_SELECTING_UPLOAD_VERSION: {
-      return { ...state, isSelectingUploadVersion: action.isSelectingUploadVersion, gridContainerPlace2: action.gridContainerPlace2 };
+      return { ...state, isSelectingUploadVersion: action.isSelectingUploadVersion }; // gridContainerPlace2: action.gridContainerPlace2 };
+    }
+    case TOGGLE_IS_QUICK_VIEW:{
+      return { ...state, isQuickViewBooksPair: action.isQuickViewBooksPair };
     }
     case TOGGLE_IS_FETCHING: {
       return { ...state, isFetching: action.isFetching };
@@ -46,11 +56,13 @@ const selectTextsReducer = (state = initialState, action) => {
 
 export const setAllBookIdsWithNames = (bookNamesVersion1SortedByIds) => ({ type: SET_ALL_BOOKS_IDS, bookNamesVersion1SortedByIds });
 export const setAllVersionsOfBookName = (allVersionsOfBooksNames) => ({ type: SET_ALL_BOOKS_VERSIONS, allVersionsOfBooksNames });
+export const setBooksPairTexts = (booksPairTexts) => ({ type: SET_BOOKS_PAIR_TEXTS, booksPairTexts });
 
 export const setSentences = (sentences, languageId) => ({ type: SET_SENTENCES, sentences, languageId });
 
-export const toggleIsSelectingBookId = (isSelectingBookId, gridContainerPlace2) => ({ type: TOGGLE_IS_SELECTING_BOOK_ID, isSelectingBookId, gridContainerPlace2 });
-export const toggleIsSelectingUploadVersion = (isSelectingUploadVersion, gridContainerPlace2) => ({ type: TOGGLE_IS_SELECTING_UPLOAD_VERSION, isSelectingUploadVersion, gridContainerPlace2 });
+export const toggleIsSelectingBookId = (isSelectingBookId) => ({ type: TOGGLE_IS_SELECTING_BOOK_ID, isSelectingBookId });
+export const toggleIsSelectingUploadVersion = (isSelectingUploadVersion) => ({ type: TOGGLE_IS_SELECTING_UPLOAD_VERSION, isSelectingUploadVersion });
+export const toggleIsQuickViewBooksPair = (isQuickViewBooksPair) => ({ type: TOGGLE_IS_QUICK_VIEW, isQuickViewBooksPair })
 
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 

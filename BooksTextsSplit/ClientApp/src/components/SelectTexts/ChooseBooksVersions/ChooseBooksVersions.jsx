@@ -8,7 +8,7 @@ let sentencesMap = (props, nd, n) => {
     return (      
       <div className={s.versionItemsBlock1Container3}>
         <div className={s[versionSentencesPlace]}>{showBookVersions(id, i)}</div> 
-        <div className={s.versionButtonPlace}>{showVersionsButtons(props, n, id.uploadVersion)}</div>
+        <div className={s.versionButtonPlace}>{showVersionsButtons(props, n, id.uploadVersion, id.bookId)}</div>
       </div>
     );
   });
@@ -30,21 +30,14 @@ let showBookVersions = (id, j) => {
   );
 };
 
-let showVersionsButtons = (props, n, uploadVersion) => {//className={s.versionButtonsPlace} is unused
+let showVersionsButtons = (props, n, uploadVersion, bookId) => {//className={s.versionButtonsPlace} is unused
   if(n===1){
   return (<div className={s.versionButtonGridContainer}>
-    <button className={s.selectVersionButton} onClick={() => { nextAfterBookVersion(props, uploadVersion); }}>Read {uploadVersion}</button>
-    <button className={s.editVersionButton} onClick={() => { nextAfterBookVersion(props, uploadVersion); }}>View {uploadVersion}</button>
-    <button className={s.deleteVersionButton} onClick={() => { nextAfterBookVersion(props, uploadVersion); }}>DELETE {uploadVersion}!</button>
+    <button className={s.selectVersionButton} onClick={() => { props.switchQuickViewOn(bookId, uploadVersion); }}>Read {uploadVersion}</button>
+    <button className={s.editVersionButton} onClick={() => { props.switchQuickViewOn(bookId, uploadVersion); }}>View {uploadVersion}</button>
+    <button className={s.deleteVersionButton} onClick={() => { props.switchQuickViewOn(bookId, uploadVersion); }}>DELETE {uploadVersion}!</button>
   </div>);
   };
-};
-
-//Let to switch on NEXT choosing
-let nextAfterBookVersion = (props, i) => {
-  props.toggleIsSelectingBookId(false);
-  props.toggleIsSelectingUploadVersion(false);
-  return { i };
 };
 
 // Render Book Version - Map by languageId

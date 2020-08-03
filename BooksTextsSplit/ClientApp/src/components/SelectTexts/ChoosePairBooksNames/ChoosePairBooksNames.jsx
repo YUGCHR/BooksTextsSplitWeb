@@ -19,17 +19,8 @@ let showSelectBookIdButtons = (props, bookId) => {
   console.log("showSelectBookIdButtons", bookId);
   //debugger;
   return (
-    <button className={s.testItemButton} onClick={() => { switchBookVersionsOn(props, bookId); }}>Select {bookId}</button>
+    <button className={s.testItemButton} onClick={() => { props.switchBookVersionsOn(bookId); }}>Select {bookId}</button>
   );
-};
-
-//Let to switch on Book Versions choosing
-let switchBookVersionsOn = (props, bookId) => {
-  props.toggleIsSelectingBookId(false, "");
-  props.fetchAllVersionsOfSelectedBook(bookId).then((r) => {
-    props.toggleIsSelectingUploadVersion(true, "versionGridContainerPlace");
-  });
-  return { bookId };
 };
 
 const ChoosePairBooksNames = (props) => {

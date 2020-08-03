@@ -2,6 +2,7 @@ import React from "react";
 import ShowChooseHeader from './ShowChooseHeader/ShowChooseHeader';
 import ChoosePairBooksNames from './ChoosePairBooksNames/ChoosePairBooksNames';
 import ChooseBooksVersions from './ChooseBooksVersions/ChooseBooksVersions';
+import QuickViewBooksPair from './QuickViewBooksPair/QuickViewBooksPair';
 import s from "./SelectTexts.module.css";
 
 const SelectTexts = (props) => {  
@@ -12,6 +13,7 @@ const SelectTexts = (props) => {
       <div className={s.gridContainerPlace2}>
         <div className={s.gridBooksContainer2}>{ChoosePairBooksNames(props)}</div>      
         <div className={s.gridVersionsContainer2}>{ChooseBooksVersions(props)}</div>
+        <div className={s.gridViewContainer}>{QuickViewBooksPair(props)}</div>
       </div>
     </div>
   );
