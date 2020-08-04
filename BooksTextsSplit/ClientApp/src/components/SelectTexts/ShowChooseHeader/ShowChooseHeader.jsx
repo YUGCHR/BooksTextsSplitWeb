@@ -22,7 +22,7 @@ const ShowChooseHeader = (props) => {
         <div className={s.quickViewContainer}>
           <div>QUICK VIEW OF CHOSEN BOOKS PAIR</div>
           <div>
-            <button className={s.returnToUploadVersion} onClick={() => { props.switchBookVersionsOn(); }}>Return to uploadVersion choosing</button>
+            <button className={s.returnToUploadVersion} onClick={() => { props.switchBookVersionsOn(1); }}>Return to uploadVersion choosing</button>
           </div>
         </div>
       );

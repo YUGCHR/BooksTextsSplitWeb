@@ -7,7 +7,7 @@ let sentencesMap = (props, nd, n) => {
     let versionSentencesPlace = `versionSentencesPlace${n}`;
     return (      
       <div className={s.versionItemsBlock1Container3}>
-        <div className={s[versionSentencesPlace]}>{showBookVersions(id, i)}</div> 
+        <div className={s.versionSentencesPlace}>{showBookVersions(id, i)}</div> 
         <div className={s.versionButtonPlace}>{showVersionsButtons(props, n, id.uploadVersion)}</div>
       </div>
     );
@@ -41,13 +41,13 @@ let showVersionsButtons = (props, n, uploadVersion) => {//className={s.versionBu
 };
 
 // Render Book Version - Map by languageId
-const QuickViewBooksPair = (props) => {
+const QuickViewBooksPair = (props) => {  
   if (props.isQuickViewBooksPair) {
     return props.booksPairTexts.map((nd, n) => {      
       
-      return (<div className={s.empty}>
-          <div className={s.empty}> Book View with languageId = {n}</div>
-          <div className={s.empty}> </div>
+      return (<div className={s.versionLanguageStyle}>
+          <div className={s.versionItemsHeader}> Book Text with languageId = {n}</div>
+          <div className={s.versionItemsBlock}>{sentencesMap(props, nd, n)} </div>
         </div>
       );
     });

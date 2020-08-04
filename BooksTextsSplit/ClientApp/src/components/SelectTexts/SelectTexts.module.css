@@ -54,5 +54,12 @@
   background-color: magenta;
 }
 
-
+.gridViewContainer{
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 5fr 5fr;  
+  grid-gap: 10px;
+  color: yellow;
+  background-color: magenta;
+}
 

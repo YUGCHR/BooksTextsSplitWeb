@@ -1,10 +1,13 @@
-crate Get for books pair context fetching
+crate Get for books pair context fetching - created, but it is needs to make common method to read cache/Db
+
+it is needs to save selected bookId before calling QuickView - to return back to version selection
 
 под кнопку select bookId добавить количество версий этой книги
+под кнопку select version добавить количество предложений и всякого разного об этой версии
 
-сделать новые ветки на github - front-react back-c# with additional subbranches
+сделать новые ветки на github - front-react back-c# with additional subbranches - фигня
 
-заменить три кнопки одной - view
+YES - заменить три кнопки одной - view
 
 сделать функцию типа радиобаттона - говорить ей, какой блок включить, а дальше она сама
 

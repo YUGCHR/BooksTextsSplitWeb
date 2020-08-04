@@ -32,10 +32,8 @@ let showBookVersions = (id, j) => {
 
 let showVersionsButtons = (props, n, uploadVersion, bookId) => {//className={s.versionButtonsPlace} is unused
   if(n===1){
-  return (<div className={s.versionButtonGridContainer}>
-    <button className={s.selectVersionButton} onClick={() => { props.switchQuickViewOn(bookId, uploadVersion); }}>Read {uploadVersion}</button>
-    <button className={s.editVersionButton} onClick={() => { props.switchQuickViewOn(bookId, uploadVersion); }}>View {uploadVersion}</button>
-    <button className={s.deleteVersionButton} onClick={() => { props.switchQuickViewOn(bookId, uploadVersion); }}>DELETE {uploadVersion}!</button>
+  return (<div className={s.versionButtonGridContainer}>    
+    <button className={s.editVersionButton} onClick={() => { props.switchQuickViewOn(bookId, uploadVersion); }}>View {uploadVersion}</button>    
   </div>);
   };
 };

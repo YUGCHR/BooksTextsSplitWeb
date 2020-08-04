@@ -81,7 +81,9 @@ class SelectTextsContainerAPI extends React.Component {
       .then((Response) => {
         this.props.toggleIsFetching(false);
         console.log("Response of BooksPairTexts", Response);
-        this.props.setAllVersionsOfBookName(Response.data.selectedBooksPairTexts);
+        console.log("Response.data.selectedBooksPairTexts", Response.data.selectedBooksPairTexts);
+        //debugger;
+        this.props.setBooksPairTexts(Response.data.selectedBooksPairTexts);
         console.log("axios: finished sending to props");
         return Response;
       })
@@ -109,7 +111,7 @@ class SelectTextsContainerAPI extends React.Component {
   //Let to switch on QuickView
   switchQuickViewOn = (selectedBookId, selectedVersion) => {
     this.props.toggleIsSelectingUploadVersion(false);
-    this.fetchChosenVersionOfSelectedBooksPair(selectedBookId, selectedVersion).then((r) => {
+    this.fetchChosenVersionOfSelectedBooksPair(selectedBookId, selectedVersion).then((r) => {      
       this.props.toggleIsQuickViewBooksPair(true);
       return { selectedVersion };
     });
