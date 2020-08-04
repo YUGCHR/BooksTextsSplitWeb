@@ -173,14 +173,14 @@ namespace BooksTextsSplit.Controllers
 
             List<TextSentence> requestedSelectResult = (await _context.GetItemsAsync
                 ($"SELECT * FROM c WHERE c.{where} = {whereValue}"))
-                .OrderBy(li => li.BookId)
+                .OrderBy(li => li.BookId) // if it remove the sort, the both methods will be the same
                 .ThenBy(uv => uv.UploadVersion)
                 .ThenBy(bi => bi.LanguageId)
                 .ToList();
 
             // Set List to Redis
-            string bookSentenceIdKey = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookSentenceId:1                                                                                
-            await cache.Cache.SetObjectAsync(bookSentenceIdKey, requestedSelectResult, TimeSpan.FromDays(1));
+            string createdKeyNameFromRequest = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookSentenceId:1                                                                                
+            await cache.Cache.SetObjectAsync(createdKeyNameFromRequest, requestedSelectResult, TimeSpan.FromDays(1));
 
             return requestedSelectResult;
         }
@@ -226,8 +226,8 @@ namespace BooksTextsSplit.Controllers
                 .ToList();
 
             // Set List to Redis
-            string booksPairTextsKey = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookId:(selected BookId)                                                                                
-            await cache.Cache.SetObjectAsync(booksPairTextsKey, requestedSelectResult, TimeSpan.FromDays(1));
+            string createdKeyNameFromRequest = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookId:(selected BookId)                                                                                
+            await cache.Cache.SetObjectAsync(createdKeyNameFromRequest, requestedSelectResult, TimeSpan.FromDays(1));
 
             return requestedSelectResult;
         }
