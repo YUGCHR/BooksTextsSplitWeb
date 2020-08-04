@@ -185,6 +185,53 @@ namespace BooksTextsSplit.Controllers
             return requestedSelectResult;
         }
 
+        // GET: api/BookTexts/BooksPairTexts/?where1=bookId&where1Value=(selected)&where2=uploadVersion&where2Value=(selected) - fetching selected version of the selected books pair texts
+        [HttpGet("BooksPairTexts")] 
+        public async Task<ActionResult<BooksPairTextsFromDb>> GetBooksPairTexts([FromQuery] string where1, [FromQuery] int where1Value, [FromQuery] string where2, [FromQuery] int where2Value)
+        {
+            return await FetchBooksPairTexts(where1, where1Value, where2, where2Value);
+        }
+
+        public async Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value)
+        {
+            string booksPairTextsKey = where1 + ":" + where1Value.ToString();
+            List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(booksPairTextsKey, () => FetchBooksTextsFromDb(where1, where1Value));
+
+            //where2 must be uploadVersion for the next grouping
+            //TODO get UploadVersion from where2
+            IEnumerable<IGrouping<int, TextSentence>> languageIdGrouping = requestedSelectResult.Where(r => r.UploadVersion == where2Value).ToList().GroupBy(r => r.LanguageId);
+
+            BooksPairTextsFromDb foundBooksPairTexts = new BooksPairTextsFromDb // selectedBooksPairTexts
+            {
+                SelectedBooksPairTexts = languageIdGrouping.Select(p => new BooksPairTextsGroupByLanguageId
+                {
+                    LanguageId = p.Key,
+                    Sentences = p.OrderBy(v => v.BookSentenceId).Select(s => s).ToList()
+                }
+                ).OrderBy(s => s.LanguageId).ToList()
+            };
+
+            return foundBooksPairTexts;
+        }
+
+        public async Task<List<TextSentence>> FetchBooksTextsFromDb(string where, int whereValue)
+        {
+            // bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy); - it is needs to add checking of parameters existing 
+
+            List<TextSentence> requestedSelectResult = (await _context.GetItemsAsync
+                ($"SELECT * FROM c WHERE c.{where} = {whereValue}"))
+                .OrderBy(uv => uv.UploadVersion)
+                .ThenBy(bi => bi.LanguageId)
+                .ThenBy(si => si.BookSentenceId)
+                .ToList();
+
+            // Set List to Redis
+            string booksPairTextsKey = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookId:(selected BookId)                                                                                
+            await cache.Cache.SetObjectAsync(booksPairTextsKey, requestedSelectResult, TimeSpan.FromDays(1));
+
+            return requestedSelectResult;
+        }
+
         //------------------------------------------------------------------------------------
 
 
