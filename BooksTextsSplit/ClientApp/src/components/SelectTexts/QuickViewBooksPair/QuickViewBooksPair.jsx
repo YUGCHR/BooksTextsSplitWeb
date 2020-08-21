@@ -7,8 +7,7 @@ let sentencesMap = (props, nd, n) => {
     let versionSentencesPlace = `versionSentencesPlace${n}`;
     return (      
       <div className={s.versionItemsBlock1Container3}>
-        <div className={s.versionSentencesPlace}>{showBookVersions(id, i)}</div> 
-        <div className={s.versionButtonPlace}>{showVersionsButtons(props, n, id.uploadVersion)}</div>
+        <div className={s.versionSentencesPlace}>{showBookVersions(id, i)}</div>         
       </div>
     );
   });
@@ -30,12 +29,12 @@ let showBookVersions = (id, j) => {
   );
 };
 
-let showVersionsButtons = (props, n, uploadVersion) => {//className={s.versionButtonsPlace} is unused
+let showVersionsButtons = (props, n) => {//className={s.versionButtonsPlace} is unused
   if(n===1){
   return (<div className={s.versionButtonGridContainer}>
-    <button className={s.selectVersionButton} onClick={() => { props.nextAfterQuickView(uploadVersion); }}>Read {uploadVersion}</button>
-    <button className={s.editVersionButton} onClick={() => { props.nextAfterQuickView(uploadVersion); }}>View {uploadVersion}</button>
-    <button className={s.deleteVersionButton} onClick={() => { props.nextAfterQuickView(uploadVersion); }}>DELETE {uploadVersion}!</button>
+    <button className={s.selectVersionButton} onClick={() => { props.nextAfterQuickView("read"); }}> Select Books for reading </button>
+    <button className={s.editVersionButton} onClick={() => { props.nextAfterQuickView("edit"); }}> Edit Books Pair </button>
+    <button className={s.deleteVersionButton} onClick={() => { props.nextAfterQuickView("delete"); }}>DELETE THESE BOOKS!</button>
   </div>);
   };
 };
@@ -43,11 +42,13 @@ let showVersionsButtons = (props, n, uploadVersion) => {//className={s.versionBu
 // Render Book Version - Map by languageId
 const QuickViewBooksPair = (props) => {  
   if (props.isQuickViewBooksPair) {
-    return props.booksPairTexts.map((nd, n) => {      
-      
+    return props.booksPairTexts.map((nd, n) => {
+      let bookName = nd.sentences[0].bookName;
       return (<div className={s.versionLanguageStyle}>
           <div className={s.versionItemsHeader}> Book Text with languageId = {n}</div>
+          <div>{bookName}</div>
           <div className={s.versionItemsBlock}>{sentencesMap(props, nd, n)} </div>
+          <div className={s.versionButtonPlace}>{showVersionsButtons(props, n)}</div>
         </div>
       );
     });

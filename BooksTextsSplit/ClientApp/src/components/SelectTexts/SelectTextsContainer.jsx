@@ -1,19 +1,17 @@
 import React from "react";
-import Axios from "axios";
-//import ReactScrollWheelHandler from "react-scroll-wheel-handler";
 import { connect } from "react-redux";
+import { compose } from "redux";
 import {
-  setAllBookIdsWithNames,
-  setAllVersionsOfBookName,
-  setBooksPairTexts,
-  setSentences,
   toggleIsSelectingBookId,
   toggleIsSelectingUploadVersion,
   toggleIsQuickViewBooksPair,
-  toggleIsFetching,
+  getAllBookIdsWithNamesThunk,
+  getAllBookNameVersionsThunk,
+  getBooksPairTextsThunk,
 } from "../../redux/select-reducer";
 import SelectTexts from "./SelectTexts";
 import Preloader from "../common/preloader/Preloader";
+
 class SelectTextsContainerAPI extends React.Component {
   constructor(props) {
     super(props);
@@ -28,99 +26,74 @@ class SelectTextsContainerAPI extends React.Component {
   };
 
   fetchAllBookIdsWithNames = () => {
-    //debugger;
-    this.props.toggleIsFetching(true);
     let where = "bookSentenceId";
     let whereValue = 1;
-    let orderBy = "bookId";
     let startUpVersion = 1;
-    //api/BookTexts/BooksIds/?where=bookSentenceId&whereValue=1&orderBy=bookId&needPostSelect=true&postWhere=UploadVersion&postWhereValue=1
-    //api/BookTexts/BooksIds/?where=bookSentenceId&whereValue=1&orderBy=bookId
-    //return Axios.get(`api/BookTexts/BooksIds/?where=${where}&whereValue=${whereValue}&orderBy=${orderBy}`)
-    //FromDbWhere/?where="bookSentenceId"&whereValue=1
-    return Axios.get(`api/BookTexts/BooksNamesIds/?where=${where}&whereValue=${whereValue}&startUploadVersion=${startUpVersion}`)
-      .then((Response) => {
-        this.props.toggleIsFetching(false);
-        console.log(Response);
-        console.log("axios: sending this to props:", Response.data.bookNamesVersion1SortedByIds);
-        //debugger;
-        this.props.setAllBookIdsWithNames(Response.data.bookNamesVersion1SortedByIds);
-        console.log("axios: finished sending to props");
-        let s = Response.data.sortedBooksIdsLength;
-        //debugger;
-        return s;
+    return this.props.getAllBookIdsWithNamesThunk(where, whereValue, startUpVersion)
+      .then((rrr) => {
+        console.log("after: getAllBookIdsWithNamesThunk", rrr);
       })
       .catch(this.failureCallback);
   };
 
   fetchAllVersionsOfSelectedBook = (bookId) => {
-    //debugger;
-    this.props.toggleIsFetching(true);
     let where = "bookSentenceId";
     let whereValue = 1;
-    //api/BookTexts/BookNameVersions/?where="bookId"&whereValue=1
-    return Axios.get(`api/BookTexts/BookNameVersions/?where=${where}&whereValue=${whereValue}&bookId=${bookId}`)
+    return this.props.getAllBookNameVersionsThunk(where, whereValue, bookId)
       .then((Response) => {
-        this.props.toggleIsFetching(false);
-        console.log("Response of BookNameVersions", Response);
-        this.props.setAllVersionsOfBookName(Response.data.selectedBookIdAllVersions);
-        console.log("axios: finished sending to props");
-        return Response;
+        console.log("getAllBookNameVersionsThunk: finished", Response);
       })
       .catch(this.failureCallback);
   };
 
   fetchChosenVersionOfSelectedBooksPair = (selectedBookId, selectedVersion) => {
-    //debugger;
-    this.props.toggleIsFetching(true);
     let where1 = "bookId";
     let where1Value = selectedBookId;
     let where2 = "uploadVersion";
     let where2Value = selectedVersion;
-    return Axios.get(`api/BookTexts/BooksPairTexts/?where1=${where1}&where1Value=${where1Value}&where2=${where2}&where2Value=${where2Value}`)
-      .then((Response) => {
-        this.props.toggleIsFetching(false);
-        console.log("Response of BooksPairTexts", Response);
-        console.log("Response.data.selectedBooksPairTexts", Response.data.selectedBooksPairTexts);
-        //debugger;
-        this.props.setBooksPairTexts(Response.data.selectedBooksPairTexts);
-        console.log("axios: finished sending to props");
-        return Response;
+    return this.props.getBooksPairTextsThunk(where1, where1Value, where2, where2Value)
+      .then((data) => {
+        console.log("Response of getBooksPairTexts", data);
       })
       .catch(this.failureCallback);
   };
 
-  //Let to switch on BooksNames choosing (return to the previous)
+  //Let to switch on BooksNames choosing (return to the previous) - subPage 01
   switchBooksIdsOn = () => {
-    this.props.toggleIsSelectingUploadVersion(false, "");
+    this.props.toggleIsSelectingUploadVersion(false); //subPage 02
+    this.props.toggleIsQuickViewBooksPair(false); //subPage 03
     this.fetchAllBookIdsWithNames().then((r) => {
-      this.props.toggleIsSelectingBookId(true);
+      this.props.toggleIsSelectingBookId(true); //subPage 01
     });
     return 0;
   };
 
-  //Let to switch on BookVersions choosing
+  //Let to switch on BookVersions choosing - subPage 02
   switchBookVersionsOn = (bookId) => {
-    this.props.toggleIsSelectingBookId(false);
+    this.props.toggleIsSelectingBookId(false); //subPage 01
+    this.props.toggleIsQuickViewBooksPair(false); //subPage 03
     this.fetchAllVersionsOfSelectedBook(bookId).then((r) => {
-      this.props.toggleIsSelectingUploadVersion(true);
+      this.props.toggleIsSelectingUploadVersion(true); //subPage 02
     });
     return { bookId };
   };
 
-  //Let to switch on QuickView
+  //Let to switch on QuickView - //subPage 03
   switchQuickViewOn = (selectedBookId, selectedVersion) => {
-    this.props.toggleIsSelectingUploadVersion(false);
-    this.fetchChosenVersionOfSelectedBooksPair(selectedBookId, selectedVersion).then((r) => {      
-      this.props.toggleIsQuickViewBooksPair(true);
+    this.props.toggleIsSelectingBookId(false); //subPage 01
+    this.props.toggleIsSelectingUploadVersion(false); //subPage 02
+    this.fetchChosenVersionOfSelectedBooksPair(selectedBookId, selectedVersion).then((r) => {
+      this.props.toggleIsQuickViewBooksPair(true); //subPage 03
       return { selectedVersion };
     });
   };
 
-  //Let to switch on NEXT choosing
+  //Let to switch on NEXT choosing - //subPage 04
   nextAfterQuickView = (i) => {
-    this.props.toggleIsSelectingUploadVersion(false);
-    this.props.toggleIsQuickViewBooksPair(false);
+    this.props.toggleIsSelectingUploadVersion(false); //subPage 01
+    this.props.toggleIsQuickViewBooksPair(false); //subPage 02
+    this.props.toggleIsQuickViewBooksPair(false); //subPage 03
+
     return { i };
   };
 
@@ -162,18 +135,13 @@ let mapStateToProps = (state) => {
   };
 };
 
-// toggleIsSelectingBookId={this.props.toggleIsSelectingBookId}
-// toggleIsSelectingUploadVersion={this.props.toggleIsSelectingUploadVersion}
-
-let SelectTextsContainer = connect(mapStateToProps, {
-  setAllBookIdsWithNames,
-  setAllVersionsOfBookName,
-  setBooksPairTexts,
-  setSentences,
-  toggleIsSelectingBookId,
-  toggleIsSelectingUploadVersion,
-  toggleIsQuickViewBooksPair,
-  toggleIsFetching,
-})(SelectTextsContainerAPI);
-
-export default SelectTextsContainer;
+export default compose(
+  connect(mapStateToProps, {
+    toggleIsSelectingBookId,
+    toggleIsSelectingUploadVersion,
+    toggleIsQuickViewBooksPair,    
+    getAllBookIdsWithNamesThunk,
+    getAllBookNameVersionsThunk,
+    getBooksPairTextsThunk,
+  })
+)(SelectTextsContainerAPI);

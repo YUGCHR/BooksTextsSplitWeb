@@ -1,7 +1,7 @@
 .testGridContainer1 {
   display: grid;
-  grid-template-rows: 1fr 1fr 10fr;
-  grid-template-columns: 4fr 4fr 2fr;
+  grid-template-rows: auto auto 1fr;
+  grid-template-columns: auto;
   /* grid-auto-flow: row; */
   grid-gap: 5px;
   color: yellow;

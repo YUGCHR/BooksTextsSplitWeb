@@ -1,7 +1,8 @@
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import readAndTranslateReducer from "./read-reducer";
 import uploadBooksReducer from "./load-reducer";
 import selectTextsReducer from "./select-reducer";
+import thunkMiddleware from "redux-thunk";
 
 let reducers = combineReducers({
     readAndTranslatePage: readAndTranslateReducer,
@@ -9,7 +10,7 @@ let reducers = combineReducers({
     uploadBooksPage: uploadBooksReducer
 })
 
-let store = createStore(reducers);
+let store = createStore(reducers, applyMiddleware(thunkMiddleware));
 
 window.store = store;
 
