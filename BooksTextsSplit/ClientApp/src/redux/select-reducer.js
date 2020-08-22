@@ -68,45 +68,56 @@ export const toggleIsQuickViewBooksPair = (isQuickViewBooksPair) => ({ type: TOG
 
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 
-export const getAllBookIdsWithNamesThunk = (where, whereValue, startUpVersion) => {
+const failureCallback = () => {
+  console.log("FSE PROPALO!");
+};
+
+export const fetchAllBookIdsWithNames = () => {
+  let where = "bookSentenceId";
+  let whereValue = 1;
+  let startUpVersion = 1;
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
-    return selectsAPI.getAllBookIdsWithNames(where, whereValue, startUpVersion).then((data) => {
-      dispatch(toggleIsFetching(false));
-      console.log(data);
-      console.log("axios: sending this to props:", data.bookNamesVersion1SortedByIds);
-      dispatch(setAllBookIdsWithNames(data.bookNamesVersion1SortedByIds));
-      console.log("axios: finished sending to props");
-      let s = data.sortedBooksIdsLength;
-      return s;
-    });
+    return selectsAPI.getAllBookIdsWithNames(where, whereValue, startUpVersion)
+      .then((data) => {
+        dispatch(toggleIsFetching(false));        
+        dispatch(setAllBookIdsWithNames(data.bookNamesVersion1SortedByIds));        
+        return data.sortedBooksIdsLength;
+      })      
+      .catch(failureCallback);
   };
 };
 
-export const getAllBookNameVersionsThunk = (where, whereValue, bookId) => {
+export const fetchAllVersionsOfSelectedBook = (bookId) => {
+  let where = "bookSentenceId";
+  let whereValue = 1;
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
-    return selectsAPI.getAllBookNameVersions(where, whereValue, bookId).then((data) => {
-      dispatch(toggleIsFetching(false));
-      console.log("Response of BookNameVersions", data);
-      dispatch(setAllVersionsOfBookName(data.selectedBookIdAllVersions));
-      console.log("axios: finished sending to props");
-      return data;
-    });
+    return selectsAPI.getAllBookNameVersions(where, whereValue, bookId)
+      .then((data) => {
+        dispatch(toggleIsFetching(false));        
+        dispatch(setAllVersionsOfBookName(data.selectedBookIdAllVersions));        
+        return data;
+      })      
+      .catch(failureCallback);
   };
 };
 
-export const getBooksPairTextsThunk = (where1, where1Value, where2, where2Value) => {
+export const fetchChosenVersionOfSelectedBooksPair = (selectedBookId, selectedVersion) => {
+  let where1 = "bookId";
+  let where1Value = selectedBookId;
+  let where2 = "uploadVersion";
+  let where2Value = selectedVersion;
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
-    return selectsAPI.getBooksPairTexts(where1, where1Value, where2, where2Value).then((data) => {
-      dispatch(toggleIsFetching(false));
-      console.log("Response of BooksPairTexts", data);
-      console.log("Response.data.selectedBooksPairTexts", data.selectedBooksPairTexts);
-      dispatch(setBooksPairTexts(data.selectedBooksPairTexts));
-      console.log("axios: finished sending to props");
-      return data;
-    });
+    return selectsAPI.getBooksPairTexts(where1, where1Value, where2, where2Value)
+      .then((data) => {
+        dispatch(toggleIsFetching(false));        
+        dispatch(setBooksPairTexts(data.selectedBooksPairTexts));        
+        return data;
+      })      
+      .catch(failureCallback);
   };
 };
+
 export default selectTextsReducer;

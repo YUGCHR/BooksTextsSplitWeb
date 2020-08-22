@@ -5,9 +5,9 @@ import {
   toggleIsSelectingBookId,
   toggleIsSelectingUploadVersion,
   toggleIsQuickViewBooksPair,
-  getAllBookIdsWithNamesThunk,
-  getAllBookNameVersionsThunk,
-  getBooksPairTextsThunk,
+  fetchAllBookIdsWithNames,
+  fetchAllVersionsOfSelectedBook,
+  fetchChosenVersionOfSelectedBooksPair,
 } from "../../redux/select-reducer";
 import SelectTexts from "./SelectTexts";
 import Preloader from "../common/preloader/Preloader";
@@ -18,14 +18,14 @@ class SelectTextsContainerAPI extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchAllBookIdsWithNames();
+    this.props.fetchAllBookIdsWithNames();
   }
 
-  failureCallback = () => {
+  /* failureCallback = () => {
     console.log(this.props.maxUploadedVersion);
-  };
+  }; */
 
-  fetchAllBookIdsWithNames = () => {
+  /* fetchAllBookIdsWithNames = () => {
     let where = "bookSentenceId";
     let whereValue = 1;
     let startUpVersion = 1;
@@ -34,9 +34,9 @@ class SelectTextsContainerAPI extends React.Component {
         console.log("after: getAllBookIdsWithNamesThunk", rrr);
       })
       .catch(this.failureCallback);
-  };
+  }; */
 
-  fetchAllVersionsOfSelectedBook = (bookId) => {
+  /* fetchAllVersionsOfSelectedBook = (bookId) => {
     let where = "bookSentenceId";
     let whereValue = 1;
     return this.props.getAllBookNameVersionsThunk(where, whereValue, bookId)
@@ -44,9 +44,9 @@ class SelectTextsContainerAPI extends React.Component {
         console.log("getAllBookNameVersionsThunk: finished", Response);
       })
       .catch(this.failureCallback);
-  };
+  }; */
 
-  fetchChosenVersionOfSelectedBooksPair = (selectedBookId, selectedVersion) => {
+ /*  fetchChosenVersionOfSelectedBooksPair = (selectedBookId, selectedVersion) => {
     let where1 = "bookId";
     let where1Value = selectedBookId;
     let where2 = "uploadVersion";
@@ -56,13 +56,13 @@ class SelectTextsContainerAPI extends React.Component {
         console.log("Response of getBooksPairTexts", data);
       })
       .catch(this.failureCallback);
-  };
+  }; */
 
   //Let to switch on BooksNames choosing (return to the previous) - subPage 01
   switchBooksIdsOn = () => {
     this.props.toggleIsSelectingUploadVersion(false); //subPage 02
     this.props.toggleIsQuickViewBooksPair(false); //subPage 03
-    this.fetchAllBookIdsWithNames().then((r) => {
+    this.props.fetchAllBookIdsWithNames().then((r) => {
       this.props.toggleIsSelectingBookId(true); //subPage 01
     });
     return 0;
@@ -72,7 +72,7 @@ class SelectTextsContainerAPI extends React.Component {
   switchBookVersionsOn = (bookId) => {
     this.props.toggleIsSelectingBookId(false); //subPage 01
     this.props.toggleIsQuickViewBooksPair(false); //subPage 03
-    this.fetchAllVersionsOfSelectedBook(bookId).then((r) => {
+    this.props.fetchAllVersionsOfSelectedBook(bookId).then((r) => {
       this.props.toggleIsSelectingUploadVersion(true); //subPage 02
     });
     return { bookId };
@@ -82,7 +82,7 @@ class SelectTextsContainerAPI extends React.Component {
   switchQuickViewOn = (selectedBookId, selectedVersion) => {
     this.props.toggleIsSelectingBookId(false); //subPage 01
     this.props.toggleIsSelectingUploadVersion(false); //subPage 02
-    this.fetchChosenVersionOfSelectedBooksPair(selectedBookId, selectedVersion).then((r) => {
+    this.props.fetchChosenVersionOfSelectedBooksPair(selectedBookId, selectedVersion).then((r) => {
       this.props.toggleIsQuickViewBooksPair(true); //subPage 03
       return { selectedVersion };
     });
@@ -140,8 +140,8 @@ export default compose(
     toggleIsSelectingBookId,
     toggleIsSelectingUploadVersion,
     toggleIsQuickViewBooksPair,    
-    getAllBookIdsWithNamesThunk,
-    getAllBookNameVersionsThunk,
-    getBooksPairTextsThunk,
+    fetchAllBookIdsWithNames,
+    fetchAllVersionsOfSelectedBook,
+    fetchChosenVersionOfSelectedBooksPair,
   })
 )(SelectTextsContainerAPI);
