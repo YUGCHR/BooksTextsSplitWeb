@@ -56,67 +56,103 @@ const selectTextsReducer = (state = initialState, action) => {
   }
 };
 
-export const setAllBookIdsWithNames = (bookNamesVersion1SortedByIds) => ({ type: SET_ALL_BOOKS_IDS, bookNamesVersion1SortedByIds });
-export const setAllVersionsOfBookName = (allVersionsOfBooksNames) => ({ type: SET_ALL_BOOKS_VERSIONS, allVersionsOfBooksNames });
-export const setBooksPairTexts = (booksPairTexts) => ({ type: SET_BOOKS_PAIR_TEXTS, booksPairTexts });
-
-export const setSentences = (sentences, languageId) => ({ type: SET_SENTENCES, sentences, languageId });
-
-export const toggleIsSelectingBookId = (isSelectingBookId) => ({ type: TOGGLE_IS_SELECTING_BOOK_ID, isSelectingBookId });
-export const toggleIsSelectingUploadVersion = (isSelectingUploadVersion) => ({ type: TOGGLE_IS_SELECTING_UPLOAD_VERSION, isSelectingUploadVersion });
-export const toggleIsQuickViewBooksPair = (isQuickViewBooksPair) => ({ type: TOGGLE_IS_QUICK_VIEW, isQuickViewBooksPair });
-
-export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
+const setAllBookIdsWithNames = (bookNamesVersion1SortedByIds) => ({ type: SET_ALL_BOOKS_IDS, bookNamesVersion1SortedByIds });
+const setAllVersionsOfBookName = (allVersionsOfBooksNames) => ({ type: SET_ALL_BOOKS_VERSIONS, allVersionsOfBooksNames });
+const setBooksPairTexts = (booksPairTexts) => ({ type: SET_BOOKS_PAIR_TEXTS, booksPairTexts });
+const toggleIsSelectingBookId = (isSelectingBookId) => ({ type: TOGGLE_IS_SELECTING_BOOK_ID, isSelectingBookId });
+const toggleIsSelectingUploadVersion = (isSelectingUploadVersion) => ({ type: TOGGLE_IS_SELECTING_UPLOAD_VERSION, isSelectingUploadVersion });
+const toggleIsQuickViewBooksPair = (isQuickViewBooksPair) => ({ type: TOGGLE_IS_QUICK_VIEW, isQuickViewBooksPair });
+const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 
 const failureCallback = () => {
   console.log("FSE PROPALO!");
 };
 
-export const fetchAllBookIdsWithNames = () => {
-  let where = "bookSentenceId";
-  let whereValue = 1;
-  let startUpVersion = 1;
+export const fetchAllBookIdsWithNames = (where = "bookSentenceId", whereValue = 1, startUpVersion = 1) => { 
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
-    return selectsAPI.getAllBookIdsWithNames(where, whereValue, startUpVersion)
+    return selectsAPI
+      .getAllBookIdsWithNames(where, whereValue, startUpVersion)
       .then((data) => {
-        dispatch(toggleIsFetching(false));        
-        dispatch(setAllBookIdsWithNames(data.bookNamesVersion1SortedByIds));        
+        dispatch(toggleIsFetching(false));
+        dispatch(setAllBookIdsWithNames(data.bookNamesVersion1SortedByIds));
         return data.sortedBooksIdsLength;
-      })      
+      })
       .catch(failureCallback);
   };
 };
 
-export const fetchAllVersionsOfSelectedBook = (bookId) => {
-  let where = "bookSentenceId";
-  let whereValue = 1;
+const fetchAllVersionsOfSelectedBook = (where = "bookSentenceId", whereValue = 1, bookId) => {
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
-    return selectsAPI.getAllBookNameVersions(where, whereValue, bookId)
+    return selectsAPI
+      .getAllBookNameVersions(where, whereValue, bookId)
       .then((data) => {
-        dispatch(toggleIsFetching(false));        
-        dispatch(setAllVersionsOfBookName(data.selectedBookIdAllVersions));        
+        dispatch(toggleIsFetching(false));
+        dispatch(setAllVersionsOfBookName(data.selectedBookIdAllVersions));
         return data;
-      })      
+      })
       .catch(failureCallback);
   };
 };
 
-export const fetchChosenVersionOfSelectedBooksPair = (selectedBookId, selectedVersion) => {
-  let where1 = "bookId";
-  let where1Value = selectedBookId;
-  let where2 = "uploadVersion";
-  let where2Value = selectedVersion;
+const fetchChosenVersionOfSelectedBooksPair = (where1 = "bookId", where1Value, where2 = "uploadVersion", where2Value) => {  
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
-    return selectsAPI.getBooksPairTexts(where1, where1Value, where2, where2Value)
+    return selectsAPI
+      .getBooksPairTexts(where1, where1Value, where2, where2Value)
       .then((data) => {
-        dispatch(toggleIsFetching(false));        
-        dispatch(setBooksPairTexts(data.selectedBooksPairTexts));        
+        dispatch(toggleIsFetching(false));
+        dispatch(setBooksPairTexts(data.selectedBooksPairTexts));
         return data;
-      })      
+      })
       .catch(failureCallback);
+  };
+};
+
+//Let to switch on BooksNames choosing (return to the previous) - subPage 01
+export const switchBooksIdsOn = () => {
+  return (dispatch) => {
+    dispatch(toggleIsSelectingUploadVersion(false)); //subPage 02 off
+    dispatch(toggleIsQuickViewBooksPair(false)); //subPage  off
+    dispatch(fetchAllBookIdsWithNames()).then((r) => {
+      dispatch(toggleIsSelectingBookId(true)); //subPage 01 on
+    });
+    return 0;
+  };
+};
+
+//Let to switch on BookVersions choosing - subPage 02
+export const switchBookVersionsOn = (bookId) => {
+  return (dispatch) => {
+    dispatch(toggleIsSelectingBookId(false)); //subPage 01
+    dispatch(toggleIsQuickViewBooksPair(false)); //subPage 03
+    dispatch(fetchAllVersionsOfSelectedBook("bookSentenceId", 1, bookId)).then((r) => {
+      dispatch(toggleIsSelectingUploadVersion(true)); //subPage 02
+    });
+    return { bookId };
+  };
+};
+
+//Let to switch on QuickView - //subPage 03
+export const switchQuickViewOn = (selectedBookId, selectedVersion) => {
+  return (dispatch) => {
+    dispatch(toggleIsSelectingBookId(false)); //subPage 01
+    dispatch(toggleIsSelectingUploadVersion(false)); //subPage 02
+    dispatch(fetchChosenVersionOfSelectedBooksPair("bookId", selectedBookId, "uploadVersion", selectedVersion)).then((r) => {
+      dispatch(toggleIsQuickViewBooksPair(true)); //subPage 03
+      return { selectedVersion };
+    });
+  };
+};
+
+//Let to switch on NEXT choosing - //subPage 04
+export const nextAfterQuickView = (i) => {
+  return (dispatch) => {
+    dispatch(toggleIsSelectingUploadVersion(false)); //subPage 01
+    dispatch(toggleIsQuickViewBooksPair(false)); //subPage 02
+    dispatch(toggleIsQuickViewBooksPair(false)); //subPage 03
+    return { i };
   };
 };
 
