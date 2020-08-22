@@ -68,7 +68,7 @@ const failureCallback = () => {
   console.log("FSE PROPALO!");
 };
 
-export const fetchAllBookIdsWithNames = (where = "bookSentenceId", whereValue = 1, startUpVersion = 1) => { 
+const fetchAllBookIdsWithNames = (where = "bookSentenceId", whereValue = 1, startUpVersion = 1) => { 
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
     return selectsAPI
@@ -123,7 +123,7 @@ export const switchBooksIdsOn = () => {
 };
 
 //Let to switch on BookVersions choosing - subPage 02
-export const switchBookVersionsOn = (bookId) => {
+export const switchBookVersionsOn = (bookId = 1) => {
   return (dispatch) => {
     dispatch(toggleIsSelectingBookId(false)); //subPage 01
     dispatch(toggleIsQuickViewBooksPair(false)); //subPage 03

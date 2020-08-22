@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { fetchAllBookIdsWithNames, switchBooksIdsOn, switchBookVersionsOn, switchQuickViewOn, nextAfterQuickView } from "../../redux/select-reducer";
+import { switchBooksIdsOn, switchBookVersionsOn, switchQuickViewOn, nextAfterQuickView } from "../../redux/select-reducer";
 import SelectTexts from "./SelectTexts";
 import Preloader from "../common/preloader/Preloader";
 
@@ -11,7 +11,7 @@ class SelectTextsContainerAPI extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchAllBookIdsWithNames();
+    this.props.switchBooksIdsOn();
   }
 
   render() {
@@ -53,5 +53,5 @@ let mapStateToProps = (state) => {
 };
 
 export default compose(
-  connect(mapStateToProps, {fetchAllBookIdsWithNames, switchBooksIdsOn, switchBookVersionsOn, switchQuickViewOn, nextAfterQuickView,})
+  connect(mapStateToProps, {switchBooksIdsOn, switchBookVersionsOn, switchQuickViewOn, nextAfterQuickView,})
 )(SelectTextsContainerAPI);
