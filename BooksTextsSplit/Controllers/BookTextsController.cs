@@ -32,6 +32,8 @@ namespace BooksTextsSplit.Controllers
             //_db = db;
         }
 
+        #region GET
+
         // GET: api/Count/        
         [HttpGet("count")]
         public async Task<ActionResult<TotalCount>> GetTotalCount()
@@ -92,7 +94,7 @@ namespace BooksTextsSplit.Controllers
 
             return bookText;
         }
-        
+
         //------------------------------------------------------------------------------------
 
         // GET: api/BookTexts/BooksNamesIds/?where="bookId"&whereValue=1&startUploadVersion=1 - fetching list of all BookIds existing in Db
@@ -126,7 +128,7 @@ namespace BooksTextsSplit.Controllers
         // GET: api/BookTexts/BookNameVersions/?where="bookId"&whereValue=1&bookId=(from selection) - fetching list of all uploaded versions for selected BookIds
         [HttpGet("BookNameVersions")]
         public async Task<ActionResult<BooksVersionsExistInDb>> GetBookNameVersions([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int bookId)
-        {            
+        {
             return await FetchBookNameVersions(where, whereValue, bookId);
         }
 
@@ -186,7 +188,7 @@ namespace BooksTextsSplit.Controllers
         }
 
         // GET: api/BookTexts/BooksPairTexts/?where1=bookId&where1Value=(selected)&where2=uploadVersion&where2Value=(selected) - fetching selected version of the selected books pair texts
-        [HttpGet("BooksPairTexts")] 
+        [HttpGet("BooksPairTexts")]
         public async Task<ActionResult<BooksPairTextsFromDb>> GetBooksPairTexts([FromQuery] string where1, [FromQuery] int where1Value, [FromQuery] string where2, [FromQuery] int where2Value)
         {
             return await FetchBooksPairTexts(where1, where1Value, where2, where2Value);
@@ -269,7 +271,7 @@ namespace BooksTextsSplit.Controllers
 
                 IEnumerable<IGrouping<int, TextSentence>> pairings = requestedSelectResultSorted.GroupBy(r => r.BookId);
 
-                BooksNamesExistInDb foundbooksIds = new BooksNamesExistInDb
+                BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb
                 {
                     BookNamesVersion1SortedByIds = pairings.Select(p => new BooksNamesSortByLanguageIdSortByBookId
                     {
@@ -279,7 +281,7 @@ namespace BooksTextsSplit.Controllers
                     ).ToList()
                 };
 
-                return foundbooksIds;
+                return foundBooksIds;
             }
             else
             {
@@ -328,6 +330,10 @@ namespace BooksTextsSplit.Controllers
             return (passedTestsCount) == testingProperties.Length; //if all testingProperties are real it returns true
         }
 
+        #endregion
+
+        #region POST
+
         // POST: api/BookTexts
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
@@ -355,7 +361,39 @@ namespace BooksTextsSplit.Controllers
             //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
             // return CreatedAtAction(nameof(GetTodoItem), new { ids = todoItems.Select(i => i.Id) }, todoItems);
 
-            return Ok(new { ids = textWrapper.Text.Select(i => i.Id), totalCount = new TotalCount((await _context.GetItemsAsync("SELECT * FROM c")).Where(i => i.LanguageId == textWrapper.LanguageId).Count()) });
+            return Ok(new { ids = textWrapper.Text.Select(i => i.Id), 
+                totalCount = new TotalCount((await _context.GetItemsAsync("SELECT * FROM c"))
+                    .Where(i => i.LanguageId == textWrapper.LanguageId)
+                    .Count()) });
+        }
+
+        // POST: api/BookTexts/auth/login/
+        [HttpPost("auth/login")]
+
+        public ActionResult<LoginAttemptResult> UploadLoginData(LoginDataFromFront fetchedLoginData)
+        {
+
+            LoginAttemptResult resultData = new LoginAttemptResult();
+            string myEmail = "yuri.gonchar@gmail.com";
+            string myPasswordHash = "ttt";
+
+            if (fetchedLoginData.Email == myEmail)
+            {
+                if (fetchedLoginData.Password == myPasswordHash)
+                {
+                    {
+                        resultData.ResultMessage = "You are authorized now";
+                        resultData.ResultCode = 0;
+                    }
+                    return resultData;
+                }
+            }
+
+            {
+                resultData.ResultMessage = "You are not authorized";
+                resultData.ResultCode = 1;
+            }
+            return resultData;
         }
 
         // POST: api/BookTexts/UploadFile
@@ -425,6 +463,10 @@ namespace BooksTextsSplit.Controllers
             return Problem("bad file");
         }
 
+        #endregion
+
+        #region DELETE
+
         // DELETE: api/BookTexts/a9da6acc-a5fa-4ed7-be90-4b0ec5d7c7cb/?bookId=1&languageId=0&uploadVersion=5
         [HttpDelete("{id}")]
         public async Task<ActionResult<IEnumerable<TextSentence>>> DeleteTextSentence(string id, [FromQuery] int bookId, [FromQuery] int languageId, [FromQuery] int uploadVersion)
@@ -453,6 +495,9 @@ namespace BooksTextsSplit.Controllers
                 return Ok(ex.Message);
             }
         }
+
+        #endregion
+
     }
 }
 

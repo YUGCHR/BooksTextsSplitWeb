@@ -19,4 +19,16 @@
 
   .twoColumnsTop{    
     float: right;
-}
+  }
+/* 
+  .loginBlock{
+    float: right;
+    color: yellow;    
+    margin: 50px;
+    margin-right: 5px;
+  }
+
+  .loginBlock a{
+    color: yellow;
+    background-color: silver;
+  } */

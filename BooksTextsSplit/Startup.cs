@@ -42,7 +42,16 @@ namespace BooksTextsSplit
                 configuration.RootPath = "ClientApp/build";
             });
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            try
+            {
+                services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            }
+            catch (Exception ex)
+            {
+                string Message = ex.Message;
+                Console.WriteLine("\n\n CosmosDbService was not initialized: \n\n" + Message + "\n\n");
+            }
+
             try
             {
                 ConnectionMultiplexer muxer = ConnectionMultiplexer.Connect("localhost");
