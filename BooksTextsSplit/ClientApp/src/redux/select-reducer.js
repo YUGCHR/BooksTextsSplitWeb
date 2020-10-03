@@ -157,3 +157,7 @@ export const nextAfterQuickView = (i) => {
 };
 
 export default selectTextsReducer;
+
+/* fail: Microsoft.AspNetCore.SpaServices[0]
+      The prop value with an expression type of SequenceExpression could not be resolved. Please file issue to get this fixed immediately. */
+
