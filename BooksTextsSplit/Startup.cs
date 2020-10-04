@@ -15,6 +15,8 @@ using CachingFramework.Redis;
 using System.Diagnostics.Contracts;
 using System;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication;
+using BooksTextsSplit.Helpers;
 
 namespace BooksTextsSplit
 {
@@ -36,6 +38,13 @@ namespace BooksTextsSplit
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            // configure basic authentication 
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
+            // configure DI for application services
+            services.AddScoped<IAuthService, AuthService>();
+
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration =>
             {

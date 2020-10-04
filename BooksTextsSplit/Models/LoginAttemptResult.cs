@@ -10,6 +10,5 @@ namespace BooksTextsSplit.Models
         public string ResultMessage { get; set; }
         public string[] FieldsErrors { get; set; }
         public int ResultCode { get; set; }
-
     }
 }

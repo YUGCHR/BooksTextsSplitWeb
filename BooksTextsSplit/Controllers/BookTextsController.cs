@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using BooksTextsSplit.Models;
 using BooksTextsSplit.Services;
@@ -15,6 +16,7 @@ using System.Data;
 using StackExchange.Redis;
 using CachingFramework.Redis;
 
+
 namespace BooksTextsSplit.Controllers
 {
     [Route("api/[controller]")]
@@ -25,11 +27,14 @@ namespace BooksTextsSplit.Controllers
         private readonly RedisContext cache;
         private readonly ICosmosDbService _context;
         // private readonly IDatabase _db;
-        public BookTextsController(ICosmosDbService cosmosDbService, RedisContext c) //, IDatabase db)
+        private IAuthService _authService;
+
+        public BookTextsController(ICosmosDbService cosmosDbService, RedisContext c, IAuthService authService) //, IDatabase db)
         {
             cache = c;
             _context = cosmosDbService;
             //_db = db;
+            _authService = authService;
         }
 
         #region GET
@@ -368,35 +373,26 @@ namespace BooksTextsSplit.Controllers
         }
 
         // POST: api/BookTexts/auth/login/
+        [AllowAnonymous]
         [HttpPost("auth/login")]
 
-        public ActionResult<LoginAttemptResult> UploadLoginData(LoginDataFromFront fetchedLoginData)
+        public async Task<ActionResult<LoginAttemptResult>> UploadLoginData([FromBody] LoginDataFromUI fetchedLoginData) //async Task<IActionResult>
         {
-
             LoginAttemptResult resultData = new LoginAttemptResult();
-            string myEmail = "yuri.gonchar@gmail.com";
-            string myPasswordHash = "ttt";
+            var user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
 
-            if (fetchedLoginData.Email == myEmail)
-            {
-                if (fetchedLoginData.Password == myPasswordHash)
-                {
-                    {
-                        resultData.ResultMessage = "You are authorized now";
-                        resultData.ResultCode = 0;
-                    }
-                    return resultData;
-                }
-            }
-
+            if (user == null)
             {
                 resultData.ResultMessage = "You are not authorized";
                 resultData.ResultCode = 1;
+                return resultData;
             }
+            resultData.ResultMessage = "You are authorized now";
+            resultData.ResultCode = 0;
             return resultData;
         }
 
-        // POST: api/BookTexts/UploadFile
+        // POST: api/BookTexts/UploadFile        
         [HttpPost("UploadFile")]
         // POST: api/BookTexts/UploadFile?language=0
         //public async Task<IActionResult> UploadFile([FromForm]IFormFile bookFile, [FromQuery] int language)
