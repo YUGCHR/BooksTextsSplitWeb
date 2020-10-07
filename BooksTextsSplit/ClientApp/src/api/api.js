@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { authHeader } from "../components/common/utils/authHeader";
 
 // DAL - data access layer
 
@@ -27,9 +28,11 @@ export const selectsAPI = {
   },
   // GET: api/BookTexts/BooksPairTexts/?where1=bookId&where1Value=(selected)&where2=uploadVersion&where2Value=(selected) - fetching selected version of the selected books pair texts
   getBooksPairTexts: (where1, where1Value, where2, where2Value) => {
-    return instance.get(`BooksPairTexts/?where1=${where1}&where1Value=${where1Value}&where2=${where2}&where2Value=${where2Value}`).then((response) => {
-      return response.data;
-    });
+    return instance
+      .get(`BooksPairTexts/?where1=${where1}&where1Value=${where1Value}&where2=${where2}&where2Value=${where2Value}`)
+      .then((response) => {
+        return response.data;
+      });
   },
 };
 
@@ -37,14 +40,20 @@ export const failureCallback = () => {
   console.log(this.props.maxUploadedVersion);
 };
 
+const instanceAuth = Axios.create({
+  /* withCredentials: true, */
+  baseURL: `api/BookTexts/`,
+  headers: authHeader(),
+});
+
 export const authAPI = {
   getMe: () => {
-    return instance.get(`auth/me/`);
+    return instanceAuth.get(`auth/getAll/`);
   },
   /* getMe() {
     return instance.get(`auth/me/`);
   }, */
-  login: (email, password, rememberMe = false, captcha = null) => {    
+  login: (email, password, rememberMe = false, captcha = null) => {
     return instance.post(`auth/login/`, { email, password, rememberMe, captcha });
   },
   logout: () => {

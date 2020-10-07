@@ -358,18 +358,21 @@ namespace BooksTextsSplit.Controllers
                 return Ok(ex.Message);
             }
 
-            //_context.BookTexts.AddRange(textWrapper.Text);
-            //await _context.SaveChangesAsync();
+            // _context.BookTexts.AddRange(textWrapper.Text);
+            // await _context.SaveChangesAsync();
 
             // не знаю, нафиг это надо, мы в проекте везде возвращаем 
             // return Ok();
-            //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
+            // return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
             // return CreatedAtAction(nameof(GetTodoItem), new { ids = todoItems.Select(i => i.Id) }, todoItems);
 
-            return Ok(new { ids = textWrapper.Text.Select(i => i.Id), 
+            return Ok(new
+            {
+                ids = textWrapper.Text.Select(i => i.Id),
                 totalCount = new TotalCount((await _context.GetItemsAsync("SELECT * FROM c"))
                     .Where(i => i.LanguageId == textWrapper.LanguageId)
-                    .Count()) });
+                    .Count())
+            });
         }
 
         // POST: api/BookTexts/auth/login/
@@ -389,8 +392,19 @@ namespace BooksTextsSplit.Controllers
             }
             resultData.ResultMessage = "You are authorized now";
             resultData.ResultCode = 0;
-            return resultData;
+            //return resultData;
+            return Ok(user);
         }
+
+        // GET: api/BookTexts/auth/getAll/
+        [Authorize]
+        [HttpGet("auth/getall")]
+            public async Task<IActionResult> GetAll()
+        {
+            var users = await _authService.GetAll();
+            return Ok(users);
+        }
+
 
         // POST: api/BookTexts/UploadFile        
         [HttpPost("UploadFile")]
