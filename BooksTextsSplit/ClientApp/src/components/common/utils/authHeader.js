@@ -1,4 +1,8 @@
-export function authHeader(props) {
+import React from 'react';
+import { connect } from 'react-redux';
+import { getAuthUserData } from '../../redux/auth-reducer';
+
+export function authHeader({authKey}) {
   /*     // code block FROM userService - start
     // return authorization header with basic auth credentials
     let user = JSON.parse(localStorage.getItem('user'));
@@ -10,7 +14,27 @@ export function authHeader(props) {
     }
     // code block FROM userService - end */
 
-  if (props.authKey) {
-    return { Authorization: "Basic " + props.authKey };
+  if (authKey) {
+    return { Authorization: "Basic " + authKey };
   }
 }
+class AuthHeaderContainer extends React.Component {
+
+  /* componentDidMount() {
+    this.props.getAuthUserData(); //thunk
+  } */
+
+  render() {
+    return (
+      <authHeader {authKey} />
+    );
+  }
+}
+
+let mapStateToProps = (state) => ({
+  isAuth: state.auth.isAuth,
+  authKey: state.auth.authKey
+})
+
+export default connect(mapStateToProps, { getAuthUserData })(AuthHeaderContainer);
+

@@ -19,6 +19,7 @@ using CachingFramework.Redis;
 
 namespace BooksTextsSplit.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -398,7 +399,7 @@ namespace BooksTextsSplit.Controllers
         }
 
         // GET: api/BookTexts/auth/getAll/
-        [Authorize]
+        //[Authorize]
         [HttpGet("auth/getall")]
             public async Task<ActionResult<LoginAttemptResult>> GetAll() //why I cannot use IActionResult ?
         {

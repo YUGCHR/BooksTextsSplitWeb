@@ -1,13 +1,15 @@
 import Axios from "axios";
-import { authHeader } from "../components/common/utils/authHeader";
+//import { authHeader } from "../components/common/utils/authHeader";
 
 // DAL - data access layer
+//let header = {'Authorization': 'Basic '};
 
 const instance = Axios.create({
   baseURL: `api/BookTexts/`,
-  headers: {'Authorization': 'Basic 1234567890'},
+  withCredentials: true,  
 });
 // withCredentials: true,
+// headers: {'Authorization': 'Basic 123456789'}
 // headers: { "API-KEY": "6dd517b6-826d-4942-ab0a-022445b74fcd" }
 
 export const selectsAPI = {
@@ -48,7 +50,11 @@ export const failureCallback = () => {
 }); */
 
 export const authAPI = {
-  getMe: () => {
+  getMe: (authKey) => {
+    debugger;
+    // Alter defaults after instance has been created
+    instance.defaults.headers.common['Authorization'] = authKey; //'Basic ' + 
+    // headers must be - {'Authorization': 'Basic 1234567890'}
     return instance.get(`auth/getAll/`);
   },
   /* getMe() {

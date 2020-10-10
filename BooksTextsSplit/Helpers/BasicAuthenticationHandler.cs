@@ -48,10 +48,10 @@ namespace BooksTextsSplit.Helpers
                 // var email = credentials[0];
                 // var password = credentials[1];
                 // user = await _authService.Authenticate(email, password);
-
-                var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
-                // var credentialBytes = Convert.FromBase64String(authHeader.Parameter);                
-                var fetchToken = authHeader.Parameter;
+    
+                // var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);                
+                // var fetchToken = authHeader.Parameter;
+                var fetchToken = Request.Headers["Authorization"];
                 user = await _authService.AuthByToken(fetchToken);
             }
             catch
