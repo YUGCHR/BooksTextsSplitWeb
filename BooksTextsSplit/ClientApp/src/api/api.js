@@ -5,6 +5,7 @@ import { authHeader } from "../components/common/utils/authHeader";
 
 const instance = Axios.create({
   baseURL: `api/BookTexts/`,
+  headers: {'Authorization': 'Basic 1234567890'},
 });
 // withCredentials: true,
 // headers: { "API-KEY": "6dd517b6-826d-4942-ab0a-022445b74fcd" }
@@ -40,15 +41,15 @@ export const failureCallback = () => {
   console.log(this.props.maxUploadedVersion);
 };
 
-const instanceAuth = Axios.create({
-  /* withCredentials: true, */
+/* const instanceAuth = Axios.create({
+  // withCredentials: true,
   baseURL: `api/BookTexts/`,
   headers: authHeader(),
-});
+}); */
 
 export const authAPI = {
   getMe: () => {
-    return instanceAuth.get(`auth/getAll/`);
+    return instance.get(`auth/getAll/`);
   },
   /* getMe() {
     return instance.get(`auth/me/`);

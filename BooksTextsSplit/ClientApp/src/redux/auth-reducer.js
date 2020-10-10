@@ -1,6 +1,7 @@
 import { authAPI, securityAPI } from "../api/api";
 import { stopSubmit } from "redux-form";
 const SET_USER_DATA = "SET-USER-DATA";
+const SET_AUTH_KEY = "SET-AUTH-KEY";
 const GET_CAPTCHA_URL_SUCCESS = "samurai-network/auth/GET-CAPTCHA-URL-SUCCESS";
 const RESULT_CODE_NEEDS_CAPTCHA = 10;
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
@@ -10,6 +11,8 @@ let initialState = {
   email: null,
   login: null,
   isAuth: false,
+  authKey: null,
+  //user: null,
   isFetching: false,
   captchaUrl: null, // if null, then captcha is not required
 };
@@ -17,7 +20,9 @@ let initialState = {
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_USER_DATA:
+    case SET_AUTH_KEY:
     case GET_CAPTCHA_URL_SUCCESS:
+      debugger;
       return {
         ...state,
         ...action.payload,
@@ -35,24 +40,26 @@ const authReducer = (state = initialState, action) => {
 };
 
 export const getCaptchaUrlSuccess = (captchaUrl) => ({ type: GET_CAPTCHA_URL_SUCCESS, payload: { captchaUrl } });
-
+export const setAuthKey = (authKey) => ({ type: SET_AUTH_KEY, payload: { authKey } });
 export const setAuthUserData = (userId, email, login, isAuth) => ({ type: SET_USER_DATA, payload: { userId, email, login, isAuth } });
 
-export const getAuthUserData = () => async (dispatch) => {
+export const getAuthUserData = (authKey) => async (dispatch) => {
   dispatch(toggleIsFetching(true));
-  const response = await authAPI.getMe();
+  const response = await authAPI.getMe(authKey);
   dispatch(toggleIsFetching(false));
   debugger;
   if (response.data.resultCode === 0) {
-    let allUsers = response.data.data;
+    let allUsers = response.data.usersList;
     let user = allUsers[0];
     dispatch(setAuthUserData(user.id, user.email, user.login, true));
   }
 };
 
 export const login = (email, password, rememberMe, captcha) => async (dispatch) => {
-  dispatch(toggleIsFetching(true));  
-  const user = await authAPI.login(email, password, rememberMe, captcha);
+  dispatch(toggleIsFetching(true));
+  const response = await authAPI.login(email, password, rememberMe, captcha);
+
+  /*   // code block FROM userService - start
   // login successful if there's a user in the response
   if (user) {
     // store user details and basic auth credentials in local storage
@@ -61,18 +68,21 @@ export const login = (email, password, rememberMe, captcha) => async (dispatch) 
     localStorage.setItem("user", JSON.stringify(user));
     //return user;
   }
-  dispatch(toggleIsFetching(false));  
-  dispatch(getAuthUserData());
-  /* if (response.data.resultCode === 0) {
+  // code block FROM userService - end */
+
+  dispatch(toggleIsFetching(false));
+  if (response.data.resultCode === 0) {
     // success, get auth data
-    dispatch(getAuthUserData());
+    let authKey = response.data.issuedToken;
+    dispatch(setAuthKey(authKey));
+    dispatch(getAuthUserData(authKey));
   } else {
     if (response.data.resultCode === RESULT_CODE_NEEDS_CAPTCHA) {
       dispatch(getCaptchaUrl());
     }
     let errorDescription = response.data.messages.length > 0 ? response.data.messages[0] : "Something went wrong - please try again!";
     dispatch(stopSubmit("login", { _error: errorDescription }));
-  } */
+  }
 };
 
 export const getCaptchaUrl = () => async (dispatch) => {

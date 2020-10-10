@@ -42,12 +42,17 @@ namespace BooksTextsSplit.Helpers
             User user = null;
             try
             {
+                // var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+                // var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
+                // var credentials = Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' }, 2);
+                // var email = credentials[0];
+                // var password = credentials[1];
+                // user = await _authService.Authenticate(email, password);
+
                 var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
-                var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
-                var credentials = Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' }, 2);
-                var email = credentials[0];
-                var password = credentials[1];
-                user = await _authService.Authenticate(email, password);
+                // var credentialBytes = Convert.FromBase64String(authHeader.Parameter);                
+                var fetchToken = authHeader.Parameter;
+                user = await _authService.AuthByToken(fetchToken);
             }
             catch
             {

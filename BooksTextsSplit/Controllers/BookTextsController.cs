@@ -391,18 +391,23 @@ namespace BooksTextsSplit.Controllers
                 return resultData;
             }
             resultData.ResultMessage = "You are authorized now";
+            resultData.IssuedToken = "1234567890";
             resultData.ResultCode = 0;
-            //return resultData;
-            return Ok(user);
+            return resultData;
+            //return Ok(user);
         }
 
         // GET: api/BookTexts/auth/getAll/
         [Authorize]
         [HttpGet("auth/getall")]
-            public async Task<IActionResult> GetAll()
+            public async Task<ActionResult<LoginAttemptResult>> GetAll() //why I cannot use IActionResult ?
         {
-            var users = await _authService.GetAll();
-            return Ok(users);
+            LoginAttemptResult resultData = new LoginAttemptResult();
+            IEnumerable<User> users = await _authService.GetAll();
+            resultData.UsersList = users;
+            resultData.ResultCode = 0;
+            return resultData;
+            //return Ok(users);
         }
 
 

@@ -16,6 +16,7 @@ namespace BooksTextsSplit.Helpers
         public static User WithoutPassword(this User user)
         {
             user.Password = null;
+            user.Token = null;
             return user;
         }
     }
