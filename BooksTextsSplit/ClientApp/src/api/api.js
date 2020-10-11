@@ -51,7 +51,7 @@ export const failureCallback = () => {
 
 export const authAPI = {
   getMe: (authKey) => {
-    debugger;
+    //debugger;
     // Alter defaults after instance has been created
     instance.defaults.headers.common['Authorization'] = authKey; //'Basic ' + 
     // headers must be - {'Authorization': 'Basic 1234567890'}

@@ -17,6 +17,8 @@ using System;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authentication;
 using BooksTextsSplit.Helpers;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace BooksTextsSplit
 {
@@ -32,6 +34,8 @@ namespace BooksTextsSplit
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -71,6 +75,8 @@ namespace BooksTextsSplit
                 string Message = ex.Message;
                 Console.WriteLine("\n\n Redis client did not start: \n\n" + Message + "\n\n");
             }
+
+            //services.AddLocalization(op ;
             //services.AddSingleton<IDatabase>(muxer.GetDatabase());
             //services.AddSingleton<CachingFramework.Redis.Contracts.Providers.ICacheProvider>(muxer);
 
@@ -110,6 +116,17 @@ namespace BooksTextsSplit
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-US")
+            };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

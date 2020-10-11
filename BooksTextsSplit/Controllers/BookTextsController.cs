@@ -15,7 +15,7 @@ using System.ComponentModel.Design;
 using System.Data;
 using StackExchange.Redis;
 using CachingFramework.Redis;
-
+using Microsoft.Extensions.Localization;
 
 namespace BooksTextsSplit.Controllers
 {
@@ -29,16 +29,35 @@ namespace BooksTextsSplit.Controllers
         private readonly ICosmosDbService _context;
         // private readonly IDatabase _db;
         private IAuthService _authService;
+        private readonly IStringLocalizer<BookTextsController> _localizer;
 
-        public BookTextsController(ICosmosDbService cosmosDbService, RedisContext c, IAuthService authService) //, IDatabase db)
+        public BookTextsController(
+            ICosmosDbService cosmosDbService,
+            RedisContext c,
+            IAuthService authService,
+            IStringLocalizer<BookTextsController> localizer) //, IDatabase db)
         {
             cache = c;
             _context = cosmosDbService;
             //_db = db;
             _authService = authService;
+            _localizer = localizer;
         }
 
         #region GET
+
+        // GET: api/BookTexts/auth/getAll/
+        //[Authorize]
+        [HttpGet("auth/getall")]
+        public async Task<ActionResult<LoginAttemptResult>> GetAll() //why I cannot use IActionResult ?
+        {
+            LoginAttemptResult resultData = new LoginAttemptResult();
+            IEnumerable<User> users = await _authService.GetAll();
+            resultData.UsersList = users;
+            resultData.ResultCode = 0;
+            return resultData;
+            //return Ok(users);
+        }
 
         // GET: api/Count/        
         [HttpGet("count")]
@@ -338,7 +357,38 @@ namespace BooksTextsSplit.Controllers
 
         #endregion
 
+
+        [AllowAnonymous]
+        [HttpGet("loc")]
+        public async Task<ActionResult<string>> GetLoc() {
+            return Ok(_localizer["ResultCode0"]);
+        
+        }
+
+
         #region POST
+
+        // POST: api/BookTexts/auth/login/
+        [AllowAnonymous]
+        [HttpPost("auth/login")]
+
+        public async Task<ActionResult<LoginAttemptResult>> UploadLoginData([FromBody] LoginDataFromUI fetchedLoginData) //async Task<IActionResult>
+        {
+            LoginAttemptResult resultData = new LoginAttemptResult();
+            var user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
+
+            if (user == null)
+            {
+                resultData.ResultMessage = _localizer["ResultCode1"];
+                resultData.ResultCode = 1;
+                return resultData;
+            }
+            resultData.ResultMessage = _localizer["ResultCode0"];
+            resultData.IssuedToken = "1234567890";
+            resultData.ResultCode = 0;
+            return resultData;
+            //return Ok(user);
+        }
 
         // POST: api/BookTexts
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -375,42 +425,6 @@ namespace BooksTextsSplit.Controllers
                     .Count())
             });
         }
-
-        // POST: api/BookTexts/auth/login/
-        [AllowAnonymous]
-        [HttpPost("auth/login")]
-
-        public async Task<ActionResult<LoginAttemptResult>> UploadLoginData([FromBody] LoginDataFromUI fetchedLoginData) //async Task<IActionResult>
-        {
-            LoginAttemptResult resultData = new LoginAttemptResult();
-            var user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
-
-            if (user == null)
-            {
-                resultData.ResultMessage = "You are not authorized";
-                resultData.ResultCode = 1;
-                return resultData;
-            }
-            resultData.ResultMessage = "You are authorized now";
-            resultData.IssuedToken = "1234567890";
-            resultData.ResultCode = 0;
-            return resultData;
-            //return Ok(user);
-        }
-
-        // GET: api/BookTexts/auth/getAll/
-        //[Authorize]
-        [HttpGet("auth/getall")]
-            public async Task<ActionResult<LoginAttemptResult>> GetAll() //why I cannot use IActionResult ?
-        {
-            LoginAttemptResult resultData = new LoginAttemptResult();
-            IEnumerable<User> users = await _authService.GetAll();
-            resultData.UsersList = users;
-            resultData.ResultCode = 0;
-            return resultData;
-            //return Ok(users);
-        }
-
 
         // POST: api/BookTexts/UploadFile        
         [HttpPost("UploadFile")]

@@ -58,7 +58,7 @@ export const getAuthUserData = (authKey) => async (dispatch) => {
 export const login = (email, password, rememberMe, captcha) => async (dispatch) => {
   dispatch(toggleIsFetching(true));
   const response = await authAPI.login(email, password, rememberMe, captcha);
-
+  debugger;
   /*   // code block FROM userService - start
   // login successful if there's a user in the response
   if (user) {
