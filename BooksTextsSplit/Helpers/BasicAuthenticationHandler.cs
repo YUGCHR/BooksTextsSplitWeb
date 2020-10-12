@@ -11,22 +11,26 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using BooksTextsSplit.Models;
 using BooksTextsSplit.Services;
+using SQLitePCL;
 
 namespace BooksTextsSplit.Helpers
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         private readonly IAuthService _authService;
+        private User _context;
 
         public BasicAuthenticationHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
             ISystemClock clock,
-            IAuthService authService)
+            IAuthService authService,
+            User context)
             : base(options, logger, encoder, clock)
         {
             _authService = authService;
+            _context = context;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -53,6 +57,11 @@ namespace BooksTextsSplit.Helpers
                 // var fetchToken = authHeader.Parameter;
                 var fetchToken = Request.Headers["Authorization"];
                 user = await _authService.AuthByToken(fetchToken);
+                _context.Id = user.Id;
+                _context.FirstName = user.FirstName;
+                _context.LastName = user.LastName;
+                _context.Username = user.Username;                    
+                _context.Email = user.Email;
             }
             catch
             {

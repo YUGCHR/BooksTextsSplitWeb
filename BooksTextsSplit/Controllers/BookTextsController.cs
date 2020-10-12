@@ -44,17 +44,62 @@ namespace BooksTextsSplit.Controllers
             _localizer = localizer;
         }
 
+        //private List<User> _users = new List<User>
+        //{
+        //    new User {
+        //        Id = 1,
+        //        FirstName = "Yuri",
+        //        LastName = "Gonchar",
+        //        Username = "YUGR",
+        //        Token = "1234567890",
+        //        Password = "ttt",
+        //        Email = "yuri.gonchar@gmail.com" },
+        //    new User {
+        //        Id = 2,
+        //        FirstName = "222",
+        //        LastName = "2222",
+        //        Username = "22",
+        //        Token = "1234567890",
+        //        Password = "ttt",
+        //        Email = "222.2222@gmail.com" },
+        //    new User {
+        //        Id = 3,
+        //        FirstName = "333",
+        //        LastName = "3333",
+        //        Username = "33",
+        //        Token = "1234567890",
+        //        Password = "ttt",
+        //        Email = "333.3333@gmail.com" }
+        //};
+
         #region GET
 
-        // GET: api/BookTexts/auth/getAll/
-        //[Authorize]
-        [HttpGet("auth/getall")]
-        public async Task<ActionResult<LoginAttemptResult>> GetAll() //why I cannot use IActionResult ?
+        // GET: api/BookTexts/loc/ - for localizer testing
+        [AllowAnonymous]
+        [HttpGet("loc")]
+        public async Task<ActionResult<string>> GetLoc()
         {
-            LoginAttemptResult resultData = new LoginAttemptResult();
-            IEnumerable<User> users = await _authService.GetAll();
-            resultData.UsersList = users;
-            resultData.ResultCode = 0;
+            return Ok(_localizer["ResultCode0"]);
+        }
+
+        // GET: api/BookTexts/auth/getMe/
+        //[Authorize] + fetch from middleware BasicAuthenticationHandler user of token (context)
+        [HttpGet("auth/getMe")]
+        public ActionResult<LoginAttemptResult> GetMe([FromServices] User context) //why I cannot use IActionResult ?
+        {
+            LoginAttemptResult resultData = new LoginAttemptResult
+            {
+                AuthUser = new User
+                {
+                    Id = context.Id,
+                    FirstName = context.FirstName,
+                    LastName = context.LastName,
+                    Username = context.Username,
+                    Email = context.Email
+                },
+                ResultMessage="",
+                ResultCode = 0
+            };
             return resultData;
             //return Ok(users);
         }
@@ -357,15 +402,6 @@ namespace BooksTextsSplit.Controllers
 
         #endregion
 
-
-        [AllowAnonymous]
-        [HttpGet("loc")]
-        public async Task<ActionResult<string>> GetLoc() {
-            return Ok(_localizer["ResultCode0"]);
-        
-        }
-
-
         #region POST
 
         // POST: api/BookTexts/auth/login/
@@ -374,20 +410,53 @@ namespace BooksTextsSplit.Controllers
 
         public async Task<ActionResult<LoginAttemptResult>> UploadLoginData([FromBody] LoginDataFromUI fetchedLoginData) //async Task<IActionResult>
         {
-            LoginAttemptResult resultData = new LoginAttemptResult();
-            var user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
-
-            if (user == null)
+            User user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
+            if (user.Email == fetchedLoginData.Email)
             {
-                resultData.ResultMessage = _localizer["ResultCode1"];
-                resultData.ResultCode = 1;
-                return resultData;
+                string newToken = await CreateToken(fetchedLoginData.Email);
+                if (newToken == null)
+                {
+                    return ResultData(1, null);
+                }
+                return ResultData(0, newToken);
             }
-            resultData.ResultMessage = _localizer["ResultCode0"];
-            resultData.IssuedToken = "1234567890";
-            resultData.ResultCode = 0;
-            return resultData;
+            return ResultData(1, null);
             //return Ok(user);
+        }
+
+        public LoginAttemptResult ResultData(int resultCode, string newToken)
+        {
+            LoginAttemptResult resultData = new LoginAttemptResult();
+            if (resultCode == 0)
+            {
+                resultData.IssuedToken = newToken;
+            }
+            resultData.ResultMessage = _localizer["ResultCode" + resultCode];
+            resultData.ResultCode = resultCode;
+            return resultData;
+        }
+
+        public async Task<string> CreateToken(string emailKey)
+        {
+            User user = await cache.Cache.GetObjectAsync<User>(emailKey);
+            user.Token = "4db6A12C94kfv51qaxB2sdgf781xvf11dfnhsr3382gui914asc6A12C94acdfb51cbB2avs781db1";
+            // Set Users to Redis
+            //foreach(User u in _users)
+            //{
+            //    await cache.Cache.SetObjectAsync(u.Email, u, TimeSpan.FromDays(1));
+            //}            
+
+            // Set Token to Redis                                          
+            await cache.Cache.SetObjectAsync(user.Token, user, TimeSpan.FromDays(1));
+            User getNewToken = await cache.Cache.GetObjectAsync<User>(user.Token);
+            if (getNewToken.Token == user.Token)
+            {
+                return getNewToken.Token;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         // POST: api/BookTexts
@@ -448,7 +517,7 @@ namespace BooksTextsSplit.Controllers
 
                 int desiredTextLanguage = languageId;
                 _bookData.SetFileToDo((int)WhatNeedDoWithFiles.AnalyseText, desiredTextLanguage);//создание нужной инструкции ToDo
-                //bookData.SetFilePath(_filePath, desiredTextLanguage);
+                                                                                                 //bookData.SetFilePath(_filePath, desiredTextLanguage);
                 string fileContent = text;
                 _bookData.SetFileContent(fileContent, desiredTextLanguage);
 

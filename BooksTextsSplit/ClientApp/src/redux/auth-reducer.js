@@ -22,7 +22,7 @@ const authReducer = (state = initialState, action) => {
     case SET_USER_DATA:
     case SET_AUTH_KEY:
     case GET_CAPTCHA_URL_SUCCESS:
-      debugger;
+      //debugger;
       return {
         ...state,
         ...action.payload,
@@ -47,18 +47,17 @@ export const getAuthUserData = (authKey) => async (dispatch) => {
   dispatch(toggleIsFetching(true));
   const response = await authAPI.getMe(authKey);
   dispatch(toggleIsFetching(false));
-  debugger;
+  //debugger;
   if (response.data.resultCode === 0) {
-    let allUsers = response.data.usersList;
-    let user = allUsers[0];
-    dispatch(setAuthUserData(user.id, user.email, user.login, true));
+    let authUser = response.data.authUser;    
+    dispatch(setAuthUserData(authUser.id, authUser.email, authUser.login, true));
   }
 };
 
 export const login = (email, password, rememberMe, captcha) => async (dispatch) => {
   dispatch(toggleIsFetching(true));
   const response = await authAPI.login(email, password, rememberMe, captcha);
-  debugger;
+  //debugger;
   /*   // code block FROM userService - start
   // login successful if there's a user in the response
   if (user) {

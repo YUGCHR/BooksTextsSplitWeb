@@ -34,7 +34,8 @@ namespace BooksTextsSplit
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
+            //services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -48,6 +49,7 @@ namespace BooksTextsSplit
 
             // configure DI for application services
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<BooksTextsSplit.Models.User>();
 
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration =>
