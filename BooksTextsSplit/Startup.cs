@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication;
 using BooksTextsSplit.Helpers;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace BooksTextsSplit
 {
@@ -47,9 +48,17 @@ namespace BooksTextsSplit
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             // configure DI for application services
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<BooksTextsSplit.Models.User>();
+
+            //CookieAuthenticationOptions
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/login"); // redirect to React login form?
+            });
 
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration =>
@@ -65,6 +74,7 @@ namespace BooksTextsSplit
             {
                 string Message = ex.Message;
                 Console.WriteLine("\n\n CosmosDbService was not initialized: \n\n" + Message + "\n\n");
+                throw;
             }
 
             try
@@ -76,6 +86,7 @@ namespace BooksTextsSplit
             {
                 string Message = ex.Message;
                 Console.WriteLine("\n\n Redis client did not start: \n\n" + Message + "\n\n");
+                throw;
             }
 
             //services.AddLocalization(op ;

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -11,12 +8,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using BooksTextsSplit.Models;
 using BooksTextsSplit.Services;
-using SQLitePCL;
 
 namespace BooksTextsSplit.Helpers
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
-    {
+    {        
         private readonly IAuthService _authService;
         private User _context;
 
@@ -28,7 +24,7 @@ namespace BooksTextsSplit.Helpers
             IAuthService authService,
             User context)
             : base(options, logger, encoder, clock)
-        {
+        {            
             _authService = authService;
             _context = context;
         }
@@ -52,7 +48,7 @@ namespace BooksTextsSplit.Helpers
                 // var email = credentials[0];
                 // var password = credentials[1];
                 // user = await _authService.Authenticate(email, password);
-    
+
                 // var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);                
                 // var fetchToken = authHeader.Parameter;
                 var fetchToken = Request.Headers["Authorization"];
@@ -60,7 +56,7 @@ namespace BooksTextsSplit.Helpers
                 _context.Id = user.Id;
                 _context.FirstName = user.FirstName;
                 _context.LastName = user.LastName;
-                _context.Username = user.Username;                    
+                _context.Username = user.Username;
                 _context.Email = user.Email;
             }
             catch

@@ -70,6 +70,7 @@ export const login = (email, password, rememberMe, captcha) => async (dispatch) 
   // code block FROM userService - end */
 
   dispatch(toggleIsFetching(false));
+  //debugger;
   if (response.data.resultCode === 0) {
     // success, get auth data
     let authKey = response.data.issuedToken;
@@ -79,7 +80,7 @@ export const login = (email, password, rememberMe, captcha) => async (dispatch) 
     if (response.data.resultCode === RESULT_CODE_NEEDS_CAPTCHA) {
       dispatch(getCaptchaUrl());
     }
-    let errorDescription = response.data.messages.length > 0 ? response.data.messages[0] : "Something went wrong - please try again!";
+    let errorDescription = response.data.resultMessage.length > 0 ? response.data.resultMessage : "Something went wrong - please try again!";
     dispatch(stopSubmit("login", { _error: errorDescription }));
   }
 };

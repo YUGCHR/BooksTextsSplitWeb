@@ -123,4 +123,12 @@
   <data name="ResultCode1" xml:space="preserve">
     <value>You are not authorized</value>
   </data>
+  <data name="ResultCode2" xml:space="preserve">
+    <value>User not found</value>
+    <comment>Reserved</comment>
+  </data>
+  <data name="ResultCode3" xml:space="preserve">
+    <value>Authentication error</value>
+    <comment>AuthService does not return user</comment>
+  </data>
 </root>
