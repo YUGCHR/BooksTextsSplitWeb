@@ -48,7 +48,8 @@ namespace BooksTextsSplit.Services
 
             // it is necessary to check password here!
 
-            //await AuthenticateToCookie(email);
+
+            await AuthByCookie(email);
 
             // return null if user not found
             if (user == null)
@@ -58,7 +59,7 @@ namespace BooksTextsSplit.Services
             return user.WithoutPassword();
         }
 
-        public async Task<User> AuthByToken(string fetchToken)
+        public async Task<User> AuthByToken(string fetchToken) // this.AuthenticationWithToken was changed on AuthenticationWithCoockie
         {
             User userWithToken = await cache.Cache.GetObjectAsync<User>(fetchToken);
             if (userWithToken == null) // return null if user not found
@@ -73,7 +74,7 @@ namespace BooksTextsSplit.Services
             return null;
         }
 
-        private async Task AuthenticateToCookie(string userName)
+        private async Task AuthByCookie(string userName)
         {
             // создаем один claim
             var claims = new List<Claim> {
@@ -85,7 +86,6 @@ namespace BooksTextsSplit.Services
             // установка аутентификационных куки
             await _httpContext.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
             //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
         }
 
         //public async Task<IEnumerable<User>> GetAll()

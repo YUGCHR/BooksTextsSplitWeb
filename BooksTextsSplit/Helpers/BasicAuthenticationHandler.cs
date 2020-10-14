@@ -10,9 +10,9 @@ using BooksTextsSplit.Models;
 using BooksTextsSplit.Services;
 
 namespace BooksTextsSplit.Helpers
-{
-    public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
-    {        
+{   // this.AuthenticationWithToken was changed on AuthenticationWithCoockie
+    public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>        
+    {
         private readonly IAuthService _authService;
         private User _context;
 

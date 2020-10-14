@@ -131,4 +131,12 @@
     <value>Authentication error</value>
     <comment>AuthService does not return user</comment>
   </data>
+  <data name="ResultCode4" xml:space="preserve">
+    <value>Authentication error</value>
+    <comment>Reserved</comment>
+  </data>
+  <data name="ResultCode5" xml:space="preserve">
+    <value>Authentication error</value>
+    <comment>Redis does not return user</comment>
+  </data>
 </root>

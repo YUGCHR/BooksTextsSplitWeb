@@ -44,9 +44,9 @@ namespace BooksTextsSplit
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            // configure basic authentication 
-            services.AddAuthentication("BasicAuthentication")
-                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+            // configure basic authentication with BasicAuthenticationHandler - 
+            //services.AddAuthentication("BasicAuthentication")
+            //    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -85,7 +85,7 @@ namespace BooksTextsSplit
             catch (Exception ex)
             {
                 string Message = ex.Message;
-                Console.WriteLine("\n\n Redis client did not start: \n\n" + Message + "\n\n");
+                Console.WriteLine("\n\n Redis server did not start: \n\n" + Message + "\n\n");
                 throw;
             }
 
