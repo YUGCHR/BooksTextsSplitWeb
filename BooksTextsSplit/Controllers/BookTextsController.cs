@@ -379,11 +379,11 @@ namespace BooksTextsSplit.Controllers
         {
             User user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
             if (user == null)
-            {                
+            {
                 return await _result.ResultDataWithToken(3, null);
-            }            
-            return await _result.ResultDataWithToken(0, user);            
-        }        
+            }
+            return await _result.ResultDataWithToken(0, user);
+        }
 
         // POST: api/BookTexts
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -491,6 +491,14 @@ namespace BooksTextsSplit.Controllers
         #endregion
 
         #region DELETE
+
+        // DELETE: api/BookTexts/logout
+        [HttpDelete("auth/logout")]
+        public async Task<ActionResult> DeleteLogout()
+        {
+            await _authService.Logout();
+            return Ok("exit");
+        }
 
         // DELETE: api/BookTexts/a9da6acc-a5fa-4ed7-be90-4b0ec5d7c7cb/?bookId=1&languageId=0&uploadVersion=5
         [HttpDelete("{id}")]

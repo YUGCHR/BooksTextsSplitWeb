@@ -5,7 +5,7 @@ import { getAuthUserData } from '../../redux/auth-reducer';
 import store from '../../redux/redux-store';
 import { withRouter } from 'react-router-dom';
 
-class HeaderContainer extends React.Component {
+class LoginContainer extends React.Component {
 
   componentDidMount() {
     this.props.getAuthUserData(); //thunk
@@ -23,4 +23,4 @@ let mapStateToProps = (state) => ({
   login: state.auth.login
 })
 
-export default connect(mapStateToProps, { getAuthUserData })(HeaderContainer);
+export default connect(mapStateToProps, { getAuthUserData })(LoginContainer);

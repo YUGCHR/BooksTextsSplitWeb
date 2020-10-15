@@ -92,7 +92,8 @@ export const getCaptchaUrl = () => async (dispatch) => {
 };
 
 export const logout = () => async (dispatch) => {
-  dispatch(toggleIsFetching(true));
+  //debugger;
+  dispatch(toggleIsFetching(true));  
   const response = await authAPI.logout();
   dispatch(toggleIsFetching(false));
   if (response.data.resultCode === 0) {
@@ -101,7 +102,7 @@ export const logout = () => async (dispatch) => {
   }
 };
 
-function handleResponse(response) {
+/* function handleResponse(response) {
   let responseText = typeof response.data;
 
   return response.text().then((text) => {
@@ -120,7 +121,7 @@ function handleResponse(response) {
 
     return data;
   });
-}
+} */
 
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 

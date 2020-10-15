@@ -14,6 +14,7 @@ namespace BooksTextsSplit.Services
     {
         Task<User> Authenticate(string email, string password);
         Task<User> AuthByToken(string authKey);
+        Task Logout();
         //Task AuthenticateToCookie(string userName);
         //Task<IEnumerable<User>> GetAll();
     }
@@ -88,6 +89,12 @@ namespace BooksTextsSplit.Services
                 return user.WithoutPassword(); // authentication successful so return user details without password
             }            
             return null; // return null if user not found or pswd is wrong
+        }
+
+        public async Task Logout()
+        {
+            await _httpContext.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return;
         }
 
         #region LEGACY
