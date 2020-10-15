@@ -30,19 +30,19 @@ namespace BooksTextsSplit.Controllers
         private readonly ICosmosDbService _context;
         // private readonly IDatabase _db;
         private IAuthService _authService;
-        private readonly IStringLocalizer<BookTextsController> _localizer;
+        private IResultDataService _result;
 
         public BookTextsController(
             ICosmosDbService cosmosDbService,
             RedisContext c,
             IAuthService authService,
-            IStringLocalizer<BookTextsController> localizer) //, IDatabase db)
+            IResultDataService resultDataService) //, IDatabase db)
         {
             cache = c;
             _context = cosmosDbService;
             //_db = db;
             _authService = authService;
-            _localizer = localizer;
+            _result = resultDataService;
         }
 
         #region CreateUsers
@@ -83,7 +83,7 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("loc")]
         public async Task<ActionResult<string>> GetLoc()
         {
-            return Ok(_localizer["ResultCode0"]);
+            return Ok(); //(_localizer["ResultCode0"]);
         }
 
         // GET: api/BookTexts/auth/getMe/
@@ -93,41 +93,12 @@ namespace BooksTextsSplit.Controllers
         //public ActionResult<LoginAttemptResult> GetMe([FromServices] User context) // - context from BasicAuthenticationHandler
         public async Task<ActionResult<LoginAttemptResult>> GetMe()
         {
-            if (User.Identity.Name == null)
-            {
-                return await ResultData(3, null);
-            }
             string userEmail = User.Identity.Name;
-
-            return await ResultData(0, userEmail);
-            //return Ok(users);
-        }
-
-        public async Task<LoginAttemptResult> ResultData(int resultCode, string userEmail)
-        {
-            User user = new User();
-            if (resultCode == 0)
+            if (userEmail == null)
             {
-                if (userEmail != null)
-                {
-                    user = (await cache.Cache.GetObjectAsync<User>(userEmail)).WithoutPassword();
-                    if (user == null)
-                    {
-                        resultCode = 5;
-                    };
-                }
-                else
-                {
-                    resultCode = 5;
-                }
-            };            
-            LoginAttemptResult resultData = new LoginAttemptResult()
-            {
-                AuthUser = user,
-                ResultMessage = _localizer["ResultCode" + resultCode],
-                ResultCode = resultCode
-            };
-            return resultData;
+                return await _result.ResultData(3, null);
+            }
+            return await _result.ResultData(0, userEmail);
         }
 
         // GET: api/Count/        
@@ -445,51 +416,23 @@ namespace BooksTextsSplit.Controllers
                 //{
                 //    await cache.Cache.SetObjectAsync(u.Email, u, TimeSpan.FromDays(10));
                 //}
-                return ResultDataWithToken(3, null);
+                return _result.ResultDataWithToken(3, null);
             }
             if (user.Email == fetchedLoginData.Email)
             {
-                string newToken = await CreateToken(fetchedLoginData.Email);
+                string newToken = await _result.CreateToken(fetchedLoginData.Email);
                 if (newToken == null)
                 {
-                    return ResultDataWithToken(1, null);
+                    return _result.ResultDataWithToken(1, null);
                 }
                 //await _authService.AuthenticateToCookie(fetchedLoginData.Email);
-                return ResultDataWithToken(0, newToken);
+                return _result.ResultDataWithToken(0, newToken);
             }
-            return ResultDataWithToken(1, null);
+            return _result.ResultDataWithToken(1, null);
             //return Ok(user);
         }
 
-        public LoginAttemptResult ResultDataWithToken(int resultCode, string newToken)
-        {
-            LoginAttemptResult resultData = new LoginAttemptResult();
-            if (resultCode == 0)
-            {
-                resultData.IssuedToken = newToken;
-            }
-            resultData.ResultMessage = _localizer["ResultCode" + resultCode];
-            resultData.ResultCode = resultCode;
-            return resultData;
-        }
-
-        public async Task<string> CreateToken(string emailKey)
-        {
-            User user = await cache.Cache.GetObjectAsync<User>(emailKey);
-            user.Token = "4db6A12C94kfv51qaxB2sdgf781xvf11dfnhsr3382gui914asc6A12C94acdfb51cbB2avs781db1";
-
-            // Set Token to Redis                                          
-            await cache.Cache.SetObjectAsync(user.Token, user, TimeSpan.FromDays(1));
-            User getNewToken = await cache.Cache.GetObjectAsync<User>(user.Token);
-            if (getNewToken.Token == user.Token)
-            {
-                return getNewToken.Token;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        
 
         // POST: api/BookTexts
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for

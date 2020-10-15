@@ -52,6 +52,7 @@ namespace BooksTextsSplit
 
             // configure DI for application services
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IResultDataService, ResultDataService>();
             services.AddScoped<BooksTextsSplit.Models.User>();
 
             //CookieAuthenticationOptions
