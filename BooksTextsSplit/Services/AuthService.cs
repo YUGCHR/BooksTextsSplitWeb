@@ -27,6 +27,35 @@ namespace BooksTextsSplit.Services
             cache = c;            
         }
 
+        #region CreateUsers
+        //// Temporary - to create users in Redis only
+        //private List<User> _users = new List<User>
+        //{
+        //    new User {
+        //        Id = 1,
+        //        FirstName = "Yuri",
+        //        LastName = "Gonchar",
+        //        Username = "YUGR",
+        //        Token = "1234567890",
+        //        Password = "ttt",
+        //        Email = "yuri.gonchar@gmail.com" },
+        //    new User {
+        //        Id = 2,
+        //        FirstName = "222",
+        //        LastName = "2222",
+        //        Username = "22",
+        //        Token = "1234567890",
+        //        Password = "ttt",
+        //        Email = "222.2222@gmail.com" },
+        //    new User {
+        //        Id = 3,
+        //        FirstName = "333",
+        //        LastName = "3333",
+        //        Username = "33",
+        //        Token = "1234567890",
+        //        Password = "ttt",
+        //        Email = "333.3333@gmail.com" }
+        //}
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications        
         //private List<User> _users = new List<User>
         //{
@@ -38,27 +67,30 @@ namespace BooksTextsSplit.Services
         //        Token = "1234567890",
         //        Password = "ttt", 
         //        Email = "yuri.gonchar@gmail.com" }                
-        //};        
+        //};
+        #endregion
 
         public async Task<User> Authenticate(string email, string password)
         {
             //var user = await Task.Run(() => _users.SingleOrDefault(x => x.Email == email && x.Password == password));
-            User user = await cache.Cache.GetObjectAsync<User>(email);
-
-
-            // it is necessary to check password here!
-
-
-            await AuthByCookie(email);
-
-            // return null if user not found
-            if (user == null)
-                return null;
-
-            // authentication successful so return user details without password
-            return user.WithoutPassword();
+            User user = await cache.Cache.GetObjectAsync<User>(email); // email == userKey for Redis
+            
+            if (user != null && user.Password == password)
+            {
+                #region CreateUsers
+                //// Temporary - to create users in Redis only
+                //foreach (User u in _users)
+                //{
+                //    await cache.Cache.SetObjectAsync(u.Email, u, TimeSpan.FromDays(10));
+                //}
+                #endregion
+                await AuthByCookie(email);
+                return user.WithoutPassword(); // authentication successful so return user details without password
+            }            
+            return null; // return null if user not found or pswd is wrong
         }
 
+        #region LEGACY
         public async Task<User> AuthByToken(string fetchToken) // this.AuthenticationWithToken was changed on AuthenticationWithCoockie
         {
             User userWithToken = await cache.Cache.GetObjectAsync<User>(fetchToken);
@@ -73,6 +105,7 @@ namespace BooksTextsSplit.Services
             }
             return null;
         }
+        #endregion
 
         private async Task AuthByCookie(string userName)
         {
@@ -87,11 +120,6 @@ namespace BooksTextsSplit.Services
             await _httpContext.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
             //await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
         }
-
-        //public async Task<IEnumerable<User>> GetAll()
-        //{
-        //    return await Task.Run(() => _users.WithoutPasswords());
-        //}
     }
 }
 

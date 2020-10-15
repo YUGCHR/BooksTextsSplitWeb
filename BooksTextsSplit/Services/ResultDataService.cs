@@ -12,8 +12,8 @@ namespace BooksTextsSplit.Services
     public interface IResultDataService
     {
         Task<LoginAttemptResult> ResultData(int resultCode, string userEmail);
-        LoginAttemptResult ResultDataWithToken(int resultCode, string newToken);
-        Task<string> CreateToken(string emailKey);
+        Task<LoginAttemptResult> ResultDataWithToken(int resultCode, User user);
+        //Task<string> CreateToken(string emailKey);
     }
     public class ResultDataService : IResultDataService
     {
@@ -55,19 +55,19 @@ namespace BooksTextsSplit.Services
             return resultData;
         }
 
-        public LoginAttemptResult ResultDataWithToken(int resultCode, string newToken)
+        public async Task<LoginAttemptResult> ResultDataWithToken(int resultCode, User user)
         {
             LoginAttemptResult resultData = new LoginAttemptResult();
             if (resultCode == 0)
             {
-                resultData.IssuedToken = newToken;
-            }
+                resultData.IssuedToken = await CreateToken(user.Email);                
+            }            
             resultData.ResultMessage = _localizer["ResultCode" + resultCode];
             resultData.ResultCode = resultCode;
             return resultData;
         }
 
-        public async Task<string> CreateToken(string emailKey)
+        private async Task<string> CreateToken(string emailKey)
         {
             User user = await cache.Cache.GetObjectAsync<User>(emailKey);
             user.Token = "4db6A12C94kfv51qaxB2sdgf781xvf11dfnhsr3382gui914asc6A12C94acdfb51cbB2avs781db1";

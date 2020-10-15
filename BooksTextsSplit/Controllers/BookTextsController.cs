@@ -45,37 +45,6 @@ namespace BooksTextsSplit.Controllers
             _result = resultDataService;
         }
 
-        #region CreateUsers
-        //// Temporary - to create users in Redis only
-        //private List<User> _users = new List<User>
-        //{
-        //    new User {
-        //        Id = 1,
-        //        FirstName = "Yuri",
-        //        LastName = "Gonchar",
-        //        Username = "YUGR",
-        //        Token = "1234567890",
-        //        Password = "ttt",
-        //        Email = "yuri.gonchar@gmail.com" },
-        //    new User {
-        //        Id = 2,
-        //        FirstName = "222",
-        //        LastName = "2222",
-        //        Username = "22",
-        //        Token = "1234567890",
-        //        Password = "ttt",
-        //        Email = "222.2222@gmail.com" },
-        //    new User {
-        //        Id = 3,
-        //        FirstName = "333",
-        //        LastName = "3333",
-        //        Username = "33",
-        //        Token = "1234567890",
-        //        Password = "ttt",
-        //        Email = "333.3333@gmail.com" }
-        //};
-        #endregion
-
         #region GET
 
         // GET: api/BookTexts/loc/ - for localizer testing
@@ -406,33 +375,15 @@ namespace BooksTextsSplit.Controllers
         //[ValidateAntiForgeryToken]
         [HttpPost("auth/login")]
 
-        public async Task<ActionResult<LoginAttemptResult>> UploadLoginData([FromBody] LoginDataFromUI fetchedLoginData) //async Task<IActionResult>
+        public async Task<ActionResult<LoginAttemptResult>> Login([FromBody] LoginDataFromUI fetchedLoginData) //async Task<IActionResult>
         {
             User user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
             if (user == null)
-            {
-                //// Temporary - to create users in Redis only
-                //foreach (User u in _users)
-                //{
-                //    await cache.Cache.SetObjectAsync(u.Email, u, TimeSpan.FromDays(10));
-                //}
-                return _result.ResultDataWithToken(3, null);
-            }
-            if (user.Email == fetchedLoginData.Email)
-            {
-                string newToken = await _result.CreateToken(fetchedLoginData.Email);
-                if (newToken == null)
-                {
-                    return _result.ResultDataWithToken(1, null);
-                }
-                //await _authService.AuthenticateToCookie(fetchedLoginData.Email);
-                return _result.ResultDataWithToken(0, newToken);
-            }
-            return _result.ResultDataWithToken(1, null);
-            //return Ok(user);
-        }
-
-        
+            {                
+                return await _result.ResultDataWithToken(3, null);
+            }            
+            return await _result.ResultDataWithToken(0, user);            
+        }        
 
         // POST: api/BookTexts
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
