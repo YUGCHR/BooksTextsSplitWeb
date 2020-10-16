@@ -30,16 +30,11 @@ export const initializedSuccess = () => ({ type: INITIALIZED_SUCCESS });
 
 export const initializeApp = () => (dispatch) => {
   dispatch(toggleIsFetching(true));
-  try {
-    let promise = dispatch(getAuthUserData());    
-    Promise.all([promise]).then(() => {
-      dispatch(toggleIsFetching(false));
-      dispatch(initializedSuccess());
-    });
-  } catch (err) {
-    debugger;
-    return 401;
-  }
+  let promise = dispatch(getAuthUserData());
+  Promise.all([promise]).then(() => {
+    dispatch(toggleIsFetching(false));
+    dispatch(initializedSuccess());
+  });
 };
 
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
