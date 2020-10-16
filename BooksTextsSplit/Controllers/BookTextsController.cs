@@ -47,13 +47,10 @@ namespace BooksTextsSplit.Controllers
 
         #region GET
 
-        // GET: api/BookTexts/loc/ - for localizer testing
+        // GET: api/BookTexts/auth/init/ - for localizer testing
         [AllowAnonymous]
-        [HttpGet("loc")]
-        public async Task<ActionResult<string>> GetLoc()
-        {
-            return Ok(); //(_localizer["ResultCode0"]);
-        }
+        [HttpGet("auth/init")]
+        public ActionResult<string> GetLoc() => Ok("init"); //(_localizer["ResultCode0"]);
 
         // GET: api/BookTexts/auth/getMe/
         //[Authorize] + fetch from middleware BasicAuthenticationHandler user of token (context)

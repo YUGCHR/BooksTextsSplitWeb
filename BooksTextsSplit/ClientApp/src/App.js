@@ -20,41 +20,61 @@ import Settings from "./components/Settings/Settings";
 
 const LoginPage = lazy(() => import("./components/Login/Login"));
 
-const App = () => {
-  /* catchAllUnhandledErrors = (reason, promise) => {
+class App extends Component {
+  catchAllUnhandledErrors = (reason, promise) => {
     alert("Some error occured");
+
     //console.error(promiseRejectionEvent);
-  }; */
-  /* componentDidMount() {
+  };
+  componentDidMount() {
     this.props.initializeApp(); //thunk
     window.addEventListener("unhandledrejection", this.catchAllUnhandledErrors);
   }
   componentWillUnmount() {
     window.removeEventListener("unhandledrejection", this.catchAllUnhandledErrors);
-  } */
-  /* render() {
+  }
+  render() {
     if (!this.props.initialized) {
       return <Preloader />;
-    } // this.props.history.push("/login"); */
-  return (
-    <div className="app-wrapper">
-      <HeaderContainer />
-      <Navbar />
+    }
+    // this.props.history.push("/login");
+    return (
+      <div className="app-wrapper">
+        <HeaderContainer />
+        <Navbar />
 
-      <div className="app-wrapper-content">
-        <Switch>
-          <Route path="/upload" render={() => <UploadBooksContainer />} />
-          <Route path="/select" render={() => <SelectTextsContainer />} />
-          <Route path="/read" render={() => <ToReadAndTranslateContainer />} />
-          <Route path="/words" render={WordsToPair} />
-          <Route path="/user" render={UserProfile} />
-          <Route path="/settings" render={Settings} />
-          <Route path="/login" render={withSuspense(LoginPage)} />
-          <Route path="*" render={() => <div>404 NOT FOUND</div>} />
-        </Switch>
+        <div className="app-wrapper-content">
+          <Switch>
+            <Route exact path="/" render={() => <Redirect to={"/select"} />} />
+            <Route path="/upload" render={() => <UploadBooksContainer />} />
+            <Route path="/select" render={() => <SelectTextsContainer />} />
+            <Route path="/read" render={() => <ToReadAndTranslateContainer />} />
+            <Route path="/words" render={WordsToPair} />
+            <Route path="/user" render={UserProfile} />
+            <Route path="/settings" render={Settings} />
+            <Route path="/login" render={withSuspense(LoginPage)} />
+            <Route path="*" render={() => <div>404 NOT FOUND</div>} />
+          </Switch>
+        </div>
       </div>
-    </div>
+    );
+  }
+}
+
+let mapStateToProps = (state) => ({
+  initialized: state.app.initialized,
+});
+
+const AppContainer = compose(withRouter, connect(mapStateToProps, { initializeApp }))(App);
+
+const MainApp = () => {
+  return (
+    <BrowserRouter>
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    </BrowserRouter>
   );
 };
 
-export default App;
+export default MainApp;

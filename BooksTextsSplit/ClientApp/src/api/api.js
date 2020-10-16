@@ -50,16 +50,16 @@ export const failureCallback = () => {
 }); */
 
 export const authAPI = {
+  getInit: () => {
+    return instance.get(`auth/init/`);
+  },
   getMe: (authKey) => {
     //debugger;
     // Alter defaults after instance has been created
     instance.defaults.headers.common['Authorization'] = authKey; //'Basic ' + 
     // headers must be - {'Authorization': 'Basic 1234567890'}
     return instance.get(`auth/getMe/`);
-  },
-  /* getMe() {
-    return instance.get(`auth/me/`);
-  }, */
+  },  
   login: (email, password, rememberMe = false, captcha = null) => {
     return instance.post(`auth/login/`, { email, password, rememberMe, captcha });
   },

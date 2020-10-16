@@ -43,13 +43,21 @@ export const getCaptchaUrlSuccess = (captchaUrl) => ({ type: GET_CAPTCHA_URL_SUC
 export const setAuthKey = (authKey) => ({ type: SET_AUTH_KEY, payload: { authKey } });
 export const setAuthUserData = (userId, email, login, isAuth) => ({ type: SET_USER_DATA, payload: { userId, email, login, isAuth } });
 
-export const getAuthUserData = (authKey) => async (dispatch) => {
+export const getInit = () => async (dispatch) => {
   dispatch(toggleIsFetching(true));
-  const response = await authAPI.getMe(authKey);
+  const response = await authAPI.getInit();  
   dispatch(toggleIsFetching(false));
-  //debugger;
+  if (response.data !== "init") {
+    debugger;
+  }
+};
+
+export const getAuthUserData = (authKey) => async (dispatch) => {
+  dispatch(toggleIsFetching(true));  
+  const response = await authAPI.getMe(authKey);  
+  dispatch(toggleIsFetching(false));
   if (response.data.resultCode === 0) {
-    let authUser = response.data.authUser;    
+    let authUser = response.data.authUser;
     dispatch(setAuthUserData(authUser.id, authUser.email, authUser.login, true));
   }
 };
@@ -92,11 +100,11 @@ export const getCaptchaUrl = () => async (dispatch) => {
 };
 
 export const logout = () => async (dispatch) => {
-  //debugger;
-  dispatch(toggleIsFetching(true));  
+  dispatch(toggleIsFetching(true));
   const response = await authAPI.logout();
   dispatch(toggleIsFetching(false));
-  if (response.data.resultCode === 0) {
+  debugger;
+  if (response.data === "exit") {
     dispatch(setAuthUserData(null, null, null, false));
     dispatch(getAuthUserData());
   }

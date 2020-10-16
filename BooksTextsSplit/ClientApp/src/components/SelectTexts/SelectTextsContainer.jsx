@@ -2,10 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { switchBooksIdsOn, switchBookVersionsOn, switchQuickViewOn, nextAfterQuickView } from "../../redux/select-reducer";
+import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import SelectTexts from "./SelectTexts";
 import Preloader from "../common/preloader/Preloader";
+import { withRouter } from "react-router";
 
-class SelectTextsContainerAPI extends React.Component {
+class SelectTextsContainer extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -53,5 +55,8 @@ let mapStateToProps = (state) => {
 };
 
 export default compose(
-  connect(mapStateToProps, {switchBooksIdsOn, switchBookVersionsOn, switchQuickViewOn, nextAfterQuickView,})
-)(SelectTextsContainerAPI);
+  connect(mapStateToProps, { switchBooksIdsOn, switchBookVersionsOn, switchQuickViewOn, nextAfterQuickView }),
+  withAuthRedirect,
+  withRouter
+)(SelectTextsContainer);
+

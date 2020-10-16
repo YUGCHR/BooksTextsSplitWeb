@@ -44,7 +44,7 @@ const Login = (props) => {
 
   if (props.isAuth) {
     return <Redirect to={"/select"} />;
-  }
+  }  
 
   return (
     <div>
