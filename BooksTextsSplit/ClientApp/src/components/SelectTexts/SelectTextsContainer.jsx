@@ -57,6 +57,6 @@ let mapStateToProps = (state) => {
 export default compose(
   connect(mapStateToProps, { switchBooksIdsOn, switchBookVersionsOn, switchQuickViewOn, nextAfterQuickView }),
   withAuthRedirect,
-  withRouter
+  /* withRouter */
 )(SelectTextsContainer);
 

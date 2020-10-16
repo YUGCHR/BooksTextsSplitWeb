@@ -22,9 +22,8 @@ const LoginPage = lazy(() => import("./components/Login/Login"));
 
 class App extends Component {
   catchAllUnhandledErrors = (reason, promise) => {
-    alert("Some error occured");
-
-    //console.error(promiseRejectionEvent);
+    //alert("Some error occured");
+    console.error("catchAllUnhandledErrors", reason, promise);
   };
   componentDidMount() {
     this.props.initializeApp(); //thunk

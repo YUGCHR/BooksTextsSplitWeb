@@ -45,7 +45,7 @@ export const setAuthUserData = (userId, email, login, isAuth) => ({ type: SET_US
 
 export const getInit = () => async (dispatch) => {
   dispatch(toggleIsFetching(true));
-  const response = await authAPI.getInit();  
+  const response = await authAPI.getInit();
   dispatch(toggleIsFetching(false));
   if (response.data !== "init") {
     debugger;
@@ -53,12 +53,21 @@ export const getInit = () => async (dispatch) => {
 };
 
 export const getAuthUserData = (authKey) => async (dispatch) => {
-  dispatch(toggleIsFetching(true));  
-  const response = await authAPI.getMe(authKey);  
-  dispatch(toggleIsFetching(false));
-  if (response.data.resultCode === 0) {
-    let authUser = response.data.authUser;
-    dispatch(setAuthUserData(authUser.id, authUser.email, authUser.login, true));
+  dispatch(toggleIsFetching(true));
+  try {
+    const response = await authAPI.getMe(authKey);
+    if (response.status === 200) {
+      if (response.data.resultCode === 0) {
+        let authUser = response.data.authUser;
+        dispatch(setAuthUserData(authUser.id, authUser.email, authUser.login, true));
+      }
+    }
+  } catch (error) {
+    console.error("getAuthUserData", error);
+    if (error.response.status === 401) {      
+      //debugger;
+    }
+    dispatch(toggleIsFetching(false));
   }
 };
 

@@ -1,4 +1,4 @@
-import { getInit } from "./auth-reducer";
+import { getAuthUserData } from "./auth-reducer";
 const INITIALIZED_SUCCESS = "INITIALIZED-SUCCESS";
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
 
@@ -30,11 +30,16 @@ export const initializedSuccess = () => ({ type: INITIALIZED_SUCCESS });
 
 export const initializeApp = () => (dispatch) => {
   dispatch(toggleIsFetching(true));
-  let promise = dispatch(getInit());
-  Promise.all([promise]).then(() => {
-    dispatch(toggleIsFetching(false));
-    dispatch(initializedSuccess());
-  });
+  try {
+    let promise = dispatch(getAuthUserData());    
+    Promise.all([promise]).then(() => {
+      dispatch(toggleIsFetching(false));
+      dispatch(initializedSuccess());
+    });
+  } catch (err) {
+    debugger;
+    return 401;
+  }
 };
 
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });

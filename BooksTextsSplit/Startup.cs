@@ -58,7 +58,14 @@ namespace BooksTextsSplit
             //CookieAuthenticationOptions
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
-                options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/login"); // redirect to React login form?
+
+
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.CompletedTask;
+                };
+
             });
 
             services.AddControllersWithViews();

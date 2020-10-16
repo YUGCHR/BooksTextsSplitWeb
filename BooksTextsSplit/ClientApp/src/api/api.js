@@ -6,7 +6,7 @@ import Axios from "axios";
 
 const instance = Axios.create({
   baseURL: `api/BookTexts/`,
-  withCredentials: true,  
+  withCredentials: true,
 });
 // withCredentials: true,
 // headers: {'Authorization': 'Basic 123456789'}
@@ -54,12 +54,22 @@ export const authAPI = {
     return instance.get(`auth/init/`);
   },
   getMe: (authKey) => {
-    //debugger;
     // Alter defaults after instance has been created
-    instance.defaults.headers.common['Authorization'] = authKey; //'Basic ' + 
+    instance.defaults.headers.common["Authorization"] = authKey; //'Basic ' +
     // headers must be - {'Authorization': 'Basic 1234567890'}
     return instance.get(`auth/getMe/`);
-  },  
+
+    /* instance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response.status === 401) {
+          // dispatch something to your store
+        }
+
+        return Promise.reject(error);
+      }
+    ); */
+  },
   login: (email, password, rememberMe = false, captcha = null) => {
     return instance.post(`auth/login/`, { email, password, rememberMe, captcha });
   },
@@ -73,3 +83,18 @@ export const securityAPI = {
     return instance.get(`security/get-captcha-url`);
   },
 };
+
+/* export const fetchCurrentUser = () => {
+  return async (dispatch) => {
+    try {
+      const res = await instance.get(`auth/getMe/`);
+      if (res.status === 200) {
+        dispatch({});
+      }
+    } catch (error) {
+      if (error.response.status === 401) {
+        dispatch({});
+      }
+    }
+  };
+}; */
