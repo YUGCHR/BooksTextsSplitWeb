@@ -58,7 +58,6 @@ export const authAPI = {
     instance.defaults.headers.common["Authorization"] = authKey; //'Basic ' +
     // headers must be - {'Authorization': 'Basic 1234567890'}
     return instance.get(`auth/getMe/`);
-
     /* instance.interceptors.response.use(
       (response) => response,
       (error) => {

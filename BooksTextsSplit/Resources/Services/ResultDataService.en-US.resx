@@ -125,7 +125,7 @@
   </data>
   <data name="ResultCode2" xml:space="preserve">
     <value>User not found</value>
-    <comment>Reserved</comment>
+    <comment>User?.Identity == null</comment>
   </data>
   <data name="ResultCode3" xml:space="preserve">
     <value>Authentication error</value>

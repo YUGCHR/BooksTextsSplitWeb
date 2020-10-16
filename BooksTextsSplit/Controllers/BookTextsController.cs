@@ -50,7 +50,12 @@ namespace BooksTextsSplit.Controllers
         // GET: api/BookTexts/auth/init/ - for localizer testing
         [AllowAnonymous]
         [HttpGet("auth/init")]
-        public ActionResult<string> GetLoc() => Ok("init"); //(_localizer["ResultCode0"]);
+        public ActionResult<string> GetInit()
+        {
+            string userEmail = User?.Identity?.Name;            
+            var isLoggedIn = (userEmail != null);
+            return Ok(new { IsLoggedIn = isLoggedIn}); //(_localizer["ResultCode0"]);
+        }
 
         // GET: api/BookTexts/auth/getMe/
         //[Authorize] + fetch from middleware BasicAuthenticationHandler user of token (context)
@@ -59,10 +64,10 @@ namespace BooksTextsSplit.Controllers
         //public ActionResult<LoginAttemptResult> GetMe([FromServices] User context) // - context from BasicAuthenticationHandler
         public async Task<ActionResult<LoginAttemptResult>> GetMe()
         {
-            string userEmail = User.Identity.Name;
-            if (userEmail == null)
+            string userEmail = User?.Identity?.Name;
+            if (User?.Identity == null)
             {
-                return await _result.ResultData(3, null);
+                return await _result.ResultData(2, null);
             }
             return await _result.ResultData(0, userEmail);
         }

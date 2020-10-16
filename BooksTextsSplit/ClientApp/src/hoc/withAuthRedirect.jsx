@@ -10,7 +10,7 @@ export const withAuthRedirect = (Component) => {
   class RedirectComponent extends React.Component {
     
     render() {
-      debugger;
+      //debugger;
       if (!this.props.isAuth) {
         return <Redirect to={"/login"} />;
       }

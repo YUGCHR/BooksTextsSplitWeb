@@ -47,8 +47,11 @@ export const getInit = () => async (dispatch) => {
   dispatch(toggleIsFetching(true));
   const response = await authAPI.getInit();
   dispatch(toggleIsFetching(false));
-  if (response.data !== "init") {
-    debugger;
+  if (response.data.isLoggedIn) {
+    dispatch(getAuthUserData());
+  }
+  else{
+    console.log("can be error 401 in getAuthUserData here, but isLoggedIn = ", response.data.isLoggedIn)
   }
 };
 
@@ -64,8 +67,7 @@ export const getAuthUserData = (authKey) => async (dispatch) => {
     }
   } catch (error) {
     console.error("getAuthUserData", error);
-    if (error.response.status === 401) {      
-      //debugger;
+    if (error.response.status === 401) {
     }
     dispatch(toggleIsFetching(false));
   }
@@ -112,7 +114,6 @@ export const logout = () => async (dispatch) => {
   dispatch(toggleIsFetching(true));
   const response = await authAPI.logout();
   dispatch(toggleIsFetching(false));
-  debugger;
   if (response.data === "exit") {
     dispatch(setAuthUserData(null, null, null, false));
     dispatch(getAuthUserData());
