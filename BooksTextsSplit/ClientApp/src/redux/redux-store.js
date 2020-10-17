@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import readAndTranslateReducer from "./read-reducer";
-import uploadBooksReducer from "./load-reducer";
+import uploadBooksReducer from "./upload-reducer";
 import selectTextsReducer from "./select-reducer";
 import authReducer from "./auth-reducer";
 import appReducer from "./app-reducer";

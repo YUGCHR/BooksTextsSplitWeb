@@ -1,7 +1,17 @@
 import React from "react";
 import Axios from "axios";
+import { compose } from "redux";
 import { connect } from "react-redux";
-import { toggleIsLoading, setDbSentencesCount, setSentencesCount, setFileName, radioOptionChange, toggleIsFetching, findMaxUploadedVersion } from "../../redux/load-reducer";
+import { withAuthRedirect } from "../../hoc/withAuthRedirect";
+import {
+  toggleIsLoading,
+  setDbSentencesCount,
+  setSentencesCount,
+  setFileName,
+  radioOptionChange,
+  toggleIsFetching,
+  findMaxUploadedVersion,
+} from "../../redux/upload-reducer";
 import UploadBooks from "./UploadBooks";
 import Preloader from "../common/preloader/Preloader";
 
@@ -153,14 +163,17 @@ let mapStateToProps = (state) => {
   };
 };
 
-let UploadBooksContainer = connect(mapStateToProps, {
-  toggleIsLoading,
-  setDbSentencesCount,
-  setSentencesCount,
-  setFileName,
-  radioOptionChange,
-  toggleIsFetching,
-  findMaxUploadedVersion,
-})(UploadBooksContainerAPI);
+let UploadBooksContainer = compose(
+  connect(mapStateToProps, {
+    toggleIsLoading,
+    setDbSentencesCount,
+    setSentencesCount,
+    setFileName,
+    radioOptionChange,
+    toggleIsFetching,
+    findMaxUploadedVersion,
+  }),
+  withAuthRedirect
+)(UploadBooksContainerAPI);
 
 export default UploadBooksContainer;
