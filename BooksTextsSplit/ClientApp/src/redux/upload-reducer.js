@@ -162,12 +162,8 @@ const fetchLastUploadedVersions = (formData, i, selectedFiles) => async (dispatc
 const postBooksTexts = (formData, i) => async (dispatch, getState) => {
   dispatch(toggleIsFetching(true));
   const response = await uploadAPI.uploadFile(formData); //post returns response before all records have loaded in db
-  dispatch(toggleIsFetching(false));
-  //console.log(Response.data);
-  dispatch(setSentencesCount(response, i)); //totalCount
-  //console.log(this.props.sentencesCount[i]);
-  const sentencesCountI = getState().uploadBooksPage.sentencesCount[i];
-  return sentencesCountI;
+  dispatch(toggleIsFetching(false)); 
+  dispatch(setSentencesCount(response, i)); //totalCount  
 };
 
 export const fetchSentencesCount = (languageId) => async (dispatch, getState) => {
@@ -178,37 +174,25 @@ export const fetchSentencesCount = (languageId) => async (dispatch, getState) =>
   getState().uploadBooksPage.dbSentencesCount[languageId] === 0
     ? dispatch(toggleIsLoading(false, languageId))
     : dispatch(toggleIsLoading(true, languageId));
+  return response.sentencesCount;
 };
 
 export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) => {
-  // it is possible to pass selectedFiles as parameter
+  debugger;
   for (let i = 0; i < selectedFiles.length; i++) {
-    const formData = new FormData();
-    formData.append("bookFile", selectedFiles[i], selectedFiles[i].name);
-    formData.append("languageId", selectedFiles[i].languageId); // it is possible to pass data in array instead file properties
-    formData.append("bookId", selectedFiles[i].bookId);
-    formData.append("authorNameId", selectedFiles[i].authorNameId);
-    formData.append("authorName", selectedFiles[i].authorName);
-    formData.append("bookNameId", selectedFiles[i].bookNameId);
-    formData.append("bookName", selectedFiles[i].bookName);
+    const form = new FormData();
+    form.append("bookFile", selectedFiles[i], selectedFiles[i].name);
+    form.append("languageId", selectedFiles[i].languageId); // it is possible to pass data in array instead file properties
+    form.append("bookId", selectedFiles[i].bookId);
+    form.append("authorNameId", selectedFiles[i].authorNameId);
+    form.append("authorName", selectedFiles[i].authorName);
+    form.append("bookNameId", selectedFiles[i].bookNameId);
+    form.append("bookName", selectedFiles[i].bookName);
 
-    dispatch(fetchLastUploadedVersions(formData, i, selectedFiles)) // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
-      .then((formData) => {
-        dispatch(postBooksTexts(formData, i));
-      })
-      .then((sentencesCount) => {
-        if (sentencesCount < 0) {
-          return -1;
-        }
-        dispatch(fetchSentencesCount(i));
-        return getState().uploadBooksPage.dbSentencesCount[i];
-      })
-      .catch(failureCallback);
+    const formPlusVersion = await dispatch(fetchLastUploadedVersions(form, i, selectedFiles)); // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
+    await dispatch(postBooksTexts(formPlusVersion, i));    
+    await dispatch(fetchSentencesCount(i));    
   }
-};
-
-const failureCallback = () => {
-  //console.log(this.props.maxUploadedVersion);
 };
 
 export default uploadBooksReducer;
