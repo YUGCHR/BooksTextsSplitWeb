@@ -58,14 +58,11 @@ namespace BooksTextsSplit
             //CookieAuthenticationOptions
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
-
-
                 options.Events.OnRedirectToLogin = context =>
                 {
                     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     return Task.CompletedTask;
                 };
-
             });
 
             services.AddControllersWithViews();

@@ -19,7 +19,14 @@ const UploadBooks = (props) => {
         <div className={s.radioBlock}>
           <div className="radio">
             <label>
-              <input type="radio" name={i} id={props.radioButtonsIds[(i, j)]} value={v} checked={props.selectedRadioLanguage[i] === v} onChange={handleOptionChange} />
+              <input
+                type="radio"
+                name={i}
+                id={props.radioButtonsIds[(i, j)]}
+                value={v}
+                checked={props.selectedRadioLanguage[i] === v}
+                onChange={handleOptionChange}
+              />
               {props.radioButtonsLabels[j]} {" / languageId = " + props.filesLanguageIds[i]}
             </label>
           </div>
@@ -38,7 +45,7 @@ const UploadBooks = (props) => {
       f.authorName = props.booksTitles[i][0].authorName;
       f.bookNameId = props.booksTitles[i][0].bookNameId;
       f.bookName = props.booksTitles[i][0].bookName;
-     
+
       return (
         <div className={s.selectedFilesTableRow2}>
           <div> {i} </div>
@@ -94,7 +101,7 @@ const UploadBooks = (props) => {
                 <div>File No: </div>
                 <div>File name: </div>
                 <div>Last modified: </div>
-                <div>File size: </div>                
+                <div>File size: </div>
                 <div>Choose file language: </div>
               </div>
 
@@ -109,9 +116,8 @@ const UploadBooks = (props) => {
           <div className={s.showFilesToUpload}>
             <button
               onClick={() => {
-                props.fileUploadHandler();
-              }}
-            >
+                props.fileUploadHandler(props.selectedFiles);
+              }}>
               UPLOAD SELECTED FILES
             </button>
             <div>{showFilesToUpload(props.selectedFiles, props.sentencesCount)}</div>
@@ -135,47 +141,3 @@ const UploadBooks = (props) => {
 
 export default UploadBooks;
 //props.fileUploadHandler(0);
-
-{
-  /* <div className={s.radioBlock}>
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  name={i}
-                  id={props.radioButtonsIds[(i, 0)]}
-                  value="1"
-                  checked={props.selectedRadioLanguage[i] === "1"}
-                  onChange={handleOptionChange}
-                />{" "}
-                Book with English test
-              </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  name={i}
-                  id={props.radioButtonsIds[(i, 1)]}
-                  value="2"
-                  checked={props.selectedRadioLanguage[i] === "2"}
-                  onChange={handleOptionChange}
-                />{" "}
-                Book with Russian test
-              </label>
-            </div>
-            <div className="radio">
-              <label>
-                <input
-                  type="radio"
-                  name={i}
-                  id={props.radioButtonsIds[(i, 2)]}
-                  value="3"
-                  checked={props.selectedRadioLanguage[i] === "3"}
-                  onChange={handleOptionChange}
-                />{" "}
-                I do not know book language
-              </label>
-            </div>
-          </div> */
-}

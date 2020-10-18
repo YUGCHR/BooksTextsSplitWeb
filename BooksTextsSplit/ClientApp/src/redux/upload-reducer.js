@@ -1,3 +1,5 @@
+import { uploadAPI } from "../api/api";
+
 const SET_DB_SENTENCES_COUNT = "SET-DB-SENTENCES-COUNT";
 const SET_SENTENCES_COUNT = "SET-SENTENCES-COUNT";
 const SET_FILE_NAME = "SET-FILE-NAME";
@@ -25,7 +27,7 @@ let initialState = {
   successfullUploaded: false,
   booksTitles: [
     [
-      { bookId: 77, languageId: 0, authorNameId: 101, authorName: "1 Vernor Vinge", bookNameId: 1001, bookName: "1 A Fire Upon the Deep" },
+      { bookId: 55, languageId: 0, authorNameId: 101, authorName: "1 Vernor Vinge", bookNameId: 1001, bookName: "1 A Fire Upon the Deep" },
       { bookId: 2, languageId: 0, authorNameId: 102, authorName: "2 Vernor Vinge", bookNameId: 1002, bookName: "2 A Fire Upon the Deep" },
       { bookId: 3, languageId: 0, authorNameId: 103, authorName: "3 Vernor Vinge", bookNameId: 1003, bookName: "3 A Fire Upon the Deep" },
       {
@@ -46,7 +48,7 @@ let initialState = {
       },
     ],
     [
-      { bookId: 77, languageId: 1, authorNameId: 101, authorName: "1 Вернор Виндж", bookNameId: 1001, bookName: "1 Пламя над бездной" },
+      { bookId: 55, languageId: 1, authorNameId: 101, authorName: "1 Вернор Виндж", bookNameId: 1001, bookName: "1 Пламя над бездной" },
       { bookId: 2, languageId: 1, authorNameId: 102, authorName: "2 Вернор Виндж", bookNameId: 1002, bookName: "2 Пламя над бездной" },
       { bookId: 3, languageId: 1, authorNameId: 103, authorName: "3 Вернор Виндж", bookNameId: 1003, bookName: "3 Пламя над бездной" },
       {
@@ -139,12 +141,74 @@ const uploadBooksReducer = (state = initialState, action) => {
   }
 };
 
-export const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
+const setSentencesCount = (count, index) => ({ type: SET_SENTENCES_COUNT, count, index });
+const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
+const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
+
 export const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
-export const setSentencesCount = (count, index) => ({ type: SET_SENTENCES_COUNT, count, index });
 export const setFileName = (files) => ({ type: SET_FILE_NAME, files });
 export const radioOptionChange = (option, i) => ({ type: RADIO_IS_CHANGED, option, i });
-export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
-export const findMaxUploadedVersion = (uploadedVersions, bookId, languageId) => ({ type: FIND_MAX_UPLOADED, uploadedVersions, bookId, languageId });
+
+const fetchLastUploadedVersions = (formData, i, selectedFiles) => async (dispatch, getState) => {
+  dispatch(toggleIsFetching(true));
+  let bookId = selectedFiles[i].bookId;
+  let languageId = selectedFiles[i].languageId;
+  const response = await uploadAPI.getLastUploadedVersions(bookId, languageId); // to find all previously uploaded versions of the file with this bookId
+  dispatch(toggleIsFetching(false));
+  formData.append("lastUploadedVersion", response.maxUploadedVersion);
+  return formData;
+};
+
+const postBooksTexts = (formData, i) => async (dispatch, getState) => {
+  dispatch(toggleIsFetching(true));
+  const response = await uploadAPI.uploadFile(formData); //post returns response before all records have loaded in db
+  dispatch(toggleIsFetching(false));
+  //console.log(Response.data);
+  dispatch(setSentencesCount(response, i)); //totalCount
+  //console.log(this.props.sentencesCount[i]);
+  const sentencesCountI = getState().uploadBooksPage.sentencesCount[i];
+  return sentencesCountI;
+};
+
+export const fetchSentencesCount = (languageId) => async (dispatch, getState) => {
+  dispatch(toggleIsFetching(true));
+  const response = await uploadAPI.getSentenceCount(languageId);
+  dispatch(toggleIsFetching(false));
+  dispatch(setDbSentencesCount(response.sentencesCount, languageId));
+  getState().uploadBooksPage.dbSentencesCount[languageId] === 0
+    ? dispatch(toggleIsLoading(false, languageId))
+    : dispatch(toggleIsLoading(true, languageId));
+};
+
+export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) => {
+  // it is possible to pass selectedFiles as parameter
+  for (let i = 0; i < selectedFiles.length; i++) {
+    const formData = new FormData();
+    formData.append("bookFile", selectedFiles[i], selectedFiles[i].name);
+    formData.append("languageId", selectedFiles[i].languageId); // it is possible to pass data in array instead file properties
+    formData.append("bookId", selectedFiles[i].bookId);
+    formData.append("authorNameId", selectedFiles[i].authorNameId);
+    formData.append("authorName", selectedFiles[i].authorName);
+    formData.append("bookNameId", selectedFiles[i].bookNameId);
+    formData.append("bookName", selectedFiles[i].bookName);
+
+    dispatch(fetchLastUploadedVersions(formData, i, selectedFiles)) // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
+      .then((formData) => {
+        dispatch(postBooksTexts(formData, i));
+      })
+      .then((sentencesCount) => {
+        if (sentencesCount < 0) {
+          return -1;
+        }
+        dispatch(fetchSentencesCount(i));
+        return getState().uploadBooksPage.dbSentencesCount[i];
+      })
+      .catch(failureCallback);
+  }
+};
+
+const failureCallback = () => {
+  //console.log(this.props.maxUploadedVersion);
+};
 
 export default uploadBooksReducer;
