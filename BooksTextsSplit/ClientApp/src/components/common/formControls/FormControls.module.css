@@ -1,3 +1,12 @@
+.formControl{
+  background-color: yellow;
+}
+
+.createFormField{
+  display: flex;
+  flex-direction: row;
+  background-color: magenta;
+}
 
 .formControl.error input,
 .formControl.error textarea
@@ -9,4 +18,3 @@
 {
   color: red;
 }
-

@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
+import { reduxForm } from "redux-form";
+import { createField, Input } from "../common/formControls/FormControls";
+import { requiredField } from "../common/validators/Validators";
+import RadioButtons from "./RadioButtons";
 import s from "./UploadBooks.module.css";
 
 const UploadBooks = (props) => {
+  let radioButtonsValues = ["1", "2", "3"];
+  let radioButtonsIds = [
+    ["eng1", "eng2", "eng3"],
+    ["rus1", "rus2", "rus3"],
+  ];
+  let radioButtonsLabels = ["Book with English test", "Book with Russian test", "I do not know book language"];
+  let radioButtonsNames = ["radioEnglish", "radioRussian"];
+  const [selectedRadioLanguage, setSelectedRadioLanguage] = useState(["1", "2"]);
+  const [filesLanguageIds, setFilesLanguageIds] = useState([0, 1]);
+
   let fileSelectorHandler = (event) => {
     props.setFileName(event.target.files);
   };
@@ -9,10 +23,44 @@ const UploadBooks = (props) => {
   //  props.handleOptionChange(event.target.value, languageId);
 
   let handleOptionChange = (event) => {
-    props.radioOptionChange(event.target.value, parseInt(event.target.name));
+    let option = event.target.value;
+    let i = parseInt(event.target.name);
+    let newSelectedRadioLanguage = [];
+    selectedRadioLanguage.map((lang, n) => {
+      newSelectedRadioLanguage[n] = lang;
+      if (n === i) {
+        newSelectedRadioLanguage[n] = option;
+      }
+    });
+    setSelectedRadioLanguage(newSelectedRadioLanguage);
+    let languageId = i - 1;
+
+    let newFilesLanguageIds = [];
+    filesLanguageIds.map((lang, n) => {
+      newFilesLanguageIds[n] = lang;
+      if (n === i) {
+        newFilesLanguageIds[n] = languageId;
+      }
+    });
+    setFilesLanguageIds(newFilesLanguageIds);
+    //props.radioOptionChange(event.target.value, parseInt(event.target.name));
+    // const radioOptionChange = (option, i) => ({ type: RADIO_IS_CHANGED, option, i });
   };
 
-  let createRadioButtons = (radioButtonsValues, i) => {
+  /* export const radioOptionChange = (option, i) => ({ type: RADIO_IS_CHANGED, option, i });
+  case RADIO_IS_CHANGED: {
+    //debugger;
+    let stateCopy = { ...state };
+    stateCopy.selectedRadioLanguage = { ...state.selectedRadioLanguage };
+    stateCopy.selectedRadioLanguage[action.i] = action.option;
+    stateCopy.filesLanguageIds = { ...state.filesLanguageIds };
+    let languageId = parseInt(action.option) - 1;
+    stateCopy.filesLanguageIds[action.i] = languageId;
+    return stateCopy;
+    //return { ...state, selectedRadioLanguage[action.languageId]: action.option };
+  } */
+
+  let createRadioButtons = (i) => {
     //debugger;
     return radioButtonsValues.map((v, j) => {
       return (
@@ -22,12 +70,12 @@ const UploadBooks = (props) => {
               <input
                 type="radio"
                 name={i}
-                id={props.radioButtonsIds[(i, j)]}
+                id={radioButtonsIds[(i, j)]}
                 value={v}
-                checked={props.selectedRadioLanguage[i] === v}
+                checked={selectedRadioLanguage[i] === v}
                 onChange={handleOptionChange}
               />
-              {props.radioButtonsLabels[j]} {" / languageId = " + props.filesLanguageIds[i]}
+              {radioButtonsLabels[j]} {" / languageId = " + filesLanguageIds[i]}
             </label>
           </div>
         </div>
@@ -39,12 +87,12 @@ const UploadBooks = (props) => {
     console.log(chosenFiles);
     //if(chosenFiles[0].size) {
     return Array.from(chosenFiles).map((f, i) => {
-      f.languageId = props.filesLanguageIds[i];
+      /* f.languageId = props.filesLanguageIds[i]; --- now all values are fetched in reducer from state directly
       f.bookId = props.booksTitles[i][0].bookId;
       f.authorNameId = props.booksTitles[i][0].authorNameId;
       f.authorName = props.booksTitles[i][0].authorName;
       f.bookNameId = props.booksTitles[i][0].bookNameId;
-      f.bookName = props.booksTitles[i][0].bookName;
+      f.bookName = props.booksTitles[i][0].bookName; */
 
       return (
         <div className={s.selectedFilesTableRow2}>
@@ -53,7 +101,7 @@ const UploadBooks = (props) => {
           <div>{" " + f.lastModifiedDate}</div>
           <div>{" " + Math.round(f.size / 1024) + " KB"}</div>
           <div>{" " + f.type}</div>
-          <div>{createRadioButtons(props.radioButtonsValues, i)}</div>
+          <div>{createRadioButtons(i)}</div>
         </div>
       );
     });
@@ -77,6 +125,11 @@ const UploadBooks = (props) => {
 
   return (
     <div>
+      <div>
+        <div>
+          <RadioButtons />
+        </div>
+      </div>
       <div className={s.allControlPanel}>
         <div className={s.pageName}>
           <div>UPLOAD BOOKS CONTROL PANEL</div>

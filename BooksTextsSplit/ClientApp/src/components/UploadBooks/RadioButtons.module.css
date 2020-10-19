@@ -1,0 +1,28 @@
+.radioButtonResult{
+  background-color: cyan;
+  color: darkblue;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.radioFormFields{
+  display: flex;
+  flex-direction: row;
+  background-color: lightgreen;
+  grid-gap: 5px;
+  color: darkred;
+}
+
+.header{
+  grid-area: h;
+  background-color: green;
+}
+
+.formSummaryError
+{
+border: 5px solid red;
+padding: 5px;
+color: darkred;
+background-color: salmon;
+}
+

@@ -27,7 +27,7 @@ let initialState = {
   successfullUploaded: false,
   booksTitles: [
     [
-      { bookId: 55, languageId: 0, authorNameId: 101, authorName: "1 Vernor Vinge", bookNameId: 1001, bookName: "1 A Fire Upon the Deep" },
+      { bookId: 88, languageId: 0, authorNameId: 101, authorName: "1 Vernor Vinge", bookNameId: 1001, bookName: "1 A Fire Upon the Deep" },
       { bookId: 2, languageId: 0, authorNameId: 102, authorName: "2 Vernor Vinge", bookNameId: 1002, bookName: "2 A Fire Upon the Deep" },
       { bookId: 3, languageId: 0, authorNameId: 103, authorName: "3 Vernor Vinge", bookNameId: 1003, bookName: "3 A Fire Upon the Deep" },
       {
@@ -48,7 +48,7 @@ let initialState = {
       },
     ],
     [
-      { bookId: 55, languageId: 1, authorNameId: 101, authorName: "1 Вернор Виндж", bookNameId: 1001, bookName: "1 Пламя над бездной" },
+      { bookId: 88, languageId: 1, authorNameId: 101, authorName: "1 Вернор Виндж", bookNameId: 1001, bookName: "1 Пламя над бездной" },
       { bookId: 2, languageId: 1, authorNameId: 102, authorName: "2 Вернор Виндж", bookNameId: 1002, bookName: "2 Пламя над бездной" },
       { bookId: 3, languageId: 1, authorNameId: 103, authorName: "3 Вернор Виндж", bookNameId: 1003, bookName: "3 Пламя над бездной" },
       {
@@ -149,17 +149,15 @@ export const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTEN
 export const setFileName = (files) => ({ type: SET_FILE_NAME, files });
 export const radioOptionChange = (option, i) => ({ type: RADIO_IS_CHANGED, option, i });
 
-const fetchLastUploadedVersions = (formData, i, selectedFiles) => async (dispatch, getState) => {
-  dispatch(toggleIsFetching(true));
-  let bookId = selectedFiles[i].bookId;
-  let languageId = selectedFiles[i].languageId;
+const fetchLastUploadedVersions = (formData, bookId, languageId) => async (dispatch, getState) => {
+  dispatch(toggleIsFetching(true));  
   const response = await uploadAPI.getLastUploadedVersions(bookId, languageId); // to find all previously uploaded versions of the file with this bookId
   dispatch(toggleIsFetching(false));
   formData.append("lastUploadedVersion", response.maxUploadedVersion);
   return formData;
 };
 
-const postBooksTexts = (formData, i) => async (dispatch, getState) => {
+const postBooksTexts = (formData, i) => async (dispatch) => {
   dispatch(toggleIsFetching(true));
   const response = await uploadAPI.uploadFile(formData); //post returns response before all records have loaded in db
   dispatch(toggleIsFetching(false)); 
@@ -177,21 +175,23 @@ export const fetchSentencesCount = (languageId) => async (dispatch, getState) =>
   return response.sentencesCount;
 };
 
-export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) => {
-  debugger;
+export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) => {  
   for (let i = 0; i < selectedFiles.length; i++) {
     const form = new FormData();
-    form.append("bookFile", selectedFiles[i], selectedFiles[i].name);
-    form.append("languageId", selectedFiles[i].languageId); // it is possible to pass data in array instead file properties
-    form.append("bookId", selectedFiles[i].bookId);
-    form.append("authorNameId", selectedFiles[i].authorNameId);
-    form.append("authorName", selectedFiles[i].authorName);
-    form.append("bookNameId", selectedFiles[i].bookNameId);
-    form.append("bookName", selectedFiles[i].bookName);
+    form.append("bookFile", selectedFiles[i], selectedFiles[i].name);    
+    let languageId = getState().uploadBooksPage.filesLanguageIds[i];
+    form.append("languageId", languageId); // it is possible to pass data in array instead file properties
+    const bookTitle = getState().uploadBooksPage.booksTitles[i][0];
+    let bookId = bookTitle.bookId;
+    form.append("bookId", bookId);
+    form.append("authorNameId", bookTitle.authorNameId);
+    form.append("authorName", bookTitle.authorName);
+    form.append("bookNameId", bookTitle.bookNameId);
+    form.append("bookName", bookTitle.bookName);
 
-    const formPlusVersion = await dispatch(fetchLastUploadedVersions(form, i, selectedFiles)); // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
+    const formPlusVersion = await dispatch(fetchLastUploadedVersions(form, bookId, languageId)); // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
     await dispatch(postBooksTexts(formPlusVersion, i));    
-    await dispatch(fetchSentencesCount(i));    
+    await dispatch(fetchSentencesCount(i)); // to fetch dbSentencesCount[languageId] and change toggleIsLoading on true
   }
 };
 

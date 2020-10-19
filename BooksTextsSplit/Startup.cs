@@ -65,6 +65,8 @@ namespace BooksTextsSplit
                 };
             });
 
+
+
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration =>
             {
