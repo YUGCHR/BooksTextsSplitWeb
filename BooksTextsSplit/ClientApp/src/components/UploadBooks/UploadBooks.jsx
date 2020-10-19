@@ -6,6 +6,12 @@ import RadioButtons from "./RadioButtons";
 import s from "./UploadBooks.module.css";
 
 const UploadBooks = (props) => {
+  let radioInitialValues = [
+    { value: "eng", text: "English" },
+    { value: "rus", text: "Russian" },
+    { value: "other", text: "User lang" },
+  ];
+
   let radioButtonsValues = ["1", "2", "3"];
   let radioButtonsIds = [
     ["eng1", "eng2", "eng3"],
@@ -127,7 +133,7 @@ const UploadBooks = (props) => {
     <div>
       <div>
         <div>
-          <RadioButtons />
+          <RadioButtons radioInitialValues={radioInitialValues} />
         </div>
       </div>
       <div className={s.allControlPanel}>
