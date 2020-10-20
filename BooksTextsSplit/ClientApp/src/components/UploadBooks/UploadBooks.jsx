@@ -6,11 +6,12 @@ import RadioButtons from "./RadioButtons";
 import s from "./UploadBooks.module.css";
 
 const UploadBooks = (props) => {
-  let radioInitialValues = [
+  let radioInitialUniqValues = [
     { value: "eng", text: "English" },
     { value: "rus", text: "Russian" },
     { value: "other", text: "User lang" },
   ];
+  let radioInitialCommonValues = { placeholder: null, name: "files", component: Input, validators: [], type: "radio" };
 
   let radioButtonsValues = ["1", "2", "3"];
   let radioButtonsIds = [
@@ -22,8 +23,10 @@ const UploadBooks = (props) => {
   const [selectedRadioLanguage, setSelectedRadioLanguage] = useState(["1", "2"]);
   const [filesLanguageIds, setFilesLanguageIds] = useState([0, 1]);
 
-  let fileSelectorHandler = (event) => {
-    props.setFileName(event.target.files);
+  let fileSelectorHandler = (e) => {
+    if (e.target.files.length) {
+      props.setFileName(e.target.files);
+    }
   };
 
   //  props.handleOptionChange(event.target.value, languageId);
@@ -131,41 +134,49 @@ const UploadBooks = (props) => {
 
   return (
     <div>
-      <div>
-        <div>
-          <RadioButtons radioInitialValues={radioInitialValues} />
-        </div>
-      </div>
       <div className={s.allControlPanel}>
         <div className={s.pageName}>
           <div>UPLOAD BOOKS CONTROL PANEL</div>
+          <div className={s.selectFiles}>
+            <div className={s.selectFilesBlock}>
+              <div className={s.selectFilesHeader}>
+                <div>CHOOSE BOOKS FILES (ENG/RUS PAIR)</div>
+              </div>
+              <div className={s.selectFilesButton}>
+                <input type="file" onChange={fileSelectorHandler} multiple />
+              </div>
+              <div className={s.selectedBooksPlace}>
+                <div className={s.selectedBooksContainer}>
+                  <div className={s.selectedBooksHeader}>SELECTED BOOKS FILES -</div>
+                </div>
+                <div>
+                  <RadioButtons uniqValues={radioInitialUniqValues} commonValues={radioInitialCommonValues} />
+                </div>
+                <div className={s.selectedFilesTableRow1}>
+                  <div>File No: </div>
+                  <div>File name: </div>
+                  <div>Last modified: </div>
+                  <div>File size: </div>
+                  <div>Choose file language: </div>
+                </div>
+
+                {/* <div className={s.selectedFilesTableFlexColumns}> */}
+                <div>{showSelectedFiles(props.selectedFiles)}</div>
+              </div>
+            </div>
+          </div>
         </div>
+
         <div className={s.dbInfoButton}>
           <div>DB INFO</div>
-        </div>
-        <div className={s.selectFiles}>
-          <div className={s.selectFilesBlock}>
-            <div className={s.selectFilesHeader}>
-              <div>CHOOSE BOOKS FILES (ENG/RUS PAIR)</div>
+          <div className={s.dbCount}>
+            <div>
+              <div className={s.dbCountHeader}>Sentences count in Cosmos DB -</div>
             </div>
-            <div className={s.selectFilesButton}>
-              <input type="file" onChange={fileSelectorHandler} multiple />
-            </div>
-            <div className={s.selectedBooksPlace}>
-              <div className={s.selectedBooksContainer}>
-                <div className={s.selectedBooksHeader}>SELECTED BOOKS FILES -</div>
-              </div>
-
-              <div className={s.selectedFilesTableRow1}>
-                <div>File No: </div>
-                <div>File name: </div>
-                <div>Last modified: </div>
-                <div>File size: </div>
-                <div>Choose file language: </div>
-              </div>
-
-              {/* <div className={s.selectedFilesTableFlexColumns}> */}
-              <div>{showSelectedFiles(props.selectedFiles)}</div>
+            <div>English sentences count ={" " + props.dbSentencesCount[0]}</div>
+            <div>Russian sentences count ={" " + props.dbSentencesCount[1]}</div>
+            <div>
+              <p>Total records in Cosmos DB ={" " + (props.dbSentencesCount[0] + props.dbSentencesCount[1])}</p>
             </div>
           </div>
         </div>
@@ -181,16 +192,6 @@ const UploadBooks = (props) => {
             </button>
             <div>{showFilesToUpload(props.selectedFiles, props.sentencesCount)}</div>
             {/* <div>{showUploadedSentenceCount()}</div> */}
-          </div>
-        </div>
-        <div className={s.dbCount}>
-          <div>
-            <div className={s.dbCountHeader}>Sentences count in Cosmos DB -</div>
-          </div>
-          <div>English sentences count ={" " + props.dbSentencesCount[0]}</div>
-          <div>Russian sentences count ={" " + props.dbSentencesCount[1]}</div>
-          <div>
-            <p>Total records in Cosmos DB ={" " + (props.dbSentencesCount[0] + props.dbSentencesCount[1])}</p>
           </div>
         </div>
       </div>
