@@ -24,9 +24,7 @@ const RadioButtons = ({ uniqValues, commonValues }) => {
   const [radioResult, setRadioResult] = useState(0);
 
   const onSubmit = (formData) => {
-    let f = formData.["files0"];
-    debugger;
-    setRadioResult(f);
+    setRadioResult(formData[commonValues.name]);
   };
 
   return (
