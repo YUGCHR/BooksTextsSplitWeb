@@ -9,10 +9,10 @@ const RADIO_IS_CHANGED = "RADIO-IS-CHANGED";
 const FIND_MAX_UPLOADED = "FIND-MAX-UPLOADED";
 
 let initialState = {
-  selectedFiles: [
+  selectedFiles: null/* [
     { name: "eng", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
     { name: "rus", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
-  ],
+  ] */,
   selectedRadioLanguage: ["1", "2"],
   radioButtonsLabels: ["Book with English test", "Book with Russian test", "I do not know book language"],
   radioButtonsNames: ["radioEnglish", "radioRussian"],

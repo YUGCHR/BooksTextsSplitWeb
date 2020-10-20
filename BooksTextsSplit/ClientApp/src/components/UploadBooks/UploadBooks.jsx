@@ -11,13 +11,17 @@ const UploadBooks = (props) => {
     { value: "rus", text: "Russian" },
     { value: "other", text: "User lang" },
   ];
+  let radioInitialCommonValues = { placeholder: null, name: "radioBaseName + i", component: Input, validators: [], type: "radio" };
+  let radioBaseName = "files";
+  let formName = "radio";
 
   let showSelectedFiles = (chosenFiles) => {
     console.log(chosenFiles);
     //if(chosenFiles[0].size) {
     return Array.from(chosenFiles).map((f, i) => {
-      let radioNameNumber = "files" + i;
-      let radioInitialCommonValues = { placeholder: null, name: radioNameNumber, component: Input, validators: [], type: "radio" };
+      radioInitialCommonValues.name = radioBaseName + i;
+      let uniqFormName = formName + i;
+      debugger;
       return (
         <div className={s.selectedFilesTableRow2}>
           <div> {i} </div>
@@ -26,7 +30,7 @@ const UploadBooks = (props) => {
           <div>{" " + Math.round(f.size / 1024) + " KB"}</div>
           <div>{" " + f.type}</div>
           <div>
-            <RadioButtons uniqValues={radioInitialUniqValues} commonValues={radioInitialCommonValues} />
+            <RadioButtons formName={uniqFormName} uniqValues={radioInitialUniqValues} commonValues={radioInitialCommonValues} />
           </div>
         </div>
       );
@@ -154,7 +158,7 @@ const UploadBooks = (props) => {
                 </div>
 
                 {/* <div className={s.selectedFilesTableFlexColumns}> */}
-                <div>{showSelectedFiles(props.selectedFiles)}</div>
+                {!!props.selectedFiles && <div>{showSelectedFiles(props.selectedFiles)}</div>}
               </div>
             </div>
           </div>
@@ -183,7 +187,7 @@ const UploadBooks = (props) => {
               }}>
               UPLOAD SELECTED FILES
             </button>
-            <div>{showFilesToUpload(props.selectedFiles, props.sentencesCount)}</div>
+            {!!props.selectedFiles && <div>{showFilesToUpload(props.selectedFiles, props.sentencesCount)}</div>}
             {/* <div>{showUploadedSentenceCount()}</div> */}
           </div>
         </div>

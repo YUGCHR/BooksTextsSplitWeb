@@ -18,9 +18,12 @@ let CreateRadioForm = ({ handleSubmit, error, uV, cV }) => {
   );
 };
 
-const RadioReduxForm = reduxForm({ form: "radio" })(CreateRadioForm);
 
-const RadioButtons = ({ uniqValues, commonValues }) => {
+
+const RadioButtons = ({ formName, uniqValues, commonValues }) => {
+
+const RadioReduxForm = reduxForm({ form: formName })(CreateRadioForm);
+
   const [radioResult, setRadioResult] = useState(0);
 
   const onSubmit = (formData) => {
