@@ -11,10 +11,27 @@ const UploadBooks = (props) => {
     { value: "rus", text: "Russian" },
     { value: "other", text: "User lang" },
   ];
-  let radioName = "files";
-  let i = 0;
-  let radioNameNumber = radioName + i;
-  let radioInitialCommonValues = { placeholder: null, name: radioNameNumber, component: Input, validators: [], type: "radio" };
+
+  let showSelectedFiles = (chosenFiles) => {
+    console.log(chosenFiles);
+    //if(chosenFiles[0].size) {
+    return Array.from(chosenFiles).map((f, i) => {
+      let radioNameNumber = "files" + i;
+      let radioInitialCommonValues = { placeholder: null, name: radioNameNumber, component: Input, validators: [], type: "radio" };
+      return (
+        <div className={s.selectedFilesTableRow2}>
+          <div> {i} </div>
+          <div>{" " + f.name}</div>
+          <div>{" " + f.lastModifiedDate}</div>
+          <div>{" " + Math.round(f.size / 1024) + " KB"}</div>
+          <div>{" " + f.type}</div>
+          <div>
+            <RadioButtons uniqValues={radioInitialUniqValues} commonValues={radioInitialCommonValues} />
+          </div>
+        </div>
+      );
+    });
+  };
 
   let radioButtonsValues = ["1", "2", "3"];
   let radioButtonsIds = [
@@ -95,30 +112,6 @@ const UploadBooks = (props) => {
     });
   };
 
-  let showSelectedFiles = (chosenFiles) => {
-    console.log(chosenFiles);
-    //if(chosenFiles[0].size) {
-    return Array.from(chosenFiles).map((f, i) => {
-      /* f.languageId = props.filesLanguageIds[i]; --- now all values are fetched in reducer from state directly
-      f.bookId = props.booksTitles[i][0].bookId;
-      f.authorNameId = props.booksTitles[i][0].authorNameId;
-      f.authorName = props.booksTitles[i][0].authorName;
-      f.bookNameId = props.booksTitles[i][0].bookNameId;
-      f.bookName = props.booksTitles[i][0].bookName; */
-
-      return (
-        <div className={s.selectedFilesTableRow2}>
-          <div> {i} </div>
-          <div>{" " + f.name}</div>
-          <div>{" " + f.lastModifiedDate}</div>
-          <div>{" " + Math.round(f.size / 1024) + " KB"}</div>
-          <div>{" " + f.type}</div>
-          <div>{createRadioButtons(i)}</div>
-        </div>
-      );
-    });
-  };
-
   let showFilesToUpload = (chosenFiles, sentencesCount) => {
     return Array.from(chosenFiles).map((sf, n) => {
       //debugger;
@@ -151,9 +144,6 @@ const UploadBooks = (props) => {
               <div className={s.selectedBooksPlace}>
                 <div className={s.selectedBooksContainer}>
                   <div className={s.selectedBooksHeader}>SELECTED BOOKS FILES -</div>
-                </div>
-                <div>
-                  <RadioButtons uniqValues={radioInitialUniqValues} commonValues={radioInitialCommonValues} />
                 </div>
                 <div className={s.selectedFilesTableRow1}>
                   <div>File No: </div>
