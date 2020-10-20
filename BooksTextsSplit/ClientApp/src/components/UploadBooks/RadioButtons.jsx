@@ -20,12 +20,13 @@ let CreateRadioForm = ({ handleSubmit, error, uV, cV }) => {
 
 const RadioReduxForm = reduxForm({ form: "radio" })(CreateRadioForm);
 
-const RadioButtons = ({uniqValues, commonValues}) => {
-  
+const RadioButtons = ({ uniqValues, commonValues }) => {
   const [radioResult, setRadioResult] = useState(0);
 
   const onSubmit = (formData) => {
-    setRadioResult(formData.files);
+    let f = formData.["files0"];
+    debugger;
+    setRadioResult(f);
   };
 
   return (

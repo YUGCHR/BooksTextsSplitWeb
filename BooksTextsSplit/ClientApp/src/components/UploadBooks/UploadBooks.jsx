@@ -11,7 +11,10 @@ const UploadBooks = (props) => {
     { value: "rus", text: "Russian" },
     { value: "other", text: "User lang" },
   ];
-  let radioInitialCommonValues = { placeholder: null, name: "files", component: Input, validators: [], type: "radio" };
+  let radioName = "files";
+  let i = 0;
+  let radioNameNumber = radioName + i;
+  let radioInitialCommonValues = { placeholder: null, name: radioNameNumber, component: Input, validators: [], type: "radio" };
 
   let radioButtonsValues = ["1", "2", "3"];
   let radioButtonsIds = [
