@@ -13,7 +13,24 @@ const ShowHeader = () => {
   );
 };
 
-const ShowFiles = ({ chosenFiles, radioInitialUniqValues, radioInitialCommonValues, setRadioResult, radioChosenLanguage }) => {
+const ShowFiles = ({
+  chosenFiles,
+  radioInitialUniqValues,
+  radioInitialCommonValues,
+  setRadioResult,
+  radioChosenLanguage,
+}) => {
+  let newDateFormat = (inputDate) => {
+    debugger;
+    return new Intl.DateTimeFormat("en-GB", {
+      year: "numeric",
+      month: "long",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(inputDate);
+  };
+  /* {new Intl.DateTimeFormat("en-GB", {year: "numeric", month: "long", day: "2-digit" }).format(customer.firstSale)}; */
   let radioBaseName = "files";
   let formName = "radio";
   return Array.from(chosenFiles).map((f, i) => {
@@ -24,7 +41,8 @@ const ShowFiles = ({ chosenFiles, radioInitialUniqValues, radioInitialCommonValu
       <div>
         <div>File No: {" " + i} </div>
         <div>File name: {" " + f.name}</div>
-        <div>Last modified: {" " + f.lastModifiedDate.toLocaleDateString()}</div>
+        {/* <div>Last modified: {" " + f.lastModifiedDate.toLocaleDateString()}</div> */}
+        <div>Last modified: {" " + newDateFormat(f.lastModifiedDate)}</div>
         <div>File size: {" " + Math.round(f.size / 1024) + " KB"}</div>
         <div>File type:{" " + f.type}</div>
         <div>Chosen file language:{" " + radioChosenLanguage[i]}</div>
@@ -48,7 +66,13 @@ const ShowSelectedFiles = (chosenFiles, setRadioResult, radioChosenLanguage) => 
     { value: "rus", text: "Russian" },
     { value: "other", text: "User lang" },
   ];
-  let radioInitialCommonValues = { placeholder: null, name: "radioBaseName + i", component: Input, validators: [], type: "radio" };
+  let radioInitialCommonValues = {
+    placeholder: null,
+    name: "radioBaseName + i",
+    component: Input,
+    validators: [],
+    type: "radio",
+  };
 
   console.log(chosenFiles);
 
