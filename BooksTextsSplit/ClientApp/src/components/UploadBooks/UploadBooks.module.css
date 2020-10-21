@@ -1,84 +1,92 @@
 .allControlPanel {
-  display: grid;
-  grid-template-rows: 1fr auto auto;
-  grid-template-columns: 3fr 1fr;
-  color: cyan;
-  background-color: green;
+    display: grid;
+    grid-template-rows: 1fr auto auto;
+    grid-template-columns: 3fr 1fr;
+    color: cyan;
+    background-color: green;
 }
 
 .pageName {
-  grid-column: 1/2;
-  grid-row: 1/2;
-  font-size: larger;
-  text-align: center;
-  color: black;
-  background-color: yellowgreen;
-}
-.dbInfoButton {
-  grid-column: 2/3;
-  grid-row: 1/2;
-  color: black;
-  background-color: red;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    font-size: larger;
+    text-align: center;
+    color: black;
+    background-color: yellowgreen;
 }
 
-.selectedBooksPlace{
-  grid-column: 1/3;
-  grid-row: 2/3;
-  color: black;
-  background-color: lightcoral;
+.dbInfoButton {
+    grid-column: 2/3;
+    grid-row: 1/2;
+    color: black;
+    background-color: red;
+}
+
+.selectedBooksProperties {
+    grid-column: 1/3;
+    grid-row: 2/3;
+    color: black;
+    background-color: yellow;
+}
+
+.selectedBooksPlaceItem1 {
+    color: black;
+}
+
+.showFilesPlace {
+    text-align: left;
+    color: blue;
+    background-color: magenta;
 }
 
 .selectedBooksContainer {
-  display: grid;
-  grid-gap: 1vw;    
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: auto auto auto;
-  grid-template-areas:
-      "h h h h h h"
-      "r r r r r r"
-      "f f f f f f";
+    display: grid;
+    grid-gap: 1vw;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: auto auto auto;
+    grid-template-areas: "h h h h h h" "r r r r r r" "f f f f f f";
 }
 
 .selectedBooksHeader {
-  grid-area: h;
-  background-color: magenta;
+    grid-area: h;
+    background-color: magenta;
 }
 
-.selectedFilesTableRow1{
-  grid-area: r;
-  background-color: cyan;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: calc(100% - (1 - 1/3)*1vh);
+.selectedFilesTableRow1 {
+    grid-area: r;
+    background-color: cyan;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: calc(100% - (1 - 1/3)*1vh);
 }
 
-.selectedFilesTableRow2{
-  grid-area: f;
-  background-color: green;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: calc(100% - (1 - 1/3)*1vh);
+.selectedFilesTableRow2 {
+    grid-area: f;
+    background-color: green;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: calc(100% - (1 - 1/3)*1vh);
 }
 
 .selectFiles {
-  grid-column: 1/3;
-  grid-row: 2/3;
-  color: yellow;
-  background-color: darkgray;
+    grid-column: 1/3;
+    grid-row: 2/3;
+    color: yellow;
+    background-color: darkgray;
 }
 
 .uploadFiles {
-  grid-column: 1/2;
-  grid-row: 3/4;
-  color: lightcyan;
-  background-color: darkred;
+    grid-column: 1/2;
+    grid-row: 3/4;
+    color: lightcyan;
+    background-color: darkred;
 }
 
 .dbCount {
-  grid-column: 2/3;
-  grid-row: 3/4;
-  color: darkred;
-  background-color: lightblue;
+    grid-column: 2/3;
+    grid-row: 3/4;
+    color: darkred;
+    background-color: lightblue;
 }

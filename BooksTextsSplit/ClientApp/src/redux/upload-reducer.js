@@ -1,3 +1,4 @@
+import { act } from "react-test-renderer";
 import { uploadAPI } from "../api/api";
 
 const SET_DB_SENTENCES_COUNT = "SET-DB-SENTENCES-COUNT";
@@ -9,11 +10,12 @@ const RADIO_IS_CHANGED = "RADIO-IS-CHANGED";
 const FIND_MAX_UPLOADED = "FIND-MAX-UPLOADED";
 
 let initialState = {
-  selectedFiles: null/* [
-    { name: "eng", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
-    { name: "rus", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
-  ] */,
-  selectedRadioLanguage: ["1", "2"],
+  selectedFiles: null,
+  /* [
+              { name: "eng", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
+              { name: "rus", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
+            ] */
+  radioChosenLanguage: ["1", "2"],
   radioButtonsLabels: ["Book with English test", "Book with Russian test", "I do not know book language"],
   radioButtonsNames: ["radioEnglish", "radioRussian"],
   radioButtonsValues: ["1", "2", "3"],
@@ -114,15 +116,10 @@ const uploadBooksReducer = (state = initialState, action) => {
       return { ...state, selectedFiles: action.files };
     }
     case RADIO_IS_CHANGED: {
-      //debugger;
       let stateCopy = { ...state };
-      stateCopy.selectedRadioLanguage = { ...state.selectedRadioLanguage };
-      stateCopy.selectedRadioLanguage[action.i] = action.option;
-      stateCopy.filesLanguageIds = { ...state.filesLanguageIds };
-      let languageId = parseInt(action.option) - 1;
-      stateCopy.filesLanguageIds[action.i] = languageId;
+      stateCopy.radioChosenLanguage = { ...state.radioChosenLanguage };
+      stateCopy.radioChosenLanguage[action.i] = action.chosenLang;
       return stateCopy;
-      //return { ...state, selectedRadioLanguage[action.languageId]: action.option };
     }
     case TOGGLE_IS_FETCHING: {
       return { ...state, isFetching: action.isFetching };
@@ -147,10 +144,10 @@ const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching
 
 export const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
 export const setFileName = (files) => ({ type: SET_FILE_NAME, files });
-export const radioOptionChange = (option, i) => ({ type: RADIO_IS_CHANGED, option, i });
+export const setRadioResult = (chosenLang, i) => ({ type: RADIO_IS_CHANGED, chosenLang, i });
 
 const fetchLastUploadedVersions = (formData, bookId, languageId) => async (dispatch, getState) => {
-  dispatch(toggleIsFetching(true));  
+  dispatch(toggleIsFetching(true));
   const response = await uploadAPI.getLastUploadedVersions(bookId, languageId); // to find all previously uploaded versions of the file with this bookId
   dispatch(toggleIsFetching(false));
   formData.append("lastUploadedVersion", response.maxUploadedVersion);
@@ -160,8 +157,8 @@ const fetchLastUploadedVersions = (formData, bookId, languageId) => async (dispa
 const postBooksTexts = (formData, i) => async (dispatch) => {
   dispatch(toggleIsFetching(true));
   const response = await uploadAPI.uploadFile(formData); //post returns response before all records have loaded in db
-  dispatch(toggleIsFetching(false)); 
-  dispatch(setSentencesCount(response, i)); //totalCount  
+  dispatch(toggleIsFetching(false));
+  dispatch(setSentencesCount(response, i)); //totalCount
 };
 
 export const fetchSentencesCount = (languageId) => async (dispatch, getState) => {
@@ -175,10 +172,10 @@ export const fetchSentencesCount = (languageId) => async (dispatch, getState) =>
   return response.sentencesCount;
 };
 
-export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) => {  
+export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) => {
   for (let i = 0; i < selectedFiles.length; i++) {
     const form = new FormData();
-    form.append("bookFile", selectedFiles[i], selectedFiles[i].name);    
+    form.append("bookFile", selectedFiles[i], selectedFiles[i].name);
     let languageId = getState().uploadBooksPage.filesLanguageIds[i];
     form.append("languageId", languageId); // it is possible to pass data in array instead file properties
     const bookTitle = getState().uploadBooksPage.booksTitles[i][0];
@@ -190,7 +187,7 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
     form.append("bookName", bookTitle.bookName);
 
     const formPlusVersion = await dispatch(fetchLastUploadedVersions(form, bookId, languageId)); // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
-    await dispatch(postBooksTexts(formPlusVersion, i));    
+    await dispatch(postBooksTexts(formPlusVersion, i));
     await dispatch(fetchSentencesCount(i)); // to fetch dbSentencesCount[languageId] and change toggleIsLoading on true
   }
 };

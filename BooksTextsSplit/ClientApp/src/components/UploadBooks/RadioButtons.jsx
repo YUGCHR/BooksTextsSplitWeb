@@ -18,22 +18,19 @@ let CreateRadioForm = ({ handleSubmit, error, uV, cV }) => {
   );
 };
 
+const RadioButtons = ({ formName, uniqValues, commonValues, setRadioResult, index }) => {
+  const RadioReduxForm = reduxForm({ form: formName })(CreateRadioForm);
 
-
-const RadioButtons = ({ formName, uniqValues, commonValues }) => {
-
-const RadioReduxForm = reduxForm({ form: formName })(CreateRadioForm);
-
-  const [radioResult, setRadioResult] = useState(0);
+  //const [radioResult, setRadioResult] = useState(0);
 
   const onSubmit = (formData) => {
-    setRadioResult(formData[commonValues.name]);
+    setRadioResult(formData[commonValues.name], index);
   };
 
   return (
     <div>
-      <div className={s.radioButtonResult}>Selected Language ={" " + radioResult}</div>
-      <RadioReduxForm onSubmit={onSubmit} uV={uniqValues} cV={commonValues} />
+      {/* <div className={s.radioButtonResult}>Selected Language ={" " + radioResult}</div> */}
+      <RadioReduxForm onSubmit={onSubmit} uV={uniqValues} cV={commonValues} setRadioResult={setRadioResult} index={index} />
     </div>
   );
 };

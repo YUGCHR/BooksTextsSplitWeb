@@ -2,7 +2,7 @@ import React from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
-import { fetchSentencesCount, fileUploadHandler, setDbSentencesCount, setFileName, radioOptionChange } from "../../redux/upload-reducer";
+import { fetchSentencesCount, fileUploadHandler, setDbSentencesCount, setFileName, setRadioResult } from "../../redux/upload-reducer";
 import UploadBooks from "./UploadBooks";
 import Preloader from "../common/preloader/Preloader";
 
@@ -18,6 +18,8 @@ class UploadBooksContainerAPI extends React.Component {
         {this.props.isFetching ? <Preloader /> : null}
         <UploadBooks
           selectedFiles={this.props.selectedFiles}
+          radioChosenLanguage={this.props.radioChosenLanguage}
+          setRadioResult={this.props.setRadioResult}
           selectedRadioLanguage={this.props.selectedRadioLanguage}
           radioButtonsLabels={this.props.radioButtonsLabels}
           radioButtonsNames={this.props.radioButtonsNames}
@@ -47,6 +49,7 @@ class UploadBooksContainerAPI extends React.Component {
 let mapStateToProps = (state) => {
   return {
     selectedFiles: state.uploadBooksPage.selectedFiles,
+    radioChosenLanguage: state.uploadBooksPage.radioChosenLanguage,
     selectedRadioLanguage: state.uploadBooksPage.selectedRadioLanguage, //
     radioButtonsLabels: state.uploadBooksPage.radioButtonsLabels, //
     radioButtonsNames: state.uploadBooksPage.radioButtonsNames,
@@ -73,7 +76,7 @@ let mapStateToProps = (state) => {
 };
 
 let UploadBooksContainer = compose(
-  connect(mapStateToProps, { fetchSentencesCount, fileUploadHandler, setDbSentencesCount, setFileName, radioOptionChange }),
+  connect(mapStateToProps, { fetchSentencesCount, fileUploadHandler, setDbSentencesCount, setFileName, setRadioResult }),
   withAuthRedirect
 )(UploadBooksContainerAPI);
 

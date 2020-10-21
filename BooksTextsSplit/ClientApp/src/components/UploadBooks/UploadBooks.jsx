@@ -7,7 +7,7 @@ import SelectBookFiles from "./SelectBookFiles";
 import ShowSelectedFiles from "./ShowSelectedFiles";
 import s from "./UploadBooks.module.css";
 
-const UploadBooks = (props) => {
+const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, ...props }) => {
   let showFilesToUpload = (chosenFiles, sentencesCount) => {
     return Array.from(chosenFiles).map((sf, n) => {
       //debugger;
@@ -30,9 +30,11 @@ const UploadBooks = (props) => {
         <div className={s.pageName}>
           <div>UPLOAD BOOKS CONTROL PANEL</div>
           <div className={s.selectFiles}>
-            <div className={s.selectedBooksPlace}>{!props.selectedFiles && <SelectBookFiles setFileName={props.setFileName} />}</div>
+            <div className={s.selectedBooksPlace}>{!selectedFiles && <SelectBookFiles setFileName={props.setFileName} />}</div>
           </div>
-          <div className={s.selectedBooksPlace}>{!!props.selectedFiles && <div>{ShowSelectedFiles(props.selectedFiles)}</div>}</div>
+          <div className={s.selectedBooksPlace}>
+            {!!selectedFiles && <div>{ShowSelectedFiles(selectedFiles, setRadioResult, radioChosenLanguage)}</div>}
+          </div>
         </div>
 
         <div className={s.dbInfoButton}>
