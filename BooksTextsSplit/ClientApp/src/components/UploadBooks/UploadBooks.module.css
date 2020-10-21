@@ -1,8 +1,7 @@
 .allControlPanel {
   display: grid;
   grid-template-rows: 1fr auto auto;
-  grid-template-columns: auto auto;
-  grid-gap: 0vw;
+  grid-template-columns: 3fr 1fr;
   color: cyan;
   background-color: green;
 }
@@ -11,6 +10,7 @@
   grid-column: 1/2;
   grid-row: 1/2;
   font-size: larger;
+  text-align: center;
   color: black;
   background-color: yellowgreen;
 }
