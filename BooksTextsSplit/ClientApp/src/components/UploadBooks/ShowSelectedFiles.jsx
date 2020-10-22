@@ -13,15 +13,9 @@ const ShowHeader = () => {
   );
 };
 
-const ShowFiles = ({
-  chosenFiles,
-  radioInitialUniqValues,
-  radioInitialCommonValues,
-  setRadioResult,
-  radioChosenLanguage,
-}) => {
+const ShowFiles = ({ chosenFiles, radioInitialUniqValues, radioInitialCommonValues, setRadioResult, radioChosenLanguage }) => {
   let newDateFormat = (inputDate) => {
-    debugger;
+    //debugger;
     return new Intl.DateTimeFormat("en-GB", {
       year: "numeric",
       month: "long",
@@ -30,11 +24,11 @@ const ShowFiles = ({
       minute: "2-digit",
     }).format(inputDate);
   };
-  /* {new Intl.DateTimeFormat("en-GB", {year: "numeric", month: "long", day: "2-digit" }).format(customer.firstSale)}; */
-  let radioBaseName = "files";
+
+  //let radioBaseName = "files";
   let formName = "radio";
   return Array.from(chosenFiles).map((f, i) => {
-    radioInitialCommonValues.name = radioBaseName + i;
+    //radioInitialCommonValues.name = radioBaseName + i;
     let uniqFormName = formName + i;
     //debugger;
     return (
@@ -62,13 +56,13 @@ const ShowFiles = ({
 
 const ShowSelectedFiles = (chosenFiles, setRadioResult, radioChosenLanguage) => {
   let radioInitialUniqValues = [
-    { value: "eng", text: "English" },
-    { value: "rus", text: "Russian" },
-    { value: "other", text: "User lang" },
+    { value: "eng", checked: true, text: "English" },
+    { value: "rus", checked: null, text: "Russian" },
+    { value: "other", checked: null, text: "User lang" },
   ];
   let radioInitialCommonValues = {
     placeholder: null,
-    name: "radioBaseName + i",
+    name: "radioFieldName", //"radioBaseName + i"
     component: Input,
     validators: [],
     type: "radio",

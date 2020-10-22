@@ -15,7 +15,7 @@ let initialState = {
               { name: "eng", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
               { name: "rus", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
             ] */
-  radioChosenLanguage: ["1", "2"],
+  radioChosenLanguage: ["choose language below", "choose language below"],
   radioButtonsLabels: ["Book with English test", "Book with Russian test", "I do not know book language"],
   radioButtonsNames: ["radioEnglish", "radioRussian"],
   radioButtonsValues: ["1", "2", "3"],
