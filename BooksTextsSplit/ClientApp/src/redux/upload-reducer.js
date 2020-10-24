@@ -29,9 +29,30 @@ let initialState = {
   successfullUploaded: false,
   booksTitles: [
     [
-      { bookId: 88, languageId: 0, authorNameId: 101, authorName: "1 Vernor Vinge", bookNameId: 1001, bookName: "1 A Fire Upon the Deep" },
-      { bookId: 2, languageId: 0, authorNameId: 102, authorName: "2 Vernor Vinge", bookNameId: 1002, bookName: "2 A Fire Upon the Deep" },
-      { bookId: 3, languageId: 0, authorNameId: 103, authorName: "3 Vernor Vinge", bookNameId: 1003, bookName: "3 A Fire Upon the Deep" },
+      {
+        bookId: 88,
+        languageId: 0,
+        authorNameId: 101,
+        authorName: "1 Vernor Vinge",
+        bookNameId: 1001,
+        bookName: "1 A Fire Upon the Deep",
+      },
+      {
+        bookId: 2,
+        languageId: 0,
+        authorNameId: 102,
+        authorName: "2 Vernor Vinge",
+        bookNameId: 1002,
+        bookName: "2 A Fire Upon the Deep",
+      },
+      {
+        bookId: 3,
+        languageId: 0,
+        authorNameId: 103,
+        authorName: "3 Vernor Vinge",
+        bookNameId: 1003,
+        bookName: "3 A Fire Upon the Deep",
+      },
       {
         bookId: 4,
         languageId: 0,
@@ -50,7 +71,14 @@ let initialState = {
       },
     ],
     [
-      { bookId: 88, languageId: 1, authorNameId: 101, authorName: "1 Вернор Виндж", bookNameId: 1001, bookName: "1 Пламя над бездной" },
+      {
+        bookId: 88,
+        languageId: 1,
+        authorNameId: 101,
+        authorName: "1 Вернор Виндж",
+        bookNameId: 1001,
+        bookName: "1 Пламя над бездной",
+      },
       { bookId: 2, languageId: 1, authorNameId: 102, authorName: "2 Вернор Виндж", bookNameId: 1002, bookName: "2 Пламя над бездной" },
       { bookId: 3, languageId: 1, authorNameId: 103, authorName: "3 Вернор Виндж", bookNameId: 1003, bookName: "3 Пламя над бездной" },
       {
@@ -115,10 +143,16 @@ const uploadBooksReducer = (state = initialState, action) => {
     case SET_FILE_NAME: {
       return { ...state, selectedFiles: action.files };
     }
+    /* case RADIO_IS_CHANGED: {
+      let stateCopy = { ...state };
+      stateCopy.radioChosenLanguage = { ...state.radioChosenLanguage };
+      stateCopy.radioChosenLanguage[action.i] = action.chosenLang;
+      return stateCopy;
+    } */
     case RADIO_IS_CHANGED: {
       let stateCopy = { ...state };
       stateCopy.radioChosenLanguage = { ...state.radioChosenLanguage };
-      stateCopy.radioChosenLanguage[action.i] = action.chosenLang[action.i];
+      stateCopy.radioChosenLanguage[action.i] = action.chosenLang;
       return stateCopy;
     }
     case TOGGLE_IS_FETCHING: {

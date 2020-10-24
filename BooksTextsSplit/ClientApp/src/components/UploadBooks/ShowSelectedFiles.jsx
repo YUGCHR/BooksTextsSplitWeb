@@ -20,21 +20,31 @@ const ShowFiles = ({ chosenFiles, setRadioResult, radioChosenLanguage }) => {
       minute: "2-digit",
     }).format(inputDate);
   };
+  let filesDescriptions = {
+    index: "File No: ",
+    name: "File name: ",
+    lastMod: "Last modified: ",
+    size: "File size: ",
+    type: "File type: ",
+    chosenLanguage: "Chosen file language: ",
+  };
   let radioInitialUniqValues = [
-    { name: "buttonEng", value: "eng", checked: true, text: "English" },
-    { name: "buttonRus", value: "rus", checked: null, text: "Russian" },
-    { name: "buttonOth", value: "other", checked: null, text: "User lang" },
+    { value: "eng", checked: true, text: "English" },
+    { value: "rus", checked: null, text: "Russian" },
+    { value: "other", checked: null, text: "User lang" },
   ];
   let radioInitialCommonValues = {
     placeholder: null,
     component: "Input",
     validators: [],
     type: "radio",
-    uniqFormName: ["formBaseName + i", "formBaseName + i"],
+    uniqFormName: [], // put (formBaseName + i) here
   };
   let formBaseName = "radioForm";
   //let value="eng";
   return Array.from(chosenFiles).map((f, i) => {
+    radioInitialCommonValues.uniqFormName[i] = formBaseName + i;
+    console.log("uniqFormName" + i, radioInitialCommonValues.uniqFormName[i]);
     return (
       <div>
         <div>File No: {" " + i} </div>
@@ -43,9 +53,12 @@ const ShowFiles = ({ chosenFiles, setRadioResult, radioChosenLanguage }) => {
         <div>Last modified: {" " + newDateFormat(f.lastModifiedDate)}</div>
         <div>File size: {" " + Math.round(f.size / 1024) + " KB"}</div>
         <div>File type:{" " + f.type}</div>
-        <div>Chosen file language:{" " + radioChosenLanguage[i]}</div>
+        <div className={s.chosenLanguagePlace}>
+          <div className={s.chosenLanguageText}>{filesDescriptions.chosenLanguage}</div>
+          <div className={s.chosenLanguage}>{" " + radioChosenLanguage[i]}</div>
+        </div>
         <div>
-          <RadioButtons />
+          <RadioButtons uV={radioInitialUniqValues} cV={radioInitialCommonValues} i={i} setRadioResult={setRadioResult} />
         </div>
       </div>
     );

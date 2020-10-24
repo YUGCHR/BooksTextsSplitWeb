@@ -29,7 +29,7 @@ namespace BooksTextsSplit.Services
         }
 
         #region CreateUsers
-        //// Temporary - to create users in Redis only
+        // Temporary - to create users in Redis only
         //private List<User> _users = new List<User>
         //{
         //    new User {
@@ -56,7 +56,7 @@ namespace BooksTextsSplit.Services
         //        Token = "1234567890",
         //        Password = "ttt",
         //        Email = "333.3333@gmail.com" }
-        //}
+        //};
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications        
         //private List<User> _users = new List<User>
         //{
@@ -73,18 +73,19 @@ namespace BooksTextsSplit.Services
 
         public async Task<User> Authenticate(string email, string password)
         {
+            #region CreateUsers
+            // Temporary - to create users in Redis only
+            //foreach (User u in _users)
+            //{
+            //    await cache.Cache.SetObjectAsync(u.Email, u, System.TimeSpan.FromDays(10));
+            //}
+            #endregion
+
             //var user = await Task.Run(() => _users.SingleOrDefault(x => x.Email == email && x.Password == password));
             User user = await cache.Cache.GetObjectAsync<User>(email); // email == userKey for Redis
             
             if (user != null && user.Password == password)
-            {
-                #region CreateUsers
-                //// Temporary - to create users in Redis only
-                //foreach (User u in _users)
-                //{
-                //    await cache.Cache.SetObjectAsync(u.Email, u, TimeSpan.FromDays(10));
-                //}
-                #endregion
+            {                
                 await AuthByCookie(email);
                 return user.WithoutPassword(); // authentication successful so return user details without password
             }            

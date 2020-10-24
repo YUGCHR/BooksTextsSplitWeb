@@ -8,14 +8,14 @@
 .radioFormFields{
   display: flex;
   flex-direction: row;
-  background-color: lightgreen;
+  background-color: olive;
   grid-gap: 5px;
-  color: darkred;
+  color: lightgreen;
 }
 
 .header{
   grid-area: h;
-  background-color: green;
+  background-color: olive;
 }
 
 .formSummaryError
@@ -23,6 +23,6 @@
 border: 5px solid red;
 padding: 5px;
 color: darkred;
-background-color: salmon;
+background-color: olive;
 }
 

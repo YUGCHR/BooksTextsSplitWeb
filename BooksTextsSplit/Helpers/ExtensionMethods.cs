@@ -15,9 +15,14 @@ namespace BooksTextsSplit.Helpers
 
         public static User WithoutPassword(this User user)
         {
-            user.Password = null;
-            user.Token = null;
-            return user;
+            if (user == null)
+            {
+                Console.WriteLine("\n\n Users data is expired - can't return UserWithoutPassword() ");
+                return null;
+            }
+                user.Password = null;
+                user.Token = null;
+                return user;            
         }
     }
 }
