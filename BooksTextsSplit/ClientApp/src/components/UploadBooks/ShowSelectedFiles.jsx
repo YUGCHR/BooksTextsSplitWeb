@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { reduxForm } from "redux-form";
-import { createField, Input } from "../common/formControls/FormControls";
-import { requiredField } from "../common/validators/Validators";
 import RadioButtons from "./RadioButtons";
 import s from "./UploadBooks.module.css";
 
@@ -13,9 +10,8 @@ const ShowHeader = () => {
   );
 };
 
-const ShowFiles = ({ chosenFiles, radioInitialUniqValues, radioInitialCommonValues, setRadioResult, radioChosenLanguage }) => {
+const ShowFiles = ({ chosenFiles, setRadioResult, radioChosenLanguage }) => {
   let newDateFormat = (inputDate) => {
-    //debugger;
     return new Intl.DateTimeFormat("en-GB", {
       year: "numeric",
       month: "long",
@@ -24,13 +20,21 @@ const ShowFiles = ({ chosenFiles, radioInitialUniqValues, radioInitialCommonValu
       minute: "2-digit",
     }).format(inputDate);
   };
-
-  //let radioBaseName = "files";
-  let formName = "radio";
+  let radioInitialUniqValues = [
+    { name: "buttonEng", value: "eng", checked: true, text: "English" },
+    { name: "buttonRus", value: "rus", checked: null, text: "Russian" },
+    { name: "buttonOth", value: "other", checked: null, text: "User lang" },
+  ];
+  let radioInitialCommonValues = {
+    placeholder: null,
+    component: "Input",
+    validators: [],
+    type: "radio",
+    uniqFormName: ["formBaseName + i", "formBaseName + i"],
+  };
+  let formBaseName = "radioForm";
+  //let value="eng";
   return Array.from(chosenFiles).map((f, i) => {
-    //radioInitialCommonValues.name = radioBaseName + i;
-    let uniqFormName = formName + i;
-    //debugger;
     return (
       <div>
         <div>File No: {" " + i} </div>
@@ -41,13 +45,7 @@ const ShowFiles = ({ chosenFiles, radioInitialUniqValues, radioInitialCommonValu
         <div>File type:{" " + f.type}</div>
         <div>Chosen file language:{" " + radioChosenLanguage[i]}</div>
         <div>
-          <RadioButtons
-            formName={uniqFormName}
-            uniqValues={radioInitialUniqValues}
-            commonValues={radioInitialCommonValues}
-            setRadioResult={setRadioResult}
-            index={i}
-          />
+          <RadioButtons />
         </div>
       </div>
     );
@@ -55,19 +53,6 @@ const ShowFiles = ({ chosenFiles, radioInitialUniqValues, radioInitialCommonValu
 };
 
 const ShowSelectedFiles = (chosenFiles, setRadioResult, radioChosenLanguage) => {
-  let radioInitialUniqValues = [
-    { value: "eng", checked: true, text: "English" },
-    { value: "rus", checked: null, text: "Russian" },
-    { value: "other", checked: null, text: "User lang" },
-  ];
-  let radioInitialCommonValues = {
-    placeholder: null,
-    name: "radioFieldName", //"radioBaseName + i"
-    component: Input,
-    validators: [],
-    type: "radio",
-  };
-
   console.log(chosenFiles);
 
   return (
@@ -76,13 +61,7 @@ const ShowSelectedFiles = (chosenFiles, setRadioResult, radioChosenLanguage) => 
         <ShowHeader />
       </div>
       <div className={s.showFilesPlace}>
-        <ShowFiles
-          chosenFiles={chosenFiles}
-          radioInitialUniqValues={radioInitialUniqValues}
-          radioInitialCommonValues={radioInitialCommonValues}
-          setRadioResult={setRadioResult}
-          radioChosenLanguage={radioChosenLanguage}
-        />
+        <ShowFiles chosenFiles={chosenFiles} setRadioResult={setRadioResult} radioChosenLanguage={radioChosenLanguage} />
       </div>
     </div>
   );

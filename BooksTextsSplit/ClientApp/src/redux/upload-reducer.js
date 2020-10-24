@@ -10,12 +10,12 @@ const RADIO_IS_CHANGED = "RADIO-IS-CHANGED";
 const FIND_MAX_UPLOADED = "FIND-MAX-UPLOADED";
 
 let initialState = {
-  selectedFiles: null,
+  selectedFiles: null, // used in ShowSelectedFiles
   /* [
               { name: "eng", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
               { name: "rus", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
             ] */
-  radioChosenLanguage: ["choose language below", "choose language below"],
+  radioChosenLanguage: ["choose language below", "choose language below"], // used in ShowSelectedFiles
   radioButtonsLabels: ["Book with English test", "Book with Russian test", "I do not know book language"],
   radioButtonsNames: ["radioEnglish", "radioRussian"],
   radioButtonsValues: ["1", "2", "3"],
@@ -118,7 +118,7 @@ const uploadBooksReducer = (state = initialState, action) => {
     case RADIO_IS_CHANGED: {
       let stateCopy = { ...state };
       stateCopy.radioChosenLanguage = { ...state.radioChosenLanguage };
-      stateCopy.radioChosenLanguage[action.i] = action.chosenLang;
+      stateCopy.radioChosenLanguage[action.i] = action.chosenLang[action.i];
       return stateCopy;
     }
     case TOGGLE_IS_FETCHING: {
@@ -144,7 +144,7 @@ const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching
 
 export const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
 export const setFileName = (files) => ({ type: SET_FILE_NAME, files });
-export const setRadioResult = (chosenLang, i) => ({ type: RADIO_IS_CHANGED, chosenLang, i });
+export const setRadioResult = (chosenLang, i) => ({ type: RADIO_IS_CHANGED, chosenLang, i }); // used in ShowSelectedFiles
 
 const fetchLastUploadedVersions = (formData, bookId, languageId) => async (dispatch, getState) => {
   dispatch(toggleIsFetching(true));

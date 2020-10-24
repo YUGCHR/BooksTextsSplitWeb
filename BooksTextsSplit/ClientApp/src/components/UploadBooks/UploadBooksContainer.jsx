@@ -17,9 +17,9 @@ class UploadBooksContainerAPI extends React.Component {
       <>
         {this.props.isFetching ? <Preloader /> : null}
         <UploadBooks
-          selectedFiles={this.props.selectedFiles}
-          radioChosenLanguage={this.props.radioChosenLanguage}
-          setRadioResult={this.props.setRadioResult}
+          selectedFiles={this.props.selectedFiles} // used in ShowSelectedFiles
+          radioChosenLanguage={this.props.radioChosenLanguage} // used in ShowSelectedFiles
+          setRadioResult={this.props.setRadioResult} // used in ShowSelectedFiles
           selectedRadioLanguage={this.props.selectedRadioLanguage}
           radioButtonsLabels={this.props.radioButtonsLabels}
           radioButtonsNames={this.props.radioButtonsNames}
@@ -28,7 +28,7 @@ class UploadBooksContainerAPI extends React.Component {
           filesLanguageIds={this.props.filesLanguageIds}
           booksTitles={this.props.booksTitles}
           sentencesCount={this.props.sentencesCount}
-          setFileName={this.props.setFileName} //
+          setFileName={this.props.setFileName} // used in SelectBookFiles
           radioOptionChange={this.props.radioOptionChange} //
           fileUploadHandler={this.props.fileUploadHandler} //
           engTextTitle={this.props.engTextTitle}
