@@ -15,7 +15,11 @@ let initialState = {
               { name: "eng", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
               { name: "rus", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
             ] */
-  radioChosenLanguage: ["choose language below", "choose language below"],
+  radioChosenLanguage: ["eng", "rus"], // here default values of radio buttons to choose language
+  radioAutoChangeLang: [
+    ["eng", "rus"],
+    ["rus", "eng"],
+  ],
   filesDescriptions: {
     index: "File No: ",
     name: "File name: ",
@@ -160,7 +164,15 @@ const uploadBooksReducer = (state = initialState, action) => {
     case RADIO_IS_CHANGED: {
       let stateCopy = { ...state };
       stateCopy.radioChosenLanguage = { ...state.radioChosenLanguage };
-      stateCopy.radioChosenLanguage[action.i] = action.chosenLang;
+      if ((action.i === 0 && action.chosenLang === "eng") || (action.i === 1 && action.chosenLang === "rus")) {
+        stateCopy.radioChosenLanguage[0] = "eng";
+        stateCopy.radioChosenLanguage[1] = "rus";
+      }
+      if ((action.i === 0 && action.chosenLang === "rus") || (action.i === 1 && action.chosenLang === "eng")) {
+        stateCopy.radioChosenLanguage[0] = "rus";
+        stateCopy.radioChosenLanguage[1] = "eng";
+      }
+      //stateCopy.radioChosenLanguage[action.i] = action.chosenLang;
       return stateCopy;
     }
     case TOGGLE_IS_FETCHING: {

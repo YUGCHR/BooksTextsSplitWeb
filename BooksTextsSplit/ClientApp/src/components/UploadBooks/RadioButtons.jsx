@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import s from "./RadioButtons.module.css";
 
-const RadioButtons = ({ uV, cV, i, setRadioResult }) => { // TODO поставить умолчание в выбор языка
+const RadioButtons = ({ uV, cV, i, setRadioResult, radioChosenLanguage }) => { // TODO поставить умолчание в выбор языка
 
-  const [selectedOption, setSelectedOption] = useState("eng"); // TODO убрать локальный стейт
+ // const [selectedOption, setSelectedOption] = useState("eng"); // TODO убрать локальный стейт
 
   const handleOptionChange = (changeEvent) => {
-    setSelectedOption(changeEvent.target.value); // TODO выбор радио без дополнительной кнопки
-
+    //setSelectedOption(changeEvent.target.value); // TODO выбор радио без дополнительной кнопки
+    setRadioResult(changeEvent.target.value, i);
   };
 
-  const handleFormSubmit = (formSubmitEvent) => {
+  /* const handleFormSubmit = (formSubmitEvent) => {
     formSubmitEvent.preventDefault();
     console.log("You have submitted:", selectedOption);
     setRadioResult(selectedOption, i);
-  };
+  }; */
 
   const renderRadioButtons = () => {
     return uV.map((d) => {
@@ -27,7 +27,8 @@ const RadioButtons = ({ uV, cV, i, setRadioResult }) => { // TODO постави
               type="radio"
               name={formName} // "react-tips"
               value={d.value}
-              checked={selectedOption === d.value}
+              disabled={d.disabled}
+              checked={radioChosenLanguage[i] === d.value}
               onChange={handleOptionChange}
               className="form-check-input"
             />
@@ -40,11 +41,11 @@ const RadioButtons = ({ uV, cV, i, setRadioResult }) => { // TODO постави
 
   return (
     <div>
-      <form onSubmit={handleFormSubmit} className={s.radioFormFields}>
+      <form /* onSubmit={handleFormSubmit} */ className={s.radioFormFields}>
         {renderRadioButtons()}
-        <div className={s.radioButtonResult}>
+        {/* <div className={s.radioButtonResult}>
           <button type="submit">Save</button>
-        </div>
+        </div> */}
       </form>
     </div>
   );

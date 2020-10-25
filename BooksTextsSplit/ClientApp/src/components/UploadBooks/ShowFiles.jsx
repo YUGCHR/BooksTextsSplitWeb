@@ -5,9 +5,9 @@ import s from "./UploadBooks.module.css";
 
 const ShowFiles = ({ chosenFiles, setRadioResult, radioChosenLanguage, filesDescriptions }) => {
   let radioInitialUniqValues = [
-    { value: "eng", checked: true, text: "English" },
-    { value: "rus", checked: null, text: "Russian" },
-    { value: "other", checked: null, text: "User lang" },
+    { value: "eng", disabled: false, text: "English" },
+    { value: "rus", disabled: null, text: "Russian" },
+    { value: "other", disabled: true, text: "Auto select" },
   ];
   let radioInitialCommonValues = {
     placeholder: null,
@@ -32,7 +32,13 @@ const ShowFiles = ({ chosenFiles, setRadioResult, radioChosenLanguage, filesDesc
           <ShowFileDescriptions radioChosenLanguage={radioChosenLanguage} f={f} i={i} filesDescriptions={filesDescriptions} />
         </div>
         <div>
-          <RadioButtons uV={radioInitialUniqValues} cV={radioInitialCommonValues} i={i} setRadioResult={setRadioResult} />
+          <RadioButtons
+            uV={radioInitialUniqValues}
+            cV={radioInitialCommonValues}
+            i={i}
+            setRadioResult={setRadioResult}
+            radioChosenLanguage={radioChosenLanguage}
+          />
         </div>
       </div>
     );
