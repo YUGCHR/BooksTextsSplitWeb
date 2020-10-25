@@ -7,7 +7,7 @@ import SelectBookFiles from "./SelectBookFiles";
 import ShowSelectedFiles from "./ShowSelectedFiles";
 import s from "./UploadBooks.module.css";
 
-const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, ...props }) => {
+const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, filesDescriptions, ...props }) => {
   let showFilesToUpload = (chosenFiles, sentencesCount) => {
     return Array.from(chosenFiles).map((sf, n) => {
       //debugger;
@@ -33,7 +33,7 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, ...pr
             <div className={s.selectedBooksPlace}>{!selectedFiles && <SelectBookFiles setFileName={props.setFileName} />}</div>
           </div>
           <div className={s.selectedBooksPlace}>
-            {!!selectedFiles && <div>{ShowSelectedFiles(selectedFiles, setRadioResult, radioChosenLanguage)}</div>}
+            {!!selectedFiles && <div>{ShowSelectedFiles(selectedFiles, setRadioResult, radioChosenLanguage, filesDescriptions)}</div>}
           </div>
         </div>
 

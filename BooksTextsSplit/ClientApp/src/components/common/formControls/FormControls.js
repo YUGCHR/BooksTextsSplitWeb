@@ -32,7 +32,6 @@ export const Input = (props) => {
 
 export const RadioField = (props) => {
   const { input, meta, child, ...restProps } = props;
-  debugger;
   return (
     <FormControl {...props}>
       <input {...input} {...restProps} checked={input.value === restProps.valueD} />

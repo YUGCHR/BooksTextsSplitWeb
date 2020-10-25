@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import s from "./RadioButtons.module.css";
 
-const RadioButtons = ({ uV, cV, i, setRadioResult }) => {
-  const [selectedOption, setSelectedOption] = useState("eng");
+const RadioButtons = ({ uV, cV, i, setRadioResult }) => { // TODO поставить умолчание в выбор языка
+
+  const [selectedOption, setSelectedOption] = useState("eng"); // TODO убрать локальный стейт
 
   const handleOptionChange = (changeEvent) => {
-    setSelectedOption(changeEvent.target.value);
+    setSelectedOption(changeEvent.target.value); // TODO выбор радио без дополнительной кнопки
+
   };
 
   const handleFormSubmit = (formSubmitEvent) => {

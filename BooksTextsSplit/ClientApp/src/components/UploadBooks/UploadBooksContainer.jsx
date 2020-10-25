@@ -21,6 +21,7 @@ class UploadBooksContainerAPI extends React.Component {
           radioChosenLanguage={this.props.radioChosenLanguage} // used in ShowSelectedFiles
           setRadioResult={this.props.setRadioResult} // used in ShowSelectedFiles
           selectedRadioLanguage={this.props.selectedRadioLanguage}
+          filesDescriptions={this.props.filesDescriptions}
           radioButtonsLabels={this.props.radioButtonsLabels}
           radioButtonsNames={this.props.radioButtonsNames}
           radioButtonsValues={this.props.radioButtonsValues}
@@ -48,9 +49,10 @@ class UploadBooksContainerAPI extends React.Component {
 
 let mapStateToProps = (state) => {
   return {
-    selectedFiles: state.uploadBooksPage.selectedFiles,
-    radioChosenLanguage: state.uploadBooksPage.radioChosenLanguage,
+    selectedFiles: state.uploadBooksPage.selectedFiles, //
+    radioChosenLanguage: state.uploadBooksPage.radioChosenLanguage, //
     selectedRadioLanguage: state.uploadBooksPage.selectedRadioLanguage, //
+    filesDescriptions: state.uploadBooksPage.filesDescriptions, //
     radioButtonsLabels: state.uploadBooksPage.radioButtonsLabels, //
     radioButtonsNames: state.uploadBooksPage.radioButtonsNames,
     radioButtonsValues: state.uploadBooksPage.radioButtonsValues,

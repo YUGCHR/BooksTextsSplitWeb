@@ -15,7 +15,15 @@ let initialState = {
               { name: "eng", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
               { name: "rus", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
             ] */
-  radioChosenLanguage: ["choose language below", "choose language below"], // used in ShowSelectedFiles
+  radioChosenLanguage: ["choose language below", "choose language below"],
+  filesDescriptions: {
+    index: "File No: ",
+    name: "File name: ",
+    lastMod: "Last modified: ",
+    size: "File size: ",
+    type: "File type: ",
+    chosenLanguage: "Chosen file language: ",
+  }, // used in ShowSelectedFiles
   radioButtonsLabels: ["Book with English test", "Book with Russian test", "I do not know book language"],
   radioButtonsNames: ["radioEnglish", "radioRussian"],
   radioButtonsValues: ["1", "2", "3"],
