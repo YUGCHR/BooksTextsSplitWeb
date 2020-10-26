@@ -27,30 +27,27 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, files
   return (
     <div>
       <div className={s.allControlPanel}>
-        <div className={s.pageName}>
-          <div>UPLOAD BOOKS CONTROL PANEL</div>
-          <div className={s.selectFiles}>
-            <div className={s.selectedBooksPlace}>{!selectedFiles && <SelectBookFiles setFileName={props.setFileName} />}</div>
-          </div>
+        <div className={s.pageName}>UPLOAD BOOKS CONTROL PANEL</div>
+        <div className={s.selectFiles}>
+          <div className={s.selectedBooksPlace}>{!selectedFiles && <SelectBookFiles setFileName={props.setFileName} />}</div>
+        </div>
+
+        {!!selectedFiles && (
           <div className={s.selectedBooksPlace}>
-            {!!selectedFiles && <div>{ShowSelectedFiles(selectedFiles, setRadioResult, radioChosenLanguage, filesDescriptions)}</div>}
+            {ShowSelectedFiles(selectedFiles, setRadioResult, radioChosenLanguage, filesDescriptions)}
+          </div>
+        )}
+
+        <div className={s.dbInfoButton}>DB INFO</div>
+
+        <div className={s.dbCountHeader}>
+          <div>Sentences count in Cosmos DB</div>
+          <div>English sentences count ={" " + props.dbSentencesCount[0]}</div>
+          <div>Russian sentences count ={" " + props.dbSentencesCount[1]}</div>
+          <div>
+            <p>Total records in Cosmos DB ={" " + (props.dbSentencesCount[0] + props.dbSentencesCount[1])}</p>
           </div>
         </div>
-
-        <div className={s.dbInfoButton}>
-          <div>DB INFO</div>
-          <div className={s.dbCount}>
-            <div>
-              <div className={s.dbCountHeader}>Sentences count in Cosmos DB -</div>
-            </div>
-            <div>English sentences count ={" " + props.dbSentencesCount[0]}</div>
-            <div>Russian sentences count ={" " + props.dbSentencesCount[1]}</div>
-            <div>
-              <p>Total records in Cosmos DB ={" " + (props.dbSentencesCount[0] + props.dbSentencesCount[1])}</p>
-            </div>
-          </div>
-        </div>
-
         <div className={s.uploadFiles}>
           <div className={s.uploadFilesHeader}>FILES TO UPLOAD -</div>
           <div className={s.showFilesToUpload}>

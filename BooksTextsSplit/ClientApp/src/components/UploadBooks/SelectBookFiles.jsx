@@ -15,7 +15,7 @@ const SelectBookFiles = ({ setFileName }) => {
 
   const chooseBookFiles = (fileSelectorHandler) => {
     return (
-      <div className={s.selectFilesButton}>
+      <div>
         <input type="file" onChange={fileSelectorHandler} multiple />
       </div>
     );

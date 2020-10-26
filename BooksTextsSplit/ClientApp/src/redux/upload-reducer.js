@@ -20,6 +20,10 @@ let initialState = {
     ["eng", "rus"],
     ["rus", "eng"],
   ],
+  radioAutoChangeLangInversed: [
+    ["rus", "eng"],
+    ["eng", "rus"],
+  ],
   filesDescriptions: {
     index: "File No: ",
     name: "File name: ",
@@ -164,15 +168,11 @@ const uploadBooksReducer = (state = initialState, action) => {
     case RADIO_IS_CHANGED: {
       let stateCopy = { ...state };
       stateCopy.radioChosenLanguage = { ...state.radioChosenLanguage };
-      if ((action.i === 0 && action.chosenLang === "eng") || (action.i === 1 && action.chosenLang === "rus")) {
-        stateCopy.radioChosenLanguage[0] = "eng";
-        stateCopy.radioChosenLanguage[1] = "rus";
+      if (action.chosenLang === "eng") {
+        stateCopy.radioChosenLanguage = state.radioAutoChangeLang[action.i];
+      } else {
+        stateCopy.radioChosenLanguage = state.radioAutoChangeLangInversed[action.i];
       }
-      if ((action.i === 0 && action.chosenLang === "rus") || (action.i === 1 && action.chosenLang === "eng")) {
-        stateCopy.radioChosenLanguage[0] = "rus";
-        stateCopy.radioChosenLanguage[1] = "eng";
-      }
-      //stateCopy.radioChosenLanguage[action.i] = action.chosenLang;
       return stateCopy;
     }
     case TOGGLE_IS_FETCHING: {

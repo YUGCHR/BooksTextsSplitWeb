@@ -1,16 +1,31 @@
 .app-wrapper {
-    margin: 0 auto;
-    width: 100vw;
-    /* height: 100vh; */
     display: grid;
-    grid-template-areas: "h h" "n c";
-    grid-template-rows: 40px 1fr;
-    grid-template-columns: 2fr 10fr;
-    grid-gap: 10px;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: auto auto;
+    grid-auto-flow: row;
 }
 
 .app-wrapper-content {
-    grid-area: c;
+    grid-column: 2/3;
+    grid-row: 3/4;
     color: lightgreen;
     background-color: darkgreen;
 }
+
+/* Золотисто-оливковый - #8D792C - цвет сочетается с
+чайной розой - #F0C5C3
+бледно-лиловым - #DAB1D1
+кардиналом - #960023
+мангом - #FB9A3B
+тыквенным - #E1541F
+абрикосовым - #FFD998
+ярким золотом - #texture
+шартрезом - #D3D70E
+изумрудным - #146252
+берлинской лазурью - #114471
+серо-голубым - #9EB7CD
+ежевичным - #682F5A
+баклажановым - #3A172D
+махаоном - #552614
+латте - #CFBEAA
+черным - #242426 */
