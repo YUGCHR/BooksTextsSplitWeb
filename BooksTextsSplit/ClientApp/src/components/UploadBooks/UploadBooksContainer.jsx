@@ -6,7 +6,7 @@ import {
   fetchSentencesCount,
   fileUploadHandler,
   setDbSentencesCount,
-  setFileName,
+  setFilesNamesAndEnableUpload,
   setRadioResult,
   setShowHideState,
 } from "../../redux/upload-reducer";
@@ -15,14 +15,15 @@ import Preloader from "../common/preloader/Preloader";
 
 class UploadBooksContainerAPI extends React.Component {
   componentDidMount() {
+    this.props.setFilesNamesAndEnableUpload(null);
     this.props.fetchSentencesCount(0);
     this.props.fetchSentencesCount(1);
   }
-
+/* TODO it is possible to give the place (className style) where preloader will be shown */
   render() {
     return (
       <>
-        {this.props.isFetching ? <Preloader /> : null}
+        {this.props.isFetching ? <Preloader /> : null} 
         <UploadBooks
           selectedFiles={this.props.selectedFiles} // used in ShowSelectedFiles
           radioChosenLanguage={this.props.radioChosenLanguage} // used in ShowSelectedFiles
@@ -32,10 +33,12 @@ class UploadBooksContainerAPI extends React.Component {
           labelShowHide={this.props.labelShowHide} //
           setShowHideState={this.props.setShowHideState} //
           uploadBooksLabels={this.props.uploadBooksLabels} //
+          isDoneUpload={this.props.isDoneUpload} //
+          isUploadButtonDisabled={this.props.isUploadButtonDisabled} //
           filesLanguageIds={this.props.filesLanguageIds}
           booksTitles={this.props.booksTitles}
           sentencesCount={this.props.sentencesCount}
-          setFileName={this.props.setFileName} // used in SelectBookFiles
+          setFileName={this.props.setFilesNamesAndEnableUpload} // used in SelectBookFiles
           radioOptionChange={this.props.radioOptionChange} //
           fileUploadHandler={this.props.fileUploadHandler} //
           engTextTitle={this.props.engTextTitle}
@@ -66,6 +69,8 @@ let mapStateToProps = (state) => {
     filesLanguageIds: state.uploadBooksPage.filesLanguageIds, //
     labelShowHide: state.uploadBooksPage.labelShowHide, //
     uploadBooksLabels: state.uploadBooksPage.uploadBooksLabels, //
+    isDoneUpload: state.uploadBooksPage.isDoneUpload, //
+    isUploadButtonDisabled: state.uploadBooksPage.isUploadButtonDisabled, //
     booksTitles: state.uploadBooksPage.booksTitles,
     dbSentencesCount: state.uploadBooksPage.dbSentencesCount,
     sentencesCount: state.uploadBooksPage.sentencesCount,
@@ -80,7 +85,7 @@ let mapStateToProps = (state) => {
     files: state.uploadBooksPage.files,
     uploading: state.uploadBooksPage.uploading,
     uploadProgress: state.uploadBooksPage.uploadProgress,
-    successfullUploaded: state.uploadBooksPage.successfullUploaded,
+    successfullyUploaded: state.uploadBooksPage.successfullyUploaded,
     maxUploadedVersion: state.uploadBooksPage.maxUploadedVersion,
   };
 };
@@ -90,7 +95,7 @@ let UploadBooksContainer = compose(
     fetchSentencesCount,
     fileUploadHandler,
     setDbSentencesCount,
-    setFileName,
+    setFilesNamesAndEnableUpload,
     setRadioResult,
     setShowHideState,
   }),

@@ -8,14 +8,14 @@
 .radioFormFields{
   display: flex;
   flex-direction: row;
-  background-color: olive;
+  background-color:#8D792C; /* Золотисто-оливковый */
   grid-gap: 5px;
-  color: lightgreen;
+  color: #114471; /* берлинской лазурью */
 }
 
 .header{
   grid-area: h;
-  background-color: olive;
+  background-color:#8D792C; /* Золотисто-оливковый */
 }
 
 .formSummaryError
@@ -23,6 +23,6 @@
 border: 5px solid red;
 padding: 5px;
 color: darkred;
-background-color: olive;
+background-color: #8D792C; /* Золотисто-оливковый */
 }
 

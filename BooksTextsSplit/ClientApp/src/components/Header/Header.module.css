@@ -18,3 +18,8 @@
   .loginBlock{
     color: #9EB7CD;
   }
+
+  .allButtonsBodies{
+    color: #9EB7CD; /* серо-голубым */ 
+    background-color: #146252; /* изумрудным */
+}

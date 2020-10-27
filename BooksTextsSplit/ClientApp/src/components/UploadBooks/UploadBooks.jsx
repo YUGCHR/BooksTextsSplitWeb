@@ -10,8 +10,10 @@ import s from "./UploadBooks.module.css";
 const sectionDbInfoHeader = (props) => {
   return (
     <div className={s.dbInfoButton}>
-      <div>{"DB INFO"}</div>
-      <div className={s.dbInfoRecordsCount}>{ (props.dbSentencesCount[0] + props.dbSentencesCount[1]) + " records, details - "}</div>
+      <div>{props.uploadBooksLabels.dbInfoHeader}</div>
+      <div className={s.dbInfoRecordsCount}>
+        {props.dbSentencesCount[0] + props.dbSentencesCount[1] + props.uploadBooksLabels.nearShowButton}
+      </div>
       <button className={s.allButtonsBodies} onClick={props.setShowHideState}>
         {props.labelShowHide[0].label}
       </button>
@@ -21,7 +23,7 @@ const sectionDbInfoHeader = (props) => {
 
 const sectionDbDetails = (props) => {
   return (
-    <div className={s.dbCountHeader}>
+    <div className={s.showDetailsBody}>
       <div>Sentences count in Cosmos DB</div>
       <div>English sentences count ={" " + props.dbSentencesCount[0]}</div>
       <div>Russian sentences count ={" " + props.dbSentencesCount[1]}</div>
@@ -52,24 +54,29 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, files
   return (
     <div className={s.allControlPanelPlace}>
       <div className={s.allControlPanel}>
-        <div className={s.pageName}>{props.uploadBooksLabels.uploadBooksHeader1}{props.uploadBooksLabels.uploadBooksHeader2}</div>
+        <div className={s.pageName}>
+          {props.uploadBooksLabels.uploadBooksHeader1}
+          {props.uploadBooksLabels.uploadBooksHeader2}
+        </div>
         <div className={s.selectFiles}>
           {!selectedFiles && <SelectBookFiles setFileName={props.setFileName} />}
           {!!selectedFiles && (
             <div className={s.selectedBooksPlace}>
+              {/* TODO add button to return to the files selection */}
               {ShowSelectedFiles(selectedFiles, setRadioResult, radioChosenLanguage, filesDescriptions)}
             </div>
           )}
         </div>
         <div className={s.dbInfoButtonPlace}>{sectionDbInfoHeader(props)}</div>
-        {props.labelShowHide[0].value && <div className={s.showDetailsPlace}>{sectionDbDetails(props)}</div>}
+        <div className={s.showDetailsPlace}>{props.labelShowHide[0].value && <div>{sectionDbDetails(props)}</div>}</div>
         <div className={s.uploadFiles}>
-          {!!selectedFiles && (
-            <div>
-              <div className={s.uploadFilesHeader}>If files are ready, please</div>
+          {!!selectedFiles && !props.isDoneUpload && (
+            <div className={s.uploadFilesLabelButtonPlace}>
+              <div className={s.uploadFilesLabel}>If files are ready, please</div>
               <div className={s.showFilesToUpload}>
                 <button
                   className={s.allButtonsBodies}
+                  disabled={props.isUploadButtonDisabled}
                   onClick={() => {
                     props.fileUploadHandler(selectedFiles);
                   }}>
@@ -78,10 +85,10 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, files
               </div>
             </div>
           )}
-          {/* TODO change selectedFiles on new selector (named uploadStartState or the same), change it after button UPLOAD was pressed */}
-          {!!selectedFiles && <ShowFilesToUpload selectedFiles={selectedFiles} sentencesCount={props.sentencesCount} />}
-          {/* <div>{showUploadedSentenceCount()}</div> */}
+          {props.isDoneUpload && <ShowFilesToUpload selectedFiles={selectedFiles} sentencesCount={props.sentencesCount} />}
         </div>
+        {/* TODO change selectedFiles on new selector (named uploadStartState or the same), change it after button UPLOAD was pressed */}
+        <div className={s.freeSpaceOnUploadGrid}></div>
       </div>
     </div>
   );

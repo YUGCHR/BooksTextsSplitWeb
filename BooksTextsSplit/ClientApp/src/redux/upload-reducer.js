@@ -6,6 +6,8 @@ const SET_SENTENCES_COUNT = "SET-SENTENCES-COUNT";
 const SET_FILE_NAME = "SET-FILE-NAME";
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
 const TOGGLE_IS_LOADING = "TOGGLE-IS-LOADING";
+const TOGGLE_IS_DONE_UPLOAD = "TOGGLE-IS-DONE-UPLOAD";
+const TOGGLE_UPLOAD_BUTTON_ENABLE = "TOGGLE-UPLOAD-BUTTON-ENABLE";
 const RADIO_IS_CHANGED = "RADIO-IS-CHANGED";
 const SHOW_HIDE_STATE = "SHOW-HIDE-STATE";
 const FIND_MAX_UPLOADED = "FIND-MAX-UPLOADED";
@@ -36,12 +38,14 @@ let initialState = {
   uploadBooksLabels: {
     uploadBooksHeader1: "UPLOAD BOOKS ",
     uploadBooksHeader2: "CONTROL PANEL ",
+    dbInfoHeader: "DB INFO",
+    nearShowButton: " records, details - ",
     uploadButton: "UPLOAD",
   },
   filesLanguageIds: [0, 1],
   uploading: false,
   uploadProgress: {},
-  successfullUploaded: false,
+  successfullyUploaded: false,
   booksTitles: [
     [
       {
@@ -136,6 +140,8 @@ let initialState = {
     { label: "Show", value: false }, // value - are details shown
     { label: "Hide", value: true },
   ],
+  isDoneUpload: false,
+  isUploadButtonDisabled: true,
 };
 
 const uploadBooksReducer = (state = initialState, action) => {
@@ -180,7 +186,7 @@ const uploadBooksReducer = (state = initialState, action) => {
     }
     case SHOW_HIDE_STATE: {
       let stateCopy = { ...state };
-      stateCopy.labelShowHide = { ...state.labelShowHide };     
+      stateCopy.labelShowHide = { ...state.labelShowHide };
       let tempValue = state.labelShowHide[0];
       stateCopy.labelShowHide[0] = state.labelShowHide[1];
       stateCopy.labelShowHide[1] = tempValue;
@@ -188,6 +194,12 @@ const uploadBooksReducer = (state = initialState, action) => {
     }
     case TOGGLE_IS_FETCHING: {
       return { ...state, isFetching: action.isFetching };
+    }
+    case TOGGLE_IS_DONE_UPLOAD: {
+      return { ...state, isDoneUpload: action.isDoneUpload };
+    }
+    case TOGGLE_UPLOAD_BUTTON_ENABLE: {
+      return { ...state, isUploadButtonDisabled: action.isUploadButtonDisabled };
     }
     case FIND_MAX_UPLOADED: {
       let findMax = -1;
@@ -206,9 +218,11 @@ const uploadBooksReducer = (state = initialState, action) => {
 const setSentencesCount = (count, index) => ({ type: SET_SENTENCES_COUNT, count, index });
 const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
 const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
+const toggleIsDoneUpload = (isDoneUpload) => ({ type: TOGGLE_IS_DONE_UPLOAD, isDoneUpload });
+const toggleUploadButtonDisable = (isUploadButtonDisabled) => ({ type: TOGGLE_UPLOAD_BUTTON_ENABLE, isUploadButtonDisabled });
 
 export const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
-export const setFileName = (files) => ({ type: SET_FILE_NAME, files });
+const setFileName = (files) => ({ type: SET_FILE_NAME, files });
 export const setRadioResult = (chosenLang, i) => ({ type: RADIO_IS_CHANGED, chosenLang, i }); // used in ShowSelectedFiles
 export const setShowHideState = (chosenLang, i) => ({ type: SHOW_HIDE_STATE, chosenLang, i }); // used in ShowSelectedFiles
 
@@ -218,6 +232,12 @@ const fetchLastUploadedVersions = (formData, bookId, languageId) => async (dispa
   dispatch(toggleIsFetching(false));
   formData.append("lastUploadedVersion", response.maxUploadedVersion);
   return formData;
+};
+
+export const setFilesNamesAndEnableUpload = (files) => async (dispatch) => {
+  dispatch(toggleIsDoneUpload(false));
+  dispatch(setFileName(files));
+  dispatch(toggleUploadButtonDisable(false));
 };
 
 const postBooksTexts = (formData, i) => async (dispatch) => {
@@ -239,6 +259,7 @@ export const fetchSentencesCount = (languageId) => async (dispatch, getState) =>
 };
 
 export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) => {
+  dispatch(toggleUploadButtonDisable(true));
   for (let i = 0; i < selectedFiles.length; i++) {
     const form = new FormData();
     form.append("bookFile", selectedFiles[i], selectedFiles[i].name);
@@ -251,11 +272,13 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
     form.append("authorName", bookTitle.authorName);
     form.append("bookNameId", bookTitle.bookNameId);
     form.append("bookName", bookTitle.bookName);
-
+    dispatch(toggleIsFetching(true));
     const formPlusVersion = await dispatch(fetchLastUploadedVersions(form, bookId, languageId)); // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
     await dispatch(postBooksTexts(formPlusVersion, i));
+    dispatch(toggleIsFetching(false));
     await dispatch(fetchSentencesCount(i)); // to fetch dbSentencesCount[languageId] and change toggleIsLoading on true
   }
+  dispatch(toggleIsDoneUpload(true));
 };
 
 export default uploadBooksReducer;

@@ -70,6 +70,10 @@
     border: 5px solid #146252; /* изумрудным */
 }
 
+.showDetailsBody{
+    color: #9EB7CD; /* серо-голубым */    
+}
+
 .dbCountHeader {
     
     color: darkred;
@@ -96,6 +100,25 @@
     border: 5px solid #146252; /* изумрудным */
     color: #FFD998; /* абрикосовым */
     background-color: #8D792C;
+}
+
+.uploadFilesLabelButtonPlace{
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    /* justify-content: space-between; */
+}
+
+.uploadFilesLabel{
+    font-weight: bold;
+    color:  #FFD998; /* абрикосовым */
+}
+
+.freeSpaceOnUploadGrid{
+    grid-column: 2/3;
+    grid-row: 3/4;
+    padding: 10px;
+    border: 5px solid #146252; /* изумрудным */
 }
 
 .allButtonsBodies{
@@ -127,7 +150,7 @@
 
 .showFilesPlace {
     text-align: left;
-    color: blue;
+    color:  #9EB7CD; /* серо-голубым */ 
     background-color: #616841; /* Оливковый хаки */
 }
 
@@ -135,15 +158,16 @@
     display: flex;  
     flex-direction: row;
     align-content: stretch;
+    background-color: #8D792C; /* Золотисто-оливковый */
 }
 
 .chosenLanguageText{
-    color: darkblue;
+    color:  #114471; /* берлинской лазурью */
     align-self: flex-start;
 }
 
 .chosenLanguage{
-    color: yellow;
+    color: #FFD998; /* абрикосовым */
     font-weight: bold;
     margin-left: 1rem;
     
