@@ -19,7 +19,7 @@ import UserProfile from "./components/UserProfile/UserProfile";
 import Settings from "./components/Settings/Settings";
 
 const LoginPage = lazy(() => import("./components/Login/Login"));
-
+// TODO всплывающая подсказка на элементах
 class App extends Component {
   catchAllUnhandledErrors = (reason, promise) => {
     //alert("Some error occured");
@@ -34,7 +34,7 @@ class App extends Component {
   }
   render() {
     if (!this.props.initialized) {
-      return <Preloader />;
+      return <Preloader />; // TODO полупрозрачный, не сдвигающий разметку, масштабирующийся по размеру окна
     }
     // this.props.history.push("/login");
     return (

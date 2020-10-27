@@ -31,7 +31,7 @@ class UploadBooksContainerAPI extends React.Component {
           filesDescriptions={this.props.filesDescriptions} //
           labelShowHide={this.props.labelShowHide} //
           setShowHideState={this.props.setShowHideState} //
-          
+          uploadBooksLabels={this.props.uploadBooksLabels} //
           filesLanguageIds={this.props.filesLanguageIds}
           booksTitles={this.props.booksTitles}
           sentencesCount={this.props.sentencesCount}
@@ -65,6 +65,7 @@ let mapStateToProps = (state) => {
     radioButtonsIds: state.uploadBooksPage.radioButtonsIds, //
     filesLanguageIds: state.uploadBooksPage.filesLanguageIds, //
     labelShowHide: state.uploadBooksPage.labelShowHide, //
+    uploadBooksLabels: state.uploadBooksPage.uploadBooksLabels, //
     booksTitles: state.uploadBooksPage.booksTitles,
     dbSentencesCount: state.uploadBooksPage.dbSentencesCount,
     sentencesCount: state.uploadBooksPage.sentencesCount,

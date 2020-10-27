@@ -17,11 +17,15 @@
 цвет зеленого бархата, 
 цвет светлого дерева */
 
+.allControlPanelPlace{
+    max-width: max-content;
+    min-width: min-content;
+}
+
 .allControlPanel {
     display: grid;
-    max-width: 100%;
     grid-template-rows: auto auto auto;
-    grid-template-columns: minmax(min-content, max-content) auto;
+    grid-template-columns: minmax(min-content, max-content) minmax(min-content, max-content);
     grid-auto-flow: row;
     border: 10px solid #146252;    
     color: blue;
@@ -51,7 +55,12 @@
 .dbInfoButton{
     display: flex;
     flex-direction: row;
+    column-gap: 10px;
     justify-content: space-between;
+}
+
+.dbInfoRecordsCount{
+    color: #9EB7CD; /* серо-голубым */ 
 }
 
 .showDetailsPlace{
@@ -65,6 +74,10 @@
     
     color: darkred;
     background-color: lightblue;
+}
+
+.inputFilePlace{
+    display: none;
 }
 
 .selectFiles {
@@ -85,9 +98,9 @@
     background-color: #8D792C;
 }
 
-.buttonUpload{
-    color: violet;
-    background-color: teal;
+.allButtonsBodies{
+    color: #9EB7CD; /* серо-голубым */ 
+    background-color: #146252; /* изумрудным */
 }
 
 .selectFilesButtonPlace {    

@@ -33,13 +33,11 @@ let initialState = {
     type: "File type: ",
     chosenLanguage: "Chosen file language: ",
   }, // used in ShowSelectedFiles
-  radioButtonsLabels: ["Book with English test", "Book with Russian test", "I do not know book language"],
-  radioButtonsNames: ["radioEnglish", "radioRussian"],
-  radioButtonsValues: ["1", "2", "3"],
-  radioButtonsIds: [
-    ["eng1", "eng2", "eng3"],
-    ["rus1", "rus2", "rus3"],
-  ],
+  uploadBooksLabels: {
+    uploadBooksHeader1: "UPLOAD BOOKS ",
+    uploadBooksHeader2: "CONTROL PANEL ",
+    uploadButton: "UPLOAD",
+  },
   filesLanguageIds: [0, 1],
   uploading: false,
   uploadProgress: {},
@@ -135,8 +133,8 @@ let initialState = {
   uploadedVersions: [],
   maxUploadedVersion: -1,
   labelShowHide: [
-    { label: "Show Details", value: false }, // value - are details shown
-    { label: "Hide Details", value: true },
+    { label: "Show", value: false }, // value - are details shown
+    { label: "Hide", value: true },
   ],
 };
 

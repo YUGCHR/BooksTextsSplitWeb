@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { reduxForm } from "redux-form";
-import { createField, Input } from "../common/formControls/FormControls";
-import { requiredField } from "../common/validators/Validators";
-import RadioButtons from "./RadioButtons";
+import React from "react";
+import { useRef } from "react";
 import s from "./UploadBooks.module.css";
 
 const SelectBookFiles = ({ setFileName }) => {
+  const hiddenFileInput = useRef(null);
+  const handleClick = event => {
+    hiddenFileInput.current.click();
+  };
+  
   const fileSelectorHandler = (e) => {
     //if(chosenFiles[0].size) {
     if (e.target.files.length) {
@@ -14,9 +16,13 @@ const SelectBookFiles = ({ setFileName }) => {
   };
 
   const chooseBookFiles = (fileSelectorHandler) => {
+    
     return (
       <div>
-        <input type="file" onChange={fileSelectorHandler} multiple />
+        <button className={s.allButtonsBodies} onClick={handleClick}>
+        Upload a file
+      </button>
+        <input className={s.inputFilePlace} type="file" ref={hiddenFileInput} onChange={fileSelectorHandler} multiple />
       </div>
     );
   };

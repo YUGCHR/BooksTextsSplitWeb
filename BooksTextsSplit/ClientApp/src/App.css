@@ -4,14 +4,14 @@
     grid-template-rows: minmax(min-content, max-content) minmax(min-content, max-content) auto;
     grid-template-columns: minmax(min-content, max-content) auto;
     grid-auto-flow: row;    
-    background-color: #146252;
+    background-color: #146252; /* изумрудным */
 }
 
 .app-wrapper-content {
     grid-column: 2/3;
     grid-row: 2/3;
     color: lightgreen;
-    background-color: #146252;
+    background-color: #146252; /* изумрудным */
 }
 
 /* Золотисто-оливковый - #8D792C - цвет сочетается с
