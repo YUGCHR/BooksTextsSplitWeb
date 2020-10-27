@@ -1,7 +1,9 @@
 .header{
   grid-column: 1/3;
   grid-row: 1/2;  
-  background-color: #9EB7CD;
+  padding: 10px;
+    border: 2px solid #114471;
+    background-color: #146252;
   }
 
   .loginPlace{

@@ -21,31 +21,48 @@
     display: grid;
     max-width: 100%;
     grid-template-rows: auto auto auto;
-    grid-template-columns: auto auto;
+    grid-template-columns: minmax(min-content, max-content) auto;
     grid-auto-flow: row;
+    border: 10px solid #146252;    
     color: blue;
-    background-color: yellow;
+    background-color: #616841; /* Оливковый хаки */
 }
 
 .pageName {
     grid-column: 1/2;
     grid-row: 1/2;
+    padding: 10px;
+    border: 5px solid #146252; /* изумрудным */
     font-size: larger;
     text-align: center;
     color: #94E6C0;
-    background-color: #666723;
+    background-color: #616841; /* Оливковый хаки */
 }
 
-.dbInfoButton {
+.dbInfoButtonPlace {
     grid-column: 2/3;
     grid-row: 1/2;
+    padding: 10px;
+    border: 5px solid #146252; /* изумрудным */
     color: #77D177;
-    background-color: #616841;
+    background-color: #616841; /* Оливковый хаки */
+}
+
+.dbInfoButton{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.showDetailsPlace{
+    grid-column: 2/3;
+    grid-row: 2/3;
+    padding: 10px;
+    border: 5px solid #146252; /* изумрудным */
 }
 
 .dbCountHeader {
-    grid-column: 2/3;
-    grid-row: 2/3;
+    
     color: darkred;
     background-color: lightblue;
 }
@@ -53,8 +70,24 @@
 .selectFiles {
     grid-column: 1/2;
     grid-row: 2/3;
+    padding: 10px;
+    border: 5px solid #146252; /* изумрудным */
     color: pink;
+    background-color: #616841; /* Оливковый хаки */
+}
+
+.uploadFiles {
+    grid-column: 1/2;
+    grid-row: 3/4;
+    padding: 10px;
+    border: 5px solid #146252; /* изумрудным */
+    color: #FFD998; /* абрикосовым */
     background-color: #8D792C;
+}
+
+.buttonUpload{
+    color: violet;
+    background-color: teal;
 }
 
 .selectFilesButtonPlace {    
@@ -70,8 +103,8 @@
 .selectedBooksProperties {
     grid-column: 1/3;
     grid-row: 2/3;
-    color: black;
-    background-color: olive;
+    color: blue;
+    background-color: #616841; /* Оливковый хаки */
 }
 
 
@@ -82,7 +115,7 @@
 .showFilesPlace {
     text-align: left;
     color: blue;
-    background-color: olive;
+    background-color: #616841; /* Оливковый хаки */
 }
 
 .chosenLanguagePlace{    
@@ -134,9 +167,22 @@
     width: calc(100% - (1 - 1/3)*1vh);
 }
 
-.uploadFiles {
-    grid-column: 1/2;
-    grid-row: 3/4;
-    color: lightcyan;
-    background-color: darkred;
-}
+
+
+/* Золотисто-оливковый - #8D792C - цвет сочетается с
+чайной розой - #F0C5C3
+бледно-лиловым - #DAB1D1
+кардиналом - #960023
+мангом - #FB9A3B
+тыквенным - #E1541F
+абрикосовым - #FFD998
+ярким золотом - #texture
+шартрезом - #D3D70E
+изумрудным - #146252
+берлинской лазурью - #114471
+серо-голубым - #9EB7CD
+ежевичным - #682F5A
+баклажановым - #3A172D
+махаоном - #552614
+латте - #CFBEAA
+черным - #242426 */

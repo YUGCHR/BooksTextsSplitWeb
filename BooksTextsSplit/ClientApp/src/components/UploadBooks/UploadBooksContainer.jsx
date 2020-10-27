@@ -2,7 +2,14 @@ import React from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
-import { fetchSentencesCount, fileUploadHandler, setDbSentencesCount, setFileName, setRadioResult } from "../../redux/upload-reducer";
+import {
+  fetchSentencesCount,
+  fileUploadHandler,
+  setDbSentencesCount,
+  setFileName,
+  setRadioResult,
+  setShowHideState,
+} from "../../redux/upload-reducer";
 import UploadBooks from "./UploadBooks";
 import Preloader from "../common/preloader/Preloader";
 
@@ -21,11 +28,10 @@ class UploadBooksContainerAPI extends React.Component {
           radioChosenLanguage={this.props.radioChosenLanguage} // used in ShowSelectedFiles
           setRadioResult={this.props.setRadioResult} // used in ShowSelectedFiles
           selectedRadioLanguage={this.props.selectedRadioLanguage}
-          filesDescriptions={this.props.filesDescriptions}
-          radioButtonsLabels={this.props.radioButtonsLabels}
-          radioButtonsNames={this.props.radioButtonsNames}
-          radioButtonsValues={this.props.radioButtonsValues}
-          radioButtonsIds={this.props.radioButtonsIds}
+          filesDescriptions={this.props.filesDescriptions} //
+          labelShowHide={this.props.labelShowHide} //
+          setShowHideState={this.props.setShowHideState} //
+          
           filesLanguageIds={this.props.filesLanguageIds}
           booksTitles={this.props.booksTitles}
           sentencesCount={this.props.sentencesCount}
@@ -58,6 +64,7 @@ let mapStateToProps = (state) => {
     radioButtonsValues: state.uploadBooksPage.radioButtonsValues,
     radioButtonsIds: state.uploadBooksPage.radioButtonsIds, //
     filesLanguageIds: state.uploadBooksPage.filesLanguageIds, //
+    labelShowHide: state.uploadBooksPage.labelShowHide, //
     booksTitles: state.uploadBooksPage.booksTitles,
     dbSentencesCount: state.uploadBooksPage.dbSentencesCount,
     sentencesCount: state.uploadBooksPage.sentencesCount,
@@ -78,7 +85,14 @@ let mapStateToProps = (state) => {
 };
 
 let UploadBooksContainer = compose(
-  connect(mapStateToProps, { fetchSentencesCount, fileUploadHandler, setDbSentencesCount, setFileName, setRadioResult }),
+  connect(mapStateToProps, {
+    fetchSentencesCount,
+    fileUploadHandler,
+    setDbSentencesCount,
+    setFileName,
+    setRadioResult,
+    setShowHideState,
+  }),
   withAuthRedirect
 )(UploadBooksContainerAPI);
 

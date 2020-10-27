@@ -7,6 +7,7 @@ const SET_FILE_NAME = "SET-FILE-NAME";
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
 const TOGGLE_IS_LOADING = "TOGGLE-IS-LOADING";
 const RADIO_IS_CHANGED = "RADIO-IS-CHANGED";
+const SHOW_HIDE_STATE = "SHOW-HIDE-STATE";
 const FIND_MAX_UPLOADED = "FIND-MAX-UPLOADED";
 
 let initialState = {
@@ -133,6 +134,10 @@ let initialState = {
   isFetching: false,
   uploadedVersions: [],
   maxUploadedVersion: -1,
+  labelShowHide: [
+    { label: "Show Details", value: false }, // value - are details shown
+    { label: "Hide Details", value: true },
+  ],
 };
 
 const uploadBooksReducer = (state = initialState, action) => {
@@ -175,6 +180,14 @@ const uploadBooksReducer = (state = initialState, action) => {
       }
       return stateCopy;
     }
+    case SHOW_HIDE_STATE: {
+      let stateCopy = { ...state };
+      stateCopy.labelShowHide = { ...state.labelShowHide };     
+      let tempValue = state.labelShowHide[0];
+      stateCopy.labelShowHide[0] = state.labelShowHide[1];
+      stateCopy.labelShowHide[1] = tempValue;
+      return stateCopy;
+    }
     case TOGGLE_IS_FETCHING: {
       return { ...state, isFetching: action.isFetching };
     }
@@ -199,6 +212,7 @@ const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching
 export const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
 export const setFileName = (files) => ({ type: SET_FILE_NAME, files });
 export const setRadioResult = (chosenLang, i) => ({ type: RADIO_IS_CHANGED, chosenLang, i }); // used in ShowSelectedFiles
+export const setShowHideState = (chosenLang, i) => ({ type: SHOW_HIDE_STATE, chosenLang, i }); // used in ShowSelectedFiles
 
 const fetchLastUploadedVersions = (formData, bookId, languageId) => async (dispatch, getState) => {
   dispatch(toggleIsFetching(true));
