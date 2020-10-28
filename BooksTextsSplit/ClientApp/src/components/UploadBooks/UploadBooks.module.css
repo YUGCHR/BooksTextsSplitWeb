@@ -19,7 +19,7 @@
 
 .allControlPanelPlace{
     max-width: max-content;
-    min-width: min-content;
+    /* min-width: min-content; */
 }
 
 .allControlPanel {
@@ -112,6 +112,17 @@
 .uploadFilesLabel{
     font-weight: bold;
     color:  #FFD998; /* абрикосовым */
+}
+
+.rightFilesCount{
+    font-size: smaller;
+    color: #9EB7CD; /* серо-голубым */   
+}
+
+.wrongFilesCount{
+    font-weight: bold;
+    color: yellow;
+    background-color: red;
 }
 
 .freeSpaceOnUploadGrid{

@@ -7,6 +7,7 @@ const SET_FILE_NAME = "SET-FILE-NAME";
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
 const TOGGLE_IS_LOADING = "TOGGLE-IS-LOADING";
 const TOGGLE_IS_DONE_UPLOAD = "TOGGLE-IS-DONE-UPLOAD";
+const TOGGLE_IS_WRONG_COUNT = "TOGGLE-IS-WRONG-COUNT";
 const TOGGLE_UPLOAD_BUTTON_ENABLE = "TOGGLE-UPLOAD-BUTTON-ENABLE";
 const RADIO_IS_CHANGED = "RADIO-IS-CHANGED";
 const SHOW_HIDE_STATE = "SHOW-HIDE-STATE";
@@ -142,6 +143,7 @@ let initialState = {
   ],
   isDoneUpload: false,
   isUploadButtonDisabled: true,
+  isWrongCount: false,
 };
 
 const uploadBooksReducer = (state = initialState, action) => {
@@ -201,6 +203,9 @@ const uploadBooksReducer = (state = initialState, action) => {
     case TOGGLE_UPLOAD_BUTTON_ENABLE: {
       return { ...state, isUploadButtonDisabled: action.isUploadButtonDisabled };
     }
+    case TOGGLE_IS_WRONG_COUNT: {
+      return { ...state, isWrongCount: action.isWrongCount };
+    }
     case FIND_MAX_UPLOADED: {
       let findMax = -1;
       action.uploadedVersions.map((u) => {
@@ -221,8 +226,9 @@ const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching
 const toggleIsDoneUpload = (isDoneUpload) => ({ type: TOGGLE_IS_DONE_UPLOAD, isDoneUpload });
 const toggleUploadButtonDisable = (isUploadButtonDisabled) => ({ type: TOGGLE_UPLOAD_BUTTON_ENABLE, isUploadButtonDisabled });
 
-export const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
+const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
 const setFileName = (files) => ({ type: SET_FILE_NAME, files });
+const wrongFilesCountSelected = (isWrongCount) => ({ type: TOGGLE_IS_WRONG_COUNT, isWrongCount });
 export const setRadioResult = (chosenLang, i) => ({ type: RADIO_IS_CHANGED, chosenLang, i }); // used in ShowSelectedFiles
 export const setShowHideState = (chosenLang, i) => ({ type: SHOW_HIDE_STATE, chosenLang, i }); // used in ShowSelectedFiles
 
@@ -235,9 +241,16 @@ const fetchLastUploadedVersions = (formData, bookId, languageId) => async (dispa
 };
 
 export const setFilesNamesAndEnableUpload = (files) => async (dispatch) => {
-  dispatch(toggleIsDoneUpload(false));
-  dispatch(setFileName(files));
-  dispatch(toggleUploadButtonDisable(false));
+  //check user selected books pair
+  if (files && files.length === 2) {
+    dispatch(wrongFilesCountSelected(false));
+    dispatch(toggleIsDoneUpload(false));
+    dispatch(setFileName(files));
+    dispatch(toggleUploadButtonDisable(false));
+  }
+  if (files && files.length !== 2) {
+    dispatch(wrongFilesCountSelected(true));
+  }
 };
 
 const postBooksTexts = (formData, i) => async (dispatch) => {

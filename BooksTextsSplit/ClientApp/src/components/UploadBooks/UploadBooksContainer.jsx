@@ -5,7 +5,6 @@ import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import {
   fetchSentencesCount,
   fileUploadHandler,
-  setDbSentencesCount,
   setFilesNamesAndEnableUpload,
   setRadioResult,
   setShowHideState,
@@ -38,9 +37,10 @@ class UploadBooksContainerAPI extends React.Component {
           filesLanguageIds={this.props.filesLanguageIds}
           booksTitles={this.props.booksTitles}
           sentencesCount={this.props.sentencesCount}
-          setFileName={this.props.setFilesNamesAndEnableUpload} // used in SelectBookFiles
+          setFileName={this.props.setFilesNamesAndEnableUpload} // TODO rename to make all names identical
           radioOptionChange={this.props.radioOptionChange} //
           fileUploadHandler={this.props.fileUploadHandler} //
+          isWrongCount={this.props.isWrongCount}
           engTextTitle={this.props.engTextTitle}
           dbSentencesCount={this.props.dbSentencesCount}
           isTextLoaded={this.props.isTextLoaded}
@@ -71,6 +71,7 @@ let mapStateToProps = (state) => {
     uploadBooksLabels: state.uploadBooksPage.uploadBooksLabels, //
     isDoneUpload: state.uploadBooksPage.isDoneUpload, //
     isUploadButtonDisabled: state.uploadBooksPage.isUploadButtonDisabled, //
+    isWrongCount: state.uploadBooksPage.isWrongCount, //
     booksTitles: state.uploadBooksPage.booksTitles,
     dbSentencesCount: state.uploadBooksPage.dbSentencesCount,
     sentencesCount: state.uploadBooksPage.sentencesCount,
@@ -94,7 +95,6 @@ let UploadBooksContainer = compose(
   connect(mapStateToProps, {
     fetchSentencesCount,
     fileUploadHandler,
-    setDbSentencesCount,
     setFilesNamesAndEnableUpload,
     setRadioResult,
     setShowHideState,

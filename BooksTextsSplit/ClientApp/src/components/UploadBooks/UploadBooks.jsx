@@ -59,7 +59,7 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, files
           {props.uploadBooksLabels.uploadBooksHeader2}
         </div>
         <div className={s.selectFiles}>
-          {!selectedFiles && <SelectBookFiles setFileName={props.setFileName} />}
+          {!selectedFiles && <SelectBookFiles setFileName={props.setFileName} isWrongCount={props.isWrongCount} />}
           {!!selectedFiles && (
             <div className={s.selectedBooksPlace}>
               {/* TODO add button to return to the files selection */}
