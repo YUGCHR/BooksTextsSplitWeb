@@ -39,9 +39,9 @@ let initialState = {
   uploadBooksLabels: {
     uploadBooksHeader1: "UPLOAD BOOKS ",
     uploadBooksHeader2: "CONTROL PANEL ",
-    dbInfoHeader: "DB INFO",
+    dbInfoHeader: "DB info",
     nearShowButton: " records, details - ",
-    uploadButton: "UPLOAD",
+    uploadButton: "Upload",
   },
   filesLanguageIds: [0, 1],
   uploading: false,
@@ -242,14 +242,18 @@ const fetchLastUploadedVersions = (formData, bookId, languageId) => async (dispa
 
 export const setFilesNamesAndEnableUpload = (files) => async (dispatch) => {
   //check user selected books pair
-  if (files && files.length === 2) {
-    dispatch(wrongFilesCountSelected(false));
-    dispatch(toggleIsDoneUpload(false));
+  dispatch(wrongFilesCountSelected(false));
+  dispatch(toggleIsDoneUpload(false));
+  if (files) {
+    if (files.length === 2) {
+      dispatch(setFileName(files));
+      dispatch(toggleUploadButtonDisable(false));
+    } else {
+      dispatch(wrongFilesCountSelected(true));
+    }
+  } else { 
     dispatch(setFileName(files));
-    dispatch(toggleUploadButtonDisable(false));
-  }
-  if (files && files.length !== 2) {
-    dispatch(wrongFilesCountSelected(true));
+    dispatch(toggleUploadButtonDisable(true));
   }
 };
 

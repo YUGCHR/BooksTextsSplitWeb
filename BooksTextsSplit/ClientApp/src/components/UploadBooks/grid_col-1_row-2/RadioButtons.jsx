@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React from "react";
 import s from "./RadioButtons.module.css";
 
 const RadioButtons = ({ uV, cV, i, setRadioResult, radioChosenLanguage }) => { // TODO поставить умолчание в выбор языка

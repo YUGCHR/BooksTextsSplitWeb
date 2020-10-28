@@ -1,0 +1,12 @@
+
+.uploadFilesLabelButtonPlace{
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    /* justify-content: space-between; */
+}
+
+.uploadFilesLabel{
+    font-weight: bold;
+    color:  #FFD998; /* абрикосовым */
+}

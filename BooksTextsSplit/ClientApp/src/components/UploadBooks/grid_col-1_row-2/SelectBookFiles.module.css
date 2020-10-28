@@ -1,0 +1,14 @@
+.inputFileNone{
+    display: none;
+}
+
+.rightFilesCount{
+    font-size: smaller;
+    color: #9EB7CD; /* серо-голубым */   
+}
+
+.wrongFilesCount{
+    font-weight: bold;
+    color: yellow;
+    background-color: red;
+}

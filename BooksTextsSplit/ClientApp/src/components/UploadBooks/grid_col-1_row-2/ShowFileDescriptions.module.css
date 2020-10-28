@@ -1,0 +1,18 @@
+
+.chosenLanguagePlace{    
+    display: flex;  
+    flex-direction: row;
+    align-content: stretch;
+    background-color: #8D792C; /* Золотисто-оливковый */
+}
+
+.chosenLanguageText{
+    color:  #114471; /* берлинской лазурью */
+    align-self: flex-start;
+}
+
+.chosenLanguage{
+    color: #FFD998; /* абрикосовым */
+    font-weight: bold;
+    margin-left: 1rem;    
+}

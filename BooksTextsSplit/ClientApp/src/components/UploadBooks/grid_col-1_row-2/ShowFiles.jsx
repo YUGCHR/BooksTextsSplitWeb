@@ -1,7 +1,6 @@
 import React from "react";
 import RadioButtons from "./RadioButtons";
 import ShowFileDescriptions from "./ShowFileDescriptions";
-import s from "./UploadBooks.module.css";
 
 const ShowFiles = ({ chosenFiles, setRadioResult, radioChosenLanguage, filesDescriptions }) => {
   let radioInitialUniqValues = [

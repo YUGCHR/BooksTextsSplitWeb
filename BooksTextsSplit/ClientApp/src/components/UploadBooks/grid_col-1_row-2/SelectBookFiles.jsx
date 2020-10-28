@@ -1,6 +1,7 @@
 import React from "react";
 import { useRef } from "react";
-import s from "./UploadBooks.module.css";
+import cs from ".././UploadBooks.module.css"; // common styles
+import s from "./SelectBookFiles.module.css";
 
 const SelectBookFiles = ({ setFileName, isWrongCount }) => {
   const hiddenFileInput = useRef(null);
@@ -19,7 +20,7 @@ const SelectBookFiles = ({ setFileName, isWrongCount }) => {
   const chooseBookFiles = (fileSelectorHandler) => {
     return (
       <div>
-        <button className={s.allButtonsBodies} onClick={handleClick}>
+        <button className={cs.allButtonsBodies} onClick={handleClick}>
           Choose Books Pair Files
         </button>
         <input className={s.inputFileNone} type="file" ref={hiddenFileInput} onChange={fileSelectorHandler} multiple />
@@ -32,8 +33,8 @@ const SelectBookFiles = ({ setFileName, isWrongCount }) => {
   };
 
   return (
-    <div className={s.selectFilesBlock}>
-      <div className={s.selectFilesHeader}>
+    <div>
+      <div>
         <div>CHOOSE BOOKS FILES (ENG/RUS PAIR)</div>
       </div>
       <div>{chooseBookFiles(fileSelectorHandler)}</div>

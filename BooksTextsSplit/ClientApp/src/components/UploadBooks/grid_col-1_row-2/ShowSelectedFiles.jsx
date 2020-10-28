@@ -1,6 +1,6 @@
 import React from "react";
 import ShowFiles from "./ShowFiles";
-import s from "./UploadBooks.module.css";
+import s from "./ShowSelectedFiles.module.css";
 
 const ShowHeader = () => {
   return (
@@ -13,7 +13,7 @@ const ShowHeader = () => {
 const ShowSelectedFiles = (chosenFiles, setRadioResult, radioChosenLanguage, filesDescriptions) => {
   console.log(chosenFiles);
   return (
-    <div className={s.selectedBooksProperties}>
+    <div className={s.selectedBooksPlace}>
       <div className={s.selectedBooksPlaceItem1}>
         <ShowHeader />
       </div>

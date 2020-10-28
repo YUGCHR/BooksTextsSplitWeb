@@ -1,0 +1,11 @@
+
+.dbInfoButton{
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    justify-content: space-between;
+}
+
+.dbInfoRecordsCount{
+    color: #9EB7CD; /* серо-голубым */ 
+}
