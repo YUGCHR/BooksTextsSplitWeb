@@ -10,9 +10,10 @@ const SelectBookFiles = ({ setFileName }) => {
   
   const fileSelectorHandler = (e) => {
     //if(chosenFiles[0].size) {
-    if (e.target.files.length) {
+    if (e.target.files.length === 2) { //check user selected books pair
       setFileName(e.target.files);
     }
+    // TODO if user selected less or more 2 books it is the place  to say him where about this
   };
 
   const chooseBookFiles = (fileSelectorHandler) => {
@@ -20,9 +21,9 @@ const SelectBookFiles = ({ setFileName }) => {
     return (
       <div>
         <button className={s.allButtonsBodies} onClick={handleClick}>
-        Upload a file
+        Upload Books Pair Files
       </button>
-        <input className={s.inputFilePlace} type="file" ref={hiddenFileInput} onChange={fileSelectorHandler} multiple />
+        <input className={s.inputFileNone} type="file" ref={hiddenFileInput} onChange={fileSelectorHandler} multiple />
       </div>
     );
   };
