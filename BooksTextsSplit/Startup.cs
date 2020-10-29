@@ -55,6 +55,11 @@ namespace BooksTextsSplit
             services.AddScoped<IResultDataService, ResultDataService>();
             services.AddScoped<BooksTextsSplit.Models.User>();
 
+            // Consuming a scoped service in a background task
+            //services.AddSingleton<MonitorLoop>();
+            services.AddHostedService<QueuedHostedService>();
+            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+
             //CookieAuthenticationOptions
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
@@ -64,8 +69,6 @@ namespace BooksTextsSplit
                     return Task.CompletedTask;
                 };
             });
-
-
 
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration =>
@@ -174,5 +177,7 @@ namespace BooksTextsSplit
                 }
             });
         }
+
+
     }
 }

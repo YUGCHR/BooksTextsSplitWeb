@@ -17,6 +17,7 @@ using StackExchange.Redis;
 using CachingFramework.Redis;
 using Microsoft.Extensions.Localization;
 using BooksTextsSplit.Helpers;
+using System.Threading;
 
 namespace BooksTextsSplit.Controllers
 {
@@ -26,6 +27,7 @@ namespace BooksTextsSplit.Controllers
 
     public class BookTextsController : ControllerBase
     {
+        private readonly IBackgroundTaskQueue _taskQueue;
         private readonly RedisContext cache;
         private readonly ICosmosDbService _context;
         // private readonly IDatabase _db;
@@ -33,11 +35,13 @@ namespace BooksTextsSplit.Controllers
         private IResultDataService _result;
 
         public BookTextsController(
+            IBackgroundTaskQueue taskQueue,
             ICosmosDbService cosmosDbService,
             RedisContext c,
             IAuthService authService,
             IResultDataService resultDataService) //, IDatabase db)
         {
+            _taskQueue = taskQueue;
             cache = c;
             _context = cosmosDbService;
             //_db = db;
@@ -77,6 +81,58 @@ namespace BooksTextsSplit.Controllers
         public async Task<ActionResult<TotalCount>> GetTotalCount()
         {
             return new TotalCount((await _context.GetItemsAsync("SELECT * FROM c")).Count());
+            //return new TotalCount { sentencesCount = 5 };
+        }
+        
+        // GET: api/Count/        
+        [HttpGet("worker")]
+        public async Task<ActionResult> GetWorker()
+        {
+            // Enqueue a background work item
+            Func<CancellationToken, Task> workItem = async token =>
+                            {
+                                // Simulate three 5-second tasks to complete
+                                // for each enqueued work item
+
+                                int delayLoop = 0;
+                                var guid = Guid.NewGuid().ToString();
+
+                                Console.WriteLine(
+                                    "Queued Background Task {0} is starting.", guid);
+
+                                while (!token.IsCancellationRequested && delayLoop < 3)
+                                {
+                                    try
+                                    {
+                                        await Task.Delay(TimeSpan.FromSeconds(5), token);
+                                    }
+                                    catch (OperationCanceledException)
+                                    {
+                                        // Prevent throwing if the Delay is cancelled
+                                    }
+
+                                    delayLoop++;
+
+                                    Console.WriteLine(
+                                        "Queued Background Task {0} is running. " +
+                                        "{1}/3", guid, delayLoop);
+                                }
+
+                                if (delayLoop == 3)
+                                {
+                                    Console.WriteLine(
+                                        "Queued Background Task {0} is complete.", guid);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(
+                                        "Queued Background Task {0} was cancelled.", guid);
+                                }
+                            };
+
+
+            _taskQueue.QueueBackgroundWorkItem(workItem);
+            return Ok();
             //return new TotalCount { sentencesCount = 5 };
         }
 
