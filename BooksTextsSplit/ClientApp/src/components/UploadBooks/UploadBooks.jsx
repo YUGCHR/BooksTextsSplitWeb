@@ -34,7 +34,7 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, files
         {/* Grid Block col-1 _ row-3 */}
         <div className={s.uploadFiles}>
           {!!selectedFiles && !props.isDoneUpload && uploadFiles(props, selectedFiles)}
-          {props.isDoneUpload && <ShowFilesToUpload selectedFiles={selectedFiles} sentencesCount={props.sentencesCount} />}
+          {props.isDoneUpload && <ShowFilesToUpload key={selectedFiles.languageId} selectedFiles={selectedFiles} sentencesCount={props.sentencesCount} />}
         </div>
         {/* Grid Block col-2 _ row-3 */}
         <div className={s.freeSpaceOnUploadGrid}></div>

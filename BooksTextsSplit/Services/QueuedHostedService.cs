@@ -10,22 +10,26 @@ namespace BooksTextsSplit.Services
 {
     public class QueuedHostedService : BackgroundService
     {
-        //private readonly ILogger<QueuedHostedService> _logger;
+        private readonly ILogger<QueuedHostedService> _logger;
 
-        public QueuedHostedService(IBackgroundTaskQueue taskQueue
-            /*ILogger<QueuedHostedService> logger*/)
+        public QueuedHostedService(IBackgroundTaskQueue taskQueue,
+            ILogger<QueuedHostedService> logger)
         {
             TaskQueue = taskQueue;
-            //_logger = logger;
+            _logger = logger;
         }
 
         public IBackgroundTaskQueue TaskQueue { get; }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Console.WriteLine(
+            //Console.WriteLine(
+            //    $"Queued Hosted Service is running.{Environment.NewLine}" +
+            //    $"{Environment.NewLine}Tap W to add a work item to the " +
+            //    $"background queue.{Environment.NewLine}");
+            _logger.LogInformation(
                 $"Queued Hosted Service is running.{Environment.NewLine}" +
-                $"{Environment.NewLine}Tap W to add a work item to the " +
+                $"{Environment.NewLine}Send get Worker to add a work item to the " +
                 $"background queue.{Environment.NewLine}");
 
             await BackgroundProcessing(stoppingToken);
@@ -33,31 +37,34 @@ namespace BooksTextsSplit.Services
 
         private async Task BackgroundProcessing(CancellationToken stoppingToken)
         {
-            Console.WriteLine("Start");
+            //Console.WriteLine("Start");
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                Console.WriteLine("Loop");
+                //Console.WriteLine("Loop");
                 var workItem =
                     await TaskQueue.DequeueAsync(stoppingToken);
-                Console.WriteLine("Dequeued a task");
+                //Console.WriteLine("Dequeued a task");
                 try
                 {
-                    Console.WriteLine("Start await task");
+                    //Console.WriteLine("Start await task");
                     await workItem(stoppingToken);
-                    Console.WriteLine("Finished a work item");
+                    //Console.WriteLine("Finished a work item");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(
-                        "Error occurred executing {0} {1}", nameof(workItem), ex.Message);
+                    //Console.WriteLine(
+                    //    "Error occurred executing {0} {1}", nameof(workItem), ex.Message);
+                    _logger.LogError(ex,
+                        "Error occurred executing {WorkItem}.", nameof(workItem));
                 }
             }
         }
 
         public override async Task StopAsync(CancellationToken stoppingToken)
         {
-            Console.WriteLine("Queued Hosted Service is stopping.");
+            //Console.WriteLine("Queued Hosted Service is stopping.");
+            _logger.LogInformation("Queued Hosted Service is stopping.");
 
             await base.StopAsync(stoppingToken);
         }

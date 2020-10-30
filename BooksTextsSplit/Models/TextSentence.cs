@@ -48,10 +48,21 @@ namespace BooksTextsSplit.Models
         public string ParagraphName { get; set; }
 
         [JsonProperty(PropertyName = "sentenceId")]
-        public int SentenceId { get; set; }        
+        public int SentenceId { get; set; }
 
         [JsonProperty(PropertyName = "sentenceText")]
         public string SentenceText { get; set; }
+
+        public TextSentence ShallowCopy()
+        {
+            return (TextSentence)this.MemberwiseClone();
+        }
     }
+
+    //ideally this would be done in a config file at app startup
+    //Mapper.Initialize(cfg => cfg.CreateMap<Person, Person>());
+
+    //create the deep copy using AutoMapper
+    //var deepCopy = Mapper.Map<Person>(originalPerson);
 }
 

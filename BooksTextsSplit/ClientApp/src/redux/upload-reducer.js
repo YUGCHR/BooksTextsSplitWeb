@@ -232,12 +232,12 @@ const wrongFilesCountSelected = (isWrongCount) => ({ type: TOGGLE_IS_WRONG_COUNT
 export const setRadioResult = (chosenLang, i) => ({ type: RADIO_IS_CHANGED, chosenLang, i }); // used in ShowSelectedFiles
 export const setShowHideState = (chosenLang, i) => ({ type: SHOW_HIDE_STATE, chosenLang, i }); // used in ShowSelectedFiles
 
-const fetchLastUploadedVersions = (formData, bookId, languageId) => async (dispatch, getState) => {
+const fetchLastUploadedVersions = (bookTitle) => async (dispatch, getState) => {
   dispatch(toggleIsFetching(true));
-  const response = await uploadAPI.getLastUploadedVersions(bookId, languageId); // to find all previously uploaded versions of the file with this bookId
+  const response = await uploadAPI.getLastUploadedVersions(bookTitle.bookId, bookTitle.languageId); // to find all previously uploaded versions of the file with this bookId
   dispatch(toggleIsFetching(false));
-  formData.append("lastUploadedVersion", response.maxUploadedVersion);
-  return formData;
+  bookTitle.uploadVersion = response.maxUploadedVersion;
+  return bookTitle;
 };
 
 export const setFilesNamesAndEnableUpload = (files) => async (dispatch) => {
@@ -251,7 +251,7 @@ export const setFilesNamesAndEnableUpload = (files) => async (dispatch) => {
     } else {
       dispatch(wrongFilesCountSelected(true));
     }
-  } else { 
+  } else {
     dispatch(setFileName(files));
     dispatch(toggleUploadButtonDisable(true));
   }
@@ -280,18 +280,15 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
   for (let i = 0; i < selectedFiles.length; i++) {
     const form = new FormData();
     form.append("bookFile", selectedFiles[i], selectedFiles[i].name);
-    let languageId = getState().uploadBooksPage.filesLanguageIds[i];
-    form.append("languageId", languageId); // it is possible to pass data in array instead file properties
+    // TODO it is possible to pass data in array (Object!) instead file properties
     const bookTitle = getState().uploadBooksPage.booksTitles[i][0];
-    let bookId = bookTitle.bookId;
-    form.append("bookId", bookId);
-    form.append("authorNameId", bookTitle.authorNameId);
-    form.append("authorName", bookTitle.authorName);
-    form.append("bookNameId", bookTitle.bookNameId);
-    form.append("bookName", bookTitle.bookName);
+    bookTitle.languageId = getState().uploadBooksPage.filesLanguageIds[i];
     dispatch(toggleIsFetching(true));
-    const formPlusVersion = await dispatch(fetchLastUploadedVersions(form, bookId, languageId)); // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
-    await dispatch(postBooksTexts(formPlusVersion, i));
+    // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
+    const bookTitleWithVersion = await dispatch(fetchLastUploadedVersions(bookTitle));
+    const bookTitleWithVersionJson = JSON.stringify(bookTitleWithVersion);
+    form.append("jsonBookDescription", bookTitleWithVersionJson);
+    await dispatch(postBooksTexts(form, i));
     dispatch(toggleIsFetching(false));
     await dispatch(fetchSentencesCount(i)); // to fetch dbSentencesCount[languageId] and change toggleIsLoading on true
   }

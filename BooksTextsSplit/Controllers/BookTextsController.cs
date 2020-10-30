@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using BooksTextsSplit.Models;
 using BooksTextsSplit.Services;
 using System.IO;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System.Reflection;
 using System.ComponentModel.Design;
 using System.Data;
@@ -17,7 +18,8 @@ using StackExchange.Redis;
 using CachingFramework.Redis;
 using Microsoft.Extensions.Localization;
 using BooksTextsSplit.Helpers;
-using System.Threading;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace BooksTextsSplit.Controllers
 {
@@ -27,7 +29,9 @@ namespace BooksTextsSplit.Controllers
 
     public class BookTextsController : ControllerBase
     {
-        private readonly IBackgroundTaskQueue _taskQueue;
+        private IBackgroungTasksService _task2Queue;
+        private readonly ILogger<BookTextsController> _logger;
+        //private readonly CancellationToken _cancellationToken;
         private readonly RedisContext cache;
         private readonly ICosmosDbService _context;
         // private readonly IDatabase _db;
@@ -35,13 +39,17 @@ namespace BooksTextsSplit.Controllers
         private IResultDataService _result;
 
         public BookTextsController(
-            IBackgroundTaskQueue taskQueue,
+            IBackgroungTasksService task2Queue,
+            ILogger<BookTextsController> logger,
+            //IHostApplicationLifetime applicationLifetime,
             ICosmosDbService cosmosDbService,
             RedisContext c,
             IAuthService authService,
             IResultDataService resultDataService) //, IDatabase db)
         {
-            _taskQueue = taskQueue;
+            _task2Queue = task2Queue;
+            _logger = logger;
+            //_cancellationToken = applicationLifetime.ApplicationStopping;
             cache = c;
             _context = cosmosDbService;
             //_db = db;
@@ -56,9 +64,9 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("auth/init")]
         public ActionResult<string> GetInit()
         {
-            string userEmail = User?.Identity?.Name;            
+            string userEmail = User?.Identity?.Name;
             var isLoggedIn = (userEmail != null);
-            return Ok(new { IsLoggedIn = isLoggedIn}); //(_localizer["ResultCode0"]);
+            return Ok(new { IsLoggedIn = isLoggedIn }); //(_localizer["ResultCode0"]);
         }
 
         // GET: api/BookTexts/auth/getMe/
@@ -76,63 +84,20 @@ namespace BooksTextsSplit.Controllers
             return await _result.ResultData(0, userEmail);
         }
 
-        // GET: api/Count/        
+        // GET: api/BookTexts/worker/
+        [HttpGet("worker")]
+        public ActionResult GetWorker()
+        {
+            _task2Queue.WorkerSample();
+
+            return Ok("Queued Background Task is starting");
+        }
+
+        // GET: api/BookTexts/Count/        
         [HttpGet("count")]
         public async Task<ActionResult<TotalCount>> GetTotalCount()
         {
             return new TotalCount((await _context.GetItemsAsync("SELECT * FROM c")).Count());
-            //return new TotalCount { sentencesCount = 5 };
-        }
-        
-        // GET: api/Count/        
-        [HttpGet("worker")]
-        public async Task<ActionResult> GetWorker()
-        {
-            // Enqueue a background work item
-            Func<CancellationToken, Task> workItem = async token =>
-                            {
-                                // Simulate three 5-second tasks to complete
-                                // for each enqueued work item
-
-                                int delayLoop = 0;
-                                var guid = Guid.NewGuid().ToString();
-
-                                Console.WriteLine(
-                                    "Queued Background Task {0} is starting.", guid);
-
-                                while (!token.IsCancellationRequested && delayLoop < 3)
-                                {
-                                    try
-                                    {
-                                        await Task.Delay(TimeSpan.FromSeconds(5), token);
-                                    }
-                                    catch (OperationCanceledException)
-                                    {
-                                        // Prevent throwing if the Delay is cancelled
-                                    }
-
-                                    delayLoop++;
-
-                                    Console.WriteLine(
-                                        "Queued Background Task {0} is running. " +
-                                        "{1}/3", guid, delayLoop);
-                                }
-
-                                if (delayLoop == 3)
-                                {
-                                    Console.WriteLine(
-                                        "Queued Background Task {0} is complete.", guid);
-                                }
-                                else
-                                {
-                                    Console.WriteLine(
-                                        "Queued Background Task {0} was cancelled.", guid);
-                                }
-                            };
-
-
-            _taskQueue.QueueBackgroundWorkItem(workItem);
-            return Ok();
             //return new TotalCount { sentencesCount = 5 };
         }
 
@@ -479,72 +444,28 @@ namespace BooksTextsSplit.Controllers
             });
         }
 
+
+
+
+
         // POST: api/BookTexts/UploadFile        
-        [HttpPost("UploadFile")]
-        // POST: api/BookTexts/UploadFile?language=0
-        //public async Task<IActionResult> UploadFile([FromForm]IFormFile bookFile, [FromQuery] int language)
-        public async Task<IActionResult> UploadFile([FromForm] IFormFile bookFile, [FromForm] int languageId, [FromForm] int bookId,
-            [FromForm] int authorNameId, [FromForm] string authorName, [FromForm] int bookNameId, [FromForm] string bookName, [FromForm] int lastUploadedVersion)
+        [HttpPost("UploadFile")]        
+        public IActionResult UploadFile([FromForm] IFormFile bookFile, [FromForm] string jsonBookDescription)
         {
+            // it's need to check the Redis keys after new books were recorded to Db
             if (bookFile != null)
             {
-                string fileName = bookFile.FileName;
-                StreamReader reader = new StreamReader(bookFile.OpenReadStream());
-                string text = reader.ReadToEnd();
-
-                IAllBookData _bookData = new AllBookData();
-                ITextAnalysisLogicExtension analysisLogic = new TextAnalysisLogicExtension(_bookData);
-                ISentencesDividingAnalysis sentenceAnalyser = new SentencesDividingAnalysis(_bookData, analysisLogic);
-                //IAnalysisLogicParagraph paragraphAnalysis = new noneAnalysisLogicParagraph(bookData, msgService, analysisLogic);
-                IChapterDividingAnalysis chapterAnalyser = new ChapterDividingAnalysis(_bookData, analysisLogic);
-                IAllBookAnalysis bookAnalysis = new AllBookAnalysis(_bookData, analysisLogic, chapterAnalyser, sentenceAnalyser);
-
-                int desiredTextLanguage = languageId;
-                _bookData.SetFileToDo((int)WhatNeedDoWithFiles.AnalyseText, desiredTextLanguage);//создание нужной инструкции ToDo
-                                                                                                 //bookData.SetFilePath(_filePath, desiredTextLanguage);
-                string fileContent = text;
-                _bookData.SetFileContent(fileContent, desiredTextLanguage);
-
-                TextSentence[] textSentences = bookAnalysis.AnalyseTextBook();
-                int textSentencesLength = textSentences.Length;
-                string json = JsonConvert.SerializeObject(textSentences);
-                int currentUploadingVersion = lastUploadedVersion + 1;
-
-                try
-                {
-                    for (int tsi = 0; tsi < textSentencesLength; tsi++)
-                    {
-                        textSentences[tsi].Id = Guid.NewGuid().ToString();
-                        textSentences[tsi].BookId = bookId;
-                        textSentences[tsi].AuthorNameId = authorNameId;
-                        textSentences[tsi].AuthorName = authorName;
-                        textSentences[tsi].BookNameId = bookNameId;
-                        textSentences[tsi].BookName = bookName;
-
-                        textSentences[tsi].UploadVersion = currentUploadingVersion;
-
-                        await _context.AddItemAsync(textSentences[tsi]);
-                    }
-
-                    //ParallelOptions p = new ParallelOptions {MaxDegreeOfParallelism = 2 };
-                    //Parallel.ForEach(textSentences, p, async s => { await _context.AddItemAsync(s); });
-
-                    //await Task.WhenAll(textSentences.Select(s => _context.AddItemAsync(s)));
-                    //await Task.WhenAll(textSentences.Select(async s => await _context.AddItemAsync(s)));
-                }
-                catch (Exception ex)
-                {
-                    return Ok(ex.Message);
-                }
-                //return Ok(json);
-                return Ok(textSentencesLength);
+                _task2Queue.RecordFileToDbInBackground(bookFile, jsonBookDescription);
+                return Ok("Task was Queued Background");
             }
-
-            // var result = _bookAnalysis.Analyze(text);
-            // _cosmosService.Save(result);
-
             return Problem("bad file");
         }
+
+        
+
+
+
+
 
         #endregion
 

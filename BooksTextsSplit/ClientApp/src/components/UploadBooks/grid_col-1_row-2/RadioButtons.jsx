@@ -20,7 +20,7 @@ const RadioButtons = ({ uV, cV, i, setRadioResult, radioChosenLanguage }) => { /
     return uV.map((d) => {
       let formName = cV.uniqFormName[i];
       return (
-        <div>
+        <div key={d.id} >
           <label>
             <input
               type="radio"

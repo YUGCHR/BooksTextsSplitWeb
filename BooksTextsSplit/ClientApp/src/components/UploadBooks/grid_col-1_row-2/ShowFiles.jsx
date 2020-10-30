@@ -4,9 +4,9 @@ import ShowFileDescriptions from "./ShowFileDescriptions";
 
 const ShowFiles = ({ chosenFiles, setRadioResult, radioChosenLanguage, filesDescriptions }) => {
   let radioInitialUniqValues = [
-    { value: "eng", disabled: false, text: "English" },
-    { value: "rus", disabled: null, text: "Russian" },
-    { value: "other", disabled: true, text: "Auto select" },
+    { id: "1", value: "eng", disabled: false, text: "English" },
+    { id: "2", value: "rus", disabled: null, text: "Russian" },
+    { id: "3", value: "other", disabled: true, text: "Auto select" },
   ];
   let radioInitialCommonValues = {
     placeholder: null,
