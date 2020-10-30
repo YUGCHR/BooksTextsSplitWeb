@@ -16,7 +16,7 @@ let showBooksNames = (bookName, bookId, i) => {
 };
 
 let showSelectBookIdButtons = (props, bookId) => {
-  console.log("showSelectBookIdButtons", bookId);
+  //console.log("showSelectBookIdButtons", bookId);
   //debugger;
   return (
     <button className={s.testItemButton} onClick={() => { props.switchBookVersionsOn(bookId); }}>Select {bookId}</button>
@@ -30,7 +30,7 @@ const ChoosePairBooksNames = (props) => {
       let bookNames = id.booksDescriptions;
       let eng = 0;
       let rus = 1;
-      console.log("bookNames", bookNames);
+      //console.log("bookNames", bookNames);
       return (        
         <div className={s.testGridContainer3}>
           <div className={s.testItemEng}>{showBooksNames(bookNames[eng], bookId, i)}</div>

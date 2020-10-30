@@ -4,6 +4,7 @@ import { uploadAPI } from "../api/api";
 const SET_DB_SENTENCES_COUNT = "SET-DB-SENTENCES-COUNT";
 const SET_SENTENCES_COUNT = "SET-SENTENCES-COUNT";
 const SET_FILE_NAME = "SET-FILE-NAME";
+const SET_BOOKS_DESCRIPTIONS = "SET-BOOKS-DESCRIPTIONS";
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
 const TOGGLE_IS_LOADING = "TOGGLE-IS-LOADING";
 const TOGGLE_IS_DONE_UPLOAD = "TOGGLE-IS-DONE-UPLOAD";
@@ -15,10 +16,6 @@ const FIND_MAX_UPLOADED = "FIND-MAX-UPLOADED";
 
 let initialState = {
   selectedFiles: null, // used in ShowSelectedFiles
-  /* [
-              { name: "eng", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
-              { name: "rus", languageId: 8, bookId: 88, authorNameId: 88, authorName: "author", bookNameId: 88, bookName: "book" },
-            ] */
   radioChosenLanguage: ["eng", "rus"], // here default values of radio buttons to choose language
   radioAutoChangeLang: [
     ["eng", "rus"],
@@ -47,78 +44,7 @@ let initialState = {
   uploading: false,
   uploadProgress: {},
   successfullyUploaded: false,
-  booksTitles: [
-    [
-      {
-        bookId: 88,
-        languageId: 0,
-        authorNameId: 101,
-        authorName: "1 Vernor Vinge",
-        bookNameId: 1001,
-        bookName: "1 A Fire Upon the Deep",
-      },
-      {
-        bookId: 2,
-        languageId: 0,
-        authorNameId: 102,
-        authorName: "2 Vernor Vinge",
-        bookNameId: 1002,
-        bookName: "2 A Fire Upon the Deep",
-      },
-      {
-        bookId: 3,
-        languageId: 0,
-        authorNameId: 103,
-        authorName: "3 Vernor Vinge",
-        bookNameId: 1003,
-        bookName: "3 A Fire Upon the Deep",
-      },
-      {
-        bookId: 4,
-        languageId: 0,
-        authorNameId: 104,
-        authorName: "4 Vernor Vinge",
-        bookNameId: 1004,
-        bookName: "4 A Fire Upon the Deep",
-      },
-      {
-        bookId: 5,
-        languageId: 0,
-        authorNameId: 105,
-        authorName: "5 Vernor Vinge",
-        bookNameId: 1005,
-        bookName: "5 A Fire Upon the Deep",
-      },
-    ],
-    [
-      {
-        bookId: 88,
-        languageId: 1,
-        authorNameId: 101,
-        authorName: "1 Вернор Виндж",
-        bookNameId: 1001,
-        bookName: "1 Пламя над бездной",
-      },
-      { bookId: 2, languageId: 1, authorNameId: 102, authorName: "2 Вернор Виндж", bookNameId: 1002, bookName: "2 Пламя над бездной" },
-      { bookId: 3, languageId: 1, authorNameId: 103, authorName: "3 Вернор Виндж", bookNameId: 1003, bookName: "3 Пламя над бездной" },
-      {
-        bookId: 4,
-        languageId: 1,
-        authorNameId: 104,
-        authorName: "4 Вернор Виндж",
-        bookNameId: 1004,
-        bookName: "4 Пламя над бездной",
-      },
-      {
-        bookId: 5,
-        languageId: 1,
-        authorNameId: 105,
-        authorName: "5 Вернор Виндж",
-        bookNameId: 1001,
-        bookName: "5 Пламя над бездной",
-      },
-    ],
-  ],
+  booksTitles: [{}, {}],
   engSentences: [],
   lastSentenceNumber: null,
   rusSentences: [],
@@ -169,6 +95,9 @@ const uploadBooksReducer = (state = initialState, action) => {
     }
     case SET_FILE_NAME: {
       return { ...state, selectedFiles: action.files };
+    }
+    case SET_BOOKS_DESCRIPTIONS: {
+      return { ...state, booksTitles: action.textsMetadata };
     }
     /* case RADIO_IS_CHANGED: {
       let stateCopy = { ...state };
@@ -221,13 +150,16 @@ const uploadBooksReducer = (state = initialState, action) => {
 };
 
 const setSentencesCount = (count, index) => ({ type: SET_SENTENCES_COUNT, count, index });
+const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
+
 const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
 const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 const toggleIsDoneUpload = (isDoneUpload) => ({ type: TOGGLE_IS_DONE_UPLOAD, isDoneUpload });
 const toggleUploadButtonDisable = (isUploadButtonDisabled) => ({ type: TOGGLE_UPLOAD_BUTTON_ENABLE, isUploadButtonDisabled });
 
-const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
 const setFileName = (files) => ({ type: SET_FILE_NAME, files });
+const setBooksDescriptions = (textsMetadata) => ({ type: SET_BOOKS_DESCRIPTIONS, textsMetadata });
+
 const wrongFilesCountSelected = (isWrongCount) => ({ type: TOGGLE_IS_WRONG_COUNT, isWrongCount });
 export const setRadioResult = (chosenLang, i) => ({ type: RADIO_IS_CHANGED, chosenLang, i }); // used in ShowSelectedFiles
 export const setShowHideState = (chosenLang, i) => ({ type: SHOW_HIDE_STATE, chosenLang, i }); // used in ShowSelectedFiles
@@ -248,6 +180,7 @@ export const setFilesNamesAndEnableUpload = (files) => async (dispatch) => {
     if (files.length === 2) {
       dispatch(setFileName(files));
       dispatch(toggleUploadButtonDisable(false));
+      dispatch(setFilesMetadata(files));
     } else {
       dispatch(wrongFilesCountSelected(true));
     }
@@ -255,6 +188,34 @@ export const setFilesNamesAndEnableUpload = (files) => async (dispatch) => {
     dispatch(setFileName(files));
     dispatch(toggleUploadButtonDisable(true));
   }
+};
+
+const setFilesMetadata = (files) => async (dispatch, getState) => {
+  let metadataHeader = "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g";
+  let textsMetadata = [{}, {}];
+  for (let i = 0; i < files.length; i++) {
+    //let file = files[i];
+    let reader = new FileReader();
+    reader.readAsText(files[i]);
+    reader.onload = () => {
+      // let textStrings = reader.result;
+      const textFirst18Lines = reader.result.split("\n").slice(0, 18);
+      //console.log(textFirst18Lines);
+      if (textFirst18Lines[0].indexOf(metadataHeader) !== -1) {
+        textsMetadata[i].bookId = parseInt(textFirst18Lines[2], 10);
+        textsMetadata[i].languageId = parseInt(textFirst18Lines[4], 10);
+        textsMetadata[i].authorNameId = parseInt(textFirst18Lines[6], 10);
+        textsMetadata[i].authorName = textFirst18Lines[8];
+        textsMetadata[i].bookNameId = parseInt(textFirst18Lines[10], 10);
+        textsMetadata[i].bookName = textFirst18Lines[12];
+        textsMetadata[i].comment = textFirst18Lines[14];
+      }
+    };
+    reader.onerror = () => {
+      console.log(reader.error);
+    };
+  }
+  dispatch(setBooksDescriptions(textsMetadata));
 };
 
 const postBooksTexts = (formData, i) => async (dispatch) => {
@@ -281,8 +242,8 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
     const form = new FormData();
     form.append("bookFile", selectedFiles[i], selectedFiles[i].name);
     // TODO it is possible to pass data in array (Object!) instead file properties
-    const bookTitle = getState().uploadBooksPage.booksTitles[i][0];
-    bookTitle.languageId = getState().uploadBooksPage.filesLanguageIds[i];
+    const bookTitle = getState().uploadBooksPage.booksTitles[i]; //[0];
+    //bookTitle.languageId = getState().uploadBooksPage.filesLanguageIds[i];
     dispatch(toggleIsFetching(true));
     // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
     const bookTitleWithVersion = await dispatch(fetchLastUploadedVersions(bookTitle));

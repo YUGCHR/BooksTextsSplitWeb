@@ -11,7 +11,7 @@ const ShowHeader = () => {
 };
 
 const ShowSelectedFiles = (chosenFiles, setRadioResult, radioChosenLanguage, filesDescriptions) => {
-  console.log(chosenFiles);
+  //console.log(chosenFiles);
   return (
     <div className={s.selectedBooksPlace}>
       <div className={s.selectedBooksPlaceItem1}>

@@ -14,7 +14,7 @@ const SelectBookFiles = ({ setFileName, isWrongCount }) => {
     if (e.target.files.length) {
       //check user selected any files
       setFileName(e.target.files);
-    }
+    }    
   };
 
   const chooseBookFiles = (fileSelectorHandler) => {
