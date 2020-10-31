@@ -11,7 +11,7 @@ namespace BooksTextsSplit.Services
 {
     public interface IBackgroungTasksService
     {
-        void RecordFileToDbInBackground(IFormFile bookFile, string jsonBookDescription);
+        void RecordFileToDbInBackground(IFormFile bookFile, string jsonBookDescription, string guid);
         void WorkerSample();
     }
     public class BackgroungTasksService : IBackgroungTasksService
@@ -33,12 +33,10 @@ namespace BooksTextsSplit.Services
             _context = cosmosDbService;            
         }
 
-        public void RecordFileToDbInBackground(IFormFile bookFile, string jsonBookDescription)
+        public void RecordFileToDbInBackground(IFormFile bookFile, string jsonBookDescription, string guid)
         {
-            string guid = Guid.NewGuid().ToString(); // TODO to receive as parameter
-
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, };
-            var bookDescription = JsonSerializer.Deserialize<TextSentence>(jsonBookDescription, options);
+            JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, };
+            TextSentence bookDescription = JsonSerializer.Deserialize<TextSentence>(jsonBookDescription, options);
             string fileName = bookFile.FileName;
             StreamReader reader = new StreamReader(bookFile.OpenReadStream());
             string text = reader.ReadToEnd();
@@ -63,7 +61,7 @@ namespace BooksTextsSplit.Services
                 try
                 {
                     _logger.LogInformation(
-                    "Queued Background Task RecordFileToDb {Guid} is starting. ", guid);
+                    "Queued Background Task RecordFileToDb {Guid} is starting", guid);
 
                     // TODO it's necessary to pass bookDescription to AnalyseTextBook and use bookDescription.properties when initielize textSentences[]
                     TextSentence[] textSentences = bookAnalysis.AnalyseTextBook();
@@ -74,7 +72,7 @@ namespace BooksTextsSplit.Services
                     try
                     {
                         _logger.LogInformation(
-                            "Queued Background Task RecordFileToDb {Guid} is running. ", guid);
+                            "Queued Background Task RecordFileToDb {Guid} is running", guid);
 
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
                         {
@@ -93,7 +91,7 @@ namespace BooksTextsSplit.Services
                         _logger.LogInformation(
                             "Queued Background Task RecordFileToDb {Guid} recorded "
                             + textSentencesLength.ToString()
-                            + " records to DB and was finished ", guid);
+                            + " records to DB", guid);
                     }
                     catch (Exception ex)
                     {

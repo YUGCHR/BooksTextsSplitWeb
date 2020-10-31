@@ -23,6 +23,7 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, files
           {!!selectedFiles && (
             <div>
               {/* TODO add button to return to the files selection? */}
+              {/* TODO спрятать после нажатия на кнопку Upload */}
               {ShowSelectedFiles(selectedFiles, setRadioResult, radioChosenLanguage, filesDescriptions)}
             </div>
           )}

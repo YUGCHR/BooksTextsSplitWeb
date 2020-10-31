@@ -10,6 +10,7 @@ const TOGGLE_IS_LOADING = "TOGGLE-IS-LOADING";
 const TOGGLE_IS_DONE_UPLOAD = "TOGGLE-IS-DONE-UPLOAD";
 const TOGGLE_IS_WRONG_COUNT = "TOGGLE-IS-WRONG-COUNT";
 const TOGGLE_UPLOAD_BUTTON_ENABLE = "TOGGLE-UPLOAD-BUTTON-ENABLE";
+const RADIO_DEFAULT = "RADIO-DEFAULT";
 const RADIO_IS_CHANGED = "RADIO-IS-CHANGED";
 const SHOW_HIDE_STATE = "SHOW-HIDE-STATE";
 const FIND_MAX_UPLOADED = "FIND-MAX-UPLOADED";
@@ -40,7 +41,18 @@ let initialState = {
     nearShowButton: " records, details - ",
     uploadButton: "Upload",
   },
-  filesLanguageIds: [0, 1],
+  filesLanguageIds: [
+    {
+      languageId: 0,
+      languageShortName: "eng",
+      languagetName: "English",
+    },
+    {
+      languageId: 1,
+      languageShortName: "rus",
+      languagetName: "Russian",
+    },
+  ],
   uploading: false,
   uploadProgress: {},
   successfullyUploaded: false,
@@ -54,10 +66,6 @@ let initialState = {
   emptyVariable: null,
   isTextLoaded: [false, false],
   creativeArrayLanguageId: [0, 1], //engLanguageId = 0; rusLanguageId = 1;
-  bookTitle: [
-    { languageId: 0, authorName: "1", bookTitle: "1" },
-    { languageId: 1, authorName: "1", bookTitle: "1" },
-  ],
   buttonsTextsParts: ["Load English Text -/", "Load Russian Text -/"],
   loadedTextTitle: ["You loaded English book --> ", "You loaded Russian book--> "],
   isFetching: false,
@@ -70,6 +78,7 @@ let initialState = {
   isDoneUpload: false,
   isUploadButtonDisabled: true,
   isWrongCount: false,
+  metadataHeader: "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g",
 };
 
 const uploadBooksReducer = (state = initialState, action) => {
@@ -99,20 +108,39 @@ const uploadBooksReducer = (state = initialState, action) => {
     case SET_BOOKS_DESCRIPTIONS: {
       return { ...state, booksTitles: action.textsMetadata };
     }
-    /* case RADIO_IS_CHANGED: {
-      let stateCopy = { ...state };
-      stateCopy.radioChosenLanguage = { ...state.radioChosenLanguage };
-      stateCopy.radioChosenLanguage[action.i] = action.chosenLang;
-      return stateCopy;
-    } */
     case RADIO_IS_CHANGED: {
       let stateCopy = { ...state };
       stateCopy.radioChosenLanguage = { ...state.radioChosenLanguage };
+      stateCopy.booksTitles = { ...state.booksTitles };
+      let viceVersaBooksTitles = false;
       if (action.chosenLang === "eng") {
         stateCopy.radioChosenLanguage = state.radioAutoChangeLang[action.i];
+        // если неправильный languageId - получено "eng", а он = 1, меняем местами booksTitles.languageId
+        if (stateCopy.booksTitles[action.i].languageId === 1) {
+          viceVersaBooksTitles = true;
+        }
       } else {
         stateCopy.radioChosenLanguage = state.radioAutoChangeLangInversed[action.i];
+        if (stateCopy.booksTitles[action.i].languageId === 0) {
+          viceVersaBooksTitles = true;
+        }
       }
+      if (viceVersaBooksTitles) {
+        [stateCopy.booksTitles[0].languageId, stateCopy.booksTitles[1].languageId] = [
+          stateCopy.booksTitles[1].languageId,
+          stateCopy.booksTitles[0].languageId,
+        ];
+      }
+      return stateCopy;
+    }
+    case RADIO_DEFAULT: {
+      let stateCopy = { ...state };
+      stateCopy.radioChosenLanguage = { ...state.radioChosenLanguage };
+      state.filesLanguageIds.map((fli) => {
+        if (action.defaultLanguageId === fli.languageId) {
+          stateCopy.radioChosenLanguage[action.i] = fli.languageShortName;
+        }
+      });
       return stateCopy;
     }
     case SHOW_HIDE_STATE: {
@@ -161,6 +189,7 @@ const setFileName = (files) => ({ type: SET_FILE_NAME, files });
 const setBooksDescriptions = (textsMetadata) => ({ type: SET_BOOKS_DESCRIPTIONS, textsMetadata });
 
 const wrongFilesCountSelected = (isWrongCount) => ({ type: TOGGLE_IS_WRONG_COUNT, isWrongCount });
+const setRadioDefault = (defaultLanguageId, i) => ({ type: RADIO_DEFAULT, defaultLanguageId, i });
 export const setRadioResult = (chosenLang, i) => ({ type: RADIO_IS_CHANGED, chosenLang, i }); // used in ShowSelectedFiles
 export const setShowHideState = (chosenLang, i) => ({ type: SHOW_HIDE_STATE, chosenLang, i }); // used in ShowSelectedFiles
 
@@ -191,7 +220,6 @@ export const setFilesNamesAndEnableUpload = (files) => async (dispatch) => {
 };
 
 const setFilesMetadata = (files) => async (dispatch, getState) => {
-  let metadataHeader = "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g";
   let textsMetadata = [{}, {}];
   for (let i = 0; i < files.length; i++) {
     //let file = files[i];
@@ -201,9 +229,11 @@ const setFilesMetadata = (files) => async (dispatch, getState) => {
       // let textStrings = reader.result;
       const textFirst18Lines = reader.result.split("\n").slice(0, 18);
       //console.log(textFirst18Lines);
-      if (textFirst18Lines[0].indexOf(metadataHeader) !== -1) {
+      if (textFirst18Lines[0].indexOf(getState().uploadBooksPage.metadataHeader) !== -1) {
         textsMetadata[i].bookId = parseInt(textFirst18Lines[2], 10);
-        textsMetadata[i].languageId = parseInt(textFirst18Lines[4], 10);
+        let currentLangId = parseInt(textFirst18Lines[4], 10);
+        textsMetadata[i].languageId = currentLangId;
+        dispatch(setRadioDefault(currentLangId, i));
         textsMetadata[i].authorNameId = parseInt(textFirst18Lines[6], 10);
         textsMetadata[i].authorName = textFirst18Lines[8];
         textsMetadata[i].bookNameId = parseInt(textFirst18Lines[10], 10);

@@ -455,8 +455,9 @@ namespace BooksTextsSplit.Controllers
             // it's need to check the Redis keys after new books were recorded to Db
             if (bookFile != null)
             {
-                _task2Queue.RecordFileToDbInBackground(bookFile, jsonBookDescription);
-                return Ok("Task was Queued Background");
+                string guid = Guid.NewGuid().ToString();
+                _task2Queue.RecordFileToDbInBackground(bookFile, jsonBookDescription, guid);
+                return Ok(guid);
             }
             return Problem("bad file");
         }
