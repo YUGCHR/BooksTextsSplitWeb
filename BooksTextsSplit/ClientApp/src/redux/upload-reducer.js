@@ -1,4 +1,3 @@
-import { act } from "react-test-renderer";
 import { uploadAPI } from "../api/api";
 
 const SET_DB_SENTENCES_COUNT = "SET-DB-SENTENCES-COUNT";
@@ -45,29 +44,19 @@ let initialState = {
     {
       languageId: 0,
       languageShortName: "eng",
-      languagetName: "English",
+      languageName: "English",
     },
     {
       languageId: 1,
       languageShortName: "rus",
-      languagetName: "Russian",
+      languageName: "Russian",
     },
   ],
-  uploading: false,
-  uploadProgress: {},
-  successfullyUploaded: false,
   booksTitles: [{}, {}],
-  engSentences: [],
-  lastSentenceNumber: null,
-  rusSentences: [],
-  sentencesOnPageTop: 10,
   sentencesCount: [-1, -2, -3, -4, -5],
-  dbSentencesCount: [-7, -8], //engSentencesCount: 777, rusSentencesCount: 888
+  dbSentencesCount: [-7, -8],
   emptyVariable: null,
   isTextLoaded: [false, false],
-  creativeArrayLanguageId: [0, 1], //engLanguageId = 0; rusLanguageId = 1;
-  buttonsTextsParts: ["Load English Text -/", "Load Russian Text -/"],
-  loadedTextTitle: ["You loaded English book --> ", "You loaded Russian book--> "],
   isFetching: false,
   uploadedVersions: [],
   maxUploadedVersion: -1,
@@ -273,7 +262,6 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
     form.append("bookFile", selectedFiles[i], selectedFiles[i].name);
     // TODO it is possible to pass data in array (Object!) instead file properties
     const bookTitle = getState().uploadBooksPage.booksTitles[i]; //[0];
-    //bookTitle.languageId = getState().uploadBooksPage.filesLanguageIds[i];
     dispatch(toggleIsFetching(true));
     // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
     const bookTitleWithVersion = await dispatch(fetchLastUploadedVersions(bookTitle));

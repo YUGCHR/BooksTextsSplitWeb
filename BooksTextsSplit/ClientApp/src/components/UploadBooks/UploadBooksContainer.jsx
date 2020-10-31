@@ -18,11 +18,11 @@ class UploadBooksContainerAPI extends React.Component {
     this.props.fetchSentencesCount(0);
     this.props.fetchSentencesCount(1);
   }
-/* TODO it is possible to give the place (className style) where preloader will be shown */
+  /* TODO it is possible to give the place (className style) where preloader will be shown */
   render() {
     return (
       <>
-        {this.props.isFetching ? <Preloader /> : null} 
+        {this.props.isFetching ? <Preloader /> : null}
         <UploadBooks
           selectedFiles={this.props.selectedFiles} // used in ShowSelectedFiles
           radioChosenLanguage={this.props.radioChosenLanguage} // used in ShowSelectedFiles
@@ -41,15 +41,7 @@ class UploadBooksContainerAPI extends React.Component {
           radioOptionChange={this.props.radioOptionChange} //
           fileUploadHandler={this.props.fileUploadHandler} //
           isWrongCount={this.props.isWrongCount}
-          engTextTitle={this.props.engTextTitle}
           dbSentencesCount={this.props.dbSentencesCount}
-          isTextLoaded={this.props.isTextLoaded}
-          creativeArrayLanguageId={this.props.creativeArrayLanguageId}
-          bookTitle={this.props.bookTitle}
-          buttonsCaptions={this.props.buttonsCaptions}
-          buttonsTextsParts={this.props.buttonsTextsParts}
-          loadedTextTitle={this.props.loadedTextTitle}
-          maxUploadedVersion={this.props.maxUploadedVersion}
         />
       </>
     );
@@ -75,19 +67,7 @@ let mapStateToProps = (state) => {
     booksTitles: state.uploadBooksPage.booksTitles,
     dbSentencesCount: state.uploadBooksPage.dbSentencesCount,
     sentencesCount: state.uploadBooksPage.sentencesCount,
-    isTextLoaded: state.uploadBooksPage.isTextLoaded,
-    engTextTitle: state.uploadBooksPage.engTextTitle,
-    creativeArrayLanguageId: state.uploadBooksPage.creativeArrayLanguageId,
-    bookTitle: state.uploadBooksPage.bookTitle,
-    buttonsCaptions: state.uploadBooksPage.buttonsCaptions,
-    buttonsTextsParts: state.uploadBooksPage.buttonsTextsParts,
-    loadedTextTitle: state.uploadBooksPage.loadedTextTitle,
     isFetching: state.uploadBooksPage.isFetching,
-    files: state.uploadBooksPage.files,
-    uploading: state.uploadBooksPage.uploading,
-    uploadProgress: state.uploadBooksPage.uploadProgress,
-    successfullyUploaded: state.uploadBooksPage.successfullyUploaded,
-    maxUploadedVersion: state.uploadBooksPage.maxUploadedVersion,
   };
 };
 
