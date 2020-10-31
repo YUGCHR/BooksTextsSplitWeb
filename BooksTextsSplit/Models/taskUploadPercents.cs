@@ -9,20 +9,20 @@ namespace BooksTextsSplit.Models
 {
     public class TaskUploadPercents
     {
-        [JsonProperty(PropertyName = "currentTaskGuid")]
-        public string CurrentTaskGuid { get; set; }
-
-        [JsonProperty(PropertyName = "currentUploadingBookId")]
-        public int CurrentUploadingBookId { get; set; }
-
-        [JsonProperty(PropertyName = "recordrsTotalCount")]
-        public int RecordrsTotalCount { get; set; }
+        [JsonProperty(PropertyName = "doneInProcents")]
+        public int DoneInPercents { get; set; }
 
         [JsonProperty(PropertyName = "currentUploadingRecord")]
         public int CurrentUploadingRecord { get; set; }
 
-        [JsonProperty(PropertyName = "doneInProcents")]
-        public int DoneInPercents { get; set; }
+        [JsonProperty(PropertyName = "recordrsTotalCount")]
+        public int RecordrsTotalCount { get; set; }
+
+        [JsonProperty(PropertyName = "currentUploadingBookId")]
+        public int CurrentUploadingBookId { get; set; }
+
+        [JsonProperty(PropertyName = "currentTaskGuid")]
+        public string CurrentTaskGuid { get; set; }
 
         public TextSentence ShallowCopy()
         {

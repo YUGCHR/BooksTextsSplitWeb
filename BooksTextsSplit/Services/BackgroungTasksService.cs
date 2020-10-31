@@ -90,7 +90,7 @@ namespace BooksTextsSplit.Services
                         double doneInPercents;
                         int percentPrevious = 0;
                         int percentCurrent;
-                        int percentDecrement = 1;
+                        int percentDecrement = 0;
 
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
                         {
