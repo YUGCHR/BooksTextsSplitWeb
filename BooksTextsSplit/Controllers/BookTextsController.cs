@@ -30,29 +30,24 @@ namespace BooksTextsSplit.Controllers
     public class BookTextsController : ControllerBase
     {
         private IBackgroungTasksService _task2Queue;
-        private readonly ILogger<BookTextsController> _logger;
-        //private readonly CancellationToken _cancellationToken;
+        private readonly ILogger<BookTextsController> _logger;        
         private readonly RedisContext cache;
         private readonly ICosmosDbService _context;
-        // private readonly IDatabase _db;
         private IAuthService _authService;
         private IResultDataService _result;
 
         public BookTextsController(
             IBackgroungTasksService task2Queue,
-            ILogger<BookTextsController> logger,
-            //IHostApplicationLifetime applicationLifetime,
+            ILogger<BookTextsController> logger,            
             ICosmosDbService cosmosDbService,
             RedisContext c,
             IAuthService authService,
-            IResultDataService resultDataService) //, IDatabase db)
+            IResultDataService resultDataService)
         {
             _task2Queue = task2Queue;
-            _logger = logger;
-            //_cancellationToken = applicationLifetime.ApplicationStopping;
+            _logger = logger;            
             cache = c;
-            _context = cosmosDbService;
-            //_db = db;
+            _context = cosmosDbService;            
             _authService = authService;
             _result = resultDataService;
         }
@@ -88,9 +83,26 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("worker")]
         public ActionResult GetWorker()
         {
-            _task2Queue.WorkerSample();
+            string guid = Guid.NewGuid().ToString();
+            _task2Queue.WorkerSample(guid);
 
             return Ok("Queued Background Task is starting");
+        }
+
+        // GET: api/BookTexts/uploadTaskPercents/?taskGuid = e0ff4648-b183-49c7-b3d9-bc9fc99dcf8e
+        [HttpGet("uploadTaskPercents")]
+        public async Task<ActionResult<TaskUploadPercents>> GetUploadTaskPercents([FromQuery] string taskGuid)
+        {            
+            int percentDecrement = 1;
+            var taskStateCurrent = await cache.Cache.GetObjectAsync<TaskUploadPercents>(taskGuid);
+            int percentCurrent = taskStateCurrent.DoneInPercents;
+            int percentChanged = percentCurrent;
+
+            while (percentCurrent < percentChanged + percentDecrement && percentCurrent < 98) {
+                taskStateCurrent = await cache.Cache.GetObjectAsync<TaskUploadPercents>(taskGuid);
+                percentCurrent = taskStateCurrent.DoneInPercents;
+            }
+            return taskStateCurrent;
         }
 
         // GET: api/BookTexts/Count/        
@@ -450,13 +462,26 @@ namespace BooksTextsSplit.Controllers
 
         // POST: api/BookTexts/UploadFile        
         [HttpPost("UploadFile")]        
-        public IActionResult UploadFile([FromForm] IFormFile bookFile, [FromForm] string jsonBookDescription)
+        public async Task<IActionResult> UploadFile([FromForm] IFormFile bookFile, [FromForm] string jsonBookDescription)
         {
             // it's need to check the Redis keys after new books were recorded to Db
             if (bookFile != null)
             {
                 string guid = Guid.NewGuid().ToString();
+                TaskUploadPercents uploadPercents = new TaskUploadPercents
+                {
+                    CurrentTaskGuid = guid,
+                    CurrentUploadingBookId = 0, // may be put whole TextSentence?
+                    RecordrsTotalCount = 0,
+                    CurrentUploadingRecord = 0,
+                    DoneInPercents = 0,
+                };
+
+                //Redis key initialization - must be not null for GetUploadTaskPercents
+                await cache.Cache.SetObjectAsync(guid, uploadPercents, TimeSpan.FromDays(1));
+
                 _task2Queue.RecordFileToDbInBackground(bookFile, jsonBookDescription, guid);
+                
                 return Ok(guid);
             }
             return Problem("bad file");

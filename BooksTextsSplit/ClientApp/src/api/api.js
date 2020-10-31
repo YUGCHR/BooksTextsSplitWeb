@@ -18,6 +18,11 @@ export const uploadAPI = {
     return response.data;
   },
 
+  getUploadTaskPercents: async (taskGuid) => {
+    const response = await instance.get(`uploadTaskPercents/?taskGuid=${taskGuid}`);
+    return response.data;
+  },
+
   getLastUploadedVersions: async (bookId, languageId) => {
     const response = await instance.get(`BookUploadVersion/?bookId=${bookId}&languageId=${languageId}`);
     return response.data;

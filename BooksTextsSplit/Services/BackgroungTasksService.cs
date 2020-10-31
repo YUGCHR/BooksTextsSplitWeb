@@ -12,7 +12,7 @@ namespace BooksTextsSplit.Services
     public interface IBackgroungTasksService
     {
         void RecordFileToDbInBackground(IFormFile bookFile, string jsonBookDescription, string guid);
-        void WorkerSample();
+        void WorkerSample(string guid);
     }
     public class BackgroungTasksService : IBackgroungTasksService
     {
@@ -23,14 +23,14 @@ namespace BooksTextsSplit.Services
 
         public BackgroungTasksService(
             IBackgroundTaskQueue taskQueue,
-            ILogger<BackgroungTasksService> logger,            
+            ILogger<BackgroungTasksService> logger,
             ICosmosDbService cosmosDbService,
             RedisContext c)
         {
             _taskQueue = taskQueue;
-            _logger = logger;            
+            _logger = logger;
             cache = c;
-            _context = cosmosDbService;            
+            _context = cosmosDbService;
         }
 
         public void RecordFileToDbInBackground(IFormFile bookFile, string jsonBookDescription, string guid)
@@ -53,6 +53,9 @@ namespace BooksTextsSplit.Services
             _bookData.SetFileToDo((int)WhatNeedDoWithFiles.AnalyseText, desiredTextLanguage);
             //bookData.SetFilePath(_filePath, desiredTextLanguage);
 
+            //List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(booksPairTextsKey, () => FetchBooksTextsFromDb(where1, where1Value));
+            //await cache.Cache.SetObjectAsync(createdKeyNameFromRequest, requestedSelectResult, TimeSpan.FromDays(1));
+
             string fileContent = text;
             _bookData.SetFileContent(fileContent, desiredTextLanguage);
             // Enqueue a background work item
@@ -69,13 +72,29 @@ namespace BooksTextsSplit.Services
                     string json = JsonSerializer.Serialize(textSentences);
                     int currentUploadingVersion = bookDescription.UploadVersion + 1;
 
+                    TaskUploadPercents uploadPercents = new TaskUploadPercents
+                    {
+                        CurrentTaskGuid = guid,
+                        CurrentUploadingBookId = bookDescription.BookId, // may be put whole TextSentence?
+                        RecordrsTotalCount = textSentencesLength,
+                        CurrentUploadingRecord = 0,
+                        DoneInPercents = 0,
+                    };
+
                     try
                     {
                         _logger.LogInformation(
                             "Queued Background Task RecordFileToDb {Guid} is running", guid);
 
+                        var tackKeyForRedis = guid;
+                        double doneInPercents;
+                        int percentPrevious = 0;
+                        int percentCurrent;
+                        int percentDecrement = 1;
+
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
                         {
+
                             textSentences[tsi].Id = Guid.NewGuid().ToString();
                             textSentences[tsi].BookId = bookDescription.BookId;
                             textSentences[tsi].AuthorNameId = bookDescription.AuthorNameId;
@@ -84,7 +103,18 @@ namespace BooksTextsSplit.Services
                             textSentences[tsi].BookName = bookDescription.BookName;
 
                             textSentences[tsi].UploadVersion = currentUploadingVersion;
+
                             // TODO add the key with percents to Redis
+                            doneInPercents = tsi * 10000.0 / textSentencesLength;
+                            percentCurrent = Convert.ToInt32(doneInPercents / 100);
+                            if (percentCurrent > percentPrevious + percentDecrement)
+                            {
+                                uploadPercents.CurrentUploadingRecord = tsi;
+                                uploadPercents.DoneInPercents = percentCurrent;
+
+                                await cache.Cache.SetObjectAsync(tackKeyForRedis, uploadPercents, TimeSpan.FromDays(1));
+                                percentPrevious = percentCurrent;
+                            }
                             await _context.AddItemAsync(textSentences[tsi]);
                         };
 
@@ -107,7 +137,7 @@ namespace BooksTextsSplit.Services
             //return "Task " + guid + " was Queued Background";
         }
 
-        public void WorkerSample()
+        public void WorkerSample(string guid)
         {
             // Enqueue a background work item
             _taskQueue.QueueBackgroundWorkItem(async token =>
@@ -116,7 +146,7 @@ namespace BooksTextsSplit.Services
                 // for each enqueued work item
 
                 int delayLoop = 0;
-                string guid = Guid.NewGuid().ToString();
+                //string guid = Guid.NewGuid().ToString();
 
                 //Console.WriteLine(
                 //    "Queued Background Task {0} is starting.", guid);

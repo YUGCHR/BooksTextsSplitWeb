@@ -2,6 +2,7 @@ import { uploadAPI } from "../api/api";
 
 const SET_DB_SENTENCES_COUNT = "SET-DB-SENTENCES-COUNT";
 const SET_SENTENCES_COUNT = "SET-SENTENCES-COUNT";
+const SET_TASK_DONE_PERCENTS = "SET-TASK-DONE-PERCENTS";
 const SET_FILE_NAME = "SET-FILE-NAME";
 const SET_BOOKS_DESCRIPTIONS = "SET-BOOKS-DESCRIPTIONS";
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
@@ -13,6 +14,18 @@ const RADIO_DEFAULT = "RADIO-DEFAULT";
 const RADIO_IS_CHANGED = "RADIO-IS-CHANGED";
 const SHOW_HIDE_STATE = "SHOW-HIDE-STATE";
 const FIND_MAX_UPLOADED = "FIND-MAX-UPLOADED";
+
+/* TODO
+uploadPage - 
+первый запрос - за названиями всего
+загрузка файлов почти в любом количестве без особого контроля - 
+проверять, что разрешённого сегодня (в этой версии) формата и не слишком дофига
+после загрузки записать тексты в редис
+анализировать - проверить есть ли шапки, какой язык текста, ещё что-то
+можно окончательный анализ, если автоматически определился язык текста
+отправить пользователю список загруженных (вообще доступных - загруженных, но не залитых в базу) 
+файлов для разбора по парам, проверки языка и названий
+для записи в редис генерировать токен, который потом пойдёт в таск для загрузки в базу */
 
 let initialState = {
   selectedFiles: null, // used in ShowSelectedFiles
@@ -68,6 +81,7 @@ let initialState = {
   isUploadButtonDisabled: true,
   isWrongCount: false,
   metadataHeader: "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g",
+  taskDonePercents: 0,
 };
 
 const uploadBooksReducer = (state = initialState, action) => {
@@ -89,6 +103,12 @@ const uploadBooksReducer = (state = initialState, action) => {
       let stateCopy = { ...state };
       stateCopy.sentencesCount = { ...state.sentencesCount };
       stateCopy.sentencesCount[action.index] = action.count;
+      return stateCopy;
+    }
+    case SET_TASK_DONE_PERCENTS: {
+      let stateCopy = { ...state };
+      stateCopy.taskDonePercents = { ...state.taskDonePercents };
+      stateCopy.taskDonePercents = action.doneInPercents;
       return stateCopy;
     }
     case SET_FILE_NAME: {
@@ -168,6 +188,7 @@ const uploadBooksReducer = (state = initialState, action) => {
 
 const setSentencesCount = (count, index) => ({ type: SET_SENTENCES_COUNT, count, index });
 const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
+const setTaskDonePercents = (doneInPercents) => ({ type: SET_TASK_DONE_PERCENTS, doneInPercents });
 
 const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
 const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
@@ -242,6 +263,18 @@ const postBooksTexts = (formData, i) => async (dispatch) => {
   const response = await uploadAPI.uploadFile(formData); //post returns response before all records have loaded in db
   dispatch(toggleIsFetching(false));
   dispatch(setSentencesCount(response, i)); //totalCount
+  return response;
+};
+
+const fetchTaskDonePercents = (taskGuid) => async (dispatch) => {
+  dispatch(toggleIsFetching(true));
+  let percents = 0;
+  while (percents < 97) {
+    const response = await uploadAPI.getUploadTaskPercents(taskGuid);
+    percents = response.doneInPercents;
+    dispatch(setTaskDonePercents(response.doneInPercents));
+  }
+  dispatch(toggleIsFetching(false));
 };
 
 export const fetchSentencesCount = (languageId) => async (dispatch, getState) => {
@@ -267,8 +300,9 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
     const bookTitleWithVersion = await dispatch(fetchLastUploadedVersions(bookTitle));
     const bookTitleWithVersionJson = JSON.stringify(bookTitleWithVersion);
     form.append("jsonBookDescription", bookTitleWithVersionJson);
-    await dispatch(postBooksTexts(form, i));
+    const response = await dispatch(postBooksTexts(form, i));
     dispatch(toggleIsFetching(false));
+    await dispatch(fetchTaskDonePercents(response));
     await dispatch(fetchSentencesCount(i)); // to fetch dbSentencesCount[languageId] and change toggleIsLoading on true
   }
   dispatch(toggleIsDoneUpload(true));

@@ -34,11 +34,13 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, files
         <div className={s.showDetailsPlace}>{props.labelShowHide[0].value && <div>{sectionDbDetails(props)}</div>}</div>
         {/* Grid Block col-1 _ row-3 */}
         <div className={s.uploadFiles}>
-          {!!selectedFiles && !props.isDoneUpload && uploadFiles(props, selectedFiles)}
-          {props.isDoneUpload && <ShowFilesToUpload key={selectedFiles.languageId} selectedFiles={selectedFiles} sentencesCount={props.sentencesCount} />}
+          {!!selectedFiles && !props.isDoneUpload && uploadFiles(props, selectedFiles)}          
+          {props.isDoneUpload && (
+            <ShowFilesToUpload key={selectedFiles.languageId} selectedFiles={selectedFiles} sentencesCount={props.sentencesCount} />
+          )}
         </div>
         {/* Grid Block col-2 _ row-3 */}
-        <div className={s.freeSpaceOnUploadGrid}></div>
+        <div className={s.freeSpaceOnUploadGrid}>{props.taskDonePercents}</div>
       </div>
     </div>
   );

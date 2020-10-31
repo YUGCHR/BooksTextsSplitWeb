@@ -42,6 +42,7 @@ class UploadBooksContainerAPI extends React.Component {
           fileUploadHandler={this.props.fileUploadHandler} //
           isWrongCount={this.props.isWrongCount}
           dbSentencesCount={this.props.dbSentencesCount}
+          taskDonePercents={this.props.taskDonePercents}
         />
       </>
     );
@@ -67,7 +68,8 @@ let mapStateToProps = (state) => {
     booksTitles: state.uploadBooksPage.booksTitles,
     dbSentencesCount: state.uploadBooksPage.dbSentencesCount,
     sentencesCount: state.uploadBooksPage.sentencesCount,
-    isFetching: state.uploadBooksPage.isFetching,
+    isFetching: state.uploadBooksPage.isFetching, //using here
+    taskDonePercents: state.uploadBooksPage.taskDonePercents,
   };
 };
 
