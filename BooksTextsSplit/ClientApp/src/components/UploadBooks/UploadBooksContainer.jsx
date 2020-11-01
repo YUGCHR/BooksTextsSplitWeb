@@ -18,6 +18,12 @@ class UploadBooksContainerAPI extends React.Component {
     this.props.fetchSentencesCount(0);
     this.props.fetchSentencesCount(1);
   }
+
+  componentDidUpdate() {
+    // this.props.fetchSentencesCount(0);
+    // this.props.fetchSentencesCount(1);
+  }
+
   /* TODO it is possible to give the place (className style) where preloader will be shown */
   render() {
     return (

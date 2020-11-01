@@ -34,16 +34,29 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, files
         <div className={s.showDetailsPlace}>{props.labelShowHide[0].value && <div>{sectionDbDetails(props)}</div>}</div>
         {/* Grid Block col-1 _ row-3 */}
         <div className={s.uploadFiles}>
-          {!!selectedFiles && !props.isDoneUpload && uploadFiles(props, selectedFiles)}          
+          {!!selectedFiles && !props.isDoneUpload && uploadFiles(props, selectedFiles)}
           {props.isDoneUpload && (
             <ShowFilesToUpload key={selectedFiles.languageId} selectedFiles={selectedFiles} sentencesCount={props.sentencesCount} />
           )}
         </div>
         {/* Grid Block col-2 _ row-3 */}
-        <div className={s.freeSpaceOnUploadGrid}>{props.taskDonePercents}</div>
+        <div className={s.freeSpaceOnUploadGrid}>
+          <div>{props.taskDonePercents[0]}</div>
+          <div>{props.taskDonePercents[1]}</div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default UploadBooks;
+
+//TODO UploadPage
+// первый запрос - за названиями всего из ресурсов
+// загрузка файлов почти в любом количестве без особого контроля, только проверять,
+// что разрешённого сегодня (в этой версии) формата и не слишком дофига
+// после загрузки записать тексты в редис (после загрузки в базу удалить ключи)
+// анализировать - проверить есть ли шапки, какой язык текста, ещё что-то
+// можно окончательный анализ, если автоматически определился язык текста
+// отправить пользователю список загруженных (вообще доступных - загруженных, но не залитых в базу) файлов для разбора по парам, проверки языка и названий
+// для записи в редис генерировать токен, который потом пойдёт в таск для загрузки в базу

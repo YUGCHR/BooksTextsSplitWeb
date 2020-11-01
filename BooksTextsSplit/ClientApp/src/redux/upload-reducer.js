@@ -81,7 +81,8 @@ let initialState = {
   isUploadButtonDisabled: true,
   isWrongCount: false,
   metadataHeader: "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g",
-  taskDonePercents: 0,
+  taskDonePercents: [0, 0],
+  endWhilePercents: [97],
 };
 
 const uploadBooksReducer = (state = initialState, action) => {
@@ -108,7 +109,8 @@ const uploadBooksReducer = (state = initialState, action) => {
     case SET_TASK_DONE_PERCENTS: {
       let stateCopy = { ...state };
       stateCopy.taskDonePercents = { ...state.taskDonePercents };
-      stateCopy.taskDonePercents = action.doneInPercents;
+      stateCopy.taskDonePercents[0] = action.response[0].doneInPercents;
+      stateCopy.taskDonePercents[1] = action.response[1].doneInPercents;
       return stateCopy;
     }
     case SET_FILE_NAME: {
@@ -188,7 +190,7 @@ const uploadBooksReducer = (state = initialState, action) => {
 
 const setSentencesCount = (count, index) => ({ type: SET_SENTENCES_COUNT, count, index });
 const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
-const setTaskDonePercents = (doneInPercents) => ({ type: SET_TASK_DONE_PERCENTS, doneInPercents });
+const setTaskDonePercents = (response) => ({ type: SET_TASK_DONE_PERCENTS, response });
 
 const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
 const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
@@ -266,13 +268,15 @@ const postBooksTexts = (formData, i) => async (dispatch) => {
   return response;
 };
 
-const fetchTaskDonePercents = (taskGuid) => async (dispatch) => {
+const fetchTaskDonePercents = (taskGuid) => async (dispatch, getState) => {
+  let response = [{}, {}];
   dispatch(toggleIsFetching(true));
   let percents = 0;
-  while (percents < 97) {
-    const response = await uploadAPI.getUploadTaskPercents(taskGuid);
-    percents = response.doneInPercents;
-    dispatch(setTaskDonePercents(response.doneInPercents));
+  while (percents < getState().uploadBooksPage.endWhilePercents) {
+    response[0] = await uploadAPI.getUploadTaskPercents(taskGuid[0]);
+    response[1] = await uploadAPI.getUploadTaskPercents(taskGuid[1]);
+    percents = response[1].doneInPercents;
+    dispatch(setTaskDonePercents(response));
   }
   dispatch(toggleIsFetching(false));
 };
@@ -289,6 +293,7 @@ export const fetchSentencesCount = (languageId) => async (dispatch, getState) =>
 };
 
 export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) => {
+  let response = [{}, {}];
   dispatch(toggleUploadButtonDisable(true));
   for (let i = 0; i < selectedFiles.length; i++) {
     const form = new FormData();
@@ -300,12 +305,17 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
     const bookTitleWithVersion = await dispatch(fetchLastUploadedVersions(bookTitle));
     const bookTitleWithVersionJson = JSON.stringify(bookTitleWithVersion);
     form.append("jsonBookDescription", bookTitleWithVersionJson);
-    const response = await dispatch(postBooksTexts(form, i));
+    response[i] = await dispatch(postBooksTexts(form, i));
     dispatch(toggleIsFetching(false));
-    await dispatch(fetchTaskDonePercents(response));
-    await dispatch(fetchSentencesCount(i)); // to fetch dbSentencesCount[languageId] and change toggleIsLoading on true
   }
+  await dispatch(fetchTaskDonePercents(response));
   dispatch(toggleIsDoneUpload(true));
 };
 
 export default uploadBooksReducer;
+
+// TODO
+// возвращать весь класс textSentence
+// записывать проценты в массив
+// убрать запрос в базу после цикла
+// переделать запрос в базу на редис
