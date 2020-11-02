@@ -82,7 +82,7 @@ let initialState = {
   isWrongCount: false,
   metadataHeader: "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g",
   taskDonePercents: [0, 0],
-  endWhilePercents: [97],
+  endWhilePercents: [99],
 };
 
 const uploadBooksReducer = (state = initialState, action) => {
@@ -278,6 +278,9 @@ const fetchTaskDonePercents = (taskGuid) => async (dispatch, getState) => {
     percents = response[1].doneInPercents;
     dispatch(setTaskDonePercents(response));
   }
+  response[0].doneInPercents = 100;
+  response[1].doneInPercents = 100;
+  dispatch(setTaskDonePercents(response));
   dispatch(toggleIsFetching(false));
 };
 
@@ -295,6 +298,7 @@ export const fetchSentencesCount = (languageId) => async (dispatch, getState) =>
 export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) => {
   let response = [{}, {}];
   dispatch(toggleUploadButtonDisable(true));
+  dispatch(toggleIsDoneUpload(true));
   for (let i = 0; i < selectedFiles.length; i++) {
     const form = new FormData();
     form.append("bookFile", selectedFiles[i], selectedFiles[i].name);
@@ -309,7 +313,6 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
     dispatch(toggleIsFetching(false));
   }
   await dispatch(fetchTaskDonePercents(response));
-  dispatch(toggleIsDoneUpload(true));
 };
 
 export default uploadBooksReducer;

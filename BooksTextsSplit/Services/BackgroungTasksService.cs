@@ -94,7 +94,6 @@ namespace BooksTextsSplit.Services
 
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
                         {
-
                             textSentences[tsi].Id = Guid.NewGuid().ToString();
                             textSentences[tsi].BookId = bookDescription.BookId;
                             textSentences[tsi].AuthorNameId = bookDescription.AuthorNameId;
@@ -107,11 +106,11 @@ namespace BooksTextsSplit.Services
                             // TODO add the key with percents to Redis
                             doneInPercents = tsi * 10000.0 / textSentencesLength;
                             percentCurrent = Convert.ToInt32(doneInPercents / 100);
-                            if (percentCurrent > percentPrevious + percentDecrement)
+                            if (percentCurrent >= percentPrevious + percentDecrement)
                             {
                                 uploadPercents.CurrentUploadingRecord = tsi;
                                 uploadPercents.DoneInPercents = percentCurrent;
-
+                                _logger.LogInformation("Task RecordFileToDb {Guid} recorded " + percentCurrent.ToString() + " % to DB", guid);
                                 await cache.Cache.SetObjectAsync(tackKeyForRedis, uploadPercents, TimeSpan.FromDays(1));
                                 percentPrevious = percentCurrent;
                             }

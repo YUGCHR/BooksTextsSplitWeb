@@ -20,7 +20,7 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, files
         {/* Grid Block col-1 _ row-2 */}
         <div className={s.selectFiles}>
           {!selectedFiles && <SelectBookFiles setFileName={props.setFileName} isWrongCount={props.isWrongCount} />}
-          {!!selectedFiles && (
+          {!!selectedFiles && !props.isDoneUpload && (
             <div>
               {/* TODO add button to return to the files selection? */}
               {/* TODO спрятать после нажатия на кнопку Upload */}
@@ -41,8 +41,20 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, files
         </div>
         {/* Grid Block col-2 _ row-3 */}
         <div className={s.freeSpaceOnUploadGrid}>
-          <div>{props.taskDonePercents[0]}</div>
-          <div>{props.taskDonePercents[1]}</div>
+          {props.isDoneUpload && (
+            <div>
+              <div>
+                {" is uploaded - "}
+                {props.taskDonePercents[0]}
+                {"%"}
+              </div>
+              <div>
+                {" is uploaded - "}
+                {props.taskDonePercents[1]}
+                {"%"}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

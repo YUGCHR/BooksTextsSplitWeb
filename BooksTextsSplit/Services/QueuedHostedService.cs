@@ -22,9 +22,9 @@ namespace BooksTextsSplit.Services
         public IBackgroundTaskQueue TaskQueue { get; }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {            
+        {
             _logger.LogInformation(
-                $"Queued Hosted Service is running.{Environment.NewLine}" +
+                $"Queued Hosted Service is running with concurrent 3 Tasks.{Environment.NewLine}" +
                 $"{Environment.NewLine}Send get Worker to add a work item to the " +
                 $"background queue.{Environment.NewLine}");
 
@@ -49,7 +49,7 @@ namespace BooksTextsSplit.Services
                         //Console.WriteLine("Finished a work item");
                     }
                     catch (Exception ex)
-                                            
+                    {
                         _logger.LogError(ex,
                             "Error occurred executing {WorkItem}.", nameof(workItem));
                     }
