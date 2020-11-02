@@ -1,0 +1,26 @@
+.footer{
+  /* grid-column: 1/3;
+  grid-row: 1/2; */
+  grid-area: f;
+  padding: 10px;
+    border: 2px solid #114471;
+    background-color: #146252;
+  }
+
+  .loginPlace{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .logoPicture{    
+    background-color: #9EB7CD;    
+  }  
+  
+  .loginBlock{
+    color: #9EB7CD;
+  }
+
+  .allButtonsBodies{
+    color: #9EB7CD; /* серо-голубым */ 
+    background-color: #146252; /* изумрудным */
+}

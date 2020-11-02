@@ -14,7 +14,7 @@ const Navbar = () => {
     </div>
 
     <div className={`${s.item} ${s.activeLink}`}>
-      <NavLink to='/read' activeClassName={s.activeLink}>ToReadAndTranslate</NavLink>
+      <NavLink to='/read' activeClassName={s.activeLink}>ReadABook</NavLink>
     </div>
 
     <div className={`${s.item} ${s.activeLink}`}>

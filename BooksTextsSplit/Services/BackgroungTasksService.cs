@@ -51,7 +51,8 @@ namespace BooksTextsSplit.Services
                     _logger.LogInformation(
                     "Queued Background Task RecordFileToDb {Guid} is starting", guid);
 
-                    // TODO it's necessary to pass bookDescription to AnalyseTextBook and use bookDescription.properties when initielize textSentences[]
+                    // TODO it's necessary to pass bookDescription to AnalyseTextBook and 
+                    // use bookDescription.properties when initielize textSentences[]
                     TextSentence[] textSentences = AnalyseTextBook(text, desiredTextLanguage);
                     int textSentencesLength = textSentences.Length;
                     //string json = JsonSerializer.Serialize(textSentences);
@@ -80,7 +81,7 @@ namespace BooksTextsSplit.Services
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
                         {
                             // Check the time of one cycle, calculate the whole task run time, 
-                            // if it more 10 sec, percents will be shown - 1 state per second
+                            // if it is more 10 sec, than percents will be shown - 1 state per second
 
                             textSentences[tsi].Id = Guid.NewGuid().ToString();
                             textSentences[tsi].BookId = bookDescription.BookId;

@@ -1,15 +1,26 @@
 .app-wrapper {
     height: 100vh;
+    margin: 0;
     display: grid;
-    grid-template-rows: minmax(min-content, max-content) minmax(min-content, max-content) auto;
+    /* min-height: 100%; */
+    /* grid-template-rows: minmax(min-content, max-content) minmax(min-content, max-content) auto;
     grid-template-columns: minmax(min-content, max-content) auto;
-    grid-auto-flow: row;    
+    grid-auto-flow: row;  */   
+    /* grid-gap: 5px; */    
+    grid-template-columns: repeat(12, 1fr);
+    /* grid-template-rows: minmax(min-content, max-content) minmax(min-content, max-content) minmax(min-content, max-content); */
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        "h h h h h h h h h h h h"
+        "m m c c c c c c c c c c"
+        "f f f f f f f f f f f f";
     background-color: #146252; /* изумрудным */
 }
 
 .app-wrapper-content {
-    grid-column: 2/3;
-    grid-row: 2/3;
+    /* grid-column: 2/3;
+    grid-row: 2/3; */
+    grid-area: c;
     color: lightgreen;
     background-color: #146252; /* изумрудным */
 }
@@ -31,3 +42,12 @@
 махаоном - #552614
 латте - #CFBEAA
 черным - #242426 */
+
+/* display: grid;
+grid-template:
+  "avatar avatar  name  name  name"   2rem
+  "avatar avatar  posts posts posts"
+  "about  about   posts posts posts"  6rem
+  "...... ......  posts posts posts"
+  / 2fr    10px    3fr   1fr   5vw
+; */

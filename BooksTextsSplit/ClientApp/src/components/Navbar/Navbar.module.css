@@ -1,6 +1,7 @@
 .nav {
-    grid-column: 1/2;
-    grid-row: 2/3;    
+    /* grid-column: 1/2;
+    grid-row: 2/3;  */   
+    grid-area: m;
     padding: 10px;
     border: 2px solid #114471;
     background-color: #146252;
@@ -12,10 +13,15 @@
 }
 
 .item a.activeLink {
-    color: gold;
-    background-color: red;
+    color: #114471; /* берлинской лазурью */
+    /* color: #D3D70E; шартрезом */
+    background-color: #9EB7CD; /* серо-голубым */
+    /* background-color: #960023; кардиналом */
 }
 
 .blank {
     color: lightgreen;
 }
+
+/* берлинской лазурью - #114471
+серо-голубым - #9EB7CD */

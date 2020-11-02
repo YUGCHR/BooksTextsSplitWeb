@@ -83,6 +83,7 @@ let initialState = {
   metadataHeader: "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g",
   taskDonePercents: [0, 0],
   endWhilePercents: [99],
+  whoCalled: "",
 };
 
 const uploadBooksReducer = (state = initialState, action) => {
@@ -163,7 +164,12 @@ const uploadBooksReducer = (state = initialState, action) => {
       return stateCopy;
     }
     case TOGGLE_IS_FETCHING: {
-      return { ...state, isFetching: action.isFetching };
+      if(action.isFetching){
+      return { ...state, isFetching: action.isFetching, whoCalled: action.whoCalled };
+      }
+      else{
+        return { ...state, isFetching: action.isFetching, whoCalled: "" };
+      }
     }
     case TOGGLE_IS_DONE_UPLOAD: {
       return { ...state, isDoneUpload: action.isDoneUpload };
@@ -188,12 +194,20 @@ const uploadBooksReducer = (state = initialState, action) => {
   }
 };
 
+/* {
+  ...state,
+  ...action.payload,
+  //isAuth: action.isAuth,
+};
+export const setAuthUserData = (userId, email, login, isAuth) => ({ type: SET_USER_DATA, payload: { userId, email, login, isAuth } });
+ */
+
 const setSentencesCount = (count, index) => ({ type: SET_SENTENCES_COUNT, count, index });
 const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
 const setTaskDonePercents = (response) => ({ type: SET_TASK_DONE_PERCENTS, response });
 
 const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
-const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
+const toggleIsFetching = (isFetching, whoCalled) => ({ type: TOGGLE_IS_FETCHING, isFetching, whoCalled });
 const toggleIsDoneUpload = (isDoneUpload) => ({ type: TOGGLE_IS_DONE_UPLOAD, isDoneUpload });
 const toggleUploadButtonDisable = (isUploadButtonDisabled) => ({ type: TOGGLE_UPLOAD_BUTTON_ENABLE, isUploadButtonDisabled });
 
@@ -206,7 +220,7 @@ export const setRadioResult = (chosenLang, i) => ({ type: RADIO_IS_CHANGED, chos
 export const setShowHideState = (chosenLang, i) => ({ type: SHOW_HIDE_STATE, chosenLang, i }); // used in ShowSelectedFiles
 
 const fetchLastUploadedVersions = (bookTitle) => async (dispatch, getState) => {
-  dispatch(toggleIsFetching(true));
+  dispatch(toggleIsFetching(true, "fetchLastUploadedVersions"));
   const response = await uploadAPI.getLastUploadedVersions(bookTitle.bookId, bookTitle.languageId); // to find all previously uploaded versions of the file with this bookId
   dispatch(toggleIsFetching(false));
   bookTitle.uploadVersion = response.maxUploadedVersion;
@@ -261,7 +275,7 @@ const setFilesMetadata = (files) => async (dispatch, getState) => {
 };
 
 const postBooksTexts = (formData, i) => async (dispatch) => {
-  dispatch(toggleIsFetching(true));
+  dispatch(toggleIsFetching(true, "postBooksTexts"));
   const response = await uploadAPI.uploadFile(formData); //post returns response before all records have loaded in db
   dispatch(toggleIsFetching(false));
   dispatch(setSentencesCount(response, i)); //totalCount
@@ -270,7 +284,7 @@ const postBooksTexts = (formData, i) => async (dispatch) => {
 
 const fetchTaskDonePercents = (taskGuid) => async (dispatch, getState) => {
   let response = [{}, {}];
-  dispatch(toggleIsFetching(true));
+  dispatch(toggleIsFetching(true, "fetchTaskDonePercents"));
   let percents = 0;
   while (percents < getState().uploadBooksPage.endWhilePercents) {
     response[0] = await uploadAPI.getUploadTaskPercents(taskGuid[0]);
@@ -285,7 +299,7 @@ const fetchTaskDonePercents = (taskGuid) => async (dispatch, getState) => {
 };
 
 export const fetchSentencesCount = (languageId) => async (dispatch, getState) => {
-  dispatch(toggleIsFetching(true));
+  dispatch(toggleIsFetching(true, "fetchSentencesCount"));
   const response = await uploadAPI.getSentenceCount(languageId);
   dispatch(toggleIsFetching(false));
   dispatch(setDbSentencesCount(response.sentencesCount, languageId));
@@ -304,7 +318,7 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
     form.append("bookFile", selectedFiles[i], selectedFiles[i].name);
     // TODO it is possible to pass data in array (Object!) instead file properties
     const bookTitle = getState().uploadBooksPage.booksTitles[i]; //[0];
-    dispatch(toggleIsFetching(true));
+    dispatch(toggleIsFetching(true, "fileUploadHandler"));
     // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
     const bookTitleWithVersion = await dispatch(fetchLastUploadedVersions(bookTitle));
     const bookTitleWithVersionJson = JSON.stringify(bookTitleWithVersion);

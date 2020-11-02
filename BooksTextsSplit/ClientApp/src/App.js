@@ -8,6 +8,7 @@ import { withSuspense } from "./hoc/withSuspense";
 import store from "./redux/redux-store";
 import "./App.css";
 import HeaderContainer from "./components/Header/HeaderContainer";
+import FooterContainer from "./components/Footer/FooterContainer";
 //import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
 import Preloader from "./components/common/preloader/Preloader";
@@ -55,6 +56,7 @@ class App extends Component {
             <Route path="*" render={() => <div>404 NOT FOUND</div>} />
           </Switch>
         </div>
+        <FooterContainer />
       </div>
     );
   }

@@ -10,7 +10,6 @@ import {
   setShowHideState,
 } from "../../redux/upload-reducer";
 import UploadBooks from "./UploadBooks";
-import Preloader from "../common/preloader/Preloader";
 
 class UploadBooksContainerAPI extends React.Component {
   componentDidMount() {
@@ -28,7 +27,7 @@ class UploadBooksContainerAPI extends React.Component {
   render() {
     return (
       <>
-        {this.props.isFetching ? <Preloader /> : null}
+        {/* {this.props.isFetching ? <Preloader /> : null} */}
         <UploadBooks
           selectedFiles={this.props.selectedFiles} // used in ShowSelectedFiles
           radioChosenLanguage={this.props.radioChosenLanguage} // used in ShowSelectedFiles
