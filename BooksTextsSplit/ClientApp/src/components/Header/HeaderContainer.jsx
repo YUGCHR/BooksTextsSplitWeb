@@ -12,8 +12,8 @@ let mapStateToProps = (state) => ({
   isAuth: state.auth.isAuth,
   email: state.auth.email,
   login: state.auth.login,
-  isFetching: state.uploadBooksPage.isFetching,
-  whoCalled: state.uploadBooksPage.whoCalled,
+  isFetching: state.app.isFetching,
+  whoCalled: state.app.whoCalledPreloader,
 });
 
 export default connect(mapStateToProps, { logout })(HeaderContainer);

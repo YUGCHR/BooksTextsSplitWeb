@@ -27,6 +27,7 @@ class App extends Component {
     console.error("catchAllUnhandledErrors", reason, promise);
   };
   componentDidMount() {
+    // TODO - Get all user data from Redis and return it to UI
     this.props.initializeApp(); //thunk
     window.addEventListener("unhandledrejection", this.catchAllUnhandledErrors);
   }

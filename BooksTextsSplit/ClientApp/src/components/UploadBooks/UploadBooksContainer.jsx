@@ -73,7 +73,7 @@ let mapStateToProps = (state) => {
     booksTitles: state.uploadBooksPage.booksTitles,
     dbSentencesCount: state.uploadBooksPage.dbSentencesCount,
     sentencesCount: state.uploadBooksPage.sentencesCount,
-    isFetching: state.uploadBooksPage.isFetching, //using here
+    //isFetching: state.app.isFetching, //using here
     taskDonePercents: state.uploadBooksPage.taskDonePercents,
   };
 };

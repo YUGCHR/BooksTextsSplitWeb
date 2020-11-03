@@ -32,6 +32,7 @@ namespace BooksTextsSplit.Controllers
         private IBackgroungTasksService _task2Queue;
         private readonly ILogger<BookTextsController> _logger;
         private readonly RedisContext cache;
+        private readonly IAccessCacheData _access;
         private readonly ICosmosDbService _context;
         private IAuthService _authService;
         private IResultDataService _result;
@@ -41,20 +42,37 @@ namespace BooksTextsSplit.Controllers
             ILogger<BookTextsController> logger,
             ICosmosDbService cosmosDbService,
             RedisContext c,
+            IAccessCacheData access,
             IAuthService authService,
             IResultDataService resultDataService)
         {
             _task2Queue = task2Queue;
             _logger = logger;
             cache = c;
+            _access = access;
             _context = cosmosDbService;
             _authService = authService;
             _result = resultDataService;
         }
 
         #region GET
+        
+        // GET: api/BookTexts/cache/ - test cache
+        [AllowAnonymous]
+        [HttpGet("cache")]
+        public async Task<ActionResult<User>> GetCache()
+        {
+            string bookSentenceIdKey = "bookSentenceId:100";
+            
+            //await _access.SetObjectAsync<string>(key, key, TimeSpan.FromDays(1));
+            //string value = await _access.GetObjectAsync<string>(key);
 
-        // GET: api/BookTexts/auth/init/ - for localizer testing
+            List<TextSentence> requestedSelectResult = await _access.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesFromDb("bookSentenceId", 1));
+
+            return Ok(requestedSelectResult); 
+        }
+
+        // GET: api/BookTexts/auth/init/ - check is user logged in on app start
         [AllowAnonymous]
         [HttpGet("auth/init")]
         public ActionResult<string> GetInit()
@@ -72,6 +90,7 @@ namespace BooksTextsSplit.Controllers
         public async Task<ActionResult<LoginAttemptResult>> GetMe()
         {
             string userEmail = User?.Identity?.Name;
+            // TODO - Get all user data from Redis and return it to UI
             if (User?.Identity == null)
             {
                 return await _result.ResultData(2, null);

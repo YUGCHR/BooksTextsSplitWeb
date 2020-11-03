@@ -29,7 +29,7 @@ namespace BooksTextsSplit.Services
         }
 
         #region CreateUsers
-        // Temporary - to create users in Redis only
+        //Temporary - to create users in Redis only
         //private List<User> _users = new List<User>
         //{
         //    new User {

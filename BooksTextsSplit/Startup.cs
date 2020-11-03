@@ -50,10 +50,10 @@ namespace BooksTextsSplit
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            // configure DI for application services
+            // configure DI for application services            
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IResultDataService, ResultDataService>();
-            services.AddScoped<BooksTextsSplit.Models.User>();
+            services.AddScoped<BooksTextsSplit.Models.User>(); // ?
 
             // Consuming a scoped service in a background task
             //services.AddSingleton<MonitorLoop>();
@@ -103,6 +103,7 @@ namespace BooksTextsSplit
             //services.AddLocalization(op ;
             //services.AddSingleton<IDatabase>(muxer.GetDatabase());
             //services.AddSingleton<CachingFramework.Redis.Contracts.Providers.ICacheProvider>(muxer);
+            services.AddScoped<IAccessCacheData, AccessCacheData>();
 
         }
 

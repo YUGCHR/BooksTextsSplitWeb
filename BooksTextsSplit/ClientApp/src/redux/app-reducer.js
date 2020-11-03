@@ -6,6 +6,7 @@ let initialState = {
   initialized: false,
   isFetching: false,
   globalError: null,
+  whoCalledPreloader: "",
 };
 
 const appReducer = (state = initialState, action) => {
@@ -15,12 +16,14 @@ const appReducer = (state = initialState, action) => {
         ...state,
         initialized: true,
       };
-
-    case TOGGLE_IS_FETCHING:
-      return {
-        ...state,
-        isFetching: action.isFetching,
-      };
+      case TOGGLE_IS_FETCHING: {
+        if(action.isFetching){
+        return { ...state, isFetching: action.isFetching, whoCalledPreloader: action.whoCalled };
+        }
+        else{
+          return { ...state, isFetching: action.isFetching, whoCalledPreloader: "" };
+        }
+      }
     default:
       return state;
   }
@@ -30,6 +33,7 @@ export const initializedSuccess = () => ({ type: INITIALIZED_SUCCESS });
 
 export const initializeApp = () => (dispatch) => {
   dispatch(toggleIsFetching(true));
+  // TODO - Get all user data from Redis and return it to UI
   let promise = dispatch(getInit());  
   Promise.all([promise]).then(() => {
     dispatch(toggleIsFetching(false));
@@ -37,6 +41,6 @@ export const initializeApp = () => (dispatch) => {
   });
 };
 
-export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
+export const toggleIsFetching = (isFetching, whoCalled) => ({ type: TOGGLE_IS_FETCHING, isFetching, whoCalled });
 
 export default appReducer;

@@ -1,4 +1,5 @@
 import { uploadAPI } from "../api/api";
+import { toggleIsFetching } from "./app-reducer";
 
 const SET_DB_SENTENCES_COUNT = "SET-DB-SENTENCES-COUNT";
 const SET_SENTENCES_COUNT = "SET-SENTENCES-COUNT";
@@ -83,7 +84,7 @@ let initialState = {
   metadataHeader: "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g",
   taskDonePercents: [0, 0],
   endWhilePercents: [99],
-  whoCalled: "",
+  whoCalledPreloader: "",
 };
 
 const uploadBooksReducer = (state = initialState, action) => {
@@ -165,10 +166,10 @@ const uploadBooksReducer = (state = initialState, action) => {
     }
     case TOGGLE_IS_FETCHING: {
       if(action.isFetching){
-      return { ...state, isFetching: action.isFetching, whoCalled: action.whoCalled };
+      return { ...state, isFetching: action.isFetching, whoCalledPreloader: action.whoCalled };
       }
       else{
-        return { ...state, isFetching: action.isFetching, whoCalled: "" };
+        return { ...state, isFetching: action.isFetching, whoCalledPreloader: "" };
       }
     }
     case TOGGLE_IS_DONE_UPLOAD: {
@@ -207,7 +208,7 @@ const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COU
 const setTaskDonePercents = (response) => ({ type: SET_TASK_DONE_PERCENTS, response });
 
 const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
-const toggleIsFetching = (isFetching, whoCalled) => ({ type: TOGGLE_IS_FETCHING, isFetching, whoCalled });
+//const toggleIsFetching = (isFetching, whoCalled) => ({ type: TOGGLE_IS_FETCHING, isFetching, whoCalled });
 const toggleIsDoneUpload = (isDoneUpload) => ({ type: TOGGLE_IS_DONE_UPLOAD, isDoneUpload });
 const toggleUploadButtonDisable = (isUploadButtonDisabled) => ({ type: TOGGLE_UPLOAD_BUTTON_ENABLE, isUploadButtonDisabled });
 
