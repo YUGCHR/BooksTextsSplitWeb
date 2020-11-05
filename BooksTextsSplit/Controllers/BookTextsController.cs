@@ -20,6 +20,7 @@ using Microsoft.Extensions.Localization;
 using BooksTextsSplit.Helpers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using CachingFramework.Redis.Contracts.Providers;
 
 namespace BooksTextsSplit.Controllers
 {
@@ -31,7 +32,7 @@ namespace BooksTextsSplit.Controllers
     {
         private IBackgroungTasksService _task2Queue;
         private readonly ILogger<BookTextsController> _logger;
-        private readonly RedisContext cache;
+        private readonly ICacheProviderAsync _cache;
         private readonly IAccessCacheData _access;
         private readonly ICosmosDbService _context;
         private IAuthService _authService;
@@ -41,14 +42,14 @@ namespace BooksTextsSplit.Controllers
             IBackgroungTasksService task2Queue,
             ILogger<BookTextsController> logger,
             ICosmosDbService cosmosDbService,
-            RedisContext c,
+            ICacheProviderAsync cache,
             IAccessCacheData access,
             IAuthService authService,
             IResultDataService resultDataService)
         {
             _task2Queue = task2Queue;
             _logger = logger;
-            cache = c;
+            _cache = cache;
             _access = access;
             _context = cosmosDbService;
             _authService = authService;
@@ -67,7 +68,8 @@ namespace BooksTextsSplit.Controllers
             //await _access.SetObjectAsync<string>(key, key, TimeSpan.FromDays(1));
             //string value = await _access.GetObjectAsync<string>(key);
 
-            List<TextSentence> requestedSelectResult = await _access.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesFromDb("bookSentenceId", 1));
+            List<TextSentence> requestedSelectResult = await _access.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, 
+                () => FetchBooksNamesFromDb("bookSentenceId", 1));
 
             return Ok(requestedSelectResult); 
         }
@@ -113,7 +115,7 @@ namespace BooksTextsSplit.Controllers
         public async Task<ActionResult<TaskUploadPercents>> GetUploadTaskPercents([FromQuery] string taskGuid)
         {
             int percentDecrement = 0;
-            var taskStateCurrent = await cache.Cache.GetObjectAsync<TaskUploadPercents>(taskGuid);
+            var taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
             int percentCurrent = taskStateCurrent.DoneInPercents;
             int percentChanged = percentCurrent;
 
@@ -121,11 +123,19 @@ namespace BooksTextsSplit.Controllers
             {
                 percentChanged = percentCurrent;
                 await Task.Delay(100);
-                taskStateCurrent = await cache.Cache.GetObjectAsync<TaskUploadPercents>(taskGuid);
+                taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
                 percentCurrent = taskStateCurrent.DoneInPercents;
             }
             return taskStateCurrent;
         }
+
+
+
+
+
+
+
+
 
         // GET: api/BookTexts/Count/        
         [HttpGet("count")]
@@ -140,9 +150,31 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("count/{languageId}")]
         public async Task<ActionResult<TotalCount>> GetTotalCount(int languageId, [FromQuery] int param)
         {
-            return new TotalCount((await _context.GetItemsAsync("SELECT * FROM c")).Where(i => i.LanguageId == languageId).Count());
-            //return new TotalCount { sentencesCount = 5 };
+            string key = "GetTotalCountWhereLanguageId";
+            string dbWhere = "languageId";
+            if (await _access.KeyExistsAsync(key))
+            {
+                bool removeResuplt = await _access.RemoveAsync(key);
+            }
+            //return new TotalCount((await _context.GetItemsAsync($"SELECT * FROM c WHERE c.{dbWhere} = {languageId}")).Count());
+            int totalLangSentences = await _access.FetchObjectAsync<int?>(key, () => FetchDataFromDb(dbWhere, languageId)) ?? 0;
+            return new TotalCount(totalLangSentences);
+            //return new TotalCount(await _access.GetObjectAsync<int>(key));
+        }        
+        // System.NotSupportedException: Deserialization of reference types without parameterless constructor is not supported. Type 'BooksTextsSplit.Models.TotalCount'
+        // System.Text.Json.JsonException: The JSON value could not be converted to System.Int32. Path: $ | LineNumber: 0 | BytePositionInLine: 1.
+        public async Task<int?> FetchDataFromDb(string where, int whereValue)
+        {
+            int totalLangSentences = (await _context.GetItemsAsync($"SELECT * FROM c WHERE c.{where} = {whereValue}")).Count();
+            return totalLangSentences;
         }
+
+        
+
+
+
+
+
 
         // GET: api/BookTexts
         [HttpGet]
@@ -200,7 +232,7 @@ namespace BooksTextsSplit.Controllers
         public async Task<BooksNamesExistInDb> FetchBooksNamesIds(string where, int whereValue, int startUploadVersion)
         {
             string bookSentenceIdKey = where + ":" + whereValue.ToString();
-            List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesFromDb(where, whereValue));
+            List<TextSentence> requestedSelectResult = await _cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesFromDb(where, whereValue));
 
             List<TextSentence> toSelectBookNameFromAll = requestedSelectResult.Where(r => r.UploadVersion == startUploadVersion).ToList();
 
@@ -228,7 +260,7 @@ namespace BooksTextsSplit.Controllers
         public async Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId)
         {
             string bookSentenceIdKey = where + ":" + whereValue.ToString();
-            List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesFromDb(where, whereValue));
+            List<TextSentence> requestedSelectResult = await _cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesFromDb(where, whereValue));
 
             IEnumerable<IGrouping<int, TextSentence>> languageIdGrouping = requestedSelectResult.Where(r => r.BookId == bookId).ToList().GroupBy(r => r.LanguageId);
 
@@ -275,7 +307,7 @@ namespace BooksTextsSplit.Controllers
 
             // Set List to Redis
             string createdKeyNameFromRequest = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookSentenceId:1                                                                                
-            await cache.Cache.SetObjectAsync(createdKeyNameFromRequest, requestedSelectResult, TimeSpan.FromDays(1));
+            await _cache.SetObjectAsync(createdKeyNameFromRequest, requestedSelectResult, TimeSpan.FromDays(1));
 
             return requestedSelectResult;
         }
@@ -290,7 +322,7 @@ namespace BooksTextsSplit.Controllers
         public async Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value)
         {
             string booksPairTextsKey = where1 + ":" + where1Value.ToString();
-            List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(booksPairTextsKey, () => FetchBooksTextsFromDb(where1, where1Value));
+            List<TextSentence> requestedSelectResult = await _cache.FetchObjectAsync<List<TextSentence>>(booksPairTextsKey, () => FetchBooksTextsFromDb(where1, where1Value));
 
             //where2 must be uploadVersion for the next grouping
             //TODO get UploadVersion from where2
@@ -322,7 +354,7 @@ namespace BooksTextsSplit.Controllers
 
             // Set List to Redis
             string createdKeyNameFromRequest = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookId:(selected BookId)                                                                                
-            await cache.Cache.SetObjectAsync(createdKeyNameFromRequest, requestedSelectResult, TimeSpan.FromDays(1));
+            await _cache.SetObjectAsync(createdKeyNameFromRequest, requestedSelectResult, TimeSpan.FromDays(1));
 
             return requestedSelectResult;
         }
@@ -500,7 +532,7 @@ namespace BooksTextsSplit.Controllers
                 };
 
                 //Redis key initialization - must be not null for GetUploadTaskPercents
-                await cache.Cache.SetObjectAsync(guid, uploadPercents, TimeSpan.FromDays(1));
+                await _cache.SetObjectAsync(guid, uploadPercents, TimeSpan.FromDays(1));
 
                 _task2Queue.RecordFileToDbInBackground(bookFile, jsonBookDescription, guid);
 

@@ -6,6 +6,7 @@ using CachingFramework.Redis;
 using Microsoft.Extensions.Localization;
 using BooksTextsSplit.Models;
 using BooksTextsSplit.Helpers;
+using CachingFramework.Redis.Contracts.Providers;
 
 namespace BooksTextsSplit.Services
 {
@@ -17,12 +18,12 @@ namespace BooksTextsSplit.Services
     }
     public class ResultDataService : IResultDataService
     {
-        private readonly RedisContext cache;
+        private readonly ICacheProviderAsync _cache;
         private readonly IStringLocalizer<ResultDataService> _localizer;
 
-        public ResultDataService(RedisContext c, IStringLocalizer<ResultDataService> localizer)
+        public ResultDataService(ICacheProviderAsync cache, IStringLocalizer<ResultDataService> localizer)
         {
-            cache = c;
+            _cache = cache;
             _localizer = localizer;
             
         }
@@ -35,7 +36,7 @@ namespace BooksTextsSplit.Services
             {
                 if (userEmail != null)
                 {
-                    user = (await cache.Cache.GetObjectAsync<User>(userEmail)).WithoutPassword();
+                    user = (await _cache.GetObjectAsync<User>(userEmail)).WithoutPassword();
                     if (user == null)
                     {
                         resultCode = 5;
@@ -69,12 +70,12 @@ namespace BooksTextsSplit.Services
 
         private async Task<string> CreateToken(string emailKey)
         {
-            User user = await cache.Cache.GetObjectAsync<User>(emailKey);
+            User user = await _cache.GetObjectAsync<User>(emailKey);
             user.Token = "4db6A12C94kfv51qaxB2sdgf781xvf11dfnhsr3382gui914asc6A12C94acdfb51cbB2avs781db1";
 
             // Set Token to Redis                                          
-            await cache.Cache.SetObjectAsync(user.Token, user, TimeSpan.FromDays(1));
-            User getNewToken = await cache.Cache.GetObjectAsync<User>(user.Token);
+            await _cache.SetObjectAsync(user.Token, user, TimeSpan.FromDays(1));
+            User getNewToken = await _cache.GetObjectAsync<User>(user.Token);
             if (getNewToken.Token == user.Token)
             {
                 return getNewToken.Token;

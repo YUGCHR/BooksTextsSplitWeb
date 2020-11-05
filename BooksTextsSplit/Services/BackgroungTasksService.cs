@@ -6,6 +6,7 @@ using System.IO;
 using System.Text.Json;
 using CachingFramework.Redis;
 using Microsoft.Extensions.Logging;
+using CachingFramework.Redis.Contracts.Providers;
 
 namespace BooksTextsSplit.Services
 {
@@ -18,18 +19,18 @@ namespace BooksTextsSplit.Services
     {
         private readonly IBackgroundTaskQueue _taskQueue;
         private readonly ILogger<BackgroungTasksService> _logger;
-        private readonly RedisContext cache;
+        private readonly ICacheProviderAsync _cache;
         private readonly ICosmosDbService _context;
 
         public BackgroungTasksService(
             IBackgroundTaskQueue taskQueue,
             ILogger<BackgroungTasksService> logger,
             ICosmosDbService cosmosDbService,
-            RedisContext c)
+            ICacheProviderAsync cache)
         {
             _taskQueue = taskQueue;
             _logger = logger;
-            cache = c;
+            _cache = cache;
             _context = cosmosDbService;
         }
 
@@ -98,7 +99,7 @@ namespace BooksTextsSplit.Services
                                 uploadPercents.CurrentUploadingRecord = tsi; // for debug only
                                 uploadPercents.DoneInPercents = percentCurrent;
                                 // _logger.LogInformation("Task RecordFileToDb {Guid} recorded " + percentCurrent.ToString() + " % to DB", guid);
-                                await cache.Cache.SetObjectAsync(tackKeyForRedis, uploadPercents, TimeSpan.FromDays(1));
+                                await _cache.SetObjectAsync(tackKeyForRedis, uploadPercents, TimeSpan.FromDays(1));
                                 percentPrevious = percentCurrent;
                             }
                             await _context.AddItemAsync(textSentences[tsi]);

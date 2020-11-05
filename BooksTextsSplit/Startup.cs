@@ -20,6 +20,7 @@ using BooksTextsSplit.Helpers;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using CachingFramework.Redis.Contracts.Providers;
 
 namespace BooksTextsSplit
 {
@@ -91,7 +92,9 @@ namespace BooksTextsSplit
             try
             {
                 ConnectionMultiplexer muxer = ConnectionMultiplexer.Connect("localhost");
-                services.AddSingleton<RedisContext>(new RedisContext(muxer));
+                //muxer.GetDatabase().StringGet
+                //services.AddSingleton<RedisContext>(new RedisContext(muxer));
+                services.AddSingleton<ICacheProviderAsync>(new RedisContext(muxer).Cache);
             }
             catch (Exception ex)
             {

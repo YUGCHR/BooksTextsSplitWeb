@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using CachingFramework.Redis;
 using BooksTextsSplit.Models;
 using BooksTextsSplit.Helpers;
+using CachingFramework.Redis.Contracts.Providers;
 
 namespace BooksTextsSplit.Services
 {
@@ -21,11 +22,11 @@ namespace BooksTextsSplit.Services
     public class AuthService : IAuthService
     {
         private readonly IHttpContextAccessor _httpContext;
-        private readonly RedisContext cache;
-        public AuthService(IHttpContextAccessor httpContext, RedisContext c)
+        private readonly ICacheProviderAsync _cache;
+        public AuthService(IHttpContextAccessor httpContext, ICacheProviderAsync cache)
         {
             _httpContext = httpContext;
-            cache = c;            
+            _cache = cache;
         }
 
         #region CreateUsers
@@ -82,7 +83,7 @@ namespace BooksTextsSplit.Services
             #endregion
 
             //var user = await Task.Run(() => _users.SingleOrDefault(x => x.Email == email && x.Password == password));
-            User user = await cache.Cache.GetObjectAsync<User>(email); // email == userKey for Redis
+            User user = await _cache.GetObjectAsync<User>(email); // email == userKey for Redis
             
             if (user != null && user.Password == password)
             {                
@@ -101,7 +102,7 @@ namespace BooksTextsSplit.Services
         #region LEGACY
         public async Task<User> AuthByToken(string fetchToken) // this.AuthenticationWithToken was changed on AuthenticationWithCoockie
         {
-            User userWithToken = await cache.Cache.GetObjectAsync<User>(fetchToken);
+            User userWithToken = await _cache.GetObjectAsync<User>(fetchToken);
             if (userWithToken == null) // return null if user not found
             {
                 return null;
