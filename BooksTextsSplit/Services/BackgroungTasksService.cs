@@ -19,18 +19,21 @@ namespace BooksTextsSplit.Services
     {
         private readonly IBackgroundTaskQueue _taskQueue;
         private readonly ILogger<BackgroungTasksService> _logger;
-        private readonly ICacheProviderAsync _cache;
+        private readonly IControllerDataManager _data;
+        private readonly IAccessCacheData _access;
         private readonly ICosmosDbService _context;
 
         public BackgroungTasksService(
             IBackgroundTaskQueue taskQueue,
             ILogger<BackgroungTasksService> logger,
+            IControllerDataManager data,
             ICosmosDbService cosmosDbService,
-            ICacheProviderAsync cache)
+            IAccessCacheData access)
         {
             _taskQueue = taskQueue;
             _logger = logger;
-            _cache = cache;
+            _data = data;
+            _access = access;
             _context = cosmosDbService;
         }
 
@@ -79,6 +82,9 @@ namespace BooksTextsSplit.Services
                         int percentCurrent;
                         int percentDecrement = 0;
 
+                        // to delete sentenceCounts for current language
+                        bool removeKeyResult = await _data.RemoveKeyLanguageId(desiredTextLanguage);
+
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
                         {
                             // Check the time of one cycle, calculate the whole task run time, 
@@ -99,11 +105,14 @@ namespace BooksTextsSplit.Services
                                 uploadPercents.CurrentUploadingRecord = tsi; // for debug only
                                 uploadPercents.DoneInPercents = percentCurrent;
                                 // _logger.LogInformation("Task RecordFileToDb {Guid} recorded " + percentCurrent.ToString() + " % to DB", guid);
-                                await _cache.SetObjectAsync(tackKeyForRedis, uploadPercents, TimeSpan.FromDays(1));
+                                await _access.SetObjectAsync(tackKeyForRedis, uploadPercents, TimeSpan.FromDays(1));
                                 percentPrevious = percentCurrent;
                             }
                             await _context.AddItemAsync(textSentences[tsi]);
                         };
+
+                        // to create sentenceCounts for current language
+                        int totalLangSentences = await _data.FetchDataFromCache(desiredTextLanguage) ?? 0;
 
                         _logger.LogInformation(
                             "Queued Background Task RecordFileToDb {Guid} recorded "
@@ -131,8 +140,6 @@ namespace BooksTextsSplit.Services
 
         public TextSentence[] AnalyseTextBook(string text, int desiredTextLanguage)
         {
-            
-
             IAllBookData _bookData = new AllBookData();
             ITextAnalysisLogicExtension analysisLogic = new TextAnalysisLogicExtension(_bookData);
             ISentencesDividingAnalysis sentenceAnalyser = new SentencesDividingAnalysis(_bookData, analysisLogic);

@@ -107,6 +107,7 @@ namespace BooksTextsSplit
             //services.AddSingleton<IDatabase>(muxer.GetDatabase());
             //services.AddSingleton<CachingFramework.Redis.Contracts.Providers.ICacheProvider>(muxer);
             services.AddScoped<IAccessCacheData, AccessCacheData>();
+            services.AddScoped<IControllerDataManager, ControllerDataManager>();
 
         }
 

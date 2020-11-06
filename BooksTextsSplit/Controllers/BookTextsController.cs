@@ -30,8 +30,10 @@ namespace BooksTextsSplit.Controllers
 
     public class BookTextsController : ControllerBase
     {
+        #region Declarations
         private IBackgroungTasksService _task2Queue;
         private readonly ILogger<BookTextsController> _logger;
+        private readonly IControllerDataManager _data;
         private readonly ICacheProviderAsync _cache;
         private readonly IAccessCacheData _access;
         private readonly ICosmosDbService _context;
@@ -41,6 +43,7 @@ namespace BooksTextsSplit.Controllers
         public BookTextsController(
             IBackgroungTasksService task2Queue,
             ILogger<BookTextsController> logger,
+            IControllerDataManager data,
             ICosmosDbService cosmosDbService,
             ICacheProviderAsync cache,
             IAccessCacheData access,
@@ -49,30 +52,16 @@ namespace BooksTextsSplit.Controllers
         {
             _task2Queue = task2Queue;
             _logger = logger;
+            _data = data;
             _cache = cache;
             _access = access;
             _context = cosmosDbService;
             _authService = authService;
             _result = resultDataService;
         }
+        #endregion
 
-        #region GET
-        
-        // GET: api/BookTexts/cache/ - test cache
-        [AllowAnonymous]
-        [HttpGet("cache")]
-        public async Task<ActionResult<User>> GetCache()
-        {
-            string bookSentenceIdKey = "bookSentenceId:100";
-            
-            //await _access.SetObjectAsync<string>(key, key, TimeSpan.FromDays(1));
-            //string value = await _access.GetObjectAsync<string>(key);
-
-            List<TextSentence> requestedSelectResult = await _access.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, 
-                () => FetchBooksNamesFromDb("bookSentenceId", 1));
-
-            return Ok(requestedSelectResult); 
-        }
+        #region Auth
 
         // GET: api/BookTexts/auth/init/ - check is user logged in on app start
         [AllowAnonymous]
@@ -100,6 +89,23 @@ namespace BooksTextsSplit.Controllers
             return await _result.ResultData(0, userEmail);
         }
 
+        // POST: api/BookTexts/auth/login/
+        [AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        [HttpPost("auth/login")]
+
+        public async Task<ActionResult<LoginAttemptResult>> Login([FromBody] LoginDataFromUI fetchedLoginData) //async Task<IActionResult>
+        {
+            User user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
+            if (user == null)
+            {
+                return await _result.ResultDataWithToken(3, null);
+            }
+            return await _result.ResultDataWithToken(0, user);
+        }
+        #endregion
+
+        #region Upload
         // GET: api/BookTexts/worker/
         [HttpGet("worker")]
         public ActionResult GetWorker()
@@ -129,13 +135,35 @@ namespace BooksTextsSplit.Controllers
             return taskStateCurrent;
         }
 
+        // POST: api/BookTexts/UploadFile        
+        [HttpPost("UploadFile")]
+        public async Task<IActionResult> UploadFile([FromForm] IFormFile bookFile, [FromForm] string jsonBookDescription)
+        {
+            // it's need to check the Redis keys after new books were recorded to Db
+            if (bookFile != null)
+            {
+                string guid = Guid.NewGuid().ToString();
+                TaskUploadPercents uploadPercents = new TaskUploadPercents
+                {
+                    CurrentTaskGuid = guid,
+                    CurrentUploadingBookId = 0, // may be put whole TextSentence?
+                    RecordrsTotalCount = 0,
+                    CurrentUploadingRecord = 0,
+                    DoneInPercents = 0,
+                };
 
+                //Redis key initialization - must be not null for GetUploadTaskPercents
+                await _cache.SetObjectAsync(guid, uploadPercents, TimeSpan.FromDays(1));
 
+                _task2Queue.RecordFileToDbInBackground(bookFile, jsonBookDescription, guid);
 
+                return Ok(guid);
+            }
+            return Problem("bad file");
+        }
+        #endregion
 
-
-
-
+        #region GetCounts
 
         // GET: api/BookTexts/Count/        
         [HttpGet("count")]
@@ -150,31 +178,39 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("count/{languageId}")]
         public async Task<ActionResult<TotalCount>> GetTotalCount(int languageId, [FromQuery] int param)
         {
-            string key = "GetTotalCountWhereLanguageId";
-            string dbWhere = "languageId";
-            if (await _access.KeyExistsAsync(key))
-            {
-                bool removeResuplt = await _access.RemoveAsync(key);
-            }
             //return new TotalCount((await _context.GetItemsAsync($"SELECT * FROM c WHERE c.{dbWhere} = {languageId}")).Count());
-            int totalLangSentences = await _access.FetchObjectAsync<int?>(key, () => FetchDataFromDb(dbWhere, languageId)) ?? 0;
+            int totalLangSentences = await _data.FetchDataFromCache(languageId) ?? 0;
             return new TotalCount(totalLangSentences);
-            //return new TotalCount(await _access.GetObjectAsync<int>(key));
-        }        
+        }
         // System.NotSupportedException: Deserialization of reference types without parameterless constructor is not supported. Type 'BooksTextsSplit.Models.TotalCount'
         // System.Text.Json.JsonException: The JSON value could not be converted to System.Int32. Path: $ | LineNumber: 0 | BytePositionInLine: 1.
-        public async Task<int?> FetchDataFromDb(string where, int whereValue)
+        #endregion
+
+        #region GetBooks for SelectPage
+
+        // GET: api/BookTexts/BooksNamesIds/?where="bookId"&whereValue=1&startUploadVersion=1 - fetching list of all BookIds existing in Db
+        [HttpGet("BooksNamesIds")]
+        public async Task<ActionResult<BooksNamesExistInDb>> GetBooksNamesIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int startUploadVersion)
         {
-            int totalLangSentences = (await _context.GetItemsAsync($"SELECT * FROM c WHERE c.{where} = {whereValue}")).Count();
-            return totalLangSentences;
+            return await _data.FetchBooksNamesIds(where, whereValue, startUploadVersion);
         }
 
-        
+        // GET: api/BookTexts/BookNameVersions/?where="bookId"&whereValue=1&bookId=(from selection) - fetching list of all uploaded versions for selected BookIds
+        [HttpGet("BookNameVersions")]
+        public async Task<ActionResult<BooksVersionsExistInDb>> GetBookNameVersions([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int bookId)
+        {
+            return await _data.FetchBookNameVersions(where, whereValue, bookId);
+        }
 
+        // GET: api/BookTexts/BooksPairTexts/?where1=bookId&where1Value=(selected)&where2=uploadVersion&where2Value=(selected) - fetching selected version of the selected books pair texts
+        [HttpGet("BooksPairTexts")]
+        public async Task<ActionResult<BooksPairTextsFromDb>> GetBooksPairTexts([FromQuery] string where1, [FromQuery] int where1Value, [FromQuery] string where2, [FromQuery] int where2Value)
+        {
+            return await _data.FetchBooksPairTexts(where1, where1Value, where2, where2Value);
+        }
+        #endregion
 
-
-
-
+        #region LEGACY!
 
         // GET: api/BookTexts
         [HttpGet]
@@ -220,150 +256,6 @@ namespace BooksTextsSplit.Controllers
             return bookText;
         }
 
-        //------------------------------------------------------------------------------------
-
-        // GET: api/BookTexts/BooksNamesIds/?where="bookId"&whereValue=1&startUploadVersion=1 - fetching list of all BookIds existing in Db
-        [HttpGet("BooksNamesIds")]
-        public async Task<ActionResult<BooksNamesExistInDb>> GetBooksNamesIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int startUploadVersion)
-        {
-            return await FetchBooksNamesIds(where, whereValue, startUploadVersion);
-        }
-
-        public async Task<BooksNamesExistInDb> FetchBooksNamesIds(string where, int whereValue, int startUploadVersion)
-        {
-            string bookSentenceIdKey = where + ":" + whereValue.ToString();
-            List<TextSentence> requestedSelectResult = await _cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesFromDb(where, whereValue));
-
-            List<TextSentence> toSelectBookNameFromAll = requestedSelectResult.Where(r => r.UploadVersion == startUploadVersion).ToList();
-
-            IEnumerable<IGrouping<int, TextSentence>> allBooksNamesPairings = toSelectBookNameFromAll.GroupBy(r => r.BookId);
-            BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb
-            {
-                BookNamesVersion1SortedByIds = allBooksNamesPairings.Select(p => new BooksNamesSortByLanguageIdSortByBookId
-                {
-                    BookId = p.Key,
-                    BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new BooksNamesSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()
-                }
-                ).ToList()
-            };
-
-            return foundBooksIds;
-        }
-
-        // GET: api/BookTexts/BookNameVersions/?where="bookId"&whereValue=1&bookId=(from selection) - fetching list of all uploaded versions for selected BookIds
-        [HttpGet("BookNameVersions")]
-        public async Task<ActionResult<BooksVersionsExistInDb>> GetBookNameVersions([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int bookId)
-        {
-            return await FetchBookNameVersions(where, whereValue, bookId);
-        }
-
-        public async Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId)
-        {
-            string bookSentenceIdKey = where + ":" + whereValue.ToString();
-            List<TextSentence> requestedSelectResult = await _cache.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesFromDb(where, whereValue));
-
-            IEnumerable<IGrouping<int, TextSentence>> languageIdGrouping = requestedSelectResult.Where(r => r.BookId == bookId).ToList().GroupBy(r => r.LanguageId);
-
-            BooksVersionsExistInDb foundBooksVersion = new BooksVersionsExistInDb
-            {
-                SelectedBookIdAllVersions = languageIdGrouping.Select(p => new SelectedBookIdGroupByLanguageId
-                {
-                    LanguageId = p.Key,
-                    Sentences = p.OrderBy(v => v.UploadVersion).Select(s => s).ToList()
-                }
-                ).OrderBy(s => s.LanguageId).ToList()
-            };
-            #region for_memory_grouping_in_grouping
-            // на память - группировка по LanguageId внутри группировки по BookId
-            IEnumerable<IGrouping<int, TextSentence>> allVersionsPairings = requestedSelectResult.GroupBy(r => r.BookId);
-            BooksVersionsExistInDb_Memory foundBooksVersion_Memory = new BooksVersionsExistInDb_Memory
-            {
-                AllVersionsOfBooksNames = allVersionsPairings.Select(p => new BooksVersionsGroupedByBookIdGroupByLanguageId
-                {
-                    BookId = p.Key,
-                    BookVersionsDescriptions = p.GroupBy(l => l.LanguageId).Select(g => new BooksVersionsGroupByLanguageId_Memory
-                    {
-                        LanguageId = g.Key,
-                        Sentences = g.OrderBy(v => v.UploadVersion).Select(t => t).ToList()
-                    }
-                    ).OrderBy(s => s.LanguageId).ToList()
-                }
-                ).ToList()
-            };
-            #endregion
-            return foundBooksVersion;
-        }
-
-        public async Task<List<TextSentence>> FetchBooksNamesFromDb(string where, int whereValue)
-        {
-            // bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy); - it is needs to add checking of parameters existing 
-
-            List<TextSentence> requestedSelectResult = (await _context.GetItemsAsync
-                ($"SELECT * FROM c WHERE c.{where} = {whereValue}"))
-                .OrderBy(li => li.BookId) // if it remove the sort, the both methods will be the same
-                .ThenBy(uv => uv.UploadVersion)
-                .ThenBy(bi => bi.LanguageId)
-                .ToList();
-
-            // Set List to Redis
-            string createdKeyNameFromRequest = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookSentenceId:1                                                                                
-            await _cache.SetObjectAsync(createdKeyNameFromRequest, requestedSelectResult, TimeSpan.FromDays(1));
-
-            return requestedSelectResult;
-        }
-
-        // GET: api/BookTexts/BooksPairTexts/?where1=bookId&where1Value=(selected)&where2=uploadVersion&where2Value=(selected) - fetching selected version of the selected books pair texts
-        [HttpGet("BooksPairTexts")]
-        public async Task<ActionResult<BooksPairTextsFromDb>> GetBooksPairTexts([FromQuery] string where1, [FromQuery] int where1Value, [FromQuery] string where2, [FromQuery] int where2Value)
-        {
-            return await FetchBooksPairTexts(where1, where1Value, where2, where2Value);
-        }
-
-        public async Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value)
-        {
-            string booksPairTextsKey = where1 + ":" + where1Value.ToString();
-            List<TextSentence> requestedSelectResult = await _cache.FetchObjectAsync<List<TextSentence>>(booksPairTextsKey, () => FetchBooksTextsFromDb(where1, where1Value));
-
-            //where2 must be uploadVersion for the next grouping
-            //TODO get UploadVersion from where2
-            IEnumerable<IGrouping<int, TextSentence>> languageIdGrouping = requestedSelectResult.Where(r => r.UploadVersion == where2Value).ToList().GroupBy(r => r.LanguageId);
-
-            BooksPairTextsFromDb foundBooksPairTexts = new BooksPairTextsFromDb // selectedBooksPairTexts
-            {
-                SelectedBooksPairTexts = languageIdGrouping.Select(p => new BooksPairTextsGroupByLanguageId
-                {
-                    LanguageId = p.Key,
-                    Sentences = p.OrderBy(v => v.BookSentenceId).Select(s => s).ToList()
-                }
-                ).OrderBy(s => s.LanguageId).ToList()
-            };
-
-            return foundBooksPairTexts;
-        }
-
-        public async Task<List<TextSentence>> FetchBooksTextsFromDb(string where, int whereValue)
-        {
-            // bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy); - it is needs to add checking of parameters existing 
-
-            List<TextSentence> requestedSelectResult = (await _context.GetItemsAsync
-                ($"SELECT * FROM c WHERE c.{where} = {whereValue}"))
-                .OrderBy(uv => uv.UploadVersion)
-                .ThenBy(bi => bi.LanguageId)
-                .ThenBy(si => si.BookSentenceId)
-                .ToList();
-
-            // Set List to Redis
-            string createdKeyNameFromRequest = where + ":" + whereValue.ToString(); //выдачу из базы сохранить как есть, с ключом bookId:(selected BookId)                                                                                
-            await _cache.SetObjectAsync(createdKeyNameFromRequest, requestedSelectResult, TimeSpan.FromDays(1));
-
-            return requestedSelectResult;
-        }
-
-        //------------------------------------------------------------------------------------
-
-
-
-        // LEGACY !
         // SAMPLE with AreParamsRealTextSentenceProperties check
         // GET: api/BookTexts/BooksIds/?where="bookSentenceId"&whereValue=1&orderBy="bookId"&needPostSelect=true&postWhere="UploadVersion"&postWhereValue=1
         [HttpGet("BooksIds")]
@@ -454,26 +346,6 @@ namespace BooksTextsSplit.Controllers
             }
             return (passedTestsCount) == testingProperties.Length; //if all testingProperties are real it returns true
         }
-
-        #endregion
-
-        #region POST
-
-        // POST: api/BookTexts/auth/login/
-        [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        [HttpPost("auth/login")]
-
-        public async Task<ActionResult<LoginAttemptResult>> Login([FromBody] LoginDataFromUI fetchedLoginData) //async Task<IActionResult>
-        {
-            User user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
-            if (user == null)
-            {
-                return await _result.ResultDataWithToken(3, null);
-            }
-            return await _result.ResultDataWithToken(0, user);
-        }
-
         // POST: api/BookTexts
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
@@ -509,46 +381,8 @@ namespace BooksTextsSplit.Controllers
                     .Count())
             });
         }
-
-
-
-
-
-        // POST: api/BookTexts/UploadFile        
-        [HttpPost("UploadFile")]
-        public async Task<IActionResult> UploadFile([FromForm] IFormFile bookFile, [FromForm] string jsonBookDescription)
-        {
-            // it's need to check the Redis keys after new books were recorded to Db
-            if (bookFile != null)
-            {
-                string guid = Guid.NewGuid().ToString();
-                TaskUploadPercents uploadPercents = new TaskUploadPercents
-                {
-                    CurrentTaskGuid = guid,
-                    CurrentUploadingBookId = 0, // may be put whole TextSentence?
-                    RecordrsTotalCount = 0,
-                    CurrentUploadingRecord = 0,
-                    DoneInPercents = 0,
-                };
-
-                //Redis key initialization - must be not null for GetUploadTaskPercents
-                await _cache.SetObjectAsync(guid, uploadPercents, TimeSpan.FromDays(1));
-
-                _task2Queue.RecordFileToDbInBackground(bookFile, jsonBookDescription, guid);
-
-                return Ok(guid);
-            }
-            return Problem("bad file");
-        }
-
-
-
-
-
-
-
         #endregion
-
+ 
         #region DELETE
 
         // DELETE: api/BookTexts/logout
@@ -589,7 +423,6 @@ namespace BooksTextsSplit.Controllers
         }
 
         #endregion
-
     }
 }
 

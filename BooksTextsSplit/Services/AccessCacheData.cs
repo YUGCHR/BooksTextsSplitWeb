@@ -48,13 +48,10 @@ namespace BooksTextsSplit.Services
 
         public async Task<T> FetchObjectAsync<T>(string key, Func<Task<T>> func, TimeSpan? expiry = null)
         {
-
-            var cacheValue = await _cache.GetObjectAsync<T>(key);
+            //var cacheValue = await _cache.GetObjectAsync<T>(key);
             if (await _cache.KeyExistsAsync(key))
             {
                 return await _cache.GetObjectAsync<T>(key);
-                //value = cacheValue;
-
             }
             else
             {
@@ -68,10 +65,8 @@ namespace BooksTextsSplit.Services
                         await _cache.SetObjectAsync(key, value, expiry);
                     }
                 }
-                
                 return value;
             }
-
         }
 
         public async Task SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null)
