@@ -165,12 +165,14 @@ namespace BooksTextsSplit.Controllers
 
         #region GetCounts
 
-        // GET: api/BookTexts/Count/        
-        [HttpGet("count")]
-        public async Task<ActionResult<TotalCount>> GetTotalCount()
+        // GET: api/BookTexts/Counts/languageId
+        // api/BookTexts/counts/0/?param=2
+        [HttpGet("counts/{languageId}")]
+        public async Task<ActionResult<TotalCounts>> GetTotalCounts(int languageId, [FromQuery] int param)
         {
-            return new TotalCount((await _context.GetItemsAsync("SELECT * FROM c")).Count());
-            //return new TotalCount { sentencesCount = 5 };
+
+            TotalCounts totalLangSentences = await _data.FetchTotalCountsFromCache(languageId);
+            return totalLangSentences;
         }
 
         // GET: api/BookTexts/Count/languageId
@@ -179,8 +181,8 @@ namespace BooksTextsSplit.Controllers
         public async Task<ActionResult<TotalCount>> GetTotalCount(int languageId, [FromQuery] int param)
         {
             //return new TotalCount((await _context.GetItemsAsync($"SELECT * FROM c WHERE c.{dbWhere} = {languageId}")).Count());
-            int totalLangSentences = await _data.FetchDataFromCache(languageId) ?? 0;
-            return new TotalCount(totalLangSentences);
+            //int totalLangSentences = await _data.FetchDataFromCache(languageId) ?? 0;
+            return new TotalCount(0);
         }
         // System.NotSupportedException: Deserialization of reference types without parameterless constructor is not supported. Type 'BooksTextsSplit.Models.TotalCount'
         // System.Text.Json.JsonException: The JSON value could not be converted to System.Int32. Path: $ | LineNumber: 0 | BytePositionInLine: 1.

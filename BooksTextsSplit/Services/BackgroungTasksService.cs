@@ -112,7 +112,7 @@ namespace BooksTextsSplit.Services
                         };
 
                         // to create sentenceCounts for current language
-                        int totalLangSentences = await _data.FetchDataFromCache(desiredTextLanguage) ?? 0;
+                        //int totalLangSentences = await _data.FetchDataFromCache(desiredTextLanguage) ?? 0;
 
                         _logger.LogInformation(
                             "Queued Background Task RecordFileToDb {Guid} recorded "

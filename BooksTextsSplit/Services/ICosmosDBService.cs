@@ -10,6 +10,8 @@ namespace BooksTextsSplit.Services
     public interface ICosmosDbService
     {
         Task<IEnumerable<TextSentence>> GetItemsAsync(string query);
+        public Task<int?> GetCountItemAsync(string id);
+        public Task<T> GetJsonItemAsync<T>(string queryString);
         Task<TextSentence> GetItemAsync(string id);
         Task AddItemAsync(TextSentence item);
         Task UpdateItemAsync(string id, TextSentence item);

@@ -14,7 +14,7 @@ const instance = Axios.create({
 
 export const uploadAPI = {
   getSentenceCount: async (languageId) => {
-    const response = await instance.get(`count/${languageId}`);
+    const response = await instance.get(`counts/${languageId}`);
     return response.data;
   },
 

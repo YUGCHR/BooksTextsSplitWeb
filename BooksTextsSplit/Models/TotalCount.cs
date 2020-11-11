@@ -11,6 +11,8 @@ namespace BooksTextsSplit.Models
         {
             sentencesCount = count;
         }
-        public int sentencesCount { get; set; }
+        public int sentencesCount { get; private set; }  // { get { return f_sentencesCount; } set { f_sentencesCount = value; } }
+
+        //public int f_sentencesCount;
     }
 }
