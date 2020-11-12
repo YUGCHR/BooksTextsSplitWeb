@@ -66,9 +66,9 @@ namespace BooksTextsSplit.Services
 
         
 
-        public async Task<List<int>> GetItemListAsync<T>(string queryString, string propName)
+        public async Task<List<T>> GetItemListAsync<T>(string queryString, string propName)
         {
-            List<int> distinctBooksIds = new List<int>();
+            List<T> distinctBooksIds = new List<T>();
             try
             {
                 //var iterator = this._container.GetItemQueryIterator<string>(new QueryDefinition(queryString));
@@ -78,10 +78,8 @@ namespace BooksTextsSplit.Services
                     foreach (var item in await feedIterator.ReadNextAsync())
                     {
                         var s = item.GetType().GetProperty(propName).GetValue(item, null);
-                        Console.WriteLine(s);
-                        //var t = Convert.ToInt32(s);
-                        //Console.WriteLine(t);
-                        distinctBooksIds.Add(1);
+                        //Console.WriteLine(s);                        
+                        distinctBooksIds.Add(item);
                     }
                 }                
                 

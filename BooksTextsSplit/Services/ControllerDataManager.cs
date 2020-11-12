@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -100,9 +101,8 @@ namespace BooksTextsSplit.Services
 
         public async Task<int> FetchSentencesCountsFromDb(int languageId) // always fetch data from db as version of book of language
         {
-            //SELECT VALUE COUNT(1) FROM c where c.languageId=0 and c.bookSentenceId = 1 (1 - may be any existing sentence number)
-            int languageSentencesCount = await _context.GetCountItemAsync($"SELECT VALUE COUNT(1) FROM c " +
-                $"WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameBookSentenceId} = {1}") ?? 0;
+            //SELECT VALUE COUNT(1) FROM c where c.languageId=0
+            int languageSentencesCount = await _context.GetCountItemAsync($"SELECT VALUE COUNT(1) FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId}") ?? 0;
             return languageSentencesCount;
         }
         public class DistinctBookIdValue
@@ -113,15 +113,18 @@ namespace BooksTextsSplit.Services
         public async Task<int[]> FetchCountsArray1FromDb(int languageId, string propName) // always fetch data from db as version of book of language
         {
             //SELECT DISTINCT c.bookId FROM c where c.languageId=0 and c.bookSentenceId = 1 (1 - may be any existing sentence number)
+            //SELECT DISTINCT VALUE c.bookId FROM c WHERE c.bookSentenceId = 1 AND c.languageId = 1
             string queryString = $"SELECT DISTINCT c.{Constants.FieldNameBooksId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameBookSentenceId} = {1}";
-            List<int> allBooksIds = await _context.GetItemListAsync<DistinctBookIdValue>(queryString, propName);
-            //int[] allBooksIds = JsonSerializer.Deserialize<int[]>(allBooksIdsJson);
-            return allBooksIds.ToArray();
+            List<DistinctBookIdValue> allBooksIds = await _context.GetItemListAsync<DistinctBookIdValue>(queryString, propName);            
+            var result = allBooksIds.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray();            
+            return result;
         }
 
         public async Task<int[]> FetchCountsArray2FromDb(int languageId, int bookId_i) // always fetch data from db as version of book of language
         {
             //SELECT DISTINCT c.uploadVersion FROM c where c.languageId=0 and c.bookId=i and c.bookSentenceId = 1 (1 - may be any existing sentence number)
+            //SELECT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId IN (77, 88, 39, 37)
+            //SELECT DISTINCT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId=77
             // uploadVersionCounts - 77 (5), 55 (12), 88 (30), 0 (1), 39 (41), 37 (16)
             //string queryString = $"SELECT DISTINCT c.{Constants.FieldNameUploadVersion} FROM c " +
             //    $"WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameBooksId} = {bookId_i}"; // i
