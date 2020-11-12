@@ -82,7 +82,7 @@ namespace BooksTextsSplit.Services
 
             int countsExist = await _access.FetchObjectAsync<int>(keyTotalCount, () => FetchSentencesCountsFromDb(languageId));
 
-            int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyArrays1, () => FetchCountsArray1FromDb(languageId, "bookId"));
+            int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyArrays1, () => FetchCountsArray1FromDb(languageId, "BookId"));
             int allBooksIdsLength = allBooksIds.Length;
             int[] versionsCounts = new int[allBooksIdsLength];
             int[] paragraphsCounts = new int[allBooksIdsLength];
@@ -107,7 +107,7 @@ namespace BooksTextsSplit.Services
         }
         public class DistinctBookIdValue
         {
-            public int bookId { get; set; }
+            public int BookId { get; set; }
         }
 
         public async Task<int[]> FetchCountsArray1FromDb(int languageId, string propName) // always fetch data from db as version of book of language
@@ -115,7 +115,7 @@ namespace BooksTextsSplit.Services
             //SELECT DISTINCT c.bookId FROM c where c.languageId=0 and c.bookSentenceId = 1 (1 - may be any existing sentence number)
             //SELECT DISTINCT VALUE c.bookId FROM c WHERE c.bookSentenceId = 1 AND c.languageId = 1
             string queryString = $"SELECT DISTINCT c.{Constants.FieldNameBooksId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameBookSentenceId} = {1}";
-            List<DistinctBookIdValue> allBooksIds = await _context.GetItemListAsync<DistinctBookIdValue>(queryString, propName);            
+            List<TextSentence> allBooksIds = await _context.GetItemListAsync<TextSentence>(queryString);
             var result = allBooksIds.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray();            
             return result;
         }

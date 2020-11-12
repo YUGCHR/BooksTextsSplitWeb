@@ -66,19 +66,20 @@ namespace BooksTextsSplit.Services
 
         
 
-        public async Task<List<T>> GetItemListAsync<T>(string queryString, string propName)
+        public async Task<List<T>> GetItemListAsync<T>(string queryString)
         {
             List<T> distinctBooksIds = new List<T>();
             try
             {
-                //var iterator = this._container.GetItemQueryIterator<string>(new QueryDefinition(queryString));
                 FeedIterator<T> feedIterator = this._container.GetItemQueryIterator<T>(queryString);
                 if (feedIterator.HasMoreResults)
                 {
+                    // request unit charge for operations executed in Cosmos DB
+                    FeedResponse<T> feedResponse = await feedIterator.ReadNextAsync();
+                    double requestCharge = feedResponse.RequestCharge;
+
                     foreach (var item in await feedIterator.ReadNextAsync())
-                    {
-                        var s = item.GetType().GetProperty(propName).GetValue(item, null);
-                        //Console.WriteLine(s);                        
+                    {                        
                         distinctBooksIds.Add(item);
                     }
                 }                
@@ -87,10 +88,13 @@ namespace BooksTextsSplit.Services
             }
             catch (CosmosException ex)
             {
+                Console.WriteLine("GetItemQueryIterator", ex);
                 //_logger.LogInformation("CosmosException on query \n {queryString} \n" + ex.Message, queryString);
                 return default;
             }
         }
+
+
 
 
         public async Task<IEnumerable<TextSentence>> GetItemsAsync(string queryString)
