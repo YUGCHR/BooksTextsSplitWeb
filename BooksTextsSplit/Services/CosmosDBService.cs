@@ -66,7 +66,7 @@ namespace BooksTextsSplit.Services
 
         
 
-        public async Task<List<T>> GetItemListAsync<T>(string queryString)
+        public async Task<List<T>> GetItemsListAsync<T>(string queryString)
         {
             List<T> distinctBooksIds = new List<T>();
             try
@@ -74,12 +74,12 @@ namespace BooksTextsSplit.Services
                 FeedIterator<T> feedIterator = this._container.GetItemQueryIterator<T>(queryString);
                 if (feedIterator.HasMoreResults)
                 {
-                    // request unit charge for operations executed in Cosmos DB
                     FeedResponse<T> feedResponse = await feedIterator.ReadNextAsync();
-                    double requestCharge = feedResponse.RequestCharge;
+                                            
+                    double requestCharge = feedResponse.RequestCharge; // request unit charge for operations executed in Cosmos DB 
 
-                    foreach (var item in await feedIterator.ReadNextAsync())
-                    {                        
+                    foreach (var item in feedResponse)
+                    {
                         distinctBooksIds.Add(item);
                     }
                 }                

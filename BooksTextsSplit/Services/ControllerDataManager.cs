@@ -33,7 +33,7 @@ namespace BooksTextsSplit.Services
         public static string FieldNameUploadVersion = "uploadVersion";
 
         public static string GetTotalCountBase = "GetTotalCountWhereLanguageId:";
-        public static string GetTotalCountsArrayBase1 = "GetTotalCountsArray1AndLanguageId:";
+        public static string GetBooksIdsArray = "GetBooksIdsArrayAndLanguageId:";
         public static string GetTotalCountsArrayBase2 = "GetTotalCountsArray2AndLanguageId:";
         public static string GetTotalCountsArrayBase3 = "GetTotalCountsArray3AndLanguageId:";
         public static string GetTotalCountsArrayBase4 = "GetTotalCountsArray4AndLanguageId:";
@@ -66,14 +66,14 @@ namespace BooksTextsSplit.Services
         public async Task<TotalCounts> FetchTotalCountsFromCache(int languageId)
         {
             string keyTotalCount = Constants.GetTotalCountBase + languageId.ToString(); // "GetTotalCountWhereLanguageId:"            
-            string keyArrays1 = Constants.GetTotalCountsArrayBase1 + languageId.ToString(); // "GetTotalCountsArray1AndLanguageId:"
+            string keyBooksIds = Constants.GetBooksIdsArray + languageId.ToString(); // "GetBooksIdsArrayAndLanguageId:"
             string keyArrays2 = Constants.GetTotalCountsArrayBase2 + languageId.ToString();
             string keyArrays3 = Constants.GetTotalCountsArrayBase3 + languageId.ToString();
             string keyArrays4 = Constants.GetTotalCountsArrayBase4 + languageId.ToString();
 
             //for Debug Db only - start
             bool removeKeyResult = await _access.RemoveAsync(keyTotalCount);
-            bool removeKeyResult1 = await _access.RemoveAsync(keyArrays1);
+            bool removeKeyResult1 = await _access.RemoveAsync(keyBooksIds);
             bool removeKeyResult2 = await _access.RemoveAsync(keyArrays2);
             bool removeKeyResult3 = await _access.RemoveAsync(keyArrays3);
             bool removeKeyResult4 = await _access.RemoveAsync(keyArrays4);
@@ -81,8 +81,10 @@ namespace BooksTextsSplit.Services
 
 
             int countsExist = await _access.FetchObjectAsync<int>(keyTotalCount, () => FetchSentencesCountsFromDb(languageId));
+            //SELECT DISTINCT VALUE c.bookId FROM c WHERE c.bookSentenceId = 1 AND c.languageId = 1
+            string queryString = $"SELECT DISTINCT c.{Constants.FieldNameBooksId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameBookSentenceId} = {1}";
+            int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyBooksIds, () => FetchItemsArrayFromDb(queryString, "BookId"));
 
-            int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyArrays1, () => FetchCountsArray1FromDb(languageId, "BookId"));
             int allBooksIdsLength = allBooksIds.Length;
             int[] versionsCounts = new int[allBooksIdsLength];
             int[] paragraphsCounts = new int[allBooksIdsLength];
@@ -110,12 +112,9 @@ namespace BooksTextsSplit.Services
             public int BookId { get; set; }
         }
 
-        public async Task<int[]> FetchCountsArray1FromDb(int languageId, string propName) // always fetch data from db as version of book of language
+        public async Task<int[]> FetchItemsArrayFromDb(string queryString, string propName) // always fetch data from db as version of book of language
         {
-            //SELECT DISTINCT c.bookId FROM c where c.languageId=0 and c.bookSentenceId = 1 (1 - may be any existing sentence number)
-            //SELECT DISTINCT VALUE c.bookId FROM c WHERE c.bookSentenceId = 1 AND c.languageId = 1
-            string queryString = $"SELECT DISTINCT c.{Constants.FieldNameBooksId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameBookSentenceId} = {1}";
-            List<TextSentence> allBooksIds = await _context.GetItemListAsync<TextSentence>(queryString);
+            List<TextSentence> allBooksIds = await _context.GetItemsListAsync<TextSentence>(queryString);
             var result = allBooksIds.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray();            
             return result;
         }

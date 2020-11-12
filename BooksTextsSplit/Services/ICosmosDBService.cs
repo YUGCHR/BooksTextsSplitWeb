@@ -11,7 +11,7 @@ namespace BooksTextsSplit.Services
     {
         Task<IEnumerable<TextSentence>> GetItemsAsync(string query);
         public Task<int?> GetCountItemAsync(string id);
-        public Task<List<T>> GetItemListAsync<T>(string queryString);
+        public Task<List<T>> GetItemsListAsync<T>(string queryString);
         Task<TextSentence> GetItemAsync(string id);
         Task AddItemAsync(TextSentence item);
         Task UpdateItemAsync(string id, TextSentence item);
