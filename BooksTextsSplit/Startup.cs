@@ -21,6 +21,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using CachingFramework.Redis.Contracts.Providers;
+using Microsoft.Extensions.Logging;
 
 namespace BooksTextsSplit
 {
@@ -120,7 +121,7 @@ namespace BooksTextsSplit
             string databaseName = configurationSection.GetSection("DatabaseName").Value;
             string containerName = configurationSection.GetSection("ContainerName").Value;
             string account = configurationSection.GetSection("Account").Value;
-            string key = configurationSection.GetSection("Key").Value;
+            string key = configurationSection.GetSection("Key").Value;            
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(account, key);
             CosmosClient client = clientBuilder
                                 .WithConnectionModeDirect()

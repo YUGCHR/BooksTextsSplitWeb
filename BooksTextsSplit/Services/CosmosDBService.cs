@@ -7,6 +7,7 @@ using BooksTextsSplit.Models;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -15,12 +16,15 @@ namespace BooksTextsSplit.Services
     public class CosmosDbService : ICosmosDbService
     {
         private Container _container;
+        //private readonly ILogger<ControllerDataManager> _logger;
 
         public CosmosDbService(
+            //ILogger<ControllerDataManager> logger,
             CosmosClient dbClient,
             string databaseName,
             string containerName)
         {
+            //_logger = logger;
             this._container = dbClient.GetContainer(databaseName, containerName);
         }
 
@@ -60,37 +64,32 @@ namespace BooksTextsSplit.Services
             }
         }
 
-        public class BooksIdsList
-        {
-            public int bookId { get; set; }
-        }
+        
 
-        public class BookIdValue
+        public async Task<List<int>> GetItemListAsync<T>(string queryString, string propName)
         {
-            public int bookId { get; set; }
-        }
-
-        public async Task<T> GetJsonItemAsync<T>(string queryString)
-        {
+            List<int> distinctBooksIds = new List<int>();
             try
             {
                 //var iterator = this._container.GetItemQueryIterator<string>(new QueryDefinition(queryString));
-                FeedIterator<BooksIdsList> feedIterator = this._container.GetItemQueryIterator<BooksIdsList>(queryString);
-
-                while (feedIterator.HasMoreResults)
+                FeedIterator<T> feedIterator = this._container.GetItemQueryIterator<T>(queryString);
+                if (feedIterator.HasMoreResults)
                 {
-                    //FeedResponse<BooksIdsList> currentResultSet = await feedIterator.ReadNextAsync();
                     foreach (var item in await feedIterator.ReadNextAsync())
                     {
-                        Console.WriteLine(item.bookId);
+                        var s = item.GetType().GetProperty(propName).GetValue(item, null);
+                        Console.WriteLine(s);
+                        //var t = Convert.ToInt32(s);
+                        //Console.WriteLine(t);
+                        distinctBooksIds.Add(1);
                     }
-
-                    return default;
-                }
-                return default;
+                }                
+                
+                return distinctBooksIds;
             }
             catch (CosmosException ex)
             {
+                //_logger.LogInformation("CosmosException on query \n {queryString} \n" + ex.Message, queryString);
                 return default;
             }
         }

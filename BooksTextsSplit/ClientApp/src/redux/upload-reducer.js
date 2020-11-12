@@ -303,6 +303,7 @@ export const fetchSentencesCount = (languageId) => async (dispatch, getState) =>
   dispatch(toggleIsFetching(true, "fetchSentencesCount"));
   const response = await uploadAPI.getSentenceCount(languageId);
   dispatch(toggleIsFetching(false));
+  debugger;
   dispatch(setDbSentencesCount(response.sentencesCount, languageId));
   getState().uploadBooksPage.dbSentencesCount[languageId] === 0
     ? dispatch(toggleIsLoading(false, languageId))
