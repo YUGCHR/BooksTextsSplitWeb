@@ -81,24 +81,46 @@ namespace BooksTextsSplit.Services
 
 
             int countsExist = await _access.FetchObjectAsync<int>(keyTotalCount, () => FetchSentencesCountsFromDb(languageId));
+
             //SELECT DISTINCT VALUE c.bookId FROM c WHERE c.bookSentenceId = 1 AND c.languageId = 1
             string queryString = $"SELECT DISTINCT c.{Constants.FieldNameBooksId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameBookSentenceId} = {1}";
             int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyBooksIds, () => FetchItemsArrayFromDb(queryString, "BookId"));
-
             int allBooksIdsLength = allBooksIds.Length;
-            int[] versionsCounts = new int[allBooksIdsLength];
-            int[] paragraphsCounts = new int[allBooksIdsLength];
-            int[] sentencesCounts = new int[allBooksIdsLength];
 
-            for (int i = 0; i < allBooksIdsLength; i++)
-            {
-                versionsCounts[i] = (await _access.FetchObjectAsync<int[]>(keyArrays2, () => FetchCountsArray2FromDb(languageId, allBooksIds[i]))).Count();
-                paragraphsCounts[i] = (await _access.FetchObjectAsync<int[]>(keyArrays3, () => FetchCountsArray3FromDb(languageId, allBooksIds[i]))).Count();
-                sentencesCounts[i] = (await _access.FetchObjectAsync<int[]>(keyArrays4, () => FetchCountsArray4FromDb(languageId, allBooksIds[i]))).Count();
-            }
-            TotalCounts totalCountsFromCache = new TotalCounts(allBooksIds, versionsCounts, paragraphsCounts, sentencesCounts);
+            //SELECT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId IN (77, 88, 39, 37)
+            //SELECT VALUE COUNT(1) FROM (SELECT DISTINCT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId = 77)
 
-            return totalCountsFromCache;
+            string stringBooksIds = String.Join(",", allBooksIds.Select(p => p.ToString())); // ToString().ToArray()
+
+            string closingParenthesis = ")";
+            queryString = $"SELECT VALUE COUNT(1) FROM (SELECT DISTINCT c.{Constants.FieldNameUploadVersion} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameBookSentenceId} = {1} AND c.bookId = ";            
+            int[] versionsCounts = await _access.FetchObjectAsync<int[]>(keyArrays2, () => FetchItemsArrayFromDb(queryString, closingParenthesis, "UploadVersion", allBooksIds));
+
+            //SELECT VALUE COUNT(c.paragraphId) FROM c where c.languageId = 1 AND c.bookId = 77
+            closingParenthesis = "";
+            queryString = $"SELECT VALUE COUNT(c.{Constants.FieldNameParagraphId}) FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.bookId = ";
+            int[] paragraphsCounts = await _access.FetchObjectAsync<int[]>(keyArrays3, () => FetchItemsArrayFromDb(queryString, closingParenthesis, "ParagraphId", allBooksIds));
+
+            //SELECT VALUE COUNT(c.bookSentenceId) FROM c where c.languageId = 0 AND c.bookId = 77
+            queryString = $"SELECT VALUE COUNT(c.{Constants.FieldNameBookSentenceId}) FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.bookId = ";
+            int[] sentencesCounts = await _access.FetchObjectAsync<int[]>(keyArrays4, () => FetchItemsArrayFromDb(queryString, closingParenthesis, "UploadVersion", allBooksIds));
+
+
+
+            int versionsCountsLength = versionsCounts.Length;
+            //int[] versionsCounts = new int[allBooksIdsLength];
+            //int[] paragraphsCounts = new int[allBooksIdsLength];
+            //int[] sentencesCounts = new int[allBooksIdsLength];
+
+            //for (int i = 0; i < allBooksIdsLength; i++)
+            //{
+            //    versionsCounts[i] = (await _access.FetchObjectAsync<int[]>(keyArrays2, () => FetchCountsArray2FromDb(languageId, allBooksIds[i]))).Count();
+            //    paragraphsCounts[i] = (await _access.FetchObjectAsync<int[]>(keyArrays3, () => FetchCountsArray3FromDb(languageId, allBooksIds[i]))).Count();
+            //    sentencesCounts[i] = (await _access.FetchObjectAsync<int[]>(keyArrays4, () => FetchCountsArray4FromDb(languageId, allBooksIds[i]))).Count();
+            //}
+            //TotalCounts totalCountsFromCache = new TotalCounts(allBooksIds, versionsCounts, paragraphsCounts, sentencesCounts);
+
+            return default;
         }
 
         public async Task<int> FetchSentencesCountsFromDb(int languageId) // always fetch data from db as version of book of language
@@ -115,12 +137,23 @@ namespace BooksTextsSplit.Services
         public async Task<int[]> FetchItemsArrayFromDb(string queryString, string propName) // always fetch data from db as version of book of language
         {
             List<TextSentence> allBooksIds = await _context.GetItemsListAsync<TextSentence>(queryString);
-            var result = allBooksIds.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray();            
+            var result = allBooksIds.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray();
             return result;
         }
 
-        public async Task<int[]> FetchCountsArray2FromDb(int languageId, int bookId_i) // always fetch data from db as version of book of language
+        public async Task<int[]> FetchItemsArrayFromDb(string queryString, string closingParenthesis, string propName, int[] allBooksIds) // always fetch data from db as version of book of language
         {
+            // List<string> actualQueryString = allBooksIds.Select(b => (queryString + b.ToString() + " )")).ToList();
+            int[] allUploadedVersions = new int[allBooksIds.Length];
+            for (int i = 0; i < allBooksIds.Length; i++)
+            {                
+                allUploadedVersions[i] = await _context.GetItemCountAsync<int>(queryString + allBooksIds[i].ToString() + closingParenthesis);                
+            }            
+            return allUploadedVersions;
+        }
+
+        //public async Task<int[]> FetchCountsArray2FromDb(int languageId, int bookId_i) // always fetch data from db as version of book of language
+        //{
             //SELECT DISTINCT c.uploadVersion FROM c where c.languageId=0 and c.bookId=i and c.bookSentenceId = 1 (1 - may be any existing sentence number)
             //SELECT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId IN (77, 88, 39, 37)
             //SELECT DISTINCT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId=77
@@ -130,28 +163,28 @@ namespace BooksTextsSplit.Services
             //List<int> versionsCounts = await _context.GetItemListAsync<List<int>>(queryString); 
             //int[] versionsCounts = JsonSerializer.Deserialize<int[]>(versionsCountsJson);
             //return versionsCounts.ToArray();
-            return default;
-        }
+        //    return default;
+        //}
 
-        public async Task<int[]> FetchCountsArray3FromDb(int languageId, int bookId_i) // always fetch data from db as version of book of language
-        {
+        //public async Task<int[]> FetchCountsArray3FromDb(int languageId, int bookId_i) // always fetch data from db as version of book of language
+        //{
             //SELECT DISTINCT c.paragraphId FROM c where c.languageId=0 and c.bookId=i
             //List<int> paragraphsCounts = await _context.GetItemListAsync<List<int>>($"SELECT DISTINCT c.{Constants.FieldNameParagraphId} FROM c " +
             //    $"WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameBooksId} = {bookId_i}"); // i
             //int[] paragraphsCounts = JsonSerializer.Deserialize<int[]>(paragraphsCountsJson);
             //return paragraphsCounts.ToArray();
-            return default;
-        }
+        //    return default;
+        //}
 
-        public async Task<int[]> FetchCountsArray4FromDb(int languageId, int bookId_i) // always fetch data from db as version of book of language
-        {
+        //public async Task<int[]> FetchCountsArray4FromDb(int languageId, int bookId_i) // always fetch data from db as version of book of language
+        //{
             //SELECT DISTINCT c.bookSentenceId FROM c where c.languageId=0 and c.bookId=i
             //List<int> sentencesCounts = await _context.GetItemListAsync<List<int>>($"SELECT DISTINCT c.{Constants.FieldNameBookSentenceId} FROM c " +
             //    $"WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameBooksId} = {bookId_i}"); // i
             //int[] sentencesCounts = JsonSerializer.Deserialize<int[]>(sentencesCountsJson);
             //return sentencesCounts.ToArray();
-            return default;
-        }
+        //    return default;
+        //}
 
 
 

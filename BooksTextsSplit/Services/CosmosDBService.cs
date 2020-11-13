@@ -96,6 +96,34 @@ namespace BooksTextsSplit.Services
 
 
 
+        public async Task<T> GetItemCountAsync<T>(string queryString)
+        {
+            T result = default;
+            try
+            {
+                FeedIterator<T> feedIterator = this._container.GetItemQueryIterator<T>(queryString);
+                if (feedIterator.HasMoreResults)
+                {
+                    FeedResponse<T> feedResponse = await feedIterator.ReadNextAsync();
+
+                    double requestCharge = feedResponse.RequestCharge; // request unit charge for operations executed in Cosmos DB 
+
+                    foreach (var item in feedResponse)
+                    {
+                        result = item;
+                    }
+                }
+
+                return result;
+            }
+            catch (CosmosException ex)
+            {
+                Console.WriteLine("GetItemQueryIterator", ex);
+                //_logger.LogInformation("CosmosException on query \n {queryString} \n" + ex.Message, queryString);
+                return default;
+            }
+        }
+
 
         public async Task<IEnumerable<TextSentence>> GetItemsAsync(string queryString)
         {

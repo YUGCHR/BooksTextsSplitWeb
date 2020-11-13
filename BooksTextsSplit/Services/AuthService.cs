@@ -43,20 +43,28 @@ namespace BooksTextsSplit.Services
         //        Email = "yuri.gonchar@gmail.com" },
         //    new User {
         //        Id = 2,
-        //        FirstName = "222",
-        //        LastName = "2222",
-        //        Username = "22",
+        //        FirstName = "Alyona",
+        //        LastName = "Gonchar",
+        //        Username = "ALYGO",
         //        Token = "1234567890",
         //        Password = "ttt",
-        //        Email = "222.2222@gmail.com" },
+        //        Email = "alyona.gonchar@gmail.com" },
+        //    new User {
+        //        Id = 2,
+        //        FirstName = "Kirill",
+        //        LastName = "Gonchar",
+        //        Username = "KIRGR",
+        //        Token = "1234567890",
+        //        Password = "ttt",
+        //        Email = "gonchar.k.u@gmail.com" },
         //    new User {
         //        Id = 3,
-        //        FirstName = "333",
-        //        LastName = "3333",
-        //        Username = "33",
+        //        FirstName = "Alina",
+        //        LastName = "Golitsina",
+        //        Username = "ALIGO",
         //        Token = "1234567890",
         //        Password = "ttt",
-        //        Email = "333.3333@gmail.com" }
+        //        Email = "alina.golitsina@gmail.com" }
         //};
         // users hardcoded for simplicity, store in a db with hashed passwords in production applications        
         //private List<User> _users = new List<User>
@@ -78,7 +86,7 @@ namespace BooksTextsSplit.Services
             // Temporary - to create users in Redis only
             //foreach (User u in _users)
             //{
-            //    await cache.Cache.SetObjectAsync(u.Email, u, System.TimeSpan.FromDays(10));
+            //    await _cache.SetObjectAsync(u.Email, u, System.TimeSpan.FromDays(10));
             //}
             #endregion
 
