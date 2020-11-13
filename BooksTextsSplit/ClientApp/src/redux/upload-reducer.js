@@ -68,7 +68,16 @@ let initialState = {
   ],
   booksTitles: [{}, {}],
   sentencesCount: [-1, -2, -3, -4, -5],
-  dbSentencesCount: [-7, -8],
+  dbSentencesCount: {
+    booksIdsCount: 0,
+    versionsCountLanguageId: 0,
+    paragraphsCountLanguageId: 0,
+    sentencesCountLanguageId: 0,
+    allBooksIdsList: [],
+    versionsCountsInBooskIds: [],
+    paragraphsCountsInBooskIds: [],
+    sentencesCountsInBooskIds: [],
+  },
   emptyVariable: null,
   isTextLoaded: [false, false],
   isFetching: false,
@@ -99,7 +108,7 @@ const uploadBooksReducer = (state = initialState, action) => {
     case SET_DB_SENTENCES_COUNT: {
       let stateCopy = { ...state };
       stateCopy.dbSentencesCount = { ...state.dbSentencesCount };
-      stateCopy.dbSentencesCount[action.languageId] = action.count;
+      stateCopy.dbSentencesCount[action.languageId] = action.payload;
       return stateCopy;
     }
     case SET_SENTENCES_COUNT: {
@@ -165,10 +174,9 @@ const uploadBooksReducer = (state = initialState, action) => {
       return stateCopy;
     }
     case TOGGLE_IS_FETCHING: {
-      if(action.isFetching){
-      return { ...state, isFetching: action.isFetching, whoCalledPreloader: action.whoCalled };
-      }
-      else{
+      if (action.isFetching) {
+        return { ...state, isFetching: action.isFetching, whoCalledPreloader: action.whoCalled };
+      } else {
         return { ...state, isFetching: action.isFetching, whoCalledPreloader: "" };
       }
     }
@@ -204,7 +212,7 @@ export const setAuthUserData = (userId, email, login, isAuth) => ({ type: SET_US
  */
 
 const setSentencesCount = (count, index) => ({ type: SET_SENTENCES_COUNT, count, index });
-const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
+const setDbSentencesCount = (payload, languageId) => ({ type: SET_DB_SENTENCES_COUNT, payload, languageId });
 const setTaskDonePercents = (response) => ({ type: SET_TASK_DONE_PERCENTS, response });
 
 const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
@@ -303,9 +311,8 @@ export const fetchSentencesCount = (languageId) => async (dispatch, getState) =>
   dispatch(toggleIsFetching(true, "fetchSentencesCount"));
   const response = await uploadAPI.getSentenceCount(languageId);
   dispatch(toggleIsFetching(false));
-  debugger;
-  dispatch(setDbSentencesCount(response.sentencesCount, languageId));
-  getState().uploadBooksPage.dbSentencesCount[languageId] === 0
+  dispatch(setDbSentencesCount(response, languageId));
+  getState().uploadBooksPage.dbSentencesCount.sentencesCountLanguageId[languageId] === 0
     ? dispatch(toggleIsLoading(false, languageId))
     : dispatch(toggleIsLoading(true, languageId));
   return response.sentencesCount;
