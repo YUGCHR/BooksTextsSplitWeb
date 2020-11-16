@@ -69,6 +69,10 @@ namespace BooksTextsSplit.Models
 
             [JsonProperty(PropertyName = "bookName")]
             public string BookName { get; set; }
+
+            [JsonProperty(PropertyName = "bookAnnotation")]
+            public string BookAnnotation { get; set; }
+
         }
 
         public class BookContentInChapters
@@ -118,5 +122,5 @@ namespace BooksTextsSplit.Models
 
     //create the deep copy using AutoMapper
     //var deepCopy = Mapper.Map<Person>(originalPerson);
-}
+
 

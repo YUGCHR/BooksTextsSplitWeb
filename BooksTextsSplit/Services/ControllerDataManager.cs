@@ -76,8 +76,8 @@ namespace BooksTextsSplit.Services
             bool removeKeyResult = await _access.RemoveAsync(keyTotalCount);
             bool removeKeyResult1 = await _access.RemoveAsync(keyBooksIds);
             bool removeKeyResult2 = await _access.RemoveAsync(keyArrays2);
-            bool removeKeyResult3 = await _access.RemoveAsync(keyArrays3);
-            bool removeKeyResult4 = await _access.RemoveAsync(keyArrays4);
+            //bool removeKeyResult3 = await _access.RemoveAsync(keyArrays3);
+            //bool removeKeyResult4 = await _access.RemoveAsync(keyArrays4);
             //for Debug Db only - end 
 
             // исправить запрос абзацев - складывать по главам или доставать лист и складывать пока не равно предыдущему
@@ -103,19 +103,17 @@ namespace BooksTextsSplit.Services
             //SELECT DISTINCT VALUE(c.paragraphId) FROM c where c.languageId = 0 AND c.uploadVersion = 1 AND c.bookId = 77 AND c.chapterId = 1
 
             //SELECT c.paragraphId FROM c where c.languageId = 0 AND c.uploadVersion = 1 AND c.bookId = 77
-            queryString = $"SELECT c.{Constants.FieldNameParagraphId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameUploadVersion} = 1 AND c.bookId = ";
-            int[] paragraphsCounts = await _access.FetchObjectAsync<int[]>(keyArrays3, () => FetchItemsArrayFromDb(queryString, "paragraphId",  allBooksIds));
+            //queryString = $"SELECT c.{Constants.FieldNameParagraphId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameUploadVersion} = 1 AND c.bookId = ";
+            //int[] paragraphsCounts = await _access.FetchObjectAsync<int[]>(keyArrays3, () => FetchItemsArrayFromDb(queryString, "bookContentInChapter.paragraphId",  allBooksIds));
             //VALUE COUNT()
 
-
-
-
+            int[] paragraphsCounts = new int[] { 5, 5, 5, 5, 5 };
 
             //SELECT VALUE COUNT(c.bookSentenceId) FROM c where c.languageId = 0 AND c.bookId = 77
             queryString = $"SELECT VALUE COUNT(c.{Constants.FieldNameBookSentenceId}) FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.bookId = ";
             int[] sentencesCounts = await _access.FetchObjectAsync<int[]>(keyArrays4, () => FetchItemsArrayFromDb(queryString, allBooksIds));
 
-            TotalCounts totalCountsFromCache = new TotalCounts(allBooksIds, versionsCounts, paragraphsCounts, sentencesCounts);
+            TotalCounts totalCountsFromCache = new TotalCounts(allBooksIds, versionsCounts, paragraphsCounts, sentencesCounts); 
             return totalCountsFromCache;
         }
 
@@ -260,7 +258,7 @@ namespace BooksTextsSplit.Services
                 SelectedBooksPairTexts = languageIdGrouping.Select(p => new BooksPairTextsGroupByLanguageId
                 {
                     LanguageId = p.Key,
-                    Sentences = p.OrderBy(v => v.BookSentenceId).Select(s => s).ToList()
+                    Sentences = p.OrderBy(v => v.BookContentInChapter.BookContentInParagraph.BookSentenceId).Select(s => s).ToList()
                 }
                 ).OrderBy(s => s.LanguageId).ToList()
             };
@@ -277,7 +275,7 @@ namespace BooksTextsSplit.Services
                 ($"SELECT * FROM c WHERE c.{where} = {whereValue}"))
                 .OrderBy(uv => uv.UploadVersion)
                 .ThenBy(bi => bi.LanguageId)
-                .ThenBy(si => si.BookSentenceId)
+                .ThenBy(si => si.BookContentInChapter.BookContentInParagraph.BookSentenceId)
                 .ToList();
 
             // Set List to Redis

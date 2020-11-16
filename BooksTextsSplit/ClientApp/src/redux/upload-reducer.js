@@ -270,11 +270,14 @@ const setFilesMetadata = (files) => async (dispatch, getState) => {
         let currentLangId = parseInt(textFirst18Lines[4], 10);
         textsMetadata[i].languageId = currentLangId;
         dispatch(setRadioDefault(currentLangId, i));
-        textsMetadata[i].authorNameId = parseInt(textFirst18Lines[6], 10);
-        textsMetadata[i].authorName = textFirst18Lines[8];
-        textsMetadata[i].bookNameId = parseInt(textFirst18Lines[10], 10);
-        textsMetadata[i].bookName = textFirst18Lines[12];
-        textsMetadata[i].comment = textFirst18Lines[14];
+        let bookProperties = {};
+        bookProperties.authorNameId = parseInt(textFirst18Lines[6], 10);
+        bookProperties.authorNameId = parseInt(textFirst18Lines[6], 10);
+        bookProperties.authorName = textFirst18Lines[8];
+        bookProperties.bookNameId = parseInt(textFirst18Lines[10], 10);
+        bookProperties.bookName = textFirst18Lines[12];
+        bookProperties.bookAnnotation = textFirst18Lines[14];
+        textsMetadata[i].bookProperties = bookProperties;
       }
     };
     reader.onerror = () => {

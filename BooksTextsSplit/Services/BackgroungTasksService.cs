@@ -92,13 +92,19 @@ namespace BooksTextsSplit.Services
 
                             textSentences[tsi].Id = Guid.NewGuid().ToString();
                             textSentences[tsi].BookId = bookDescription.BookId;
-                            textSentences[tsi].AuthorNameId = bookDescription.AuthorNameId;
-                            textSentences[tsi].AuthorName = bookDescription.AuthorName;
-                            textSentences[tsi].BookNameId = bookDescription.BookNameId;
-                            textSentences[tsi].BookName = bookDescription.BookName;
+                            textSentences[tsi].RecordActualityLevel = 2; // Model TextSentence ver.2
+                            TextSentence.BookPropertiesInLanguage p = new TextSentence.BookPropertiesInLanguage
+                            {
+                                AuthorNameId = bookDescription.BookProperties.AuthorNameId,
+                                AuthorName = bookDescription.BookProperties.AuthorName,
+                                BookNameId = bookDescription.BookProperties.BookNameId,
+                                BookName = bookDescription.BookProperties.BookName,
+                                BookAnnotation = bookDescription.BookProperties.BookAnnotation,
+                            };
+                            textSentences[tsi].BookProperties = p;
 
                             textSentences[tsi].UploadVersion = currentUploadingVersion;
- 
+
                             percentCurrent = Convert.ToInt32(tsi * 10000.0 / textSentencesLength / 100.0);
                             if (percentCurrent >= percentPrevious + percentDecrement)
                             {
@@ -135,7 +141,7 @@ namespace BooksTextsSplit.Services
 
         public void DoneInPercents()
         {
-            
+
         }
 
         public TextSentence[] AnalyseTextBook(string text, int desiredTextLanguage)
