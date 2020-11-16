@@ -13,8 +13,8 @@ namespace BooksTextsSplit.Services
 {
     public interface IAuthService
     {
-        Task<User> Authenticate(string email, string password);
-        Task<User> AuthByToken(string authKey);
+        Task<UserData> Authenticate(string email, string password);
+        Task<UserData> AuthByToken(string authKey);
         Task Logout();
         //Task AuthenticateToCookie(string userName);
         //Task<IEnumerable<User>> GetAll();
@@ -80,7 +80,7 @@ namespace BooksTextsSplit.Services
         //};
         #endregion
 
-        public async Task<User> Authenticate(string email, string password)
+        public async Task<UserData> Authenticate(string email, string password)
         {
             #region CreateUsers
             // Temporary - to create users in Redis only
@@ -91,7 +91,7 @@ namespace BooksTextsSplit.Services
             #endregion
 
             //var user = await Task.Run(() => _users.SingleOrDefault(x => x.Email == email && x.Password == password));
-            User user = await _cache.GetObjectAsync<User>(email); // email == userKey for Redis
+            UserData user = await _cache.GetObjectAsync<UserData>(email); // email == userKey for Redis
             
             if (user != null && user.Password == password)
             {                
@@ -108,9 +108,9 @@ namespace BooksTextsSplit.Services
         }
 
         #region LEGACY
-        public async Task<User> AuthByToken(string fetchToken) // this.AuthenticationWithToken was changed on AuthenticationWithCoockie
+        public async Task<UserData> AuthByToken(string fetchToken) // this.AuthenticationWithToken was changed on AuthenticationWithCoockie
         {
-            User userWithToken = await _cache.GetObjectAsync<User>(fetchToken);
+            UserData userWithToken = await _cache.GetObjectAsync<UserData>(fetchToken);
             if (userWithToken == null) // return null if user not found
             {
                 return null;

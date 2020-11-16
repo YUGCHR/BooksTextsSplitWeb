@@ -65,6 +65,7 @@ namespace BooksTextsSplit.Services
 
         public async Task<TotalCounts> FetchTotalCountsFromCache(int languageId)
         {
+            // добавить в totalCounts названия полей и загружать их с сервера
             string keyTotalCount = Constants.GetTotalCountBase + languageId.ToString(); // "GetTotalCountWhereLanguageId:"            
             string keyBooksIds = Constants.GetBooksIdsArray + languageId.ToString(); // "GetBooksIdsArrayAndLanguageId:"
             string keyArrays2 = Constants.GetTotalCountsArrayBase2 + languageId.ToString();
@@ -79,7 +80,7 @@ namespace BooksTextsSplit.Services
             bool removeKeyResult4 = await _access.RemoveAsync(keyArrays4);
             //for Debug Db only - end 
 
-
+            // исправить запрос абзацев - складывать по главам или доставать лист и складывать пока не равно предыдущему
             int countsExist = await _access.FetchObjectAsync<int>(keyTotalCount, () => FetchSentencesCountsFromDb(languageId));
 
             //SELECT DISTINCT VALUE c.bookId FROM c WHERE c.bookSentenceId = 1 AND c.languageId = 1
@@ -87,15 +88,28 @@ namespace BooksTextsSplit.Services
             int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyBooksIds, () => FetchItemsArrayFromDb(queryString, "BookId"));
             int allBooksIdsLength = allBooksIds.Length;
             string stringBooksIds = String.Join(",", allBooksIds.Select(p => p.ToString())); // ToString().ToArray()
-                                                                                             
+
             //SELECT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId IN (77, 88, 39, 37)                                                                                             
             //SELECT DISTINCT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId = 77
             queryString = $"SELECT DISTINCT c.{Constants.FieldNameUploadVersion} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameBookSentenceId} = {1} AND c.bookId = ";
             int[] versionsCounts = await _access.FetchObjectAsync<int[]>(keyArrays2, () => FetchItemsArrayFromDb(queryString, "UploadVersion", allBooksIds));
 
-            //SELECT VALUE COUNT(c.paragraphId) FROM c where c.languageId = 1 AND c.bookId = 77            
-            queryString = $"SELECT VALUE COUNT(c.{Constants.FieldNameParagraphId}) FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.bookId = ";
-            int[] paragraphsCounts = await _access.FetchObjectAsync<int[]>(keyArrays3, () => FetchItemsArrayFromDb(queryString, allBooksIds));
+
+
+
+
+
+            //SELECT DISTINCT c.chapterId FROM c where c.languageId = 0 AND c.uploadVersion = 1 AND c.bookId = 77
+            //SELECT DISTINCT VALUE(c.paragraphId) FROM c where c.languageId = 0 AND c.uploadVersion = 1 AND c.bookId = 77 AND c.chapterId = 1
+
+            //SELECT c.paragraphId FROM c where c.languageId = 0 AND c.uploadVersion = 1 AND c.bookId = 77
+            queryString = $"SELECT c.{Constants.FieldNameParagraphId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameUploadVersion} = 1 AND c.bookId = ";
+            int[] paragraphsCounts = await _access.FetchObjectAsync<int[]>(keyArrays3, () => FetchItemsArrayFromDb(queryString, "paragraphId",  allBooksIds));
+            //VALUE COUNT()
+
+
+
+
 
             //SELECT VALUE COUNT(c.bookSentenceId) FROM c where c.languageId = 0 AND c.bookId = 77
             queryString = $"SELECT VALUE COUNT(c.{Constants.FieldNameBookSentenceId}) FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.bookId = ";

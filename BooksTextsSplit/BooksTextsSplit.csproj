@@ -39,7 +39,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\NewFolder\" />
+    <Folder Include="Services\Controller\" />
+    <Folder Include="Services\CosmosDb\" />
+    <Folder Include="Services\Backgroung\" />
+    <Folder Include="Services\Auth\" />
+    <Folder Include="Services\Cache\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -96,7 +96,7 @@ namespace BooksTextsSplit.Controllers
 
         public async Task<ActionResult<LoginAttemptResult>> Login([FromBody] LoginDataFromUI fetchedLoginData) //async Task<IActionResult>
         {
-            User user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
+            UserData user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
             if (user == null)
             {
                 return await _result.ResultDataWithToken(3, null);
@@ -170,7 +170,7 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("counts/{languageId}")]
         public async Task<ActionResult<TotalCounts>> GetTotalCounts(int languageId, [FromQuery] int param)
         {
-
+            // после записи книг надо или удалить ключи или обновить их
             TotalCounts totalLangSentences = await _data.FetchTotalCountsFromCache(languageId);
             return totalLangSentences;
         }

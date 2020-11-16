@@ -9,7 +9,7 @@ namespace BooksTextsSplit.Models
     {
         public string ResultMessage { get; set; }
         public string[] FieldsErrors { get; set; }
-        public User AuthUser { get; set; }
+        public UserData AuthUser { get; set; }
         public string IssuedToken { get; set; }
         public int ResultCode { get; set; }
     }

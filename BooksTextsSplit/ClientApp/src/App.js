@@ -18,7 +18,7 @@ import ToReadAndTranslateContainer from "./components/ToReadAndTranslate/ToReadA
 import WordsToPair from "./components/WordsToPair/WordsToPair";
 import UserProfile from "./components/UserProfile/UserProfile";
 import Settings from "./components/Settings/Settings";
-
+// TODO менять страницу из таблицы на вертикаль при ширине меньше 800 пикселей
 const LoginPage = lazy(() => import("./components/Login/Login"));
 // TODO всплывающая подсказка на элементах
 class App extends Component {

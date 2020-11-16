@@ -14,7 +14,7 @@ namespace BooksTextsSplit.Helpers
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>        
     {
         private readonly IAuthService _authService;
-        private User _context;
+        private UserData _context;
 
         public BasicAuthenticationHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options,
@@ -22,7 +22,7 @@ namespace BooksTextsSplit.Helpers
             UrlEncoder encoder,
             ISystemClock clock,
             IAuthService authService,
-            User context)
+            UserData context)
             : base(options, logger, encoder, clock)
         {            
             _authService = authService;
@@ -39,7 +39,7 @@ namespace BooksTextsSplit.Helpers
             if (!Request.Headers.ContainsKey("Authorization"))
                 return AuthenticateResult.Fail("Missing Authorization Header");
 
-            User user = null;
+            UserData user = null;
             try
             {
                 // var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);

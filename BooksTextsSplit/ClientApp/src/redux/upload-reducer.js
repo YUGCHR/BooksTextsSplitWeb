@@ -68,6 +68,7 @@ let initialState = {
   ],
   booksTitles: [{}, {}],
   sentencesCount: [-1, -2, -3, -4, -5],
+  // TODO добавить в totalCounts названия полей и загружать их с сервера
   dbSentencesCount: {
     booksIdsCount: 0,
     versionsCountLanguageId: 0,

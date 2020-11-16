@@ -1,6 +1,6 @@
 import React from "react";
 import s from "./sectionDbDetails.module.css";
-
+// TODO выводить список книг в таблице с количеством версий каждой
 export const sectionDbDetails = (props) => {
   return (
     <div className={s.showDetailsBody}>

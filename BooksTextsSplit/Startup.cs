@@ -55,7 +55,7 @@ namespace BooksTextsSplit
             // configure DI for application services            
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IResultDataService, ResultDataService>();
-            services.AddScoped<BooksTextsSplit.Models.User>(); // ?
+            services.AddScoped<BooksTextsSplit.Models.UserData>(); // ?
 
             // Consuming a scoped service in a background task
             //services.AddSingleton<MonitorLoop>();
