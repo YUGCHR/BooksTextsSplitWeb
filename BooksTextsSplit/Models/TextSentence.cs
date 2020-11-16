@@ -12,6 +12,9 @@ namespace BooksTextsSplit.Models
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
+        [JsonProperty(PropertyName = "recordActualityLevel")]
+        public int RecordActualityLevel { get; set; }
+
         [JsonProperty(PropertyName = "languageId")]
         public int LanguageId { get; set; }
 
