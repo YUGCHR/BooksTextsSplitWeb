@@ -92,8 +92,25 @@ namespace BooksTextsSplit
         
         public string NormalizeEllipsis(int desiredTextLanguage)//тут заменим все многоточия фирменным символом, а также другие составные знаки
         {
-            string textToAnalyse = _bookData.GetFileContent(desiredTextLanguage);
-            
+            string textToAnalyseDraft = _bookData.GetFileContent(desiredTextLanguage);
+            string textToAnalyse;
+
+            string headerMarker = "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g";
+            bool isHeaderExists = textToAnalyseDraft.Contains(headerMarker);
+
+            if(isHeaderExists)
+            {
+                // to use IndexOf instead LastIndexOf and set start index value headerMarker.Length + 1
+                int endTagStartPosition = textToAnalyseDraft.LastIndexOf(headerMarker); // to more fron if and set instead Contains
+                int headerMarkerLength = headerMarker.Length;
+                int startClearTextPosition = endTagStartPosition + headerMarkerLength;
+                textToAnalyse = textToAnalyseDraft.Substring(startClearTextPosition);
+            }
+            else
+            {
+                textToAnalyse = textToAnalyseDraft;
+            }
+
             int changedEllipsisVariationCount = 0;
             int charsEllipsisToChangeLength = DConst.charsEllipsisToChange1.Length;
 

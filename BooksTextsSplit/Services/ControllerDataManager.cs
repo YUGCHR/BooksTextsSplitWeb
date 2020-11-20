@@ -258,7 +258,7 @@ namespace BooksTextsSplit.Services
                 SelectedBooksPairTexts = languageIdGrouping.Select(p => new BooksPairTextsGroupByLanguageId
                 {
                     LanguageId = p.Key,
-                    Sentences = p.OrderBy(v => v.BookContentInChapter.BookContentInParagraph.BookSentenceId).Select(s => s).ToList()
+                    Sentences = p.OrderBy(v => v.BookContentInChapter).Select(s => s).ToList()
                 }
                 ).OrderBy(s => s.LanguageId).ToList()
             };
@@ -275,7 +275,7 @@ namespace BooksTextsSplit.Services
                 ($"SELECT * FROM c WHERE c.{where} = {whereValue}"))
                 .OrderBy(uv => uv.UploadVersion)
                 .ThenBy(bi => bi.LanguageId)
-                .ThenBy(si => si.BookContentInChapter.BookContentInParagraph.BookSentenceId)
+                .ThenBy(si => si.BookContentInChapter)
                 .ToList();
 
             // Set List to Redis

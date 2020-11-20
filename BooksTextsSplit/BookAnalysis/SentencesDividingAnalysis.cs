@@ -307,33 +307,25 @@ namespace BooksTextsSplit
             int textSentenceLength = _bookData.GetTextSentenceLength();
             if (textSentenceLength > 0)
             {
-                TextSentence previousTextSentence = _bookData.GetTextSentence(textSentenceLength - 1);
-                globalCountSentences = previousTextSentence.BookContentInChapter.BookContentInParagraph.BookSentenceId + 1;
+                TextSentenceFlat previousTextSentence = _bookData.GetTextSentence(textSentenceLength - 1);
+                globalCountSentences = previousTextSentence.BookSentenceId + 1;
             }
 
             for (int i = 0; i < paragraphSentencesCount; i++)
             {
-                TextSentence.BookContentInChapters.BookContentInParagraphs p = new TextSentence.BookContentInChapters.BookContentInParagraphs
-                {
-                    BookSentenceId = globalCountSentences, //int - global sentences count in the whole book
-                    SentenceId = i,
-                    SentenceText = paragraphSentences[i]
-                };
-
-                TextSentence.BookContentInChapters c = new TextSentence.BookContentInChapters {
-                    ParagraphId = paragraphId, //int
-                    ParagraphName = "-1 - reserved", //string
-                    BookContentInParagraph = p };
-                
-                TextSentence textSentence = new TextSentence // array for uploading db is filling with values
+                TextSentenceFlat textSentence = new TextSentenceFlat
                 {
                     //Id = "", //string - global Id in controller
                     LanguageId = languageId, //int                                            
                     //BookId = 1, //int - in controller                                             
-                    //BookName = "Vernor Vinge - A Fire Upon the Deep", //string - in controller
-                    BookContentInChapter = c,
+                    //BookName = "Vernor Vinge - A Fire Upon the Deep", //string - in controller                    
                     ChapterId = currentChapterNumber, //int
-                    ChapterName = currentChapterNumber.ToString(), //string - necessary to assign value found in the book                    
+                    ChapterName = currentChapterNumber.ToString(), //string - necessary to assign value found in the book 
+                    BookSentenceId = globalCountSentences, //int - global sentences count in the whole book
+                    SentenceId = i,
+                    SentenceText = paragraphSentences[i],                
+                    ParagraphId = paragraphId, //int
+                    ParagraphName = "-1 - reserved", //string                                     
                 };
                 int countSentences = _bookData.AddTextSentence(textSentence);
                 addedTextSentencesCount = i;

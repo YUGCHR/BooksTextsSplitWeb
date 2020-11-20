@@ -11,7 +11,7 @@ namespace BooksTextsSplit
 {
     public interface IAllBookAnalysis
     {
-        TextSentence[] AnalyseTextBook();        
+        TextSentenceFlat[] AnalyseTextBook();        
 
         event EventHandler AnalyseInvokeTheMain;
     }
@@ -37,7 +37,7 @@ namespace BooksTextsSplit
             _sentenceAnalyser = sentenceAnalyser;//предложения
         }
 
-        public TextSentence[] AnalyseTextBook() // типа Main в логике анализа текста
+        public TextSentenceFlat[] AnalyseTextBook() // типа Main в логике анализа текста
         {
             int desiredTextLanguage = _analysisLogic.GetDesiredTextLanguage();//возвращает номер языка, если на нем есть AnalyseText или AnalyseChapterName
             if (desiredTextLanguage == (int)MethodFindResult.NothingFound)
@@ -80,7 +80,8 @@ namespace BooksTextsSplit
 
                 string tracedFileContent = appendFileContent.ToString();
                 int textSentencesLength = _bookData.GetTextSentenceLength();
-                TextSentence[] textSentences = new TextSentence[textSentencesLength];
+
+                TextSentenceFlat[] textSentences = new TextSentenceFlat[textSentencesLength];
 
                 for (int tsi = 0; tsi < textSentencesLength; tsi++)
                 {

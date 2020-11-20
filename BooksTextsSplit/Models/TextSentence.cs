@@ -13,7 +13,7 @@ namespace BooksTextsSplit.Models
         public string Id { get; set; }
 
         [JsonProperty(PropertyName = "recordActualityLevel")]
-        public int RecordActualityLevel { get; set; }
+        public int RecordActualityLevel { get; set; } // версия структуры данных в базе, чтобы легко отделить от старых загрузок
 
         [JsonProperty(PropertyName = "languageId")]
         public int LanguageId { get; set; }
@@ -23,6 +23,9 @@ namespace BooksTextsSplit.Models
 
         [JsonProperty(PropertyName = "bookId")]
         public int BookId { get; set; } // means BooksPairId - pair of English and Russian book
+
+        [JsonProperty(PropertyName = "alignedSentencesProportion")]
+        public int AlignedSentencesProportion { get; set; } // процент выровненных предложений в обоих языках в текстах книг
 
         [JsonProperty(PropertyName = "totalBookCounts")]
         public TotalBooksCounts TotalBookCounts { get; set; }
@@ -36,8 +39,14 @@ namespace BooksTextsSplit.Models
         [JsonProperty(PropertyName = "chapterName")]
         public string ChapterName { get; set; }
 
+        [JsonProperty(PropertyName = "inChapterParagraphsCount")]
+        public int InChapterParagraphsCount { get; set; } // how many paragraphs in the chapter
+
+        [JsonProperty(PropertyName = "inChapterSentencesCount")]
+        public int InChapterSentencesCount { get; set; } // how many sentences in all paragraphs in the chapter
+
         [JsonProperty(PropertyName = "bookContent")]
-        public BookContentInChapters BookContentInChapter { get; set; }
+        public List<BookContentInChapters> BookContentInChapter { get; set; }
 
         public class TotalBooksCounts
         {
@@ -77,31 +86,25 @@ namespace BooksTextsSplit.Models
 
         public class BookContentInChapters
         {
-            [JsonProperty(PropertyName = "inChapterParagraphsCount")]
-            public int InChapterParagraphsCount { get; set; } // how many paragraphs in the chapter
-
-            [JsonProperty(PropertyName = "inChapterSentencesCount")]
-            public int InChapterSentencesCount { get; set; } // how many sentences in all paragraphs in the chapter
-
             [JsonProperty(PropertyName = "paragraphId")]
             public int ParagraphId { get; set; }
 
             [JsonProperty(PropertyName = "paragraphName")]
-            public string ParagraphName { get; set; }
+            public string ParagraphName { get; set; }            
 
             [JsonProperty(PropertyName = "bookContentInParagraph")]
-            public BookContentInParagraphs BookContentInParagraph { get; set; }
+            public List<BookContentInParagraphs> BookContentInParagraph { get; set; }
 
             public class BookContentInParagraphs
             {
-                [JsonProperty(PropertyName = "inParagraphSentencesCounts")]
-                public int InParagraphSentencesCounts { get; set; }
-
                 [JsonProperty(PropertyName = "bookSentenceId")]
                 public int BookSentenceId { get; set; } // end-to-end numbering of all books sentences
 
                 [JsonProperty(PropertyName = "sentenceId")]
                 public int SentenceId { get; set; }
+
+                [JsonProperty(PropertyName = "inParagraphSentencesCounts")]
+                public int InParagraphSentencesCounts { get; set; }
 
                 [JsonProperty(PropertyName = "sentenceText")]
                 public string SentenceText { get; set; }
