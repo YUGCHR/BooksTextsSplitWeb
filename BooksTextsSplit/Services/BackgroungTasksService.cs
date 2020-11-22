@@ -49,7 +49,7 @@ namespace BooksTextsSplit.Services
 
             string fileName = bookFile.FileName;
             StreamReader reader = new StreamReader(bookFile.OpenReadStream());
-            string text = reader.ReadToEnd();            
+            string text = reader.ReadToEnd();
 
             // Enqueue a background work item
             _taskQueue.QueueBackgroundWorkItem(async token =>
@@ -58,13 +58,11 @@ namespace BooksTextsSplit.Services
                 {
                     _logger.LogInformation(
                     "Queued Background Task RecordFileToDb {Guid} is starting", guid);
-
-                    // TODO it's necessary to pass bookDescription to AnalyseTextBook and 
-                    // use bookDescription.properties when initielize textSentences[]
+                    // TODO it's necessary to pass bookDescription to AnalyseTextBook and use bookDescription.properties when initielize textSentences[]
                     TextSentence[] textSentences = FetchBookTextSentences(text, bookDescription, desiredTextLanguage); // add bookDescription
                     int textSentencesLength = textSentences.Length;
                     //string json = JsonSerializer.Serialize(textSentences);
-                    
+
                     TaskUploadPercents uploadPercents = new TaskUploadPercents
                     {
                         DoneInPercents = 0,
@@ -74,30 +72,26 @@ namespace BooksTextsSplit.Services
                         CurrentUploadingBookId = bookDescription.BookId,
                     };
                     string taskKeyForRedis = guid; // to initialize the key for procents
-                    await _access.SetObjectAsync(taskKeyForRedis, uploadPercents, TimeSpan.FromDays(1)); // lett key life time
+                    await _access.SetObjectAsync(taskKeyForRedis, uploadPercents, TimeSpan.FromMinutes(5)); // less key life time
 
                     try
                     {
                         _logger.LogInformation(
                             "Queued Background Task RecordFileToDb {Guid} is running", guid);
 
-                        
                         //double doneInPercents;
                         int percentPrevious = 0;
                         int percentCurrent;
                         int percentDecrement = 0;
 
-                        // to delete sentenceCounts for current language
-                        bool removeKeyResult = await _data.RemoveKeyLanguageId(desiredTextLanguage);
+                        // to delete GetTotalCountWhereLanguageId:languageId
+                        bool removeKeyResult = await _data.RemoveTotalCountWhereLanguageId(desiredTextLanguage);
 
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
                         {
-                            // Check the time of one cycle, calculate the whole task run time, 
-                            // if it is more 10 sec, than percents will be shown - 1 state per second
-
+                            // Check the time of one cycle, calculate the whole task run time, if it is more 10 sec, than percents will be shown - 1 state per second
                             Stopwatch stopWatch = new Stopwatch();
                             stopWatch.Start();
-                            //Thread.Sleep(10000);
 
                             percentCurrent = Convert.ToInt32(tsi * 10000.0 / textSentencesLength / 100.0);
                             if (percentCurrent >= percentPrevious + percentDecrement)
@@ -108,7 +102,7 @@ namespace BooksTextsSplit.Services
                                 await _access.SetObjectAsync(taskKeyForRedis, uploadPercents, TimeSpan.FromDays(1));
                                 percentPrevious = percentCurrent;
                             }
-
+                            Thread.Sleep(2000); // delay to emulate upload of a real book
                             await _context.AddItemAsync(textSentences[tsi]);
 
                             stopWatch.Stop();
@@ -194,7 +188,7 @@ namespace BooksTextsSplit.Services
                     {
                         Id = Guid.NewGuid().ToString(),
                         BookId = bookDescription.BookId,
-                        RecordActualityLevel = 3, // Model TextSentence ver.3                    
+                        RecordActualityLevel = 5, // Model TextSentence ver.5
                         BookProperties = new TextSentence.BookPropertiesInLanguage
                         {
                             AuthorNameId = bookDescription.BookProperties.AuthorNameId,
@@ -227,7 +221,12 @@ namespace BooksTextsSplit.Services
                 InBookSentencesCount = inBookSentencesCount
             };
             // можно просуммировать все счётчики по главам и абзацам и сравнить их с общими
-            bt.Select(t => t.TotalBookCounts = tc);
+            //bt.Select(t => t.TotalBookCounts.InBookChaptersCount = tc.InBookChaptersCount);
+            foreach(TextSentence t in bt)
+            {
+                //TextSentence.TotalBooksCounts tt = new TextSentence.TotalBooksCounts();
+                t.TotalBookCounts = tc;
+            }
             return bt.ToArray();
         }
 
