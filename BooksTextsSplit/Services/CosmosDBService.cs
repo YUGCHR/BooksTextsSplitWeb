@@ -16,16 +16,19 @@ namespace BooksTextsSplit.Services
     public class CosmosDbService : ICosmosDbService
     {
         private Container _container;
+        private Container _containerUser;
         //private readonly ILogger<ControllerDataManager> _logger;
 
         public CosmosDbService(
             //ILogger<ControllerDataManager> logger,
             CosmosClient dbClient,
             string databaseName,
-            string containerName)
+            string containerName,
+            string userContainerName)
         {
             //_logger = logger;
             this._container = dbClient.GetContainer(databaseName, containerName);
+            this._containerUser = dbClient.GetContainer(databaseName, userContainerName);
         }
 
         public async Task AddItemAsync(TextSentence item)
@@ -121,6 +124,44 @@ namespace BooksTextsSplit.Services
         }
 
 
+        public async Task<List<T>> GetUserListAsync<T>(int userCount)
+        {
+            if(userCount != 0)
+            {
+                return default;
+            }
+            //SELECT * FROM c
+            string queryString = $"SELECT * FROM c";
+            return await GetUsersListAsyncFromDb<T>(queryString);
+        }
+
+        private async Task<List<T>> GetUsersListAsyncFromDb<T>(string queryString)
+        {
+            List<T> allUserData = new List<T>();
+            try
+            {
+                FeedIterator<T> feedIterator = this._containerUser.GetItemQueryIterator<T>(queryString);
+                if (feedIterator.HasMoreResults)
+                {
+                    FeedResponse<T> feedResponse = await feedIterator.ReadNextAsync();
+
+                    double requestCharge = feedResponse.RequestCharge; // request unit charge for operations executed in Cosmos DB 
+
+                    foreach (var item in feedResponse)
+                    {
+                        allUserData.Add(item);
+                    }
+                }
+
+                return allUserData;
+            }
+            catch (CosmosException ex)
+            {
+                Console.WriteLine("GetItemQueryIterator", ex);
+                //_logger.LogInformation("CosmosException on query \n {queryString} \n" + ex.Message, queryString);
+                return default;
+            }
+        }
 
 
 
