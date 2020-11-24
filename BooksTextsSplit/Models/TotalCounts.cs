@@ -43,7 +43,9 @@ namespace BooksTextsSplit.Models
         public int[] ParagraphsCountsInBooskIds { get; private set; }
 
         [JsonProperty(PropertyName = "sentencesCountsInBooskIds")]
-        public int[] SentencesCountsInBooskIds { get; private set; }  
-        
+        public int[] SentencesCountsInBooskIds { get; private set; }
+
+        [JsonProperty(PropertyName = "totalRecordsCount")]
+        public int TotalRecordsCount { get; set; }
     }
 }

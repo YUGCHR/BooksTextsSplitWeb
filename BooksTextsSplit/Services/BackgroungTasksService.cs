@@ -65,8 +65,10 @@ namespace BooksTextsSplit.Services
 
                     TaskUploadPercents uploadPercents = new TaskUploadPercents
                     {
-                        DoneInPercents = 0,
+                        DoneInPercents = 0, // do not use
                         CurrentUploadingRecord = 0,
+                        CurrentUploadedRecordRealTime = 0,
+                        TotalUploadedRealTime = 0,
                         RecordrsTotalCount = textSentencesLength,
                         CurrentTaskGuid = guid,
                         CurrentUploadingBookId = bookDescription.BookId,
@@ -80,9 +82,9 @@ namespace BooksTextsSplit.Services
                             "Queued Background Task RecordFileToDb {Guid} is running", guid);
 
                         //double doneInPercents;
-                        int percentPrevious = 0;
-                        int percentCurrent;
-                        int percentDecrement = 0;
+                        //int percentPrevious = 0;
+                        //int percentCurrent;
+                        //int percentDecrement = 0;
 
                         // to delete GetTotalCountWhereLanguageId:languageId
                         bool removeKeyResult = await _data.RemoveTotalCountWhereLanguageId(desiredTextLanguage);
@@ -92,26 +94,26 @@ namespace BooksTextsSplit.Services
                             // Check the time of one cycle, calculate the whole task run time, if it is more 10 sec, than percents will be shown - 1 state per second
                             Stopwatch stopWatch = new Stopwatch();
                             stopWatch.Start();
-
-                            percentCurrent = Convert.ToInt32(tsi * 10000.0 / textSentencesLength / 100.0);
-                            if (percentCurrent >= percentPrevious + percentDecrement)
+                            
+                            if (textSentencesLength < 20)
                             {
-                                uploadPercents.CurrentUploadingRecord = tsi; // for debug only
-                                uploadPercents.DoneInPercents = percentCurrent;
-                                // _logger.LogInformation("Task RecordFileToDb {Guid} recorded " + percentCurrent.ToString() + " % to DB", guid);
-                                await _access.SetObjectAsync(taskKeyForRedis, uploadPercents, TimeSpan.FromDays(1));
-                                percentPrevious = percentCurrent;
+                                Thread.Sleep(2000); // delay to emulate upload of a real book
                             }
-                            Thread.Sleep(2000); // delay to emulate upload of a real book
+                            
                             await _context.AddItemAsync(textSentences[tsi]);
 
                             stopWatch.Stop();
                             // Get the elapsed time as a TimeSpan value.
                             TimeSpan ts = stopWatch.Elapsed;
                             int tsMs = ts.Milliseconds;
+                            uploadPercents.CurrentUploadingRecord = tsi;
+                            uploadPercents.CurrentUploadedRecordRealTime = tsMs;
+                            uploadPercents.TotalUploadedRealTime += tsMs;
+                            await _access.SetObjectAsync(taskKeyForRedis, uploadPercents, TimeSpan.FromMinutes(5));
                         };
 
                         // to create sentenceCounts for current language
+                        await _data.TotalRecordsCountWhereLanguageId(desiredTextLanguage);
                         //int totalLangSentences = await _data.FetchDataFromCache(desiredTextLanguage) ?? 0;
 
                         _logger.LogInformation(
@@ -222,7 +224,8 @@ namespace BooksTextsSplit.Services
             };
             // можно просуммировать все счётчики по главам и абзацам и сравнить их с общими
             //bt.Select(t => t.TotalBookCounts.InBookChaptersCount = tc.InBookChaptersCount);
-            foreach(TextSentence t in bt)
+            //bt.Select(t => t.TotalBookCounts = tc);
+            foreach (TextSentence t in bt)
             {
                 //TextSentence.TotalBooksCounts tt = new TextSentence.TotalBooksCounts();
                 t.TotalBookCounts = tc;

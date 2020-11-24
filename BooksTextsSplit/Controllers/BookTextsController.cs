@@ -120,17 +120,21 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("uploadTaskPercents")]
         public async Task<ActionResult<TaskUploadPercents>> GetUploadTaskPercents([FromQuery] string taskGuid)
         {
-            int percentDecrement = 0;
-            var taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
-            int percentCurrent = taskStateCurrent.DoneInPercents;
-            int percentChanged = percentCurrent;
+            //int percentDecrement = 0;
+            TaskUploadPercents taskStateCurrent = new TaskUploadPercents();
+            bool isUploadStarted = false;
 
-            while ((percentCurrent <= percentChanged + percentDecrement) && (percentCurrent < 99))
+            while (!isUploadStarted)
             {
-                percentChanged = percentCurrent;
-                await Task.Delay(100);
-                taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
-                percentCurrent = taskStateCurrent.DoneInPercents;
+                isUploadStarted = await _cache.KeyExistsAsync(taskGuid);
+                if (isUploadStarted)
+                {
+                    taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
+                }
+                else
+                {
+                    Thread.Sleep(1000);
+                }
             }
             return taskStateCurrent;
         }

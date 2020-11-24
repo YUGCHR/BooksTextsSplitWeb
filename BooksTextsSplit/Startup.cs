@@ -82,6 +82,7 @@ namespace BooksTextsSplit
             try
             {
                 services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+                services.AddSingleton<ICosmosUserDbService>(InitializeCosmosClientInstanceAsync1(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             }
             catch (Exception ex)
             {
@@ -120,6 +121,7 @@ namespace BooksTextsSplit
         {
             string databaseName = configurationSection.GetSection("DatabaseName").Value;
             string containerName = configurationSection.GetSection("ContainerName").Value;
+            string userContainerName = configurationSection.GetSection("UserContainerName").Value;
             string account = configurationSection.GetSection("Account").Value;
             string key = configurationSection.GetSection("Key").Value;            
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(account, key);
@@ -127,10 +129,30 @@ namespace BooksTextsSplit
                                 .WithConnectionModeDirect()
                                 .Build();
             CosmosDbService cosmosDbService = new CosmosDbService(client, databaseName, containerName);
+            CosmosDbService cosmosUserDbService = new CosmosDbService(client, databaseName, userContainerName);
             DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
 
             return cosmosDbService;
+        }
+
+        private static async Task<CosmosUserDbService> InitializeCosmosClientInstanceAsync1(IConfigurationSection configurationSection)
+        {
+            string databaseName = configurationSection.GetSection("DatabaseName").Value;
+            string containerName = configurationSection.GetSection("ContainerName").Value;
+            string userContainerName = configurationSection.GetSection("UserContainerName").Value;
+            string account = configurationSection.GetSection("Account").Value;
+            string key = configurationSection.GetSection("Key").Value;
+            CosmosClientBuilder clientBuilder = new CosmosClientBuilder(account, key);
+            CosmosClient client = clientBuilder
+                                .WithConnectionModeDirect()
+                                .Build();
+            //CosmosDbService cosmosDbService = new CosmosDbService(client, databaseName, containerName);
+            CosmosUserDbService cosmosUserDbService = new CosmosUserDbService(client, databaseName, userContainerName);
+            DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
+            await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+
+            return cosmosUserDbService;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

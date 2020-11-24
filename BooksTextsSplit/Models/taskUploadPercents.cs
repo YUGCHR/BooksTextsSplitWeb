@@ -15,8 +15,11 @@ namespace BooksTextsSplit.Models
         [JsonProperty(PropertyName = "currentUploadingRecord")]
         public int CurrentUploadingRecord { get; set; }
 
-        [JsonProperty(PropertyName = "currentRealTime")]
-        public int CurrentUploadingRealTime { get; set; }
+        [JsonProperty(PropertyName = "currentUploadedRecordRealTime")]
+        public int CurrentUploadedRecordRealTime { get; set; }
+
+        [JsonProperty(PropertyName = "totalUploadedRealTime")]
+        public int TotalUploadedRealTime { get; set; }
 
         [JsonProperty(PropertyName = "recordrsTotalCount")]
         public int RecordrsTotalCount { get; set; }
