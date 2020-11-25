@@ -22,7 +22,7 @@ namespace BooksTextsSplit.Models
         public int TotalUploadedRealTime { get; set; }
 
         [JsonProperty(PropertyName = "recordrsTotalCount")]
-        public int RecordrsTotalCount { get; set; }
+        public int RecordsTotalCount { get; set; }
 
         [JsonProperty(PropertyName = "currentTaskGuid")]
         public string CurrentTaskGuid { get; set; }

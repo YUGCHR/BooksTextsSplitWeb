@@ -10,7 +10,7 @@ namespace BooksTextsSplit.Services
     public interface ICosmosDbService
     {
         Task<IEnumerable<TextSentence>> GetItemsAsync(string query);
-        public Task<int?> GetCountItemAsync(string fieldName, int languageId);
+        public Task<int?> GetCountAllLanguageItemsAsync(string fieldName, int languageId);
         public Task<List<T>> GetItemsListAsync<T>(int languageId, int recordActualityLevel);
         public Task<List<T>> GetItemsListAsync<T>(int languageId, int recordActualityLeve, int currentBookId);
         public Task<T> GetItemCountAsync<T>(string queryString);

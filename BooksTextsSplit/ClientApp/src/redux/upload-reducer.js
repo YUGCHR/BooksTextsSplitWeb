@@ -78,6 +78,7 @@ let initialState = {
     versionsCountsInBooskIds: [],
     paragraphsCountsInBooskIds: [],
     sentencesCountsInBooskIds: [],
+    totalRecordsCount: 0,
   },
   emptyVariable: null,
   isTextLoaded: [false, false],
@@ -93,7 +94,7 @@ let initialState = {
   isWrongCount: false,
   metadataHeader: "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g",
   taskDonePercents: [0, 0],
-  endWhilePercents: [99],
+  endWhilePercents: 100,
   whoCalledPreloader: "",
 };
 
@@ -298,11 +299,14 @@ const postBooksTexts = (formData, i) => async (dispatch) => {
 const fetchTaskDonePercents = (taskGuid) => async (dispatch, getState) => {
   let response = [{}, {}];
   dispatch(toggleIsFetching(true, "fetchTaskDonePercents"));
-  let percents = 0;
-  while (percents < getState().uploadBooksPage.endWhilePercents) {
+  let recordsTotalCount = (await uploadAPI.getUploadTaskPercents(taskGuid[0])).recordsTotalCount;
+  let currentUploadingRecord = 0;
+  while (currentUploadingRecord < recordsTotalCount) {
     response[0] = await uploadAPI.getUploadTaskPercents(taskGuid[0]);
     response[1] = await uploadAPI.getUploadTaskPercents(taskGuid[1]);
-    percents = response[1].doneInPercents;
+    currentUploadingRecord = response[0].currentUploadingRecord + 1; // to change numeration started from 1, not from 0
+    response[0].doneInPercents = ((response[0].currentUploadingRecord * 100) / (response[0].recordsTotalCount * 100)) * 100;
+    response[1].doneInPercents = ((response[1].currentUploadingRecord * 100) / (response[1].recordsTotalCount * 100)) * 100;
     dispatch(setTaskDonePercents(response));
   }
   response[0].doneInPercents = 100;

@@ -80,7 +80,7 @@ namespace BooksTextsSplit.Services
         public async Task<int> CountSentencesCountsFromDb(int languageId) // always fetch data from db as version of book of language
         {
             //SELECT VALUE COUNT(1) FROM c where c.languageId=0
-            int languageSentencesCount = await _context.GetCountItemAsync(Constants.FieldNameLanguageId, languageId) ?? 0;
+            int languageSentencesCount = await _context.GetCountAllLanguageItemsAsync(Constants.FieldNameLanguageId, languageId) ?? 0;
             return languageSentencesCount;
         }
 

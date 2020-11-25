@@ -123,13 +123,24 @@ namespace BooksTextsSplit.Controllers
             //int percentDecrement = 0;
             TaskUploadPercents taskStateCurrent = new TaskUploadPercents();
             bool isUploadStarted = false;
+            int previousState = 0;
+            int currentState = 0;
+            int finishState = 0;
 
-            while (!isUploadStarted)
+            while (!isUploadStarted) // to wait when key taskGuid will appear
             {
                 isUploadStarted = await _cache.KeyExistsAsync(taskGuid);
                 if (isUploadStarted)
                 {
                     taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
+                    previousState = taskStateCurrent.CurrentUploadingRecord;
+                    currentState = previousState;
+                    finishState = taskStateCurrent.RecordsTotalCount - 1;
+                    while (currentState == previousState && currentState < finishState)
+                    {
+                        taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
+                        currentState = taskStateCurrent.CurrentUploadingRecord;
+                    }
                 }
                 else
                 {
@@ -151,7 +162,7 @@ namespace BooksTextsSplit.Controllers
                 {
                     CurrentTaskGuid = guid,
                     CurrentUploadingBookId = 0, // may be put whole TextSentence?
-                    RecordrsTotalCount = 0,
+                    RecordsTotalCount = 0,
                     CurrentUploadingRecord = 0,
                     DoneInPercents = 0,
                 };
@@ -175,6 +186,8 @@ namespace BooksTextsSplit.Controllers
         public async Task<ActionResult<TotalCounts>> GetTotalCounts(int languageId, [FromQuery] int param)
         {
             // после записи книг надо или удалить ключи или обновить их
+            // добавить в статистику базы данных максимальный уровень актуальности и количество книг/версий/записей с ним
+            // или показывать данные только максимального уровня, а общее количество записей только в заголовке
             TotalCounts totalLangSentences = await _data.FetchTotalCountsFromCache(languageId);
             return totalLangSentences;
         }

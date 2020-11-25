@@ -69,7 +69,7 @@ namespace BooksTextsSplit.Services
                         CurrentUploadingRecord = 0,
                         CurrentUploadedRecordRealTime = 0,
                         TotalUploadedRealTime = 0,
-                        RecordrsTotalCount = textSentencesLength,
+                        RecordsTotalCount = textSentencesLength,
                         CurrentTaskGuid = guid,
                         CurrentUploadingBookId = bookDescription.BookId,
                     };
@@ -80,12 +80,7 @@ namespace BooksTextsSplit.Services
                     {
                         _logger.LogInformation(
                             "Queued Background Task RecordFileToDb {Guid} is running", guid);
-
-                        //double doneInPercents;
-                        //int percentPrevious = 0;
-                        //int percentCurrent;
-                        //int percentDecrement = 0;
-
+                        
                         // to delete GetTotalCountWhereLanguageId:languageId
                         bool removeKeyResult = await _data.RemoveTotalCountWhereLanguageId(desiredTextLanguage);
 
@@ -97,7 +92,7 @@ namespace BooksTextsSplit.Services
                             
                             if (textSentencesLength < 20)
                             {
-                                Thread.Sleep(2000); // delay to emulate upload of a real book
+                                await Task.Delay(5000); // delay to emulate upload of a real book
                             }
                             
                             await _context.AddItemAsync(textSentences[tsi]);
@@ -133,11 +128,6 @@ namespace BooksTextsSplit.Services
                 }
             });
             //return "Task " + guid + " was Queued Background";
-        }
-
-        public void DoneInPercents()
-        {
-
         }
 
         public TextSentence[] FetchBookTextSentences(string text, TextSentence bookDescription, int desiredTextLanguage)

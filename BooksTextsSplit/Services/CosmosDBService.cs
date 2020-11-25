@@ -54,13 +54,26 @@ namespace BooksTextsSplit.Services
             }
         }
 
-        public async Task<int?> GetCountItemAsync(string fieldName, int languageId)
+        public async Task<int?> GetCountAllLanguageItemsAsync(string fieldName, int languageId)
         {
-            string id = $"SELECT VALUE COUNT(1) FROM c WHERE c.{fieldName} = {languageId}";
+            string queryString = $"SELECT VALUE COUNT(1) FROM c WHERE c.{fieldName} = {languageId}";
+            int result = default;
             try
             {
-                ItemResponse<int> response = await this._container.ReadItemAsync<int>(id, new PartitionKey(id));
-                return response.Resource;
+                FeedIterator<int> feedIterator = this._container.GetItemQueryIterator<int>(queryString);
+                if (feedIterator.HasMoreResults)
+                {
+                    FeedResponse<int> feedResponse = await feedIterator.ReadNextAsync();
+
+                    double requestCharge = feedResponse.RequestCharge; // request unit charge for operations executed in Cosmos DB 
+
+                    foreach (var item in feedResponse)
+                    {
+                        result = item;
+                    }
+                }
+
+                return result;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {

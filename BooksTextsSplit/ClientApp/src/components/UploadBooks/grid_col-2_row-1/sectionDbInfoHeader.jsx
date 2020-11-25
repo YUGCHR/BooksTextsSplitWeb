@@ -9,8 +9,8 @@ export const sectionDbInfoHeader = (props) => {
       <div className={s.dbInfoRecordsCount}>
         {props.isTextLoaded[0] &&
           props.isTextLoaded[1] &&
-          props.dbSentencesCount[0].sentencesCountLanguageId +
-            props.dbSentencesCount[1].sentencesCountLanguageId +
+          props.dbSentencesCount[0].totalRecordsCount +
+            props.dbSentencesCount[1].totalRecordsCount +
             props.uploadBooksLabels.nearShowButton}
       </div>
       <button className={cs.allButtonsBodies} onClick={props.setShowHideState}>
