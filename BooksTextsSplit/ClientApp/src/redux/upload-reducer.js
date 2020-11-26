@@ -319,9 +319,9 @@ const fetchTaskDonePercents = (taskGuid) => async (dispatch, getState) => {
     //response[1].doneInPercents = ((response[1].currentUploadingRecord * 100) / (response[1].recordsTotalCount * 100)) * 100;
     dispatch(setTaskDonePercents(response));
   }
-  response[0].doneInPercents = 100;
-  response[1].doneInPercents = 100;
-  dispatch(setTaskDonePercents(response));
+  // response[0].doneInPercents = 100;
+  // response[1].doneInPercents = 100;
+  // dispatch(setTaskDonePercents(response));
   dispatch(toggleIsFetching(false));
 };
 
