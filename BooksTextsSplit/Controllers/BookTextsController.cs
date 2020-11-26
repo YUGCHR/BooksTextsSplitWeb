@@ -144,7 +144,7 @@ namespace BooksTextsSplit.Controllers
                 }
                 else
                 {
-                    Thread.Sleep(1000);
+                    await Task.Delay(100);
                 }
             }
             return taskStateCurrent;
@@ -401,7 +401,7 @@ namespace BooksTextsSplit.Controllers
             });
         }
         #endregion
- 
+
         #region DELETE
 
         // DELETE: api/BookTexts/logout

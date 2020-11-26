@@ -299,14 +299,24 @@ const postBooksTexts = (formData, i) => async (dispatch) => {
 const fetchTaskDonePercents = (taskGuid) => async (dispatch, getState) => {
   let response = [{}, {}];
   dispatch(toggleIsFetching(true, "fetchTaskDonePercents"));
-  let recordsTotalCount = (await uploadAPI.getUploadTaskPercents(taskGuid[0])).recordsTotalCount;
+  let recordsTotalCount = (await uploadAPI.getUploadTaskPercents(taskGuid[0])).recordsTotalCount - 1; // to change numeration started from 1, not from 0
   let currentUploadingRecord = 0;
-  while (currentUploadingRecord < recordsTotalCount) {
+  /* while (currentUploadingRecord < recordsTotalCount) {
     response[0] = await uploadAPI.getUploadTaskPercents(taskGuid[0]);
     response[1] = await uploadAPI.getUploadTaskPercents(taskGuid[1]);
     currentUploadingRecord = response[0].currentUploadingRecord + 1; // to change numeration started from 1, not from 0
     response[0].doneInPercents = ((response[0].currentUploadingRecord * 100) / (response[0].recordsTotalCount * 100)) * 100;
     response[1].doneInPercents = ((response[1].currentUploadingRecord * 100) / (response[1].recordsTotalCount * 100)) * 100;
+    dispatch(setTaskDonePercents(response));
+  } */
+  while (currentUploadingRecord < recordsTotalCount) {
+    for (let i = 0; i < taskGuid.length; i++) {
+      response[i] = await uploadAPI.getUploadTaskPercents(taskGuid[i]);
+      response[i].doneInPercents = ((response[i].currentUploadingRecord * 100) / (response[i].recordsTotalCount * 100)) * 100;
+    }
+    currentUploadingRecord = await response[0].currentUploadingRecord;
+    //response[1] = await uploadAPI.getUploadTaskPercents(taskGuid[1]);
+    //response[1].doneInPercents = ((response[1].currentUploadingRecord * 100) / (response[1].recordsTotalCount * 100)) * 100;
     dispatch(setTaskDonePercents(response));
   }
   response[0].doneInPercents = 100;
