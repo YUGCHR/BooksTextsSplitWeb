@@ -122,29 +122,26 @@ namespace BooksTextsSplit.Controllers
         {
             //int percentDecrement = 0;
             TaskUploadPercents taskStateCurrent = new TaskUploadPercents();
-            bool isUploadStarted = false;
-            int previousState = 0;
-            int currentState = 0;
-            int finishState = 0;
-
-            while (!isUploadStarted) // to wait when key taskGuid will appear
+            bool isUploadInProgress = false;
+            while (!isUploadInProgress) // to wait when key taskGuid will appear
             {
-                isUploadStarted = await _cache.KeyExistsAsync(taskGuid);
-                if (isUploadStarted)
+                isUploadInProgress = await _cache.KeyExistsAsync(taskGuid);
+                if (isUploadInProgress)
                 {
                     taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
-                    previousState = taskStateCurrent.CurrentUploadingRecord;
-                    currentState = previousState;
-                    finishState = taskStateCurrent.RecordsTotalCount - 1;
+                    int previousState = taskStateCurrent.CurrentUploadingRecord;
+                    int currentState = previousState;
+                    int finishState = taskStateCurrent.RecordsTotalCount - 1;
                     while (currentState == previousState && currentState < finishState)
                     {
                         taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
                         currentState = taskStateCurrent.CurrentUploadingRecord;
+                        await Task.Delay(10);
                     }
                 }
                 else
                 {
-                    await Task.Delay(100);
+                    await Task.Delay(10);
                 }
             }
             return taskStateCurrent;
@@ -152,23 +149,23 @@ namespace BooksTextsSplit.Controllers
 
         // POST: api/BookTexts/UploadFile        
         [HttpPost("UploadFile")]
-        public async Task<IActionResult> UploadFile([FromForm] IFormFile bookFile, [FromForm] string jsonBookDescription)
+        public IActionResult UploadFile([FromForm] IFormFile bookFile, [FromForm] string jsonBookDescription)
         {
             // it's need to check the Redis keys after new books were recorded to Db
             if (bookFile != null)
             {
                 string guid = Guid.NewGuid().ToString();
-                TaskUploadPercents uploadPercents = new TaskUploadPercents
-                {
-                    CurrentTaskGuid = guid,
-                    CurrentUploadingBookId = 0, // may be put whole TextSentence?
-                    RecordsTotalCount = 0,
-                    CurrentUploadingRecord = 0,
-                    DoneInPercents = 0,
-                };
+                //TaskUploadPercents uploadPercents = new TaskUploadPercents
+                //{
+                //    CurrentTaskGuid = guid,
+                //    CurrentUploadingBookId = 0, // may be put whole TextSentence?
+                //    RecordsTotalCount = 0,
+                //    CurrentUploadingRecord = 0,
+                //    DoneInPercents = 0,
+                //};
 
                 //Redis key initialization - must be not null for GetUploadTaskPercents
-                await _cache.SetObjectAsync(guid, uploadPercents, TimeSpan.FromDays(1));
+                //await _cache.SetObjectAsync(guid, uploadPercents, TimeSpan.FromDays(1));
 
                 _task2Queue.RecordFileToDbInBackground(bookFile, jsonBookDescription, guid);
 

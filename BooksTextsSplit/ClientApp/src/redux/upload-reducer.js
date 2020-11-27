@@ -93,7 +93,27 @@ let initialState = {
   isUploadButtonDisabled: true,
   isWrongCount: false,
   metadataHeader: "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g",
-  taskDonePercents: [0, 0],
+  taskDone: [{}, {}],
+  /* taskDone: [
+    {
+      doneInPercents: 0,
+      currentUploadingRecord: 0,
+      currentUploadedRecordRealTime: 0,
+      totalUploadedRealTime: 0,
+      recordsTotalCount: 0,
+      currentTaskGuid: "",
+      currentUploadingBookId: 0,
+    },
+    {
+      doneInPercents: 0,
+      currentUploadingRecord: 0,
+      currentUploadedRecordRealTime: 0,
+      totalUploadedRealTime: 0,
+      recordsTotalCount: 0,
+      currentTaskGuid: "",
+      currentUploadingBookId: 0,
+    },
+  ], */
   endWhilePercents: 100,
   whoCalledPreloader: "",
 };
@@ -121,9 +141,9 @@ const uploadBooksReducer = (state = initialState, action) => {
     }
     case SET_TASK_DONE_PERCENTS: {
       let stateCopy = { ...state };
-      stateCopy.taskDonePercents = { ...state.taskDonePercents };
-      stateCopy.taskDonePercents[0] = action.response[0].doneInPercents;
-      stateCopy.taskDonePercents[1] = action.response[1].doneInPercents;
+      stateCopy.taskDone = { ...state.taskDone };
+      stateCopy.taskDone[0] = action.response[0];
+      stateCopy.taskDone[1] = action.response[1];
       return stateCopy;
     }
     case SET_FILE_NAME: {
@@ -309,10 +329,12 @@ const fetchTaskDonePercents = (taskGuid) => async (dispatch, getState) => {
     response[1].doneInPercents = ((response[1].currentUploadingRecord * 100) / (response[1].recordsTotalCount * 100)) * 100;
     dispatch(setTaskDonePercents(response));
   } */
-  while (currentUploadingRecord < recordsTotalCount) {
+  while (currentUploadingRecord !== recordsTotalCount) {
     for (let i = 0; i < taskGuid.length; i++) {
       response[i] = await uploadAPI.getUploadTaskPercents(taskGuid[i]);
-      response[i].doneInPercents = ((response[i].currentUploadingRecord * 100) / (response[i].recordsTotalCount * 100)) * 100;
+      response[i].doneInPercents = Math.round(
+        ((response[i].currentUploadingRecord * 100) / ((response[i].recordsTotalCount - 1) * 100)) * 100
+      );
     }
     currentUploadingRecord = await response[0].currentUploadingRecord;
     //response[1] = await uploadAPI.getUploadTaskPercents(taskGuid[1]);

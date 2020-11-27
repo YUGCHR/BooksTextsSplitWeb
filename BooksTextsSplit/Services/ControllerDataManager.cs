@@ -59,6 +59,8 @@ namespace BooksTextsSplit.Services
             _context = cosmosDbService;
         }
 
+        #region Total Counts
+
         public async Task<bool> RemoveTotalCountWhereLanguageId(int languageId)
         {
             string key = Constants.GetTotalCountsBase + languageId;
@@ -160,7 +162,7 @@ namespace BooksTextsSplit.Services
             return allUploadedVersions;
         }
 
-
+        #endregion
 
 
 

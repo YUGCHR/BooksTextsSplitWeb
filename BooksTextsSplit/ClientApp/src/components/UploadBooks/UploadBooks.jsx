@@ -45,13 +45,21 @@ const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, files
             <div>
               <div>
                 {" is uploaded - "}
-                {props.taskDonePercents[0]}
-                {"%"}
+                {props.taskDone[0].doneInPercents}
+                {"% ("}
+                {props.taskDone[0].currentUploadedRecordRealTime}
+                {" / "}
+                {props.taskDone[0].totalUploadedRealTime}
+                {")"}
               </div>
               <div>
                 {" is uploaded - "}
-                {props.taskDonePercents[1]}
-                {"%"}
+                {props.taskDone[1].doneInPercents}
+                {"% ("}
+                {props.taskDone[1].currentUploadedRecordRealTime}
+                {" / "}
+                {props.taskDone[1].totalUploadedRealTime}
+                {")"}
               </div>
             </div>
           )}

@@ -47,9 +47,13 @@ namespace BooksTextsSplit.Services
             TextSentence bookDescription = JsonSerializer.Deserialize<TextSentence>(jsonBookDescription, options);
             int desiredTextLanguage = bookDescription.LanguageId;
 
+            // move to FetchBookTextSentences?
             string fileName = bookFile.FileName;
             StreamReader reader = new StreamReader(bookFile.OpenReadStream());
             string text = reader.ReadToEnd();
+
+            TextSentence[] textSentences = FetchBookTextSentences(text, bookDescription, desiredTextLanguage); // add bookDescription
+            int textSentencesLength = textSentences.Length;
 
             // Enqueue a background work item
             _taskQueue.QueueBackgroundWorkItem(async token =>
@@ -57,12 +61,8 @@ namespace BooksTextsSplit.Services
                 try
                 {
                     _logger.LogInformation(
-                    "Queued Background Task RecordFileToDb {Guid} is starting", guid);
-                    // TODO it's necessary to pass bookDescription to AnalyseTextBook and use bookDescription.properties when initielize textSentences[]
-                    TextSentence[] textSentences = FetchBookTextSentences(text, bookDescription, desiredTextLanguage); // add bookDescription
-                    int textSentencesLength = textSentences.Length;
-                    //string json = JsonSerializer.Serialize(textSentences);
-
+                    "Queued Background Task RecordFileToDb {Guid} is starting", guid);                    
+                    
                     TaskUploadPercents uploadPercents = new TaskUploadPercents
                     {
                         DoneInPercents = 0, // do not use
@@ -92,7 +92,7 @@ namespace BooksTextsSplit.Services
                             
                             if (textSentencesLength < 20)
                             {
-                                await Task.Delay(5000); // delay to emulate upload of a real book
+                                await Task.Delay(1000); // delay to emulate upload of a real book
                             }
                             
                             await _context.AddItemAsync(textSentences[tsi]);
