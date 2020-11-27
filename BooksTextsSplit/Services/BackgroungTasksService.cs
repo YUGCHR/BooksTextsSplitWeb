@@ -92,7 +92,7 @@ namespace BooksTextsSplit.Services
                             
                             if (textSentencesLength < 20)
                             {
-                                await Task.Delay(1000); // delay to emulate upload of a real book
+                                await Task.Delay(5000); // delay to emulate upload of a real book
                             }
                             
                             await _context.AddItemAsync(textSentences[tsi]);
