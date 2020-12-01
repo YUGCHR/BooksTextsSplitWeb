@@ -36,10 +36,10 @@ namespace BooksTextsSplit
         int AddParagraphText(int desiredTextLanguage, string paragraphText);//тоже возвращает количество элементов
         int RemoveAtParagraphText(int desiredTextLanguage, int paragraphCount);//удаляет элемент списка с индексом paragraphCount
 
-        TextSentence GetTextSentence(int sentenceCount);
+        TextSentenceFlat GetTextSentence(int sentenceCount);
         int GetTextSentenceLength();
-        int SetTextSentence(int sentenceCount, TextSentence textSentence);
-        int AddTextSentence(TextSentence textSentence);        
+        int SetTextSentence(int sentenceCount, TextSentenceFlat textSentence);
+        int AddTextSentence(TextSentenceFlat textSentence);        
 
         int GetNoticeNumber(int desiredTextLanguage, int noticeIndex);
         string GetNoticeName(int desiredTextLanguage, int noticeIndex);
@@ -61,7 +61,7 @@ namespace BooksTextsSplit
         private string[] filesContents;        
 
         private List<List<string>> paragraphsTexts = new List<List<string>>(); //инициализация динамического двумерного массива с абзацами (на двух языках + когда-то результат)
-        private List<TextSentence> textSentences = new List<TextSentence>(); //общий массив для всех языков
+        private List<TextSentenceFlat> textSentences = new List<TextSentenceFlat>(); //общий массив для всех языков
 
         //два массива для замечаний - добавление и удаление ячеек синхронизировано с paragraphsTexts, так что, у них всегда одинаковая длина, а чтение-запись производится синхронно в оба эти массивы (потом можно заменить на общих класс для всех трех массивов)
         private List<List<string>> noticesNames = new List<List<string>>(); //массив названий замечаний
@@ -341,8 +341,8 @@ namespace BooksTextsSplit
         #endregion
 
         #region textSentences
-        //группа класса TextSentence
-        public TextSentence GetTextSentence(int sentenceCount)
+        //группа класса TextSentenceFlat (instead of TextSentence)
+        public TextSentenceFlat GetTextSentence(int sentenceCount)
         {
             return textSentences[sentenceCount];
         }
@@ -352,7 +352,7 @@ namespace BooksTextsSplit
             return textSentences.Count;
         }
 
-        public int SetTextSentence(int sentenceCount, TextSentence textSentence)
+        public int SetTextSentence(int sentenceCount, TextSentenceFlat textSentence)
         {
             textSentences[sentenceCount] = textSentence;
             return 0;
@@ -360,7 +360,7 @@ namespace BooksTextsSplit
 
         //как сделать метод добавления Insert (int index, T item); - и, главное, зачем
 
-        public int AddTextSentence(TextSentence textSentence)
+        public int AddTextSentence(TextSentenceFlat textSentence)
         {
             textSentences.Add(textSentence);//добавление нового элемента в строку            
             return textSentences.Count;

@@ -8,13 +8,14 @@ using CachingFramework.Redis;
 using BooksTextsSplit.Models;
 using BooksTextsSplit.Helpers;
 using CachingFramework.Redis.Contracts.Providers;
+using System;
 
 namespace BooksTextsSplit.Services
 {
     public interface IAuthService
     {
-        Task<User> Authenticate(string email, string password);
-        Task<User> AuthByToken(string authKey);
+        Task<UserData> Authenticate(string email, string password);
+        Task<UserData> AuthByToken(string authKey);
         Task Logout();
         //Task AuthenticateToCookie(string userName);
         //Task<IEnumerable<User>> GetAll();
@@ -22,10 +23,17 @@ namespace BooksTextsSplit.Services
     public class AuthService : IAuthService
     {
         private readonly IHttpContextAccessor _httpContext;
+        private readonly IAccessCacheData _access;
+        private readonly ICosmosDbService _context;
         private readonly ICacheProviderAsync _cache;
-        public AuthService(IHttpContextAccessor httpContext, ICacheProviderAsync cache)
+        public AuthService(IHttpContextAccessor httpContext,
+            ICosmosDbService cosmosDbService,
+            IAccessCacheData access,
+            ICacheProviderAsync cache)
         {
             _httpContext = httpContext;
+            _access = access;
+            _context = cosmosDbService;
             _cache = cache;
         }
 
@@ -80,7 +88,7 @@ namespace BooksTextsSplit.Services
         //};
         #endregion
 
-        public async Task<User> Authenticate(string email, string password)
+        public async Task<UserData> Authenticate(string email, string password)
         {
             #region CreateUsers
             // Temporary - to create users in Redis only
@@ -90,15 +98,33 @@ namespace BooksTextsSplit.Services
             //}
             #endregion
 
+            bool isUsersExist = await _cache.KeyExistsAsync(email);
+
+            if (!isUsersExist)
+            {
+                await SetUsersToCacheFromDb();
+            }
+
             //var user = await Task.Run(() => _users.SingleOrDefault(x => x.Email == email && x.Password == password));
-            User user = await _cache.GetObjectAsync<User>(email); // email == userKey for Redis
-            
+            UserData user = await _cache.GetObjectAsync<UserData>(email); // email == userKey for Redis
+
             if (user != null && user.Password == password)
-            {                
+            {
                 await AuthByCookie(email);
                 return user.WithoutPassword(); // authentication successful so return user details without password
-            }            
+            }
             return null; // return null if user not found or pswd is wrong
+        }
+
+        public async Task SetUsersToCacheFromDb()
+        {
+            List<UserData> allUsersData = await _context.GetUserListAsync<UserData>(0);
+            foreach (UserData u in allUsersData)
+            {
+                string keyUser = u.Email;
+                await _access.SetObjectAsync<UserData>(keyUser, u, TimeSpan.FromDays(1));
+            }
+            return;
         }
 
         public async Task Logout()
@@ -108,9 +134,9 @@ namespace BooksTextsSplit.Services
         }
 
         #region LEGACY
-        public async Task<User> AuthByToken(string fetchToken) // this.AuthenticationWithToken was changed on AuthenticationWithCoockie
+        public async Task<UserData> AuthByToken(string fetchToken) // this.AuthenticationWithToken was changed on AuthenticationWithCoockie
         {
-            User userWithToken = await _cache.GetObjectAsync<User>(fetchToken);
+            UserData userWithToken = await _cache.GetObjectAsync<UserData>(fetchToken);
             if (userWithToken == null) // return null if user not found
             {
                 return null;

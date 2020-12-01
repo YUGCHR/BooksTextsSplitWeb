@@ -55,7 +55,7 @@ namespace BooksTextsSplit
             // configure DI for application services            
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IResultDataService, ResultDataService>();
-            services.AddScoped<BooksTextsSplit.Models.User>(); // ?
+            services.AddScoped<BooksTextsSplit.Models.UserData>(); // ?
 
             // Consuming a scoped service in a background task
             //services.AddSingleton<MonitorLoop>();
@@ -81,7 +81,7 @@ namespace BooksTextsSplit
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             try
             {
-                services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+                services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());                
             }
             catch (Exception ex)
             {
@@ -120,15 +120,17 @@ namespace BooksTextsSplit
         {
             string databaseName = configurationSection.GetSection("DatabaseName").Value;
             string containerName = configurationSection.GetSection("ContainerName").Value;
+            string userContainerName = configurationSection.GetSection("UserContainerName").Value;
             string account = configurationSection.GetSection("Account").Value;
             string key = configurationSection.GetSection("Key").Value;            
             CosmosClientBuilder clientBuilder = new CosmosClientBuilder(account, key);
             CosmosClient client = clientBuilder
                                 .WithConnectionModeDirect()
                                 .Build();
-            CosmosDbService cosmosDbService = new CosmosDbService(client, databaseName, containerName);
+            CosmosDbService cosmosDbService = new CosmosDbService(client, databaseName, containerName, userContainerName);            
             DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
+            await database.Database.CreateContainerIfNotExistsAsync(userContainerName, "/userId");
 
             return cosmosDbService;
         }

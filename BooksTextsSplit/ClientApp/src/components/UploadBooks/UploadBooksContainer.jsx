@@ -46,8 +46,9 @@ class UploadBooksContainerAPI extends React.Component {
           radioOptionChange={this.props.radioOptionChange} //
           fileUploadHandler={this.props.fileUploadHandler} //
           isWrongCount={this.props.isWrongCount}
-          dbSentencesCount={this.props.dbSentencesCount}
-          taskDonePercents={this.props.taskDonePercents}
+          dbSentencesCount={this.props.dbSentencesCount} //
+          isTextLoaded={this.props.isTextLoaded} //
+          taskDone={this.props.taskDone}
         />
       </>
     );
@@ -71,10 +72,11 @@ let mapStateToProps = (state) => {
     isUploadButtonDisabled: state.uploadBooksPage.isUploadButtonDisabled, //
     isWrongCount: state.uploadBooksPage.isWrongCount, //
     booksTitles: state.uploadBooksPage.booksTitles,
-    dbSentencesCount: state.uploadBooksPage.dbSentencesCount,
+    dbSentencesCount: state.uploadBooksPage.dbSentencesCount, //
+    isTextLoaded: state.uploadBooksPage.isTextLoaded, //
     sentencesCount: state.uploadBooksPage.sentencesCount,
     //isFetching: state.app.isFetching, //using here
-    taskDonePercents: state.uploadBooksPage.taskDonePercents,
+    taskDone: state.uploadBooksPage.taskDone,
   };
 };
 

@@ -25,7 +25,13 @@ namespace BooksTextsSplit.Models
         public int BooksIdsCount { get; private set; }
 
         [JsonProperty(PropertyName = "versionsCountLanguageId")]
-        public int VersionsCountLanguageId { get; private set; }
+        public int VersionsCountLanguageId { get; private set; }        
+
+        [JsonProperty(PropertyName = "maxRecordActualityLevel")]
+        public int MaxRecordActualityLevel { get; set; }
+
+        [JsonProperty(PropertyName = "maxLevelRecordsCount")]
+        public int MaxLevelRecordsCount { get; set; }
 
         [JsonProperty(PropertyName = "paragraphsCountLanguageId")]
         public int ParagraphsCountLanguageId { get; private set; }
@@ -43,7 +49,9 @@ namespace BooksTextsSplit.Models
         public int[] ParagraphsCountsInBooskIds { get; private set; }
 
         [JsonProperty(PropertyName = "sentencesCountsInBooskIds")]
-        public int[] SentencesCountsInBooskIds { get; private set; }  
-        
+        public int[] SentencesCountsInBooskIds { get; private set; }
+
+        [JsonProperty(PropertyName = "totalRecordsCount")]
+        public int TotalRecordsCount { get; set; }
     }
 }

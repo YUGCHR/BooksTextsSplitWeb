@@ -8,12 +8,12 @@ namespace BooksTextsSplit.Helpers
 {
     public static class ExtensionMethods
     {
-        public static IEnumerable<User> WithoutPasswords(this IEnumerable<User> users)
+        public static IEnumerable<UserData> WithoutPasswords(this IEnumerable<UserData> users)
         {
             return users.Select(x => x.WithoutPassword());
         }
 
-        public static User WithoutPassword(this User user)
+        public static UserData WithoutPassword(this UserData user)
         {
             if (user == null)
             {

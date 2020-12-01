@@ -16,16 +16,19 @@ namespace BooksTextsSplit.Services
     public class CosmosDbService : ICosmosDbService
     {
         private Container _container;
+        private Container _containerUser;
         //private readonly ILogger<ControllerDataManager> _logger;
 
         public CosmosDbService(
             //ILogger<ControllerDataManager> logger,
             CosmosClient dbClient,
             string databaseName,
-            string containerName)
+            string containerName,
+            string userContainerName)
         {
             //_logger = logger;
             this._container = dbClient.GetContainer(databaseName, containerName);
+            this._containerUser = dbClient.GetContainer(databaseName, userContainerName);
         }
 
         public async Task AddItemAsync(TextSentence item)
@@ -51,12 +54,26 @@ namespace BooksTextsSplit.Services
             }
         }
 
-        public async Task<int?> GetCountItemAsync(string id)
+        public async Task<int?> GetCountAllLanguageItemsAsync(string fieldName, int languageId)
         {
+            string queryString = $"SELECT VALUE COUNT(1) FROM c WHERE c.{fieldName} = {languageId}";
+            int result = default;
             try
             {
-                ItemResponse<int> response = await this._container.ReadItemAsync<int>(id, new PartitionKey(id));
-                return response.Resource;
+                FeedIterator<int> feedIterator = this._container.GetItemQueryIterator<int>(queryString);
+                if (feedIterator.HasMoreResults)
+                {
+                    FeedResponse<int> feedResponse = await feedIterator.ReadNextAsync();
+
+                    double requestCharge = feedResponse.RequestCharge; // request unit charge for operations executed in Cosmos DB 
+
+                    foreach (var item in feedResponse)
+                    {
+                        result = item;
+                    }
+                }
+
+                return result;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -64,9 +81,34 @@ namespace BooksTextsSplit.Services
             }
         }
 
-        
+        //SELECT DISTINCT VALUE c.totalBookCounts.inBookChaptersCount FROM c where c.languageId = 1 AND c.recordActualityLevel = 5
 
-        public async Task<List<T>> GetItemsListAsync<T>(string queryString)
+
+        public async Task<List<T>> GetItemsListAsync<T>(int languageId, int recordActualityLevel)
+        {
+            //SELECT DISTINCT VALUE c.bookId FROM c WHERE c.languageId = 1 AND c.recordActualityLevel = 5 (without VALUE - for additional control)
+            string queryString = $"SELECT DISTINCT c.{Constants.FieldNameBooksId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameRecordActualityLevel} = {recordActualityLevel}";
+            return await GetItemsListAsyncFromDb<T>(queryString);
+        }
+
+        public async Task<List<T>> GetItemsListAsync<T>(int languageId, int recordActualityLeve, int currentBookId)
+        {
+            //SELECT DISTINCT c.uploadVersion FROM c WHERE c.languageId = 1 AND c.recordActualityLevel = 5 AND c.bookId IN (77, 88, 39, 37)                                                                                             
+            //SELECT DISTINCT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId = 77
+            string queryString = $"SELECT DISTINCT c.{Constants.FieldNameUploadVersion} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameRecordActualityLevel} = {recordActualityLeve} AND c.bookId = {currentBookId}";
+
+            return await GetItemsListAsyncFromDb<T>(queryString);
+        }
+
+        //public async Task<List<T>> GetItemsListAsync<T>(string fieldName1, int languageId)
+        //{
+        //    //SELECT VALUE COUNT(c.bookSentenceId) FROM c where c.languageId = 0 AND c.bookId = 77
+        //    string queryString = $"SELECT VALUE COUNT(c.{Constants.FieldNameBookSentenceId}) FROM c WHERE c.{fieldName1} = {languageId} AND c.bookId = ";
+
+        //    return await GetItemsListAsyncFromDb<T>(queryString);
+        //}
+
+        private async Task<List<T>> GetItemsListAsyncFromDb<T>(string queryString)
         {
             List<T> distinctBooksIds = new List<T>();
             try
@@ -85,6 +127,46 @@ namespace BooksTextsSplit.Services
                 }                
                 
                 return distinctBooksIds;
+            }
+            catch (CosmosException ex)
+            {
+                Console.WriteLine("GetItemQueryIterator", ex);
+                //_logger.LogInformation("CosmosException on query \n {queryString} \n" + ex.Message, queryString);
+                return default;
+            }
+        }
+
+
+        public async Task<List<T>> GetUserListAsync<T>(int userCount)
+        {
+            if(userCount != 0)
+            {
+                return default;
+            }
+            //SELECT * FROM c
+            string queryString = $"SELECT * FROM c";
+            return await GetUsersListAsyncFromDb<T>(queryString);
+        }
+
+        private async Task<List<T>> GetUsersListAsyncFromDb<T>(string queryString)
+        {
+            List<T> allUserData = new List<T>();
+            try
+            {
+                FeedIterator<T> feedIterator = this._containerUser.GetItemQueryIterator<T>(queryString);
+                if (feedIterator.HasMoreResults)
+                {
+                    FeedResponse<T> feedResponse = await feedIterator.ReadNextAsync();
+
+                    double requestCharge = feedResponse.RequestCharge; // request unit charge for operations executed in Cosmos DB 
+
+                    foreach (var item in feedResponse)
+                    {
+                        allUserData.Add(item);
+                    }
+                }
+
+                return allUserData;
             }
             catch (CosmosException ex)
             {

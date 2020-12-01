@@ -68,7 +68,18 @@ let initialState = {
   ],
   booksTitles: [{}, {}],
   sentencesCount: [-1, -2, -3, -4, -5],
-  dbSentencesCount: [-7, -8],
+  // TODO добавить в totalCounts названия полей и загружать их с сервера
+  dbSentencesCount: {
+    booksIdsCount: 0,
+    versionsCountLanguageId: 0,
+    paragraphsCountLanguageId: 0,
+    sentencesCountLanguageId: 0,
+    allBooksIdsList: [],
+    versionsCountsInBooskIds: [],
+    paragraphsCountsInBooskIds: [],
+    sentencesCountsInBooskIds: [],
+    totalRecordsCount: 0,
+  },
   emptyVariable: null,
   isTextLoaded: [false, false],
   isFetching: false,
@@ -82,8 +93,28 @@ let initialState = {
   isUploadButtonDisabled: true,
   isWrongCount: false,
   metadataHeader: "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g",
-  taskDonePercents: [0, 0],
-  endWhilePercents: [99],
+  taskDone: [{}, {}],
+  /* taskDone: [
+    {
+      doneInPercents: 0,
+      currentUploadingRecord: 0,
+      currentUploadedRecordRealTime: 0,
+      totalUploadedRealTime: 0,
+      recordsTotalCount: 0,
+      currentTaskGuid: "",
+      currentUploadingBookId: 0,
+    },
+    {
+      doneInPercents: 0,
+      currentUploadingRecord: 0,
+      currentUploadedRecordRealTime: 0,
+      totalUploadedRealTime: 0,
+      recordsTotalCount: 0,
+      currentTaskGuid: "",
+      currentUploadingBookId: 0,
+    },
+  ], */
+  endWhilePercents: 100,
   whoCalledPreloader: "",
 };
 
@@ -99,7 +130,7 @@ const uploadBooksReducer = (state = initialState, action) => {
     case SET_DB_SENTENCES_COUNT: {
       let stateCopy = { ...state };
       stateCopy.dbSentencesCount = { ...state.dbSentencesCount };
-      stateCopy.dbSentencesCount[action.languageId] = action.count;
+      stateCopy.dbSentencesCount[action.languageId] = action.payload;
       return stateCopy;
     }
     case SET_SENTENCES_COUNT: {
@@ -110,9 +141,9 @@ const uploadBooksReducer = (state = initialState, action) => {
     }
     case SET_TASK_DONE_PERCENTS: {
       let stateCopy = { ...state };
-      stateCopy.taskDonePercents = { ...state.taskDonePercents };
-      stateCopy.taskDonePercents[0] = action.response[0].doneInPercents;
-      stateCopy.taskDonePercents[1] = action.response[1].doneInPercents;
+      stateCopy.taskDone = { ...state.taskDone };
+      stateCopy.taskDone[0] = action.response[0];
+      stateCopy.taskDone[1] = action.response[1];
       return stateCopy;
     }
     case SET_FILE_NAME: {
@@ -165,10 +196,9 @@ const uploadBooksReducer = (state = initialState, action) => {
       return stateCopy;
     }
     case TOGGLE_IS_FETCHING: {
-      if(action.isFetching){
-      return { ...state, isFetching: action.isFetching, whoCalledPreloader: action.whoCalled };
-      }
-      else{
+      if (action.isFetching) {
+        return { ...state, isFetching: action.isFetching, whoCalledPreloader: action.whoCalled };
+      } else {
         return { ...state, isFetching: action.isFetching, whoCalledPreloader: "" };
       }
     }
@@ -204,7 +234,7 @@ export const setAuthUserData = (userId, email, login, isAuth) => ({ type: SET_US
  */
 
 const setSentencesCount = (count, index) => ({ type: SET_SENTENCES_COUNT, count, index });
-const setDbSentencesCount = (count, languageId) => ({ type: SET_DB_SENTENCES_COUNT, count, languageId });
+const setDbSentencesCount = (payload, languageId) => ({ type: SET_DB_SENTENCES_COUNT, payload, languageId });
 const setTaskDonePercents = (response) => ({ type: SET_TASK_DONE_PERCENTS, response });
 
 const toggleIsLoading = (isTextLoaded, languageId) => ({ type: TOGGLE_IS_LOADING, isTextLoaded, languageId });
@@ -261,11 +291,14 @@ const setFilesMetadata = (files) => async (dispatch, getState) => {
         let currentLangId = parseInt(textFirst18Lines[4], 10);
         textsMetadata[i].languageId = currentLangId;
         dispatch(setRadioDefault(currentLangId, i));
-        textsMetadata[i].authorNameId = parseInt(textFirst18Lines[6], 10);
-        textsMetadata[i].authorName = textFirst18Lines[8];
-        textsMetadata[i].bookNameId = parseInt(textFirst18Lines[10], 10);
-        textsMetadata[i].bookName = textFirst18Lines[12];
-        textsMetadata[i].comment = textFirst18Lines[14];
+        let bookProperties = {};
+        bookProperties.authorNameId = parseInt(textFirst18Lines[6], 10);
+        bookProperties.authorNameId = parseInt(textFirst18Lines[6], 10);
+        bookProperties.authorName = textFirst18Lines[8];
+        bookProperties.bookNameId = parseInt(textFirst18Lines[10], 10);
+        bookProperties.bookName = textFirst18Lines[12];
+        bookProperties.bookAnnotation = textFirst18Lines[14];
+        textsMetadata[i].bookProperties = bookProperties;
       }
     };
     reader.onerror = () => {
@@ -286,16 +319,31 @@ const postBooksTexts = (formData, i) => async (dispatch) => {
 const fetchTaskDonePercents = (taskGuid) => async (dispatch, getState) => {
   let response = [{}, {}];
   dispatch(toggleIsFetching(true, "fetchTaskDonePercents"));
-  let percents = 0;
-  while (percents < getState().uploadBooksPage.endWhilePercents) {
+  let recordsTotalCount = (await uploadAPI.getUploadTaskPercents(taskGuid[0])).recordsTotalCount - 1; // to change numeration started from 1, not from 0
+  let currentUploadingRecord = 0;
+  /* while (currentUploadingRecord < recordsTotalCount) {
     response[0] = await uploadAPI.getUploadTaskPercents(taskGuid[0]);
     response[1] = await uploadAPI.getUploadTaskPercents(taskGuid[1]);
-    percents = response[1].doneInPercents;
+    currentUploadingRecord = response[0].currentUploadingRecord + 1; // to change numeration started from 1, not from 0
+    response[0].doneInPercents = ((response[0].currentUploadingRecord * 100) / (response[0].recordsTotalCount * 100)) * 100;
+    response[1].doneInPercents = ((response[1].currentUploadingRecord * 100) / (response[1].recordsTotalCount * 100)) * 100;
+    dispatch(setTaskDonePercents(response));
+  } */
+  while (currentUploadingRecord !== recordsTotalCount) {
+    for (let i = 0; i < taskGuid.length; i++) {
+      response[i] = await uploadAPI.getUploadTaskPercents(taskGuid[i]);
+      response[i].doneInPercents = Math.round(
+        ((response[i].currentUploadingRecord * 100) / ((response[i].recordsTotalCount - 1) * 100)) * 100
+      );
+    }
+    currentUploadingRecord = await response[0].currentUploadingRecord;
+    //response[1] = await uploadAPI.getUploadTaskPercents(taskGuid[1]);
+    //response[1].doneInPercents = ((response[1].currentUploadingRecord * 100) / (response[1].recordsTotalCount * 100)) * 100;
     dispatch(setTaskDonePercents(response));
   }
-  response[0].doneInPercents = 100;
-  response[1].doneInPercents = 100;
-  dispatch(setTaskDonePercents(response));
+  // response[0].doneInPercents = 100;
+  // response[1].doneInPercents = 100;
+  // dispatch(setTaskDonePercents(response));
   dispatch(toggleIsFetching(false));
 };
 
@@ -303,9 +351,8 @@ export const fetchSentencesCount = (languageId) => async (dispatch, getState) =>
   dispatch(toggleIsFetching(true, "fetchSentencesCount"));
   const response = await uploadAPI.getSentenceCount(languageId);
   dispatch(toggleIsFetching(false));
-  debugger;
-  dispatch(setDbSentencesCount(response.sentencesCount, languageId));
-  getState().uploadBooksPage.dbSentencesCount[languageId] === 0
+  dispatch(setDbSentencesCount(response, languageId));
+  getState().uploadBooksPage.dbSentencesCount.sentencesCountLanguageId[languageId] === 0
     ? dispatch(toggleIsLoading(false, languageId))
     : dispatch(toggleIsLoading(true, languageId));
   return response.sentencesCount;

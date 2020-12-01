@@ -96,7 +96,7 @@ namespace BooksTextsSplit.Controllers
 
         public async Task<ActionResult<LoginAttemptResult>> Login([FromBody] LoginDataFromUI fetchedLoginData) //async Task<IActionResult>
         {
-            User user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
+            UserData user = await _authService.Authenticate(fetchedLoginData.Email, fetchedLoginData.Password);
             if (user == null)
             {
                 return await _result.ResultDataWithToken(3, null);
@@ -120,40 +120,52 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("uploadTaskPercents")]
         public async Task<ActionResult<TaskUploadPercents>> GetUploadTaskPercents([FromQuery] string taskGuid)
         {
-            int percentDecrement = 0;
-            var taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
-            int percentCurrent = taskStateCurrent.DoneInPercents;
-            int percentChanged = percentCurrent;
-
-            while ((percentCurrent <= percentChanged + percentDecrement) && (percentCurrent < 99))
+            //int percentDecrement = 0;
+            TaskUploadPercents taskStateCurrent = new TaskUploadPercents();
+            bool isUploadInProgress = false;
+            while (!isUploadInProgress) // to wait when key taskGuid will appear
             {
-                percentChanged = percentCurrent;
-                await Task.Delay(100);
-                taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
-                percentCurrent = taskStateCurrent.DoneInPercents;
+                isUploadInProgress = await _cache.KeyExistsAsync(taskGuid);
+                if (isUploadInProgress)
+                {
+                    taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
+                    int previousState = taskStateCurrent.CurrentUploadingRecord;
+                    int currentState = previousState;
+                    int finishState = taskStateCurrent.RecordsTotalCount - 1;
+                    while (currentState == previousState && currentState < finishState)
+                    {
+                        taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
+                        currentState = taskStateCurrent.CurrentUploadingRecord;
+                        await Task.Delay(10);
+                    }
+                }
+                else
+                {
+                    await Task.Delay(10);
+                }
             }
             return taskStateCurrent;
         }
 
         // POST: api/BookTexts/UploadFile        
         [HttpPost("UploadFile")]
-        public async Task<IActionResult> UploadFile([FromForm] IFormFile bookFile, [FromForm] string jsonBookDescription)
+        public IActionResult UploadFile([FromForm] IFormFile bookFile, [FromForm] string jsonBookDescription)
         {
             // it's need to check the Redis keys after new books were recorded to Db
             if (bookFile != null)
             {
                 string guid = Guid.NewGuid().ToString();
-                TaskUploadPercents uploadPercents = new TaskUploadPercents
-                {
-                    CurrentTaskGuid = guid,
-                    CurrentUploadingBookId = 0, // may be put whole TextSentence?
-                    RecordrsTotalCount = 0,
-                    CurrentUploadingRecord = 0,
-                    DoneInPercents = 0,
-                };
+                //TaskUploadPercents uploadPercents = new TaskUploadPercents
+                //{
+                //    CurrentTaskGuid = guid,
+                //    CurrentUploadingBookId = 0, // may be put whole TextSentence?
+                //    RecordsTotalCount = 0,
+                //    CurrentUploadingRecord = 0,
+                //    DoneInPercents = 0,
+                //};
 
                 //Redis key initialization - must be not null for GetUploadTaskPercents
-                await _cache.SetObjectAsync(guid, uploadPercents, TimeSpan.FromDays(1));
+                //await _cache.SetObjectAsync(guid, uploadPercents, TimeSpan.FromDays(1));
 
                 _task2Queue.RecordFileToDbInBackground(bookFile, jsonBookDescription, guid);
 
@@ -170,7 +182,9 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("counts/{languageId}")]
         public async Task<ActionResult<TotalCounts>> GetTotalCounts(int languageId, [FromQuery] int param)
         {
-
+            // после записи книг надо или удалить ключи или обновить их
+            // добавить в статистику базы данных максимальный уровень актуальности и количество книг/версий/записей с ним
+            // или показывать данные только максимального уровня, а общее количество записей только в заголовке
             TotalCounts totalLangSentences = await _data.FetchTotalCountsFromCache(languageId);
             return totalLangSentences;
         }
@@ -384,7 +398,7 @@ namespace BooksTextsSplit.Controllers
             });
         }
         #endregion
- 
+
         #region DELETE
 
         // DELETE: api/BookTexts/logout
