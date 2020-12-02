@@ -16,18 +16,6 @@ const RADIO_IS_CHANGED = "RADIO-IS-CHANGED";
 const SHOW_HIDE_STATE = "SHOW-HIDE-STATE";
 const FIND_MAX_UPLOADED = "FIND-MAX-UPLOADED";
 
-/* TODO
-uploadPage - 
-первый запрос - за названиями всего
-загрузка файлов почти в любом количестве без особого контроля - 
-проверять, что разрешённого сегодня (в этой версии) формата и не слишком дофига
-после загрузки записать тексты в редис
-анализировать - проверить есть ли шапки, какой язык текста, ещё что-то
-можно окончательный анализ, если автоматически определился язык текста
-отправить пользователю список загруженных (вообще доступных - загруженных, но не залитых в базу) 
-файлов для разбора по парам, проверки языка и названий
-для записи в редис генерировать токен, который потом пойдёт в таск для загрузки в базу */
-
 let initialState = {
   selectedFiles: null, // used in ShowSelectedFiles
   radioChosenLanguage: ["eng", "rus"], // here default values of radio buttons to choose language
@@ -67,8 +55,7 @@ let initialState = {
     },
   ],
   booksTitles: [{}, {}],
-  sentencesCount: [-1, -2, -3, -4, -5],
-  // TODO добавить в totalCounts названия полей и загружать их с сервера
+  sentencesCount: [-1, -2, -3, -4, -5],  
   dbSentencesCount: {
     booksIdsCount: 0,
     versionsCountLanguageId: 0,
@@ -364,8 +351,7 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
   dispatch(toggleIsDoneUpload(true));
   for (let i = 0; i < selectedFiles.length; i++) {
     const form = new FormData();
-    form.append("bookFile", selectedFiles[i], selectedFiles[i].name);
-    // TODO it is possible to pass data in array (Object!) instead file properties
+    form.append("bookFile", selectedFiles[i], selectedFiles[i].name);    
     const bookTitle = getState().uploadBooksPage.booksTitles[i]; //[0];
     dispatch(toggleIsFetching(true, "fileUploadHandler"));
     // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db
@@ -379,9 +365,3 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
 };
 
 export default uploadBooksReducer;
-
-// TODO
-// возвращать весь класс textSentence
-// YES - записывать проценты в массив
-// YES - убрать запрос в базу после цикла
-// переделать запрос в базу на редис

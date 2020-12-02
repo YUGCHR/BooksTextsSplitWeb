@@ -24,9 +24,6 @@ namespace BooksTextsSplit.Models
         [JsonProperty(PropertyName = "bookId")]
         public int BookId { get; set; } // means BooksPairId - pair of English and Russian book
 
-        [JsonProperty(PropertyName = "alignedSentencesProportion")]
-        public int AlignedSentencesProportion { get; set; } // процент выровненных предложений в обоих языках в текстах книг
-
         [JsonProperty(PropertyName = "totalBookCounts")]
         public TotalBooksCounts TotalBookCounts { get; set; }
 
@@ -50,6 +47,9 @@ namespace BooksTextsSplit.Models
 
         public class TotalBooksCounts
         {
+            [JsonProperty(PropertyName = "alignedSentencesProportion")]
+            public int AlignedSentencesProportion { get; set; } // процент выровненных предложений в обоих языках в текстах книг
+
             [JsonProperty(PropertyName = "inBookChaptersCount")]
             public int InBookChaptersCount { get; set; } // how many chapters in the book (one languageId)
 
