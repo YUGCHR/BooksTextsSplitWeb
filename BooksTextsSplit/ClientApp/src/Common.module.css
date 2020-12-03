@@ -1,0 +1,7 @@
+
+@import './App.css';
+
+.allButtonsBodies {
+    color: var(--gray-blue); /* серо-голубым */ 
+    background-color: var(--emerald); /* изумрудным */
+}

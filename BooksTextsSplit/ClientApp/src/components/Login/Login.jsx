@@ -43,7 +43,7 @@ const Login = (props) => {
   };
 
   if (props.isAuth) {
-    return <Redirect to={"/upload"} />; // select
+    return <Redirect to={"/select"} />; // select
   }  
 
   return (

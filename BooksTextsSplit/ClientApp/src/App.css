@@ -1,31 +1,22 @@
-.app-wrapper {
-    height: 100vh;
-    margin: 0;
-    display: grid;
-    /* min-height: 100%; */
-    /* grid-template-rows: minmax(min-content, max-content) minmax(min-content, max-content) auto;
-    grid-template-columns: minmax(min-content, max-content) auto;
-    grid-auto-flow: row;  */   
-    /* grid-gap: 5px; */    
-    grid-template-columns: repeat(12, 1fr);
-    /* grid-template-rows: minmax(min-content, max-content) minmax(min-content, max-content) minmax(min-content, max-content); */
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas:
-        "h h h h h h h h h h h h"
-        "m m c c c c c c c c c c"
-        "f f f f f f f f f f f f";
-    background-color: #146252; /* изумрудным */
-}
-
-.app-wrapper-content {
-    /* grid-column: 2/3;
-    grid-row: 2/3; */
-    grid-area: c;
-    color: lightgreen;
-    background-color: #146252; /* изумрудным */
-}
-
-/* Золотисто-оливковый - #8D792C - цвет сочетается с
+/* Цветовая палитра №3611
+графитовый серый - #38876f
+изумрудный цвет, 
+оттенки изумрудного цвета, 
+почти-черный - #0e2d21
+светло оранжево-коричневый - #f1c79a 
+тёмно-зелёный - #646e74
+мятный - #77D177 #66B57E #C1F7DD #94E6C0 #51B37A #7CC6AB
+оливковый – #666723
+Золотисто-оливковый – #8D792C
+Оливковый хаки – #616841
+Светло-оливковый – #90934D
+Темно-оливковый - #544B32
+Серо-оливковый – #605E40
+темно-изумрудный цвет, 
+темно-серый цвет - #1c1f20
+цвет зеленого бархата, 
+цвет светлого дерева 
+Золотисто-оливковый - #8D792C - цвет сочетается с
 чайной розой - #F0C5C3
 бледно-лиловым - #DAB1D1
 кардиналом - #960023
@@ -42,6 +33,67 @@
 махаоном - #552614
 латте - #CFBEAA
 черным - #242426 */
+
+:root {
+    --olive-khaki: #616841; /* оливковый хаки */
+    --light-olive: #90934D; /* светло-оливковый */ 
+    --dark-olive: #544B32; /* темно-оливковый */
+    --grey-olive: #605E40; /* серо-оливковый */
+
+    --golden-olive: ##8D792C; /* золотисто-оливковый */
+    --tea-rose: #F0C5C3; /* чайной розой */
+    --lavender-color: #DAB1D1; /* бледно-лиловым */
+    --cardinal-color: #960023; /* кардинал */ 
+    --mango-color: #FB9A3B; /* манго */
+    --pumpkin-color: #E1541F; /* тыквенный */
+    --apricot-color: #FFD998; /* абрикосовый */
+    --chartreuse-color: #D3D70E; /* шартрез */
+    --emerald: #146252; /* изумрудный */
+    --prussian-blue: #114471; /*берлинской лазурью */
+    --gray-blue: #9EB7CD; /* серо-голубой */
+    --blackberry-color: #682F5A; /* ежевичным */
+    --eggplant-color: #3A172D; /* баклажановым */
+    --swallowtail-color: #552614; /* махаоном */
+
+    --mint-77: #77D177; /* мятный */
+    --mint-7E: #66B57E; /* мятный */
+    --mint-DD: #C1F7DD; /* мятный */
+    --mint-C0: #94E6C0; /* мятный */
+    --mint-7A: #51B37A; /* мятный */
+    --mint-AB: #7CC6AB; /* мятный */
+
+    --latte: #CFBEAA;
+    --graphite-gray: #38876f; /* графитовый серый */
+    --light-orange-brown: #f1c79a; /* светло оранжево-коричневый */ 
+}
+
+.app-wrapper {
+    height: 100vh;
+    margin: 0;
+    display: grid;
+    /* min-height: 100%; */
+    /* grid-template-rows: minmax(min-content, max-content) minmax(min-content, max-content) auto;
+    grid-template-columns: minmax(min-content, max-content) auto;
+    grid-auto-flow: row;  */   
+    /* grid-gap: 5px; */    
+    grid-template-columns: repeat(12, 1fr);
+    /* grid-template-rows: minmax(min-content, max-content) minmax(min-content, max-content) minmax(min-content, max-content); */
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        "h h h h h h h h h h h h"
+        "m m c c c c c c c c c c"
+        "f f f f f f f f f f f f";
+    background-color: var(--emerald); /* изумрудный */
+}
+
+.app-wrapper-content {
+    /* grid-column: 2/3;
+    grid-row: 2/3; */
+    grid-area: c;
+    color: var(--latte);
+    background-color: var(--emerald); /* изумрудный */
+}
+
 
 /* display: grid;
 grid-template:

@@ -1,5 +1,6 @@
 import React from "react";
 import s from "./Header.module.css";
+import cs from "../../Common.module.css";
 import { NavLink } from "react-router-dom";
 import logoPicture from "../../assets/images/1219135_open-book-logo.png";
 import Preloader from "../common/preloader/Preloader";
@@ -19,7 +20,7 @@ const Header = (props) => {
             <div>
               <div>
                 {"You are logged in as "}
-                <button className={s.allButtonsBodies} onClick={props.logout}>
+                <button className={cs.allButtonsBodies} onClick={props.logout}>
                   Log out
                 </button>
               </div>

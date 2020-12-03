@@ -1,10 +1,12 @@
+@import '../../App.css';
+
 .header{
   /* grid-column: 1/3;
   grid-row: 1/2; */
   grid-area: h;  
   padding: 10px;
-  border: 2px solid #114471;
-  background-color: #146252;
+  border: 2px solid var(--prussian-blue);
+  background-color: var(--emerald);
   }
 
   .headerPartsPlace{
@@ -20,7 +22,7 @@
     grid-area: pic;
     height: 50px;
     opacity: 0.5; 
-    background-color: #146252;    
+    background-color: var(--emerald);    
   }
   
   .preloaderPlace{
@@ -39,10 +41,10 @@
     font-size: smaller;
     justify-self: end;
     text-align: right;
-    color: #9EB7CD;
+    color: var(--gray-blue);
   }
 
   .allButtonsBodies{
-    color: #9EB7CD; /* серо-голубым */ 
-    background-color: #146252; /* изумрудным */
+    color: var(--gray-blue); /* серо-голубым */ 
+    background-color: var(--emerald); /* изумрудным */
 }

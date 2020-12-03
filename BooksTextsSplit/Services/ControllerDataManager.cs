@@ -18,8 +18,6 @@ namespace BooksTextsSplit.Services
         public Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId);
         public Task<BooksNamesExistInDb> FetchBooksNamesIds(string where, int whereValue, int startUploadVersion);
         public Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value);
-
-
     }
 
     static class Constants
@@ -106,8 +104,6 @@ namespace BooksTextsSplit.Services
 
             int[] versionsCounts = await _access.FetchObjectAsync<int[]>(keyVersionsCounts, () => FetchItemsArrayFromDb(languageId, Constants.FieldNameUploadVersionProperty, Constants.RecordActualityLevel, allBooksIds));
 
-
-
             //int[] versionsCounts = new int[] { 5, 5, 5, 5, 5 };
             int[] paragraphsCounts = new int[] { 5, 5, 5, 5, 5 };
             int[] sentencesCounts = new int[] { 5, 5, 5, 5, 5 };
@@ -150,7 +146,6 @@ namespace BooksTextsSplit.Services
         //queryString = $"SELECT c.{Constants.FieldNameParagraphId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameUploadVersion} = 1 AND c.bookId = ";
         //int[] paragraphsCounts = await _access.FetchObjectAsync<int[]>(keyArrays3, () => FetchItemsArrayFromDb(queryString, "bookContentInChapter.paragraphId",  allBooksIds));
         //VALUE COUNT()
-
 
         public async Task<int[]> FetchItemsArrayFromDb(string queryString, int[] allBooksIds)
         {
@@ -203,10 +198,6 @@ namespace BooksTextsSplit.Services
             return foundBooksVersion;
         }
 
-
-
-
-
         public async Task<BooksNamesExistInDb> FetchBooksNamesIds(string where, int whereValue, int startUploadVersion)
         {
             string bookSentenceIdKey = where + ":" + whereValue.ToString();
@@ -228,11 +219,6 @@ namespace BooksTextsSplit.Services
             return foundBooksIds;
         }
 
-
-
-
-
-
         public async Task<List<TextSentence>> FetchBooksNamesFromDb(string where, int whereValue)
         {
             // bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy); - it is needs to add checking of parameters existing 
@@ -250,9 +236,6 @@ namespace BooksTextsSplit.Services
 
             return requestedSelectResult;
         }
-
-
-
 
         public async Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value)
         {
@@ -276,7 +259,6 @@ namespace BooksTextsSplit.Services
             return foundBooksPairTexts;
         }
 
-
         public async Task<List<TextSentence>> FetchBooksTextsFromDb(string where, int whereValue)
         {
             // bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy); - it is needs to add checking of parameters existing 
@@ -294,10 +276,6 @@ namespace BooksTextsSplit.Services
 
             return requestedSelectResult;
         }
-
-
-
-
     }
 }
 

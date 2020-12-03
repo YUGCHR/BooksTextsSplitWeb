@@ -1,5 +1,5 @@
 import React from "react";
-import cs from ".././UploadBooks.module.css"; // common styles
+import cs from "../../../Common.module.css"; // common styles
 import s from "./sectionDbInfoHeader.module.css";
 
 export const sectionDbInfoHeader = (props) => {

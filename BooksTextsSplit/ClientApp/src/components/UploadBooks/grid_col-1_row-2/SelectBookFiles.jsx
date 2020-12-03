@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef } from "react";
-import cs from ".././UploadBooks.module.css"; // common styles
+import cs from "../../../Common.module.css"; // common styles
 import s from "./SelectBookFiles.module.css";
 
 const SelectBookFiles = ({ setFileName, isWrongCount }) => {

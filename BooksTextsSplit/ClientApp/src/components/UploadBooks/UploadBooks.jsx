@@ -6,6 +6,7 @@ import { sectionDbDetails } from "./grid_col-2_row-2/sectionDbDetails";
 import { uploadFiles } from "./grid_col-1_row-3/uploadFiles";
 import { ShowFilesToUpload } from "./grid_col-1_row-3/ShowFilesToUpload";
 import s from "./UploadBooks.module.css";
+//import cs from "../../App.css"; // common styles
 
 const UploadBooks = ({ selectedFiles, setRadioResult, radioChosenLanguage, filesDescriptions, ...props }) => {
   return (

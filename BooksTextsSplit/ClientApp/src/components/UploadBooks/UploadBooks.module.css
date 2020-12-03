@@ -1,21 +1,9 @@
-/* Цветовая палитра №3611
-графитовый серый - #38876f
-изумрудный цвет, 
-оттенки изумрудного цвета, 
-почти-черный - #0e2d21
-светло оранжево-коричневый - #f1c79a 
-тёмно-зелёный - #646e74
-мятный - #77D177 #66B57E #C1F7DD #94E6C0 #51B37A #7CC6AB
-оливковый – #666723
-Золотисто-оливковый – #8D792C
-Оливковый хаки – #616841
-Светло-оливковый – #90934D
-Темно-оливковый - #544B32
-Серо-оливковый – #605E40
-темно-изумрудный цвет, 
-темно-серый цвет - #1c1f20
-цвет зеленого бархата, 
-цвет светлого дерева */
+
+@import '../../App.css';
+
+:root {
+    --border-5-emerald: 5px solid var(--emerald); /* изумрудный */
+}
 
 .allControlPanelPlace{
     max-width: max-content;
@@ -27,82 +15,64 @@
     grid-template-rows: auto auto auto;
     grid-template-columns: minmax(min-content, max-content) minmax(min-content, max-content);
     grid-auto-flow: row;
-    border: 10px solid #146252;    
-    color: blue;
-    background-color: #616841; /* Оливковый хаки */
+    border: var(--border-5-emerald); /* изумрудный */
+    color: var(--prussian-blue);
+    background-color: var(--olive-khaki); /* оливковый хаки */
 }
 
 .pageName {
     grid-column: 1/2;
     grid-row: 1/2;
     padding: 10px;
-    border: 5px solid #146252; /* изумрудным */
+    border: var(--border-5-emerald); /* изумрудный */
     font-size: larger;
     text-align: center;
-    color: #94E6C0;
-    background-color: #616841; /* Оливковый хаки */
+    color: var(--mint-C0);
+    background-color: var(--olive-khaki); /* оливковый хаки */
 }
 
 .dbInfoButtonPlace {
     grid-column: 2/3;
     grid-row: 1/2;
     padding: 10px;
-    border: 5px solid #146252; /* изумрудным */
-    color: #77D177;
-    background-color: #616841; /* Оливковый хаки */
+    border: var(--border-5-emerald); /* изумрудный */
+    color: var(--mint-77);
+    background-color: var(--olive-khaki); /* оливковый хаки */
 }
 
 .showDetailsPlace{
     grid-column: 2/3;
     grid-row: 2/3;
     padding: 10px;
-    border: 5px solid #146252; /* изумрудным */
+    border: var(--border-5-emerald); /* изумрудный */
 }
 
 .selectFiles {
     grid-column: 1/2;
     grid-row: 2/3;
     padding: 10px;
-    border: 5px solid #146252; /* изумрудным */
-    color: pink;
-    background-color: #616841; /* Оливковый хаки */
+    border: var(--border-5-emerald); /* изумрудный */
+    color: var(--tea-rose);
+    background-color: var(--olive-khaki); /* оливковый хаки */
 }
 
 .uploadFiles {
     grid-column: 1/2;
     grid-row: 3/4;
     padding: 10px;
-    border: 5px solid #146252; /* изумрудным */
-    color: #FFD998; /* абрикосовым */
-    background-color: #8D792C;
+    border: var(--border-5-emerald); /* изумрудный */
+    color: var(--apricot-color); /* абрикосовым */
+    background-color: var(--golden-olive); /* Золотисто-оливковый */
 }
 
 .freeSpaceOnUploadGrid{
     grid-column: 2/3;
     grid-row: 3/4;
     padding: 10px;
-    border: 5px solid #146252; /* изумрудным */
+    border: var(--border-5-emerald); /* изумрудный */
 }
 
-.allButtonsBodies{ /* common style */
-    color: #9EB7CD; /* серо-голубым */ 
-    background-color: #146252; /* изумрудным */
+.allButtonsBodies {
+    color: var(--gray-blue); /* серо-голубым */ 
+    background-color: var(--emerald); /* изумрудным */
 }
-
-/* Золотисто-оливковый - #8D792C - цвет сочетается с
-чайной розой - #F0C5C3
-бледно-лиловым - #DAB1D1
-кардиналом - #960023
-мангом - #FB9A3B
-тыквенным - #E1541F
-абрикосовым - #FFD998
-ярким золотом - #texture
-шартрезом - #D3D70E
-изумрудным - #146252
-берлинской лазурью - #114471
-серо-голубым - #9EB7CD
-ежевичным - #682F5A
-баклажановым - #3A172D
-махаоном - #552614
-латте - #CFBEAA
-черным - #242426 */

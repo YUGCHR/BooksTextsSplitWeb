@@ -1,5 +1,5 @@
 import React from "react";
-import cs from ".././UploadBooks.module.css";
+import cs from "../../../Common.module.css";
 import s from "./uploadFiles.module.css";
 
 export const uploadFiles = (props, selectedFiles) => {
