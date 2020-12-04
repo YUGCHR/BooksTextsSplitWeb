@@ -2,11 +2,11 @@ import React from 'react';
 import s from './ShowChooseHeader.module.css';
 
 const ShowChooseHeader = (props) => {
-    if (props.isSelectingBookId) {
+    if (props.isSelectBookId) {
       return <div className={s.chooseBooksHeader}>CHOOSE BOOKS PAIR BY BookId</div>;
     }
 
-    if (props.isSelectingUploadVersion) {
+    if (props.isSelectVersion) {
       return (
         <div className={s.uploadHeaderContainer}>
           <div>CHOOSE UPLOAD VERSION FOR BOOKS PAIR</div>

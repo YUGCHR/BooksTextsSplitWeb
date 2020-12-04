@@ -40,8 +40,8 @@ let showVersionsButtons = (props, n, uploadVersion, bookId) => {//className={s.v
 
 // Render Book Version - Map by languageId
 const ChooseBooksVersions = (props) => {
-  if (props.isSelectingUploadVersion) {
-    return props.allVersionsOfBooksNames.map((nd, n) => {      
+  if (props.isSelectVersion) {
+    return props.allBookVersions.map((nd, n) => {      
       let versionLanguageStyle = `versionLanguageStyle${n}`;
       let versionItemsHeader = `versionItemsHeader${n}`;
       let versionItemsBlock = `versionItemsBlock${n}`;

@@ -23,11 +23,11 @@ class SelectTextsContainer extends React.Component {
         <SelectTexts
           sentencesCount={this.props.sentencesCount}
           allBookNamesSortedByIds={this.props.allBookNamesSortedByIds}
-          allVersionsOfBooksNames={this.props.allVersionsOfBooksNames}
+          allBookVersions={this.props.allBookVersions}
           booksPairTexts={this.props.booksPairTexts}
           booksNamesIds={this.props.booksNamesIds}
-          isSelectingBookId={this.props.isSelectingBookId}
-          isSelectingUploadVersion={this.props.isSelectingUploadVersion}
+          isSelectBookId={this.props.isSelectBookId}
+          isSelectVersion={this.props.isSelectVersion}
           isFetching={this.props.isFetching}
           isQuickViewBooksPair={this.props.isQuickViewBooksPair}
           switchBooksIdsOn={this.props.switchBooksIdsOn}
@@ -43,12 +43,12 @@ class SelectTextsContainer extends React.Component {
 let mapStateToProps = (state) => {
   return {
     sentencesCount: state.selectTextsPage.sentencesCount,
-    isSelectingBookId: state.selectTextsPage.isSelectingBookId,
-    isSelectingUploadVersion: state.selectTextsPage.isSelectingUploadVersion,
+    isSelectBookId: state.selectTextsPage.isSelectBookId,
+    isSelectVersion: state.selectTextsPage.isSelectVersion,
     isFetching: state.selectTextsPage.isFetching,
     allBookNamesSortedByIds: state.selectTextsPage.allBookNamesSortedByIds,
     booksNamesIds: state.selectTextsPage.booksNamesIds,
-    allVersionsOfBooksNames: state.selectTextsPage.allVersionsOfBooksNames,
+    allBookVersions: state.selectTextsPage.allBookVersions,
     booksPairTexts: state.selectTextsPage.booksPairTexts,
     isQuickViewBooksPair: state.selectTextsPage.isQuickViewBooksPair,
   };

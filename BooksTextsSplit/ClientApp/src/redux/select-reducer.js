@@ -5,20 +5,20 @@ const SET_ALL_BOOKS_IDS = "SET-ALL-BOOKS-IDS";
 const SET_ALL_BOOKS_VERSIONS = "SET-ALL-BOOKS-VERSIONS";
 const SET_BOOKS_PAIR_TEXTS = "SET-BOOKS-PAIR-TEXTS";
 const SET_SENTENCES = "SET-SENTENCES";
-const TOGGLE_IS_SELECTING_BOOK_ID = "TOGGLE-IS-SELECTING-BOOK-ID";
-const TOGGLE_IS_SELECTING_UPLOAD_VERSION = "TOGGLE-IS-SELECTING-UPLOAD-VERSION";
+const TOGGLE_IS_SELECT_BOOK_ID = "TOGGLE-IS-SELECTING-BOOK-ID";
+const TOGGLE_IS_SELECT_VERSION = "TOGGLE-IS-SELECTING-UPLOAD-VERSION";
 const TOGGLE_IS_QUICK_VIEW = "TOGGLE-IS-QUICK-VIEW";
 //const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
 
 let initialState = {
   booksNamesIds: [],
   allBookNamesSortedByIds: [], //none
-  allVersionsOfBooksNames: [],
+  allBookVersions: [],
   sentencesCount: [777, 888], //engSentencesCount: 777, rusSentencesCount: 888
   emptyVariable: null,
   isTextLoaded: [false, false],
-  isSelectingBookId: true,
-  isSelectingUploadVersion: false,
+  isSelectBookId: true,
+  isSelectVersion: false,
   isQuickViewBooksPair: false,
   isFetching: false,
   //gridContainerPlace2: "s.testGridContainerPlace2",
@@ -32,7 +32,7 @@ const selectTextsReducer = (state = initialState, action) => {
       return { ...state, booksNamesIds: action.booksNamesIds };
     }
     case SET_ALL_BOOKS_VERSIONS: {
-      return { ...state, allVersionsOfBooksNames: action.allVersionsOfBooksNames };
+      return { ...state, allBookVersions: action.allBookVersions };
     }
     case SET_BOOKS_PAIR_TEXTS: {
       return { ...state, booksPairTexts: action.booksPairTexts };
@@ -40,11 +40,11 @@ const selectTextsReducer = (state = initialState, action) => {
     case SET_SENTENCES: {
       return { ...state, engSentences: action.sentences };
     }
-    case TOGGLE_IS_SELECTING_BOOK_ID: {
-      return { ...state, isSelectingBookId: action.isSelectingBookId }; // gridContainerPlace2: action.gridContainerPlace2 };
+    case TOGGLE_IS_SELECT_BOOK_ID: {
+      return { ...state, isSelectBookId: action.isSelectBookId }; // gridContainerPlace2: action.gridContainerPlace2 };
     }
-    case TOGGLE_IS_SELECTING_UPLOAD_VERSION: {
-      return { ...state, isSelectingUploadVersion: action.isSelectingUploadVersion }; // gridContainerPlace2: action.gridContainerPlace2 };
+    case TOGGLE_IS_SELECT_VERSION: {
+      return { ...state, isSelectVersion: action.isSelectVersion }; // gridContainerPlace2: action.gridContainerPlace2 };
     }
     case TOGGLE_IS_QUICK_VIEW: {
       return { ...state, isQuickViewBooksPair: action.isQuickViewBooksPair };
@@ -58,13 +58,10 @@ const selectTextsReducer = (state = initialState, action) => {
 };
 
 const setBooksNamesIds = (booksNamesIds) => ({ type: SET_ALL_BOOKS_IDS, booksNamesIds });
-const setAllVersionsOfBookName = (allVersionsOfBooksNames) => ({ type: SET_ALL_BOOKS_VERSIONS, allVersionsOfBooksNames });
+const setBookVersions = (allBookVersions) => ({ type: SET_ALL_BOOKS_VERSIONS, allBookVersions });
 const setBooksPairTexts = (booksPairTexts) => ({ type: SET_BOOKS_PAIR_TEXTS, booksPairTexts });
-const toggleIsSelectingBookId = (isSelectingBookId) => ({ type: TOGGLE_IS_SELECTING_BOOK_ID, isSelectingBookId });
-const toggleIsSelectingUploadVersion = (isSelectingUploadVersion) => ({
-  type: TOGGLE_IS_SELECTING_UPLOAD_VERSION,
-  isSelectingUploadVersion,
-});
+const toggleIsSelectBookId = (isSelectBookId) => ({ type: TOGGLE_IS_SELECT_BOOK_ID, isSelectBookId });
+const toggleIsSelectVersion = (isSelectVersion) => ({type: TOGGLE_IS_SELECT_VERSION, isSelectVersion,});
 const toggleIsQuickViewBooksPair = (isQuickViewBooksPair) => ({ type: TOGGLE_IS_QUICK_VIEW, isQuickViewBooksPair });
 //const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 
@@ -86,7 +83,7 @@ const fetchAllVersionsOfSelectedBook = (where = "bookSentenceId", whereValue = 1
       .getAllBookNameVersions(where, whereValue, bookId)
       .then((data) => {
         dispatch(toggleIsFetching(false));
-        dispatch(setAllVersionsOfBookName(data.selectedBookIdAllVersions));
+        dispatch(setBookVersions(data.selectedBookIdAllVersions));
         return data;
       })
       .catch(failureCallback);
@@ -110,10 +107,10 @@ const fetchChosenVersionOfSelectedBooksPair = (where1 = "bookId", where1Value, w
 //Let to switch on BooksNames choosing (return to the previous) - subPage 01
 export const switchBooksIdsOn = () => {
   return (dispatch) => {
-    dispatch(toggleIsSelectingUploadVersion(false)); //subPage 02 off
+    dispatch(toggleIsSelectVersion(false)); //subPage 02 off
     dispatch(toggleIsQuickViewBooksPair(false)); //subPage  off
     dispatch(fetchBooksNamesIds()).then((r) => {
-      dispatch(toggleIsSelectingBookId(true)); //subPage 01 on
+      dispatch(toggleIsSelectBookId(true)); //subPage 01 on
     });
     return 0;
   };
@@ -122,10 +119,10 @@ export const switchBooksIdsOn = () => {
 //Let to switch on BookVersions choosing - subPage 02
 export const switchBookVersionsOn = (bookId = 1) => {
   return (dispatch) => {
-    dispatch(toggleIsSelectingBookId(false)); //subPage 01
+    dispatch(toggleIsSelectBookId(false)); //subPage 01
     dispatch(toggleIsQuickViewBooksPair(false)); //subPage 03
     dispatch(fetchAllVersionsOfSelectedBook("bookSentenceId", 1, bookId)).then((r) => {
-      dispatch(toggleIsSelectingUploadVersion(true)); //subPage 02
+      dispatch(toggleIsSelectVersion(true)); //subPage 02
     });
     return { bookId };
   };
@@ -134,8 +131,8 @@ export const switchBookVersionsOn = (bookId = 1) => {
 //Let to switch on QuickView - //subPage 03
 export const switchQuickViewOn = (selectedBookId, selectedVersion) => {
   return (dispatch) => {
-    dispatch(toggleIsSelectingBookId(false)); //subPage 01
-    dispatch(toggleIsSelectingUploadVersion(false)); //subPage 02
+    dispatch(toggleIsSelectBookId(false)); //subPage 01
+    dispatch(toggleIsSelectVersion(false)); //subPage 02
     dispatch(fetchChosenVersionOfSelectedBooksPair("bookId", selectedBookId, "uploadVersion", selectedVersion)).then((r) => {
       dispatch(toggleIsQuickViewBooksPair(true)); //subPage 03
       return { selectedVersion };
@@ -146,7 +143,7 @@ export const switchQuickViewOn = (selectedBookId, selectedVersion) => {
 //Let to switch on NEXT choosing - //subPage 04
 export const nextAfterQuickView = (i) => {
   return (dispatch) => {
-    dispatch(toggleIsSelectingUploadVersion(false)); //subPage 01
+    dispatch(toggleIsSelectVersion(false)); //subPage 01
     dispatch(toggleIsQuickViewBooksPair(false)); //subPage 02
     dispatch(toggleIsQuickViewBooksPair(false)); //subPage 03
     return { i };
