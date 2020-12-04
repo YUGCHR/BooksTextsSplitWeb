@@ -84,14 +84,14 @@ namespace BooksTextsSplit.Services
         //SELECT DISTINCT VALUE c.totalBookCounts.inBookChaptersCount FROM c where c.languageId = 1 AND c.recordActualityLevel = 5
 
 
-        public async Task<List<T>> GetItemsListAsync<T>(int languageId, int recordActualityLevel)
+        public async Task<List<T>> GetDistinctBooksIdsList<T>(int languageId, int recordActualityLevel)
         {
             //SELECT DISTINCT VALUE c.bookId FROM c WHERE c.languageId = 1 AND c.recordActualityLevel = 5 (without VALUE - for additional control)
             string queryString = $"SELECT DISTINCT c.{Constants.FieldNameBooksId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameRecordActualityLevel} = {recordActualityLevel}";
             return await GetItemsListAsyncFromDb<T>(queryString);
         }
 
-        public async Task<List<T>> GetItemsListAsync<T>(int languageId, int recordActualityLeve, int currentBookId)
+        public async Task<List<T>> GetDistinctVersionsList<T>(int languageId, int recordActualityLeve, int currentBookId)
         {
             //SELECT DISTINCT c.uploadVersion FROM c WHERE c.languageId = 1 AND c.recordActualityLevel = 5 AND c.bookId IN (77, 88, 39, 37)                                                                                             
             //SELECT DISTINCT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId = 77
@@ -110,23 +110,22 @@ namespace BooksTextsSplit.Services
 
         private async Task<List<T>> GetItemsListAsyncFromDb<T>(string queryString)
         {
-            List<T> distinctBooksIds = new List<T>();
+            List<T> results = new List<T>();
             try
             {
-                FeedIterator<T> feedIterator = this._container.GetItemQueryIterator<T>(queryString);
+                FeedIterator<T> feedIterator = this._container.GetItemQueryIterator<T>(queryString); // (new QueryDefinition(queryString))
                 if (feedIterator.HasMoreResults)
                 {
                     FeedResponse<T> feedResponse = await feedIterator.ReadNextAsync();
                                             
                     double requestCharge = feedResponse.RequestCharge; // request unit charge for operations executed in Cosmos DB 
-
+                    // to add requestCharge in results
                     foreach (var item in feedResponse)
                     {
-                        distinctBooksIds.Add(item);
+                        results.Add(item);
                     }
-                }                
-                
-                return distinctBooksIds;
+                }
+                return results;
             }
             catch (CosmosException ex)
             {
@@ -136,8 +135,9 @@ namespace BooksTextsSplit.Services
             }
         }
 
+        #region Get Users List
 
-        public async Task<List<T>> GetUserListAsync<T>(int userCount)
+        public async Task<List<T>> GetUsersListAsync<T>(int userCount)
         {
             if(userCount != 0)
             {
@@ -148,25 +148,24 @@ namespace BooksTextsSplit.Services
             return await GetUsersListAsyncFromDb<T>(queryString);
         }
 
-        private async Task<List<T>> GetUsersListAsyncFromDb<T>(string queryString)
+        private async Task<List<T>> GetUsersListAsyncFromDb<T>(string queryString) // _containerUser
         {
-            List<T> allUserData = new List<T>();
+            List<T> results = new List<T>();
             try
             {
-                FeedIterator<T> feedIterator = this._containerUser.GetItemQueryIterator<T>(queryString);
+                FeedIterator<T> feedIterator = this._containerUser.GetItemQueryIterator<T>(queryString); // (new QueryDefinition(queryString))
                 if (feedIterator.HasMoreResults)
                 {
                     FeedResponse<T> feedResponse = await feedIterator.ReadNextAsync();
 
                     double requestCharge = feedResponse.RequestCharge; // request unit charge for operations executed in Cosmos DB 
-
+                    
                     foreach (var item in feedResponse)
                     {
-                        allUserData.Add(item);
+                        results.Add(item);
                     }
                 }
-
-                return allUserData;
+                return results;
             }
             catch (CosmosException ex)
             {
@@ -176,7 +175,19 @@ namespace BooksTextsSplit.Services
             }
         }
 
+        #endregion
 
+        public async Task<IEnumerable<TextSentence>> GetItemsAsync(string queryString)
+        {// move all references to GetUsersListAsyncFromDb
+            var query = this._container.GetItemQueryIterator<TextSentence>(new QueryDefinition(queryString));
+            List<TextSentence> results = new List<TextSentence>();
+            while (query.HasMoreResults)
+            {
+                var response = await query.ReadNextAsync();
+                results.AddRange(response.ToList());
+            }
+            return results;
+        }
 
         public async Task<T> GetItemCountAsync<T>(string queryString)
         {
@@ -207,19 +218,7 @@ namespace BooksTextsSplit.Services
         }
 
 
-        public async Task<IEnumerable<TextSentence>> GetItemsAsync(string queryString)
-        {
-            var query = this._container.GetItemQueryIterator<TextSentence>(new QueryDefinition(queryString));
-            List<TextSentence> results = new List<TextSentence>();
-            while (query.HasMoreResults)
-            {
-                var response = await query.ReadNextAsync();
-
-                results.AddRange(response.ToList());
-            }
-
-            return results;
-        }
+        
 
         public async Task UpdateItemAsync(string id, TextSentence item)
         {

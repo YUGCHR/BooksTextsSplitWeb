@@ -118,7 +118,7 @@ namespace BooksTextsSplit.Services
 
         public async Task SetUsersToCacheFromDb()
         {
-            List<UserData> allUsersData = await _context.GetUserListAsync<UserData>(0);
+            List<UserData> allUsersData = await _context.GetUsersListAsync<UserData>(0);
             foreach (UserData u in allUsersData)
             {
                 string keyUser = u.Email;
