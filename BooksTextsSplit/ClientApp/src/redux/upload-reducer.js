@@ -55,16 +55,16 @@ let initialState = {
     },
   ],
   booksTitles: [{}, {}],
-  sentencesCount: [-1, -2, -3, -4, -5],  
+  sentencesCount: [-1, -2, -3, -4, -5],
   dbSentencesCount: {
     booksIdsCount: 0,
     versionsCountLanguageId: 0,
     paragraphsCountLanguageId: 0,
     sentencesCountLanguageId: 0,
     allBooksIdsList: [],
-    versionsCountsInBooskIds: [],
-    paragraphsCountsInBooskIds: [],
-    sentencesCountsInBooskIds: [],
+    versionsCountsInBooksIds: [],
+    paragraphsCountsInBooksIds: [],
+    sentencesCountsInBooksIds: [],
     totalRecordsCount: 0,
   },
   emptyVariable: null,
@@ -80,27 +80,7 @@ let initialState = {
   isUploadButtonDisabled: true,
   isWrongCount: false,
   metadataHeader: "6L1n2qR1yzE0IjTZpUksGkbzF23vVGZeR0nEXL6qKhdXBGoJzSKqE9a1g",
-  taskDone: [{}, {}],
-  /* taskDone: [
-    {
-      doneInPercents: 0,
-      currentUploadingRecord: 0,
-      currentUploadedRecordRealTime: 0,
-      totalUploadedRealTime: 0,
-      recordsTotalCount: 0,
-      currentTaskGuid: "",
-      currentUploadingBookId: 0,
-    },
-    {
-      doneInPercents: 0,
-      currentUploadingRecord: 0,
-      currentUploadedRecordRealTime: 0,
-      totalUploadedRealTime: 0,
-      recordsTotalCount: 0,
-      currentTaskGuid: "",
-      currentUploadingBookId: 0,
-    },
-  ], */
+  taskDone: [{ doneInPercents: 0 }, { doneInPercents: 0 }],
   endWhilePercents: 100,
   whoCalledPreloader: "",
 };
@@ -182,13 +162,13 @@ const uploadBooksReducer = (state = initialState, action) => {
       stateCopy.labelShowHide[1] = tempValue;
       return stateCopy;
     }
-    case TOGGLE_IS_FETCHING: {
+    /* case TOGGLE_IS_FETCHING: {
       if (action.isFetching) {
         return { ...state, isFetching: action.isFetching, whoCalledPreloader: action.whoCalled };
       } else {
         return { ...state, isFetching: action.isFetching, whoCalledPreloader: "" };
       }
-    }
+    } */
     case TOGGLE_IS_DONE_UPLOAD: {
       return { ...state, isDoneUpload: action.isDoneUpload };
     }
@@ -351,7 +331,7 @@ export const fileUploadHandler = (selectedFiles) => async (dispatch, getState) =
   dispatch(toggleIsDoneUpload(true));
   for (let i = 0; i < selectedFiles.length; i++) {
     const form = new FormData();
-    form.append("bookFile", selectedFiles[i], selectedFiles[i].name);    
+    form.append("bookFile", selectedFiles[i], selectedFiles[i].name);
     const bookTitle = getState().uploadBooksPage.booksTitles[i]; //[0];
     dispatch(toggleIsFetching(true, "fileUploadHandler"));
     // to add maxUploadedVersion to formData it is necessary to find it in Cosmos Db

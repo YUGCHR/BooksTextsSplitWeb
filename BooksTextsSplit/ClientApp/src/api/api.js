@@ -35,7 +35,7 @@ export const uploadAPI = {
 };
 
 export const selectsAPI = {
-  getAllBookIdsWithNames: async (where, whereValue, startUpVersion) => {
+  getBooksNamesIds: async (where, whereValue, startUpVersion) => {
     //api/BookTexts/BooksIds/?where=bookSentenceId&whereValue=1&orderBy=bookId&needPostSelect=true&postWhere=UploadVersion&postWhereValue=1
     //api/BookTexts/BooksIds/?where=bookSentenceId&whereValue=1&orderBy=bookId
     //return Axios.get(`api/BookTexts/BooksIds/?where=${where}&whereValue=${whereValue}&orderBy=${orderBy}`)

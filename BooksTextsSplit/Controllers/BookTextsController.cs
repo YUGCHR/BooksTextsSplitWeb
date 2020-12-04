@@ -105,7 +105,7 @@ namespace BooksTextsSplit.Controllers
         }
         #endregion
 
-        #region Upload
+        #region Upload Books Files
         // GET: api/BookTexts/worker/
         [HttpGet("worker")]
         public ActionResult GetWorker()
@@ -306,7 +306,7 @@ namespace BooksTextsSplit.Controllers
 
                 BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb
                 {
-                    BookNamesVersion1SortedByIds = pairings.Select(p => new BooksNamesSortByLanguageIdSortByBookId
+                    BooksNamesIds = pairings.Select(p => new BooksNamesSortByLanguageIdSortByBookId
                     {
                         BookId = p.Key,
                         BooksDescriptions = p.OrderBy(s => s.LanguageId).Select(s => new BooksNamesSortByLanguageId { LanguageId = s.LanguageId, Sentence = s }).ToList()

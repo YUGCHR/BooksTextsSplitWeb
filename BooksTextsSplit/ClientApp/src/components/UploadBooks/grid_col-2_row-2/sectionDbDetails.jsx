@@ -31,7 +31,8 @@ export const sectionDbDetails = (props) => {
     paragraphsCountLanguageId: 0,
     sentencesCountLanguageId: 0,
     allBooksIdsList: [],
-    versionsCountsInBooskIds: [],
-    paragraphsCountsInBooskIds: [],
-    sentencesCountsInBooskIds: [],    
+    versionsCountsInBooksIds: [],
+    paragraphsCountsInBooksIds: [],
+    sentencesCountsInBooksIds: [],
+    totalRecordsCount: 0,    
   }, */

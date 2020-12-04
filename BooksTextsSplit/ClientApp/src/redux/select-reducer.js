@@ -1,4 +1,5 @@
 import { selectsAPI } from "../api/api";
+import { toggleIsFetching } from "./app-reducer";
 
 const SET_ALL_BOOKS_IDS = "SET-ALL-BOOKS-IDS";
 const SET_ALL_BOOKS_VERSIONS = "SET-ALL-BOOKS-VERSIONS";
@@ -7,11 +8,11 @@ const SET_SENTENCES = "SET-SENTENCES";
 const TOGGLE_IS_SELECTING_BOOK_ID = "TOGGLE-IS-SELECTING-BOOK-ID";
 const TOGGLE_IS_SELECTING_UPLOAD_VERSION = "TOGGLE-IS-SELECTING-UPLOAD-VERSION";
 const TOGGLE_IS_QUICK_VIEW = "TOGGLE-IS-QUICK-VIEW";
-const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
+//const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING";
 
 let initialState = {
-  bookNamesVersion1SortedByIds: [],
-  allBookNamesSortedByIds: [],
+  booksNamesIds: [],
+  allBookNamesSortedByIds: [], //none
   allVersionsOfBooksNames: [],
   sentencesCount: [777, 888], //engSentencesCount: 777, rusSentencesCount: 888
   emptyVariable: null,
@@ -27,8 +28,8 @@ let initialState = {
 const selectTextsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_ALL_BOOKS_IDS: {
-      console.log("state", state.bookNamesVersion1SortedByIds);
-      return { ...state, bookNamesVersion1SortedByIds: action.bookNamesVersion1SortedByIds };
+      // console.log("state", state.booksNamesIds);     
+      return { ...state, booksNamesIds: action.booksNamesIds };
     }
     case SET_ALL_BOOKS_VERSIONS: {
       return { ...state, allVersionsOfBooksNames: action.allVersionsOfBooksNames };
@@ -48,38 +49,34 @@ const selectTextsReducer = (state = initialState, action) => {
     case TOGGLE_IS_QUICK_VIEW: {
       return { ...state, isQuickViewBooksPair: action.isQuickViewBooksPair };
     }
-    case TOGGLE_IS_FETCHING: {
+    /* case TOGGLE_IS_FETCHING: {
       return { ...state, isFetching: action.isFetching };
-    }
+    } */
     default:
       return state;
   }
 };
 
-const setAllBookIdsWithNames = (bookNamesVersion1SortedByIds) => ({ type: SET_ALL_BOOKS_IDS, bookNamesVersion1SortedByIds });
+const setBooksNamesIds = (booksNamesIds) => ({ type: SET_ALL_BOOKS_IDS, booksNamesIds });
 const setAllVersionsOfBookName = (allVersionsOfBooksNames) => ({ type: SET_ALL_BOOKS_VERSIONS, allVersionsOfBooksNames });
 const setBooksPairTexts = (booksPairTexts) => ({ type: SET_BOOKS_PAIR_TEXTS, booksPairTexts });
 const toggleIsSelectingBookId = (isSelectingBookId) => ({ type: TOGGLE_IS_SELECTING_BOOK_ID, isSelectingBookId });
-const toggleIsSelectingUploadVersion = (isSelectingUploadVersion) => ({ type: TOGGLE_IS_SELECTING_UPLOAD_VERSION, isSelectingUploadVersion });
+const toggleIsSelectingUploadVersion = (isSelectingUploadVersion) => ({
+  type: TOGGLE_IS_SELECTING_UPLOAD_VERSION,
+  isSelectingUploadVersion,
+});
 const toggleIsQuickViewBooksPair = (isQuickViewBooksPair) => ({ type: TOGGLE_IS_QUICK_VIEW, isQuickViewBooksPair });
-const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
+//const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 
 const failureCallback = () => {
   console.log("FSE PROPALO!");
 };
 
-const fetchAllBookIdsWithNames = (where = "bookSentenceId", whereValue = 1, startUpVersion = 1) => { 
-  return (dispatch) => {
-    dispatch(toggleIsFetching(true));
-    return selectsAPI
-      .getAllBookIdsWithNames(where, whereValue, startUpVersion)
-      .then((data) => {
-        dispatch(toggleIsFetching(false));
-        dispatch(setAllBookIdsWithNames(data.bookNamesVersion1SortedByIds));
-        return data.sortedBooksIdsLength;
-      })
-      .catch(failureCallback);
-  };
+const fetchBooksNamesIds = (where = "bookSentenceId", whereValue = 1, startUpVersion = 1) => async (dispatch) => {
+  dispatch(toggleIsFetching(true, "fetchBooksNamesIds"));
+  const response = await selectsAPI.getBooksNamesIds(where, whereValue, startUpVersion);
+  dispatch(toggleIsFetching(false));
+  dispatch(setBooksNamesIds(response.booksNamesIds)); //was bookNamesVersion1SortedByIds
 };
 
 const fetchAllVersionsOfSelectedBook = (where = "bookSentenceId", whereValue = 1, bookId) => {
@@ -96,7 +93,7 @@ const fetchAllVersionsOfSelectedBook = (where = "bookSentenceId", whereValue = 1
   };
 };
 
-const fetchChosenVersionOfSelectedBooksPair = (where1 = "bookId", where1Value, where2 = "uploadVersion", where2Value) => {  
+const fetchChosenVersionOfSelectedBooksPair = (where1 = "bookId", where1Value, where2 = "uploadVersion", where2Value) => {
   return (dispatch) => {
     dispatch(toggleIsFetching(true));
     return selectsAPI
@@ -115,7 +112,7 @@ export const switchBooksIdsOn = () => {
   return (dispatch) => {
     dispatch(toggleIsSelectingUploadVersion(false)); //subPage 02 off
     dispatch(toggleIsQuickViewBooksPair(false)); //subPage  off
-    dispatch(fetchAllBookIdsWithNames()).then((r) => {
+    dispatch(fetchBooksNamesIds()).then((r) => {
       dispatch(toggleIsSelectingBookId(true)); //subPage 01 on
     });
     return 0;
@@ -160,4 +157,3 @@ export default selectTextsReducer;
 
 /* fail: Microsoft.AspNetCore.SpaServices[0]
       The prop value with an expression type of SequenceExpression could not be resolved. Please file issue to get this fixed immediately. */
-

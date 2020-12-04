@@ -25,7 +25,7 @@ let showSelectBookIdButtons = (props, bookId) => {
 
 const ChoosePairBooksNames = (props) => {
   if (props.isSelectingBookId) {
-    return props.bookNamesVersion1SortedByIds.map((id, i) => {
+    return props.booksNamesIds.map((id, i) => {
       let bookId = id.bookId;
       let bookNames = id.booksDescriptions;
       let eng = 0;

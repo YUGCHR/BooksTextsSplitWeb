@@ -12,14 +12,14 @@ import FooterContainer from "./components/Footer/FooterContainer";
 //import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
 import Preloader from "./components/common/preloader/Preloader";
-import UploadBooksContainer from "./components/UploadBooks/UploadBooksContainer";
 import SelectTextsContainer from "./components/SelectTexts/SelectTextsContainer";
-import ToReadAndTranslateContainer from "./components/ToReadAndTranslate/ToReadAndTranslateContainer";
 import WordsToPair from "./components/WordsToPair/WordsToPair";
 import UserProfile from "./components/UserProfile/UserProfile";
 import Settings from "./components/Settings/Settings";
 // TODO менять страницу из таблицы на вертикаль при ширине меньше 800 пикселей
 const LoginPage = lazy(() => import("./components/Login/Login"));
+const UploadPage = lazy(() => import("./components/UploadBooks/UploadBooksContainer"));
+const ReadPage = lazy(() => import("./components/ToReadAndTranslate/ToReadAndTranslateContainer"));
 // TODO всплывающая подсказка на элементах
 class App extends Component {
   catchAllUnhandledErrors = (reason, promise) => {
@@ -47,9 +47,9 @@ class App extends Component {
         <div className="app-wrapper-content">
           <Switch>
             <Route exact path="/" render={() => <Redirect to={"/select"} />} />
-            <Route path="/upload" render={() => <UploadBooksContainer />} />
+            <Route path="/upload" render={withSuspense(UploadPage)} />
             <Route path="/select" render={() => <SelectTextsContainer />} />
-            <Route path="/read" render={() => <ToReadAndTranslateContainer />} />
+            <Route path="/read" render={withSuspense(ReadPage)} />
             <Route path="/words" render={WordsToPair} />
             <Route path="/user" render={UserProfile} />
             <Route path="/settings" render={Settings} />

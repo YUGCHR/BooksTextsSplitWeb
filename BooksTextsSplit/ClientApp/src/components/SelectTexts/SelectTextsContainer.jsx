@@ -25,7 +25,7 @@ class SelectTextsContainer extends React.Component {
           allBookNamesSortedByIds={this.props.allBookNamesSortedByIds}
           allVersionsOfBooksNames={this.props.allVersionsOfBooksNames}
           booksPairTexts={this.props.booksPairTexts}
-          bookNamesVersion1SortedByIds={this.props.bookNamesVersion1SortedByIds}
+          booksNamesIds={this.props.booksNamesIds}
           isSelectingBookId={this.props.isSelectingBookId}
           isSelectingUploadVersion={this.props.isSelectingUploadVersion}
           isFetching={this.props.isFetching}
@@ -47,7 +47,7 @@ let mapStateToProps = (state) => {
     isSelectingUploadVersion: state.selectTextsPage.isSelectingUploadVersion,
     isFetching: state.selectTextsPage.isFetching,
     allBookNamesSortedByIds: state.selectTextsPage.allBookNamesSortedByIds,
-    bookNamesVersion1SortedByIds: state.selectTextsPage.bookNamesVersion1SortedByIds,
+    booksNamesIds: state.selectTextsPage.booksNamesIds,
     allVersionsOfBooksNames: state.selectTextsPage.allVersionsOfBooksNames,
     booksPairTexts: state.selectTextsPage.booksPairTexts,
     isQuickViewBooksPair: state.selectTextsPage.isQuickViewBooksPair,
