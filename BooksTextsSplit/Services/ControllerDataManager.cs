@@ -13,7 +13,7 @@ namespace BooksTextsSplit.Services
     public interface IControllerDataManager
     {
         public Task<bool> RemoveTotalCountWhereLanguageId(int languageId);
-        public  Task<int> TotalRecordsCountWhereLanguageId(int languageId);
+        public Task<int> TotalRecordsCountWhereLanguageId(int languageId);
         public Task<TotalCounts> FetchTotalCountsFromCache(int languageId);
         public Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId);
         public Task<BooksNamesExistInDb> FetchBooksNamesIds(string where, int whereValue, int startUploadVersion);
@@ -35,8 +35,8 @@ namespace BooksTextsSplit.Services
         public static string FieldNameRecordActualityLevel = "recordActualityLevel";
 
         public static string GetTotalCountsBase = "GetTotalCountWhereLanguageId:";
-        public static string GetBooksIdsCountsArray = "GetBooksIdsCountsArrayWhereLanguageId:";
-        public static string GetVersionsCountsArray = "GetVersionsCountsArrayWhereLanguageId:";
+        public static string GetBooksIdsArray = "GetBooksIdsArrayWhereLanguageId:"; // may be remove Get
+        public static string GetBookVersionsArray = "GetBookVersionsArrayWhereLanguageIdAndBookId:";
         public static string GetParagraphsCountsArray = "GetParagraphsCountsArrayWhereLanguageId:";
         public static string GetSentencesCountsArray = "GetSentencesCountsArrayWhereLanguageId:";
     }
@@ -44,15 +44,20 @@ namespace BooksTextsSplit.Services
     public class ControllerDataManager : IControllerDataManager
     {
         private readonly ILogger<ControllerDataManager> _logger;
+        private readonly IControllerCacheManager _cache;
+
+
         private readonly IAccessCacheData _access;
         private readonly ICosmosDbService _context;
 
         public ControllerDataManager(
             ILogger<ControllerDataManager> logger,
+            IControllerCacheManager cache,
             ICosmosDbService cosmosDbService,
             IAccessCacheData access)
         {
             _logger = logger;
+            _cache = cache;
             _access = access;
             _context = cosmosDbService;
         }
@@ -87,70 +92,71 @@ namespace BooksTextsSplit.Services
         public async Task<TotalCounts> FetchTotalCountsFromCache(int languageId)
         {
             // добавить в totalCounts названия полей и загружать их с сервера            
-            string keyBooksIdsCounts = Constants.GetBooksIdsCountsArray + languageId.ToString(); // "GetBooksIdsArrayAndLanguageId:"
-            string keyVersionsCounts = Constants.GetVersionsCountsArray + languageId.ToString();
+            string keyBooksIds = Constants.GetBooksIdsArray + languageId.ToString(); // "GetBooksIdsArrayAndLanguageId:"
+            string keyBookVersionsLang = Constants.GetBookVersionsArray + languageId.ToString();
             string keyParagraphsCounts = Constants.GetParagraphsCountsArray + languageId.ToString();
             string keySentencesCounts = Constants.GetSentencesCountsArray + languageId.ToString();
+            int level = Constants.RecordActualityLevel;
 
             //for Debug Db only - start            
-            bool removeKeyResult1 = await _access.RemoveAsync(keyBooksIdsCounts);
-            bool removeKeyResult2 = await _access.RemoveAsync(keyVersionsCounts);
+            bool removeKeyResult1 = await _access.RemoveAsync(keyBooksIds);            
             bool removeKeyResult3 = await _access.RemoveAsync(keyParagraphsCounts);
             bool removeKeyResult4 = await _access.RemoveAsync(keySentencesCounts);
             //for Debug Db only - end 
 
-            int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyBooksIdsCounts, () => FetchItemsArrayFromDb(languageId, Constants.FieldNameBookIdProperty, Constants.RecordActualityLevel));
+            int[] allBooksIds = await _cache.FetchAllBooksIds(keyBooksIds, languageId, Constants.FieldNameBookIdProperty, level);
             int allBooksIdsLength = allBooksIds.Length;
+            int[] allUploadedVersionsCounts = new int[allBooksIds.Length];
 
-            int[] versionsCounts = await _access.FetchObjectAsync<int[]>(keyVersionsCounts, () => FetchItemsArrayFromDb(languageId, Constants.FieldNameUploadVersionProperty, Constants.RecordActualityLevel, allBooksIds));
+            if (allBooksIds.Length > 0)
+            { // versionsCounts
+
+                for (int i = 0; i < allBooksIds.Length; i++)
+                {
+                    string keyBookVersionsLangBook = Constants.GetBookVersionsArray + languageId.ToString() + ":" + allBooksIds[i];
+                    bool removeKeyResult2 = await _access.RemoveAsync(keyBookVersionsLangBook); //for Debug Db only - REMOVE AFTER!
+                    int[] uploadedVersions = await _cache.FetchAllBooksIds(keyBookVersionsLangBook, languageId, Constants.FieldNameUploadVersionProperty, level, allBooksIds[i]);
+                    for (int j = 0; j < uploadedVersions.Length; j++)
+                    {
+                        // select totalCounts from chapters and sum them
+                    }
+                    allUploadedVersionsCounts[i] = uploadedVersions.Length;
+                }
+
+
+            }
+
+            //int[] versionsCounts = await _access.FetchObjectAsync<int[]>(keyVersionsCounts, () => FetchItemsArrayFromDb(languageId, Constants.FieldNameUploadVersionProperty, Constants.RecordActualityLevel, allBooksIds));
 
             //int[] versionsCounts = new int[] { 5, 5, 5, 5, 5 };
             int[] paragraphsCounts = new int[] { 5, 5, 5, 5, 5 };
             int[] sentencesCounts = new int[] { 5, 5, 5, 5, 5 };
 
-            TotalCounts totalCountsFromCache = new TotalCounts(allBooksIds, versionsCounts, paragraphsCounts, sentencesCounts);
+            TotalCounts totalCountsFromCache = new TotalCounts(allBooksIds, allUploadedVersionsCounts, paragraphsCounts, sentencesCounts);
             totalCountsFromCache.TotalRecordsCount = await TotalRecordsCountWhereLanguageId(languageId);
             return totalCountsFromCache;
         }
 
+        //to add ControllerCacheManager and ControllerDbManager 
 
         public async Task<int[]> FetchIdsArrayFromDb(string fetchKey, int languageId, int[] allBooksIds) // always fetch data from db as version of book of language
         {
             int[] result = default;
             if (allBooksIds.Length > 0)
             { // versionsCounts
-                result = await _access.FetchObjectAsync<int[]>(fetchKey, () => FetchItemsArrayFromDb(languageId, Constants.FieldNameUploadVersionProperty, Constants.RecordActualityLevel, allBooksIds));                
+                //result = await _access.FetchObjectAsync<int[]>(fetchKey, () => FetchItemsArrayFromDb(languageId, Constants.FieldNameUploadVersionProperty, Constants.RecordActualityLevel, allBooksIds));                
             }
             else
             { // allBooksIds
-                result = await _access.FetchObjectAsync<int[]>(fetchKey, () => FetchItemsArrayFromDb(languageId, Constants.FieldNameBookIdProperty, Constants.RecordActualityLevel));
+                //result = await _access.FetchObjectAsync<int[]>(fetchKey, () => FetchItemsArrayFromDb(languageId, Constants.FieldNameBookIdProperty, Constants.RecordActualityLevel));
             }
             return result;
         }
 
         // TO divide ControllerDataManager on CacheDataControllerManager and DbDataControllerManager
 
-        public async Task<int[]> FetchItemsArrayFromDb(int languageId, string propName, int recordActualityLevel) // always fetch data from db as version of book of language
-        {
-            List<TextSentence> allBooksIds = await _context.GetDistinctBooksIdsList<TextSentence>(languageId, recordActualityLevel);
-            var result = allBooksIds.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray();
-            return result;
-        }
-        public async Task<int[]> FetchItemsArrayFromDb(int languageId, string propName, int recordActualityLevel, int[] allBooksIds) // always fetch data from db as version of book of language
-        {
-            int[] allUploadedVersionsCounts = new int[allBooksIds.Length];
-            for (int i = 0; i < allBooksIds.Length; i++)
-            {
-                List<TextSentence> allUploadedVersions = await _context.GetDistinctVersionsList<TextSentence>(languageId, recordActualityLevel, allBooksIds[i]);
-                int[] uploadedVersions = (allUploadedVersions.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray());
-                for (int j = 0; j < uploadedVersions.Length; j++)
-                {
-                    // select totalCounts from chapters and sum them
-                }
-                allUploadedVersionsCounts[i] = uploadedVersions.Count();
-            }
-            return allUploadedVersionsCounts;
-        }
+
+
 
         //string stringBooksIds = String.Join(",", allBooksIds.Select(p => p.ToString())); // ToString().ToArray()
 

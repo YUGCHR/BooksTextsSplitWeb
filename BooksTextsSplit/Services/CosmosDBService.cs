@@ -84,12 +84,7 @@ namespace BooksTextsSplit.Services
         //SELECT DISTINCT VALUE c.totalBookCounts.inBookChaptersCount FROM c where c.languageId = 1 AND c.recordActualityLevel = 5
 
 
-        public async Task<List<T>> GetDistinctBooksIdsList<T>(int languageId, int recordActualityLevel)
-        {
-            //SELECT DISTINCT VALUE c.bookId FROM c WHERE c.languageId = 1 AND c.recordActualityLevel = 5 (without VALUE - for additional control)
-            string queryString = $"SELECT DISTINCT c.{Constants.FieldNameBooksId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameRecordActualityLevel} = {recordActualityLevel}";
-            return await GetItemsListAsyncFromDb<T>(queryString);
-        }
+        
 
         public async Task<List<T>> GetDistinctVersionsList<T>(int languageId, int recordActualityLeve, int currentBookId)
         {
@@ -108,7 +103,7 @@ namespace BooksTextsSplit.Services
         //    return await GetItemsListAsyncFromDb<T>(queryString);
         //}
 
-        private async Task<List<T>> GetItemsListAsyncFromDb<T>(string queryString)
+        public async Task<List<T>> GetItemsListAsyncFromDb<T>(string queryString)
         {
             List<T> results = new List<T>();
             try

@@ -109,6 +109,8 @@ namespace BooksTextsSplit
             //services.AddSingleton<CachingFramework.Redis.Contracts.Providers.ICacheProvider>(muxer);
             services.AddScoped<IAccessCacheData, AccessCacheData>();
             services.AddScoped<IControllerDataManager, ControllerDataManager>();
+            services.AddScoped<IControllerCacheManager, ControllerCacheManager>();
+            services.AddScoped<IControllerDbManager, ControllerDbManager>();
 
         }
 
