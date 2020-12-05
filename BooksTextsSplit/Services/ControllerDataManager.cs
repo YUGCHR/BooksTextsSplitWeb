@@ -59,7 +59,7 @@ namespace BooksTextsSplit.Services
             _logger = logger;
             _cache = cache;
             _access = access;
-            _context = cosmosDbService;
+            _context = cosmosDbService; // TO REMOVE!
         }
 
         #region Total Counts

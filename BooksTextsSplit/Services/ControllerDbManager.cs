@@ -12,36 +12,36 @@ namespace BooksTextsSplit.Services
 {
     public interface IControllerDbManager
     {
-        public Task<List<T>> GetDistinctBooksIdsList<T>(int languageId, int recordActualityLevel);
+        public Task<int[]> FetchItemsArrayFromDb(int languageId, string propName, int recordActualityLevel);
+        public Task<int[]> FetchItemsArrayFromDb(int languageId, string propName, int recordActualityLevel, int currentBooksIds);
     }
-
-
 
     public class ControllerDbManager : IControllerDbManager
     {
-        private readonly ILogger<ControllerDataManager> _logger;
-        private readonly IAccessCacheData _access;
-        private readonly ICosmosDbService _context;
+        private readonly ILogger<ControllerDataManager> _logger;        
+        private readonly IControllerQueryManager _query;
 
         public ControllerDbManager(
-            ILogger<ControllerDataManager> logger,
-            ICosmosDbService cosmosDbService,
-            IAccessCacheData access)
+            ILogger<ControllerDataManager> logger,            
+            IControllerQueryManager query)
         {
-            _logger = logger;
-            _access = access;
-            _context = cosmosDbService;
+            _logger = logger;            
+            _query = query;            
         }
 
-
-        public async Task<List<T>> GetDistinctBooksIdsList<T>(int languageId, int recordActualityLevel)
+        public async Task<int[]> FetchItemsArrayFromDb(int languageId, string propName, int recordActualityLevel)
         {
-            //SELECT DISTINCT VALUE c.bookId FROM c WHERE c.languageId = 1 AND c.recordActualityLevel = 5 (without VALUE - for additional control)
-            string queryString = $"SELECT DISTINCT c.{Constants.FieldNameBooksId} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameRecordActualityLevel} = {recordActualityLevel}";
-            return await _context.GetItemsListAsyncFromDb<T>(queryString);
+            List<TextSentence> allBooksIds = await _query.GetDistinctBooksIdsList<TextSentence>(languageId, recordActualityLevel);
+            var result = allBooksIds.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray();
+            return result;
         }
 
+        public async Task<int[]> FetchItemsArrayFromDb(int languageId, string propName, int recordActualityLevel, int currentBooksIds)
+        {
+            List<TextSentence> allUploadedVersions = await _query.GetDistinctVersionsList<TextSentence>(languageId, recordActualityLevel, currentBooksIds);
+            int[] uploadedVersions = (allUploadedVersions.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray());
 
+            return uploadedVersions;
+        }
     }
 }
-

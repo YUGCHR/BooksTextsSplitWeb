@@ -111,6 +111,7 @@ namespace BooksTextsSplit
             services.AddScoped<IControllerDataManager, ControllerDataManager>();
             services.AddScoped<IControllerCacheManager, ControllerCacheManager>();
             services.AddScoped<IControllerDbManager, ControllerDbManager>();
+            services.AddScoped<IControllerQueryManager, ControllerQueryManager>();
 
         }
 

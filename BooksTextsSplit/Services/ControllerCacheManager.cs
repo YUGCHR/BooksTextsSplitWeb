@@ -19,49 +19,31 @@ namespace BooksTextsSplit.Services
     public class ControllerCacheManager : IControllerCacheManager
     {
         private readonly ILogger<ControllerDataManager> _logger;
-        private readonly IControllerDbManager _query;
-        private readonly IAccessCacheData _access;
-        private readonly ICosmosDbService _context;
+        private readonly IControllerDbManager _db;        
+        private readonly IAccessCacheData _access;        
 
         public ControllerCacheManager(
             ILogger<ControllerDataManager> logger,
-            IControllerDbManager query,
-            ICosmosDbService cosmosDbService,
+            IControllerDbManager db,            
             IAccessCacheData access)
         {
             _logger = logger;
-            _query = query;
-            _access = access;
-            _context = cosmosDbService;
+            _db = db;            
+            _access = access;            
         }
 
         public async Task<int[]> FetchAllBooksIds(string keyBooksIds, int languageId, string propName, int actualityLevel)
         {
-            int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyBooksIds, () => FetchItemsArrayFromDb(languageId, propName, actualityLevel));
+            int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyBooksIds, () => _db.FetchItemsArrayFromDb(languageId, propName, actualityLevel));
 
             return allBooksIds;
-        }
-
-        public async Task<int[]> FetchItemsArrayFromDb(int languageId, string propName, int recordActualityLevel) // always fetch data from db as version of book of language
-        {
-            List<TextSentence> allBooksIds = await _query.GetDistinctBooksIdsList<TextSentence>(languageId, recordActualityLevel);
-            var result = allBooksIds.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray();
-            return result;
         }
 
         public async Task<int[]> FetchAllBooksIds(string keyBooksIds, int languageId, string propName, int actualityLevel, int currentBooksIds)
         {
-            int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyBooksIds, () => FetchItemsArrayFromDb(languageId, propName, actualityLevel, currentBooksIds));
+            int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyBooksIds, () => _db.FetchItemsArrayFromDb(languageId, propName, actualityLevel, currentBooksIds));
 
             return allBooksIds;
-        }
-
-        public async Task<int[]> FetchItemsArrayFromDb(int languageId, string propName, int recordActualityLevel, int currentBooksIds) // always fetch data from db as version of book of language
-        {
-            List<TextSentence> allUploadedVersions = await _context.GetDistinctVersionsList<TextSentence>(languageId, recordActualityLevel, currentBooksIds);
-            int[] uploadedVersions = (allUploadedVersions.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray());
-
-            return uploadedVersions;
         }
     }
 }

@@ -86,14 +86,7 @@ namespace BooksTextsSplit.Services
 
         
 
-        public async Task<List<T>> GetDistinctVersionsList<T>(int languageId, int recordActualityLeve, int currentBookId)
-        {
-            //SELECT DISTINCT c.uploadVersion FROM c WHERE c.languageId = 1 AND c.recordActualityLevel = 5 AND c.bookId IN (77, 88, 39, 37)                                                                                             
-            //SELECT DISTINCT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId = 77
-            string queryString = $"SELECT DISTINCT c.{Constants.FieldNameUploadVersion} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameRecordActualityLevel} = {recordActualityLeve} AND c.bookId = {currentBookId}";
-
-            return await GetItemsListAsyncFromDb<T>(queryString);
-        }
+        
 
         //public async Task<List<T>> GetItemsListAsync<T>(string fieldName1, int languageId)
         //{
@@ -103,7 +96,7 @@ namespace BooksTextsSplit.Services
         //    return await GetItemsListAsyncFromDb<T>(queryString);
         //}
 
-        public async Task<List<T>> GetItemsListAsyncFromDb<T>(string queryString)
+        public async Task<List<T>> GetItemsListAsyncFromDb<T>(string queryString) //for BookId and UploadVersion
         {
             List<T> results = new List<T>();
             try
