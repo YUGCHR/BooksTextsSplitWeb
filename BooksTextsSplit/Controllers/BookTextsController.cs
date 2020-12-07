@@ -185,7 +185,7 @@ namespace BooksTextsSplit.Controllers
             // после записи книг надо или удалить ключи или обновить их
             // добавить в статистику базы данных максимальный уровень актуальности и количество книг/версий/записей с ним
             // или показывать данные только максимального уровня, а общее количество записей только в заголовке
-            TotalCounts totalLangSentences = await _data.FetchTotalCountsFromCache(languageId);
+            TotalCounts totalLangSentences = await _data.FetchTotalCounts(languageId);
             return totalLangSentences;
         }
 

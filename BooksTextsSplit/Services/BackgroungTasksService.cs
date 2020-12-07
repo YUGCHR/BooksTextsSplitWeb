@@ -180,7 +180,7 @@ namespace BooksTextsSplit.Services
                     {
                         Id = Guid.NewGuid().ToString(),
                         BookId = bookDescription.BookId,
-                        RecordActualityLevel = 5, // Model TextSentence ver.5
+                        RecordActualityLevel = Constants.RecordActualityLevel, // Model TextSentence ver.6
                         BookProperties = new TextSentence.BookPropertiesInLanguage
                         {
                             AuthorNameId = bookDescription.BookProperties.AuthorNameId,
@@ -191,13 +191,14 @@ namespace BooksTextsSplit.Services
                         },
                         UploadVersion = bookDescription.UploadVersion + 1, // have obtained data about last existed version from UI
                         LanguageId = desiredTextLanguage,
+                        RecordId = inBookChapterCount,
                         ChapterId = textSentences[i].ChapterId,
                         ChapterName = textSentences[i].ChapterName,
                         InChapterParagraphsCount = inChapterParagraphsCount,
                         InChapterSentencesCount = inChapterSentencesCount,
                         BookContentInChapter = bc
                     };
-                    inBookChapterCount++; // и куда его?
+                    inBookChapterCount++;
                     bt.Add(t);
                     inChapterParagraphsCount = 0;
                     inChapterSentencesCount = 0;

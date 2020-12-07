@@ -20,6 +20,7 @@ namespace BooksTextsSplit.Models
     public class BooksNamesSortByLanguageId
     {
         public int LanguageId { get; set; }
-        public TextSentence Sentence { get; set; }
+        public TextSentence.BookPropertiesInLanguage BooksDescriptionsDetails { get; set; }
+        public TextSentence Sentence { get; set; } // will not be used, for compatibility only
     }
 }
