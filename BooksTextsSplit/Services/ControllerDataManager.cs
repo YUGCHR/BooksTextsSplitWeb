@@ -220,6 +220,7 @@ namespace BooksTextsSplit.Services
 
         public async Task<BooksNamesExistInDb> FetchBooksNamesIds(string where, int whereValue, int startUploadVersion)
         {
+            // Model TextSentence ver.6
             // определиться, откуда взять recordActualityLevel (from Constant or from UI - and UI will receive from Constant)            
             // получить описание книги 
             // SELECT c.bookProperties FROM c where 
@@ -228,6 +229,7 @@ namespace BooksTextsSplit.Services
             // c.languageId = 0 AND
             // c.uploadVersion = 3 AND - по каждому bookId получить список uploadVersion, взять из него первое значение
             // c.recordId = 0
+            // return BooksNamesExistInDb foundBooksIds with BooksDescriptionsDetails
 
             string bookSentenceIdKey = where + ":" + whereValue.ToString();
             List<TextSentence> requestedSelectResult = await _access.FetchObjectAsync<List<TextSentence>>(bookSentenceIdKey, () => FetchBooksNamesFromDb(where, whereValue));
