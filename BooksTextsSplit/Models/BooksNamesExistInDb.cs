@@ -8,19 +8,26 @@ namespace BooksTextsSplit.Models
     public class BooksNamesExistInDb
     {
         public List<BooksNamesSortByLanguageIdSortByBookId> BooksNamesIds { get; set; }
-        //public List<TextSentence> AllBookNamesSortedByIds { get; set; }        
     }
 
     public class BooksNamesSortByLanguageIdSortByBookId
     {
         public int BookId { get; set; }
-        public IList<BooksNamesSortByLanguageId> BooksDescriptions { get; set; }
+        public IList<BooksNamesSortByLanguageId> BooksDescriptions { get; set; } // will not be used, for compatibility only
+        public BooksNamesSortByLanguageId BookDescriptionAllVersions { get; set; }
     }
 
     public class BooksNamesSortByLanguageId
     {
         public int LanguageId { get; set; }
         public TextSentence.BookPropertiesInLanguage BooksDescriptionsDetails { get; set; }
+        public IList<BooksVersionTotaICount> BookVersionsOfBookId { get; set; }
         public TextSentence Sentence { get; set; } // will not be used, for compatibility only
+    }
+
+    public class BooksVersionTotaICount
+    {
+        public int UploadVersion { get; set; }
+        public TextSentence.TotalBooksCounts BookVersionCounts { get; set; }        
     }
 }
