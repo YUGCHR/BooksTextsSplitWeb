@@ -220,9 +220,30 @@ namespace BooksTextsSplit.Services
 
         public async Task<BooksNamesExistInDb> FetchBooksNamesIds(string where, int whereValue, int startUploadVersion)
         {
-            BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb();            
+            //BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb();            
             // определиться, откуда взять recordActualityLevel (from Constant or from UI - and UI will receive from Constant)
             int level = Constants.RecordActualityLevel;
+            
+            // SELECT c.bookId, c.languageId, c.bookProperties, c.uploadVersion FROM c where c.recordActualityLevel = 6 AND c.recordId = 0
+            string queryString = $"SELECT c.bookId, c.languageId, c.bookProperties, c.totalBookCounts, c.uploadVersion FROM c WHERE c.recordActualityLevel = {level} AND c.recordId = 0";
+            List<TextSentence> bookIdLanguageIdVersionsProperties = await _context.GetItemsListAsyncFromDb<TextSentence>(queryString);
+            
+            IEnumerable<IGrouping<int, TextSentence>> bookIdGroupBy = bookIdLanguageIdVersionsProperties.GroupBy(r => r.BookId);
+            BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb
+            {
+                BooksNamesIds = bookIdGroupBy.Select(p => new BooksNamesSortByLanguageIdSortByBookId
+                {
+                    BookId = p.Key,                    
+                    BookDescriptionAllVersions = p.GroupBy(l => l.LanguageId).Select(v => new BooksNamesSortByLanguageId {
+                        LanguageId = v.Key,
+                        BookVersionsOfBookId = v.Select(t => new BooksVersionTotaICount
+                        {
+                            UploadVersion = t.UploadVersion,
+                            BookVersionCounts = t.TotalBookCounts
+                        }).ToList()
+                    }).ToList()
+                }).ToList()
+            };
 
 
             // сделать один отдельный запрос - с ключом редиса, как обычно
@@ -231,85 +252,6 @@ namespace BooksTextsSplit.Services
             // SELECT c.bookId, c.languageId, c.bookProperties, c.uploadVersion FROM c where c.recordActualityLevel = 6 AND c.recordId = 0
 
 
-            // проверить наличие в редисе ключей totalCount и, если нет, вызвать FetchTotalCounts (with both languages)
-            int languageId = 0;
-            string keyBooksIds = Constants.GetBooksIdsArray.KeyBaseAddLanguageId(languageId);
-            string keyTotalCounts = Constants.GetTotalCountsBase.KeyBaseAddLanguageId(languageId); // или лучше проверять главный ключ totalCount
-            bool isBooksIdsExist = await _access.KeyExistsAsync(keyBooksIds);
-            if (!isBooksIdsExist)
-            { // если ключа нет, создаём весь комплект для языка
-                TotalCounts result = await FetchTotalCounts(languageId);
-            }
-            // после этого в редисе есть все массивы версий - по каждой книге
-            // "ArrayOfBookVersionsWhereLanguageIdAndBookId:0:76"
-            // если ключи totalCount есть, вызвать метод получения BooksNamesExistInDb из кэша, а если такого ключа нет, его создаст метод не весь из базы, а сначала достанет нужные данные из totalCount
-            //получить список bookId (redis)
-            int[] allBooksIds = await _access.GetObjectAsync<int[]>(keyBooksIds);
-            int allBooksIdsLength = allBooksIds.Length;
-            int[] allUploadedVersionsCounts = new int[allBooksIdsLength]; //?
-
-            if (allBooksIds.Length > 0)
-            {
-                List<BooksNamesSortByLanguageIdSortByBookId> bnlbList = new List<BooksNamesSortByLanguageIdSortByBookId>();
-                //List<BooksNamesSortByLanguageId> bnl = new List<BooksNamesSortByLanguageId>();
-
-                for (int i = 0; i < allBooksIdsLength; i++)
-                {
-                    string keyBookVersionsLangBook = Constants.GetBookVersionsArray.KeyBaseAddLanguageIdBookId(languageId, allBooksIds[i]);
-                    int[] uploadedVersions = await _access.GetObjectAsync<int[]>(keyBookVersionsLangBook);
-
-                    int uploadVersion = uploadedVersions[0]; // по каждому bookId получить список uploadVersion, взять из него первое значение (redis)
-                    // SELECT c.bookProperties FROM c where c.recordActualityLevel = 6 AND c.bookId = 76 AND c.languageId = 0 AND c.uploadVersion = 3 AND c.recordId = 0
-                    // new - SELECT c.bookId, c.languageId, c.bookProperties, c.uploadVersion FROM c where c.recordActualityLevel = 6 AND c.recordId = 0
-                    string queryString = $"SELECT c.bookProperties FROM c WHERE c.recordActualityLevel = {level} AND c.bookId = {allBooksIds[i]} AND c.languageId = {languageId} AND c.uploadVersion = {uploadVersion}";
-                    
-                    List<TextSentence> bookLanguageProperties = await _context.GetItemsListAsyncFromDb<TextSentence>(queryString);
-                    var result = bookLanguageProperties.Select(a => (TextSentence.BookPropertiesInLanguage)a.GetType().GetProperty("BookProperties").GetValue(a, null)).ToArray();
-
-                    List<BooksVersionTotaICount> vtc = new List<BooksVersionTotaICount>();
-                    int uploadedVersionsLength = uploadedVersions.Length;
-                    for (int j = 0; j < uploadedVersionsLength; j++)
-                    {
-                        // get real totalCountsForVersion values from db/cache
-                        TextSentence.TotalBooksCounts totalCountsForVersion = new TextSentence.TotalBooksCounts
-                        {
-                            AlignedSentencesProportion = 0,
-                            InBookChaptersCount = 0,
-                            InBookParagraphsCount = 0,
-                            InBookSentencesCount = 0,
-                        };
-
-                        BooksVersionTotaICount totalCountInVersion = new BooksVersionTotaICount
-                        {
-                            UploadVersion = uploadedVersions[j],
-                            BookVersionCounts = totalCountsForVersion
-                        };
-                        vtc.Add(totalCountInVersion);
-                        // store list of this BookId versions
-                    }
-
-                    BooksNamesSortByLanguageId bookDescription = new BooksNamesSortByLanguageId
-                    {
-                        LanguageId = languageId,
-                        BooksDescriptionsDetails = result[0],
-                        BookVersionsOfBookId = vtc
-                    };
-
-                    BooksNamesSortByLanguageIdSortByBookId bnlb = new BooksNamesSortByLanguageIdSortByBookId
-                    {
-                        BookId = allBooksIds[i],
-                        BookDescriptionAllVersions = bookDescription
-                    };
-
-                    bnlbList.Add(bnlb);
-
-                }
-                // получить описание книги 
-                // 
-                // return BooksNamesExistInDb foundBooksIds with BooksDescriptionsDetails
-
-                foundBooksIds.BooksNamesIds = bnlbList;
-            }
             return foundBooksIds;
         }
 
