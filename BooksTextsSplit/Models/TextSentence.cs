@@ -15,6 +15,9 @@ namespace BooksTextsSplit.Models
         [JsonProperty(PropertyName = "recordActualityLevel")]
         public int RecordActualityLevel { get; set; } // версия структуры данных в базе, чтобы легко отделить от старых загрузок
 
+        [JsonProperty(PropertyName = "requestCharge")]
+        public double RequestCharge { get; set; } // стоимость запроса в базу (не хранится в базе)
+
         [JsonProperty(PropertyName = "languageId")]
         public int LanguageId { get; set; }
 

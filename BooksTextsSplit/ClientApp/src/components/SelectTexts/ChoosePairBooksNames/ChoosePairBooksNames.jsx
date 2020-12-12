@@ -22,12 +22,12 @@ let showSelectBookIdButtons = (props, bookId) => {
     <button className={s.testItemButton} onClick={() => { props.switchBookVersionsOn(bookId); }}>Select {bookId}</button>
   );
 };
-
+//booksNamesIds[0].bookDescriptionAllVersions.booksDescriptionsDetails.bookName
 const ChoosePairBooksNames = (props) => {
   if (props.isSelectBookId) {
     return props.booksNamesIds.map((id, i) => {
       let bookId = id.bookId;
-      let bookNames = id.booksDescriptions;
+      let bookNames = id.bookDescriptionAllVersions.booksDescriptionsDetails;
       let eng = 0;
       let rus = 1;
       //console.log("bookNames", bookNames);

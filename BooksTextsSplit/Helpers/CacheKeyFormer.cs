@@ -7,7 +7,7 @@ namespace BooksTextsSplit.Helpers
 {
     public static class CacheKeyFormer
     {
-        public static string KeyBookVersionsLangBook(this string keyBase, int languageId, int bookId)
+        public static string KeyBaseAddLanguageIdBookId(this string keyBase, int languageId, int bookId)
         {
             if (keyBase == null)
             {
@@ -17,7 +17,7 @@ namespace BooksTextsSplit.Helpers
             string resultKey = keyBase + languageId.ToString() + ":" + bookId.ToString();
             return resultKey;
 
-        }public static string KeyBookIdLang(this string keyBase, int languageId)
+        }public static string KeyBaseAddLanguageId(this string keyBase, int languageId)
         {
             if (keyBase == null)
             {

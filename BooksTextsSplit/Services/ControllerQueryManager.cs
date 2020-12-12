@@ -16,8 +16,6 @@ namespace BooksTextsSplit.Services
         public Task<List<T>> GetDistinctVersionsList<T>(int languageId, int recordActualityLeve, int currentBookId);
     }
 
-
-
     public class ControllerQueryManager : IControllerQueryManager
     {
         private readonly ILogger<ControllerDataManager> _logger;

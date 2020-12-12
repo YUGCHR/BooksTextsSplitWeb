@@ -17,18 +17,19 @@ namespace BooksTextsSplit.Services
     {
         private Container _container;
         private Container _containerUser;
-        //private readonly ILogger<ControllerDataManager> _logger;
+        private readonly ILogger<CosmosDbService> _logger;
 
-        public CosmosDbService(
-            //ILogger<ControllerDataManager> logger,
+        public CosmosDbService(            
             CosmosClient dbClient,
             string databaseName,
             string containerName,
-            string userContainerName)
-        {
-            //_logger = logger;
+            string userContainerName,
+            ILogger<CosmosDbService> logger)
+        {            
             this._container = dbClient.GetContainer(databaseName, containerName);
             this._containerUser = dbClient.GetContainer(databaseName, userContainerName);
+            this._logger = logger;
+            _logger.LogInformation("COSMOS");
         }
 
         public async Task AddItemAsync(TextSentence item)

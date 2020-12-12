@@ -23,7 +23,7 @@ namespace BooksTextsSplit
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });        
+                });
     }
 
 }

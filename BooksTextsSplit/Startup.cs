@@ -40,6 +40,8 @@ namespace BooksTextsSplit
             //services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
+            services.AddSingleton<ISettingConstants, SettingConstants>();            
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -81,7 +83,7 @@ namespace BooksTextsSplit
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             try
             {
-                services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());                
+                services.AddSingleton<ICosmosDbService>( sp =>  InitializeCosmosClientInstanceAsync(sp, Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());                
             }
             catch (Exception ex)
             {
@@ -119,7 +121,7 @@ namespace BooksTextsSplit
         /// Creates a Cosmos DB database and a container with the specified partition key. 
         /// </summary>
         /// <returns></returns>
-        private static async Task<CosmosDbService> InitializeCosmosClientInstanceAsync(IConfigurationSection configurationSection)
+        private static async Task<CosmosDbService> InitializeCosmosClientInstanceAsync(IServiceProvider sp, IConfigurationSection configurationSection)
         {
             string databaseName = configurationSection.GetSection("DatabaseName").Value;
             string containerName = configurationSection.GetSection("ContainerName").Value;
@@ -130,7 +132,7 @@ namespace BooksTextsSplit
             CosmosClient client = clientBuilder
                                 .WithConnectionModeDirect()
                                 .Build();
-            CosmosDbService cosmosDbService = new CosmosDbService(client, databaseName, containerName, userContainerName);            
+            CosmosDbService cosmosDbService = new CosmosDbService(client, databaseName, containerName, userContainerName, sp.GetService<ILogger<CosmosDbService>>());            
             DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/id");
             await database.Database.CreateContainerIfNotExistsAsync(userContainerName, "/userId");
