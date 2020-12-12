@@ -46,6 +46,7 @@ namespace BooksTextsSplit.Services
     {
         private readonly ILogger<ControllerDataManager> _logger;
         private readonly IControllerCacheManager _cache;
+        private readonly ISettingConstants _constant;
 
 
         private readonly IAccessCacheData _access;
@@ -54,11 +55,13 @@ namespace BooksTextsSplit.Services
         public ControllerDataManager(
             ILogger<ControllerDataManager> logger,
             IControllerCacheManager cache,
+            ISettingConstants constant,
             ICosmosDbService cosmosDbService,
             IAccessCacheData access)
         {
             _logger = logger;
             _cache = cache;
+            _constant = constant;
             _access = access;
             _context = cosmosDbService; // TO REMOVE!
         }
@@ -222,8 +225,8 @@ namespace BooksTextsSplit.Services
         {
             //BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb();            
             // определиться, откуда взять recordActualityLevel (from Constant or from UI - and UI will receive from Constant)
-            int level = Constants.RecordActualityLevel;
-            
+            int level = _constant.GetRecordActualityLevel; // Constants.RecordActualityLevel;
+
             // SELECT c.bookId, c.languageId, c.bookProperties, c.uploadVersion FROM c where c.recordActualityLevel = 6 AND c.recordId = 0
             string queryString = $"SELECT c.bookId, c.languageId, c.bookProperties, c.totalBookCounts, c.uploadVersion FROM c WHERE c.recordActualityLevel = {level} AND c.recordId = 0";
             List<TextSentence> bookIdLanguageIdVersionsProperties = await _context.GetItemsListAsyncFromDb<TextSentence>(queryString);

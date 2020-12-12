@@ -40,6 +40,8 @@ namespace BooksTextsSplit
             //services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
+            services.AddSingleton<ISettingConstants, SettingConstants>();            
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
