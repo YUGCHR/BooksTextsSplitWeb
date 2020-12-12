@@ -19,22 +19,27 @@ namespace BooksTextsSplit.Services
         private Container _containerUser;
         private readonly ILogger<CosmosDbService> _logger;
 
-        public CosmosDbService(            
+        public CosmosDbService(
             CosmosClient dbClient,
             string databaseName,
             string containerName,
             string userContainerName,
             ILogger<CosmosDbService> logger)
-        {            
+        {
             this._container = dbClient.GetContainer(databaseName, containerName);
             this._containerUser = dbClient.GetContainer(databaseName, userContainerName);
             this._logger = logger;
-            _logger.LogInformation("COSMOS");
+            _logger.LogInformation("CosmosDbService started");
         }
 
         public async Task AddItemAsync(TextSentence item)
         {
-            await this._container.CreateItemAsync<TextSentence>(item, new PartitionKey(item.Id));
+            //ItemResponse<dynamic> itemResponse = await this._container.CreateItemAsync<dynamic>(item: new { id = item.Id, pk = item.Id, payload = item }, partitionKey: new PartitionKey(item.Id));
+            ItemResponse<TextSentence> itemResponse = await this._container.CreateItemAsync<TextSentence>(item, new PartitionKey(item.Id));
+            double requestCharge = itemResponse.RequestCharge;            
+            string logString = item.BookProperties.BookName.Trim() + $" - chapter {item.ChapterId} was uploaded with charge {requestCharge} RU";
+            _logger.LogInformation(logString);
+            // await this._container.CreateItemAsync<TextSentence>(item, new PartitionKey(item.Id));
         }
 
         public async Task DeleteItemAsync(string id)
@@ -85,9 +90,9 @@ namespace BooksTextsSplit.Services
         //SELECT DISTINCT VALUE c.totalBookCounts.inBookChaptersCount FROM c where c.languageId = 1 AND c.recordActualityLevel = 5
 
 
-        
 
-        
+
+
 
         //public async Task<List<T>> GetItemsListAsync<T>(string fieldName1, int languageId)
         //{
@@ -106,7 +111,7 @@ namespace BooksTextsSplit.Services
                 if (feedIterator.HasMoreResults)
                 {
                     FeedResponse<T> feedResponse = await feedIterator.ReadNextAsync();
-                                            
+
                     double requestCharge = feedResponse.RequestCharge; // request unit charge for operations executed in Cosmos DB 
                     // to add requestCharge in results
                     foreach (var item in feedResponse)
@@ -128,7 +133,7 @@ namespace BooksTextsSplit.Services
 
         public async Task<List<T>> GetUsersListAsync<T>(int userCount)
         {
-            if(userCount != 0)
+            if (userCount != 0)
             {
                 return default;
             }
@@ -148,7 +153,7 @@ namespace BooksTextsSplit.Services
                     FeedResponse<T> feedResponse = await feedIterator.ReadNextAsync();
 
                     double requestCharge = feedResponse.RequestCharge; // request unit charge for operations executed in Cosmos DB 
-                    
+
                     foreach (var item in feedResponse)
                     {
                         results.Add(item);
@@ -207,7 +212,7 @@ namespace BooksTextsSplit.Services
         }
 
 
-        
+
 
         public async Task UpdateItemAsync(string id, TextSentence item)
         {

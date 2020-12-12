@@ -50,8 +50,7 @@ namespace BooksTextsSplit.Services
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex,
-                            "Error occurred executing {WorkItem}.", nameof(workItem));
+                        _logger.LogError(ex, $"Error occurred executing {nameof(workItem)}");
                     }
                 }
             };

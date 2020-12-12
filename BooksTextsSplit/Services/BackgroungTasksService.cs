@@ -61,8 +61,8 @@ namespace BooksTextsSplit.Services
                 try
                 {
                     _logger.LogInformation(
-                    "Queued Background Task RecordFileToDb {Guid} is starting", guid);                    
-                    
+                    "Queued Background Task RecordFileToDb {Guid} is starting", guid);
+
                     TaskUploadPercents uploadPercents = new TaskUploadPercents
                     {
                         DoneInPercents = 0, // do not use
@@ -118,8 +118,8 @@ namespace BooksTextsSplit.Services
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogInformation(
-                            "Queued Background Task RecordFileToDb {Guid} is crashed. " + ex.Message, guid);
+                        string message = "Queued Background Task RecordFileToDb {Guid} is crashed. \n {Message} \n";
+                        _logger.LogInformation(message, guid, ex.Message);
                     }
                 }
                 catch (OperationCanceledException)

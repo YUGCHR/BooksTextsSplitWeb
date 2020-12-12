@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace BooksTextsSplit.Services
 {
+    #region Declarations
     public interface IControllerDataManager
     {
         public Task<bool> RemoveTotalCountWhereLanguageId(int languageId);
@@ -65,6 +66,8 @@ namespace BooksTextsSplit.Services
             _access = access;
             _context = cosmosDbService; // TO REMOVE!
         }
+
+        #endregion
 
         #region Total Counts
 

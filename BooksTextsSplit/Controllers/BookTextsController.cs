@@ -134,9 +134,18 @@ namespace BooksTextsSplit.Controllers
                     int finishState = taskStateCurrent.RecordsTotalCount - 1;
                     while (currentState == previousState && currentState < finishState)
                     {
-                        taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
-                        currentState = taskStateCurrent.CurrentUploadingRecord;
-                        await Task.Delay(10);
+                        taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid); // after TimeSpan time the key can disappeared in some reasons
+                        if (taskStateCurrent == null)
+                        {
+                            string message = "Incomplete UploadTaskPercents pending of RedisKey - {Guid} was not completed.";
+                            _logger.LogInformation(message, taskGuid);
+                            return default;
+                        }
+                        else
+                        {
+                            currentState = taskStateCurrent.CurrentUploadingRecord;
+                            await Task.Delay(10);
+                        }
                     }
                 }
                 else
