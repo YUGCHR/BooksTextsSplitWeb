@@ -242,8 +242,10 @@ namespace BooksTextsSplit.Services
                     BookId = p.Key,                    
                     BookDescriptionAllVersions = p.GroupBy(l => l.LanguageId).Select(v => new BooksNamesSortByLanguageId {
                         LanguageId = v.Key,
+                        BooksDescriptionsDetails = v.Select(t => t.BookProperties).ToList(),                        
                         BookVersionsOfBookId = v.Select(t => new BooksVersionTotaICount
                         {
+                            
                             UploadVersion = t.UploadVersion,
                             BookVersionCounts = t.TotalBookCounts
                         }).ToList()
@@ -256,7 +258,6 @@ namespace BooksTextsSplit.Services
             // все циклы убрать, группировать результаты запроса
             // сначала по BookId, потом по languageId (и по UploadVersion?)
             // SELECT c.bookId, c.languageId, c.bookProperties, c.uploadVersion FROM c where c.recordActualityLevel = 6 AND c.recordId = 0
-
 
             return foundBooksIds;
         }

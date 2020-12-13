@@ -28,9 +28,9 @@ let initialState = {
 const selectTextsReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_ALL_BOOKS_IDS: {
-      // console.log("state", state.booksNamesIds);     
-      return { ...state, booksNamesIds: action.booksNamesIds };
-    }
+      // console.log("state", state.booksNamesIds);
+      return { ...state, ...action.payload };
+    }    
     case SET_ALL_BOOKS_VERSIONS: {
       return { ...state, allBookVersions: action.allBookVersions };
     }
@@ -57,11 +57,11 @@ const selectTextsReducer = (state = initialState, action) => {
   }
 };
 
-const setBooksNamesIds = (booksNamesIds) => ({ type: SET_ALL_BOOKS_IDS, booksNamesIds });
+const setBooksNamesIds = (booksNamesIds) => ({ type: SET_ALL_BOOKS_IDS, payload: { booksNamesIds } });
 const setBookVersions = (allBookVersions) => ({ type: SET_ALL_BOOKS_VERSIONS, allBookVersions });
 const setBooksPairTexts = (booksPairTexts) => ({ type: SET_BOOKS_PAIR_TEXTS, booksPairTexts });
 const toggleIsSelectBookId = (isSelectBookId) => ({ type: TOGGLE_IS_SELECT_BOOK_ID, isSelectBookId });
-const toggleIsSelectVersion = (isSelectVersion) => ({type: TOGGLE_IS_SELECT_VERSION, isSelectVersion,});
+const toggleIsSelectVersion = (isSelectVersion) => ({ type: TOGGLE_IS_SELECT_VERSION, isSelectVersion });
 const toggleIsQuickViewBooksPair = (isQuickViewBooksPair) => ({ type: TOGGLE_IS_QUICK_VIEW, isQuickViewBooksPair });
 //const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
 
