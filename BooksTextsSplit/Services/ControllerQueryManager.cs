@@ -14,6 +14,7 @@ namespace BooksTextsSplit.Services
     {
         public Task<List<T>> GetDistinctBooksIdsList<T>(int languageId, int recordActualityLevel);
         public Task<List<T>> GetDistinctVersionsList<T>(int languageId, int recordActualityLeve, int currentBookId);
+        public Task<List<T>> GetBooksNamesVersionsPropertiesFromDb<T>(int level);
     }
 
     public class ControllerQueryManager : IControllerQueryManager
@@ -46,6 +47,15 @@ namespace BooksTextsSplit.Services
             //SELECT DISTINCT VALUE c.uploadVersion FROM c where c.bookSentenceId = 1 AND c.languageId = 1 AND c.bookId = 77
             string queryString = $"SELECT DISTINCT c.{Constants.FieldNameUploadVersion} FROM c WHERE c.{Constants.FieldNameLanguageId} = {languageId} AND c.{Constants.FieldNameRecordActualityLevel} = {recordActualityLeve} AND c.bookId = {currentBookId}";
 
+            return await _context.GetItemsListAsyncFromDb<T>(queryString);
+
+        }
+        
+        public async Task<List<T>> GetBooksNamesVersionsPropertiesFromDb<T>(int level)
+        {
+            // SELECT c.bookId, c.languageId, c.bookProperties, c.uploadVersion FROM c where c.recordActualityLevel = 6 AND c.recordId = 0
+            string queryString = $"SELECT c.bookId, c.languageId, c.bookProperties, c.totalBookCounts, c.uploadVersion FROM c WHERE c.recordActualityLevel = {level} AND c.recordId = 0";
+                       
             return await _context.GetItemsListAsyncFromDb<T>(queryString);
         }
     }

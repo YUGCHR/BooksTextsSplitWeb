@@ -159,29 +159,16 @@ namespace BooksTextsSplit.Controllers
         // POST: api/BookTexts/UploadFile        
         [HttpPost("UploadFile")]
         public IActionResult UploadFile([FromForm] IFormFile bookFile, [FromForm] string jsonBookDescription)
-        {
-            // it's need to check the Redis keys after new books were recorded to Db
+        {            
             if (bookFile != null)
             {
-                string guid = Guid.NewGuid().ToString();
-                //TaskUploadPercents uploadPercents = new TaskUploadPercents
-                //{
-                //    CurrentTaskGuid = guid,
-                //    CurrentUploadingBookId = 0, // may be put whole TextSentence?
-                //    RecordsTotalCount = 0,
-                //    CurrentUploadingRecord = 0,
-                //    DoneInPercents = 0,
-                //};
-
-                //Redis key initialization - must be not null for GetUploadTaskPercents
-                //await _cache.SetObjectAsync(guid, uploadPercents, TimeSpan.FromDays(1));
-
+                string guid = Guid.NewGuid().ToString();                
                 _task2Queue.RecordFileToDbInBackground(bookFile, jsonBookDescription, guid);
-
                 return Ok(guid);
             }
             return Problem("bad file");
         }
+
         #endregion
 
         #region GetCounts
@@ -217,7 +204,8 @@ namespace BooksTextsSplit.Controllers
         [HttpGet("BooksNamesIds")]
         public async Task<ActionResult<BooksNamesExistInDb>> GetBooksNamesIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int startUploadVersion)
         {
-            return await _data.FetchBooksNamesIds(where, whereValue, startUploadVersion);
+            string keyBooksVersionsProperties = "BooksVersionsPropertiesForSelectPage";
+            return await _data.FetchBooksNamesVersionsProperties(keyBooksVersionsProperties);
         }
 
         // GET: api/BookTexts/BookNameVersions/?where="bookId"&whereValue=1&bookId=(from selection) - fetching list of all uploaded versions for selected BookIds

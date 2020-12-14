@@ -14,6 +14,7 @@ namespace BooksTextsSplit.Services
     {
         public Task<int[]> FetchItemsArrayFromDb(int languageId, string propName, int recordActualityLevel);
         public Task<int[]> FetchItemsArrayFromDb(int languageId, string propName, int recordActualityLevel, int currentBooksIds);
+        public Task<List<T>> FetchBooksNamesVersionsPropertiesFromDb<T>(int level);
     }
 
     public class ControllerDbManager : IControllerDbManager
@@ -42,6 +43,13 @@ namespace BooksTextsSplit.Services
             int[] uploadedVersions = (allUploadedVersions.Select(a => (int)a.GetType().GetProperty(propName).GetValue(a, null)).ToArray());
 
             return uploadedVersions;
+        }
+
+        public async Task<List<T>> FetchBooksNamesVersionsPropertiesFromDb<T>(int level)
+        {
+            var booksVersionsProperties = await _query.GetBooksNamesVersionsPropertiesFromDb<T>(level);
+            
+            return booksVersionsProperties;
         }
     }
 }

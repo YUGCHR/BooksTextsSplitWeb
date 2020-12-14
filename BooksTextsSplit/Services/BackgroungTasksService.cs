@@ -23,6 +23,7 @@ namespace BooksTextsSplit.Services
     {
         private readonly IBackgroundTaskQueue _taskQueue;
         private readonly ILogger<BackgroungTasksService> _logger;
+        private readonly ISettingConstants _constant;
         private readonly IControllerDataManager _data;
         private readonly IAccessCacheData _access;
         private readonly ICosmosDbService _context;
@@ -30,12 +31,14 @@ namespace BooksTextsSplit.Services
         public BackgroungTasksService(
             IBackgroundTaskQueue taskQueue,
             ILogger<BackgroungTasksService> logger,
+            ISettingConstants constant,
             IControllerDataManager data,
             ICosmosDbService cosmosDbService,
             IAccessCacheData access)
         {
             _taskQueue = taskQueue;
             _logger = logger;
+            _constant = constant;
             _data = data;
             _access = access;
             _context = cosmosDbService;
@@ -55,6 +58,8 @@ namespace BooksTextsSplit.Services
             TextSentence[] textSentences = FetchBookTextSentences(text, bookDescription, desiredTextLanguage); // add bookDescription
             int textSentencesLength = textSentences.Length;
 
+            int taskDelayTimeInSeconds = _constant.GetTaskDelayTimeInSeconds;
+            
             // Enqueue a background work item
             _taskQueue.QueueBackgroundWorkItem(async token =>
             {
@@ -74,27 +79,30 @@ namespace BooksTextsSplit.Services
                         CurrentUploadingBookId = bookDescription.BookId,
                     };
                     string taskKeyForRedis = guid; // to initialize the key for procents
-                    await _access.SetObjectAsync(taskKeyForRedis, uploadPercents, TimeSpan.FromMinutes(5)); // less key life time
+                    await _access.SetObjectAsync(taskKeyForRedis, uploadPercents, TimeSpan.FromMinutes(_constant.GetPersentsKeysExistingTimeInMinutes));
 
                     try
                     {
                         _logger.LogInformation(
                             "Queued Background Task RecordFileToDb {Guid} is running", guid);
-                        
+
                         // to delete GetTotalCountWhereLanguageId:languageId
                         bool removeKeyResult = await _data.RemoveTotalCountWhereLanguageId(desiredTextLanguage);
+                        // to remove redis keys about books
+                        string keyBooksVersionsProperties = "BooksVersionsPropertiesForSelectPage";
+                        bool removeKeyResult1 = await _access.RemoveAsync(keyBooksVersionsProperties);
 
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
                         {
                             // Check the time of one cycle, calculate the whole task run time, if it is more 10 sec, than percents will be shown - 1 state per second
                             Stopwatch stopWatch = new Stopwatch();
                             stopWatch.Start();
-                            
+
                             if (textSentencesLength < 20)
                             {
-                                await Task.Delay(5000); // delay to emulate upload of a real book
+                                await Task.Delay(taskDelayTimeInSeconds * 1000); // delay to emulate upload of a real book - 
                             }
-                            
+
                             await _context.AddItemAsync(textSentences[tsi]);
 
                             stopWatch.Stop();
@@ -104,7 +112,7 @@ namespace BooksTextsSplit.Services
                             uploadPercents.CurrentUploadingRecord = tsi;
                             uploadPercents.CurrentUploadedRecordRealTime = tsMs;
                             uploadPercents.TotalUploadedRealTime += tsMs;
-                            await _access.SetObjectAsync(taskKeyForRedis, uploadPercents, TimeSpan.FromMinutes(5));
+                            await _access.SetObjectAsync(taskKeyForRedis, uploadPercents, TimeSpan.FromMinutes(_constant.GetPersentsKeysExistingTimeInMinutes));
                         };
 
                         // to create sentenceCounts for current language
@@ -142,7 +150,7 @@ namespace BooksTextsSplit.Services
             int inBookParagraphsCount = 0;
             int inBookSentencesCount = 0;
 
-            // сохранение плоского текста в структуру одна запись - одна глава            
+            // сохранение плоского текста в структуру типа - одна запись - одна глава            
             List<TextSentence.BookContentInChapters.BookContentInParagraphs> bp = new List<TextSentence.BookContentInChapters.BookContentInParagraphs>();
             List<TextSentence.BookContentInChapters> bc = new List<TextSentence.BookContentInChapters>();
             List<TextSentence> bt = new List<TextSentence>();
@@ -180,7 +188,8 @@ namespace BooksTextsSplit.Services
                     {
                         Id = Guid.NewGuid().ToString(),
                         BookId = bookDescription.BookId,
-                        RecordActualityLevel = Constants.RecordActualityLevel, // Model TextSentence ver.6
+                        //RecordActualityLevel = Constants.RecordActualityLevel, // Model TextSentence ver.6
+                        RecordActualityLevel = _constant.GetRecordActualityLevel, // Constants.RecordActualityLevel;
                         BookProperties = new TextSentence.BookPropertiesInLanguage
                         {
                             AuthorNameId = bookDescription.BookProperties.AuthorNameId,
@@ -222,39 +231,7 @@ namespace BooksTextsSplit.Services
                 t.TotalBookCounts = tc;
             }
             return bt.ToArray();
-        }
-
-        public TextSentence FillUpTextSentence( // no need to do this
-            TextSentenceFlat textSentence,
-            TextSentence bookDescription,
-            List<TextSentence.BookContentInChapters> bc,
-            int desiredTextLanguage,
-            int inChapterParagraphsCount,
-            int inChapterSentencesCount)
-        {
-            TextSentence t = new TextSentence
-            {
-                Id = Guid.NewGuid().ToString(),
-                BookId = bookDescription.BookId,
-                RecordActualityLevel = 3, // Model TextSentence ver.3                    
-                BookProperties = new TextSentence.BookPropertiesInLanguage
-                {
-                    AuthorNameId = bookDescription.BookProperties.AuthorNameId,
-                    AuthorName = bookDescription.BookProperties.AuthorName,
-                    BookNameId = bookDescription.BookProperties.BookNameId,
-                    BookName = bookDescription.BookProperties.BookName,
-                    BookAnnotation = bookDescription.BookProperties.BookAnnotation,
-                },
-                UploadVersion = bookDescription.UploadVersion + 1, // have obtained data about last existed version from UI
-                LanguageId = desiredTextLanguage,
-                ChapterId = textSentence.ChapterId,
-                ChapterName = textSentence.ChapterName,
-                InChapterParagraphsCount = inChapterParagraphsCount,
-                InChapterSentencesCount = inChapterSentencesCount,
-                BookContentInChapter = bc
-            };
-            return t;
-        }
+        }        
 
         public TextSentenceFlat[] AnalyseTextBook(string text, int desiredTextLanguage)
         {
@@ -289,16 +266,16 @@ namespace BooksTextsSplit.Services
             // Enqueue a background work item
             _taskQueue.QueueBackgroundWorkItem(async token =>
             {
-                // Simulate three 5-second tasks to complete
-                // for each enqueued work item
+        // Simulate three 5-second tasks to complete
+        // for each enqueued work item
 
-                int delayLoop = 0;
-                //string guid = Guid.NewGuid().ToString();
+        int delayLoop = 0;
+        //string guid = Guid.NewGuid().ToString();
 
-                //Console.WriteLine(
-                //    "Queued Background Task {0} is starting.", guid);
-                _logger.LogInformation(
-                        "Queued Background Task {Guid} is starting.", guid);
+        //Console.WriteLine(
+        //    "Queued Background Task {0} is starting.", guid);
+        _logger.LogInformation(
+                "Queued Background Task {Guid} is starting.", guid);
 
                 while (!token.IsCancellationRequested && delayLoop < 3)
                 {
@@ -308,32 +285,32 @@ namespace BooksTextsSplit.Services
                     }
                     catch (OperationCanceledException)
                     {
-                        // Prevent throwing if the Delay is cancelled
-                    }
+                // Prevent throwing if the Delay is cancelled
+            }
 
                     delayLoop++;
 
-                    //Console.WriteLine(
-                    //    "Queued Background Task {0} is running. " +
-                    //    "{1}/3", guid, delayLoop);
-                    _logger.LogInformation(
-                            "Queued Background Task {Guid} is running. " +
-                            "{DelayLoop}/3", guid, delayLoop);
+            //Console.WriteLine(
+            //    "Queued Background Task {0} is running. " +
+            //    "{1}/3", guid, delayLoop);
+            _logger.LogInformation(
+                    "Queued Background Task {Guid} is running. " +
+                    "{DelayLoop}/3", guid, delayLoop);
                 }
 
                 if (delayLoop == 3)
                 {
-                    //Console.WriteLine(
-                    //    "Queued Background Task {0} is complete.", guid);
-                    _logger.LogInformation(
-                            "Queued Background Task {Guid} is complete.", guid);
+            //Console.WriteLine(
+            //    "Queued Background Task {0} is complete.", guid);
+            _logger.LogInformation(
+                    "Queued Background Task {Guid} is complete.", guid);
                 }
                 else
                 {
-                    //Console.WriteLine(
-                    //    "Queued Background Task {0} was cancelled.", guid);
-                    _logger.LogInformation(
-                            "Queued Background Task {Guid} was cancelled.", guid);
+            //Console.WriteLine(
+            //    "Queued Background Task {0} was cancelled.", guid);
+            _logger.LogInformation(
+                    "Queued Background Task {Guid} was cancelled.", guid);
                 }
             });
         }

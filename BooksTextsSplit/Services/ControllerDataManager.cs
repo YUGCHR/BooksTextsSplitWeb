@@ -18,7 +18,7 @@ namespace BooksTextsSplit.Services
         public Task<int> TotalRecordsCountWhereLanguageId(int languageId);
         public Task<TotalCounts> FetchTotalCounts(int languageId);
         public Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId);
-        public Task<BooksNamesExistInDb> FetchBooksNamesIds(string where, int whereValue, int startUploadVersion);
+        public Task<BooksNamesExistInDb> FetchBooksNamesVersionsProperties(string keyBooksVersionsProperties);
         public Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value);
     }
 
@@ -224,17 +224,15 @@ namespace BooksTextsSplit.Services
         }
         #endregion
 
-        public async Task<BooksNamesExistInDb> FetchBooksNamesIds(string where, int whereValue, int startUploadVersion)
-        {
-            //BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb();            
+        // Model TextSentence ver.6 
+        public async Task<BooksNamesExistInDb> FetchBooksNamesVersionsProperties(string keyBooksVersionsProperties)
+        {           
             // определиться, откуда взять recordActualityLevel (from Constant or from UI - and UI will receive from Constant)
             int level = _constant.GetRecordActualityLevel; // Constants.RecordActualityLevel;
+                        
+            List<TextSentence> booksVersionsProperties = await _cache.FetchBooksNamesVersionsPropertiesFromCache<TextSentence>(keyBooksVersionsProperties, level);
 
-            // SELECT c.bookId, c.languageId, c.bookProperties, c.uploadVersion FROM c where c.recordActualityLevel = 6 AND c.recordId = 0
-            string queryString = $"SELECT c.bookId, c.languageId, c.bookProperties, c.totalBookCounts, c.uploadVersion FROM c WHERE c.recordActualityLevel = {level} AND c.recordId = 0";
-            List<TextSentence> bookIdLanguageIdVersionsProperties = await _context.GetItemsListAsyncFromDb<TextSentence>(queryString);
-            
-            IEnumerable<IGrouping<int, TextSentence>> bookIdGroupBy = bookIdLanguageIdVersionsProperties.GroupBy(r => r.BookId);
+            IEnumerable<IGrouping<int, TextSentence>> bookIdGroupBy = booksVersionsProperties.GroupBy(r => r.BookId);
             BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb
             {
                 BooksNamesIds = bookIdGroupBy.Select(p => new BooksNamesSortByLanguageIdSortByBookId
@@ -251,12 +249,6 @@ namespace BooksTextsSplit.Services
                     }).ToList()
                 }).ToList()
             };
-
-
-            // сделать один отдельный запрос - с ключом редиса, как обычно
-            // все циклы убрать, группировать результаты запроса
-            // сначала по BookId, потом по languageId (и по UploadVersion?)
-            // SELECT c.bookId, c.languageId, c.bookProperties, c.uploadVersion FROM c where c.recordActualityLevel = 6 AND c.recordId = 0
 
             return foundBooksIds;
         }

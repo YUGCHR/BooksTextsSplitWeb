@@ -14,6 +14,7 @@ namespace BooksTextsSplit.Services
     {
         public Task<int[]> FetchAllBooksIds(string keyBooksIds, int languageId, string propName, int actualityLevel);
         public Task<int[]> FetchAllBooksIds(string keyBooksIds, int languageId, string propName, int actualityLevel, int currentBooksIds);
+        public Task<List<T>> FetchBooksNamesVersionsPropertiesFromCache<T>(string keyBooksVersionsProperties, int level);
     }
 
     public class ControllerCacheManager : IControllerCacheManager
@@ -44,6 +45,13 @@ namespace BooksTextsSplit.Services
             int[] allBooksIds = await _access.FetchObjectAsync<int[]>(keyBooksIds, () => _db.FetchItemsArrayFromDb(languageId, propName, actualityLevel, currentBooksIds));
 
             return allBooksIds;
+        }
+
+        public async Task<List<T>> FetchBooksNamesVersionsPropertiesFromCache<T>(string keyBooksVersionsProperties, int level)
+        {
+            var booksVersionsProperties = await _access.FetchObjectAsync<List<T>>(keyBooksVersionsProperties, () => _db.FetchBooksNamesVersionsPropertiesFromDb<T>(level));
+            
+            return booksVersionsProperties;
         }
     }
 }
