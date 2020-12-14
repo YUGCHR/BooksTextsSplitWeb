@@ -240,13 +240,12 @@ namespace BooksTextsSplit.Services
                 BooksNamesIds = bookIdGroupBy.Select(p => new BooksNamesSortByLanguageIdSortByBookId
                 {
                     BookId = p.Key,                    
-                    BookDescriptionAllVersions = p.GroupBy(l => l.LanguageId).Select(v => new BooksNamesSortByLanguageId {
-                        LanguageId = v.Key,
-                        BooksDescriptionsDetails = v.Select(t => t.BookProperties).ToList(),                        
-                        BookVersionsOfBookId = v.Select(t => new BooksVersionTotaICount
-                        {
-                            
+                    AllBookDescriptions = p.GroupBy(l => l.LanguageId).Select(v => new BooksNamesSortByLanguageId {
+                        LanguageId = v.Key,                        
+                        BookVersionsOfBookId = v.Select(t => new BookVersionsTotaICount
+                        {                            
                             UploadVersion = t.UploadVersion,
+                            BookDescriptionDetails = t.BookProperties, // оставлен массив названий, исходя из предположения, что версии могут иметь свои аннотации
                             BookVersionCounts = t.TotalBookCounts
                         }).ToList()
                     }).ToList()
