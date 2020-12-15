@@ -18,7 +18,7 @@ namespace BooksTextsSplit.Services
         public Task<int> TotalRecordsCountWhereLanguageId(int languageId);
         public Task<TotalCounts> FetchTotalCounts(int languageId);
         public Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId);
-        public Task<BooksNamesExistInDb> FetchBooksNamesVersionsProperties(string keyBooksVersionsProperties);
+        public Task<BooksNamesExistInDb> FetchBooksNamesVersionsProperties();
         public Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value);
     }
 
@@ -225,12 +225,9 @@ namespace BooksTextsSplit.Services
         #endregion
 
         // Model TextSentence ver.6 
-        public async Task<BooksNamesExistInDb> FetchBooksNamesVersionsProperties(string keyBooksVersionsProperties)
-        {           
-            // определиться, откуда взять recordActualityLevel (from Constant or from UI - and UI will receive from Constant)
-            int level = _constant.GetRecordActualityLevel; // Constants.RecordActualityLevel;
-                        
-            List<TextSentence> booksVersionsProperties = await _cache.FetchBooksNamesVersionsPropertiesFromCache<TextSentence>(keyBooksVersionsProperties, level);
+        public async Task<BooksNamesExistInDb> FetchBooksNamesVersionsProperties()
+        { 
+            List<TextSentence> booksVersionsProperties = await _cache.FetchBooksNamesVersionsPropertiesFromCache<TextSentence>();
 
             IEnumerable<IGrouping<int, TextSentence>> bookIdGroupBy = booksVersionsProperties.GroupBy(r => r.BookId);
             BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb

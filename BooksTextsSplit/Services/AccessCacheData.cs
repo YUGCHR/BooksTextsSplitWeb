@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BooksTextsSplit.Models;
 using CachingFramework.Redis;
 using CachingFramework.Redis.Contracts.Providers;
 using Microsoft.Extensions.Logging;
@@ -11,6 +12,8 @@ namespace BooksTextsSplit.Services
     public interface IAccessCacheData
     {
         public Task<T> GetObjectAsync<T>(string key);
+        public Task InsertUser<T>(T user, string userId);
+        public Task<T> FetchObjectAsync<T>(string redisKey, string fieldKey, Func<Task<T>> func, TimeSpan? expiry = null);
         public Task<T> FetchObjectAsync<T>(string key, Func<Task<T>> func, TimeSpan? expiry = null);
         public Task SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null);
         public Task<bool> SetObjectAsyncCheck<T>(string key, T value, TimeSpan? ttl = null);
@@ -44,6 +47,18 @@ namespace BooksTextsSplit.Services
                 return cacheValue;
             }
             return default;
+        }
+
+        public async Task InsertUser<T>(T user, string userId) // for GetTest() only
+        {
+            var redisKey = "users:added";
+            var fieldKey = "user:id:" + userId;
+            await _cache.SetHashedAsync<T>(redisKey, fieldKey, user);
+        }
+
+        public async Task<T> FetchObjectAsync<T>(string redisKey, string fieldKey, Func<Task<T>> func, TimeSpan? expiry = null)
+        {
+            return await _cache.FetchHashedAsync<T>(redisKey, fieldKey, func, expiry);            
         }
 
         public async Task<T> FetchObjectAsync<T>(string key, Func<Task<T>> func, TimeSpan? expiry = null)

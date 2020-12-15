@@ -83,14 +83,16 @@ namespace BooksTextsSplit.Services
 
                     try
                     {
-                        _logger.LogInformation(
-                            "Queued Background Task RecordFileToDb {Guid} is running", guid);
+                        _logger.LogInformation("Queued Background Task RecordFileToDb {Guid} is running", guid);
 
                         // to delete GetTotalCountWhereLanguageId:languageId
                         bool removeKeyResult = await _data.RemoveTotalCountWhereLanguageId(desiredTextLanguage);
                         // to remove redis keys about books
-                        string keyBooksVersionsProperties = "BooksVersionsPropertiesForSelectPage";
-                        bool removeKeyResult1 = await _access.RemoveAsync(keyBooksVersionsProperties);
+                        string keyBase = "books";
+                        string keyHash = "data";
+                        var redisKey = $"{keyBase}:{keyHash}";
+                        bool removeKeyResult1 = await _access.RemoveAsync(redisKey);
+                        _logger.LogInformation("QBTask {Guid} has removed key {redisKey} successfully - {removeKeyResult1}", guid, redisKey, removeKeyResult1);
 
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
                         {

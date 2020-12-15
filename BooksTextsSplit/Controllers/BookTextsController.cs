@@ -103,6 +103,33 @@ namespace BooksTextsSplit.Controllers
             }
             return await _result.ResultDataWithToken(0, user);
         }
+
+        // GET: api/BookTexts/auth/test/ - check is user logged in on app start
+        [AllowAnonymous]
+        [HttpGet("auth/test")]
+        public async Task<ActionResult<string>> GetTest()
+        {
+            UserData user = new UserData
+            {
+                Id = 4,
+                FirstName = "Yuri",
+                LastName = "Gonchar",
+                Username = "YUGR823",
+                Token = "1234567890",
+                Password = "ttt",
+                Email = "8230773@gmail.com"
+            };
+
+            await _access.InsertUser<UserData>(user, user.Email);
+
+            var redisKey = "users:added";
+            var fieldKey = "user:id:" + user.Email;
+
+            UserData addedUsed = await _cache.GetHashedAsync<UserData>(redisKey, fieldKey);
+
+            return Ok($"Reading from redisKey {redisKey} \n and fieldKey {fieldKey} was sucessful \n User {addedUsed.Username} was added");
+        }
+
         #endregion
 
         #region Upload Books Files
@@ -203,9 +230,8 @@ namespace BooksTextsSplit.Controllers
         // GET: api/BookTexts/BooksNamesIds/?where="bookId"&whereValue=1&startUploadVersion=1 - fetching list of all BookIds existing in Db
         [HttpGet("BooksNamesIds")]
         public async Task<ActionResult<BooksNamesExistInDb>> GetBooksNamesIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int startUploadVersion)
-        {
-            string keyBooksVersionsProperties = "BooksVersionsPropertiesForSelectPage";
-            return await _data.FetchBooksNamesVersionsProperties(keyBooksVersionsProperties);
+        {            
+            return await _data.FetchBooksNamesVersionsProperties();
         }
 
         // GET: api/BookTexts/BookNameVersions/?where="bookId"&whereValue=1&bookId=(from selection) - fetching list of all uploaded versions for selected BookIds
