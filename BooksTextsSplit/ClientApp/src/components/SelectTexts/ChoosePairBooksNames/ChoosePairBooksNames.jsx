@@ -3,7 +3,7 @@ import s from "./ChoosePairBooksNames.module.css";
 //
 let showBooksNames = (bookDescription, bookId, i) => {
   let languageId = bookDescription.languageId;
-  let bookName = bookDescription.bookVersionsOfBookId[0].bookDescriptionDetails;
+  let bookName = bookDescription.bookVersionsInLanguage[0].bookDescriptionDetails;
   return (
     <div>
       <div>
@@ -40,7 +40,7 @@ const ChoosePairBooksNames = (props) => {
   if (props.isSelectBookId) {
     return props.booksNamesIds.map((id, i) => {
       let bookId = id.bookId;
-      let bookDescription = id.allBookDescriptions;
+      let bookDescription = id.bookVersionsLanguageInBook;
       return bookDescription.map((l, j) => {
         return (
           <div className={s.testGridContainer3}>

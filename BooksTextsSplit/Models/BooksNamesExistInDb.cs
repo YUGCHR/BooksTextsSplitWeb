@@ -14,7 +14,7 @@ namespace BooksTextsSplit.Models
     {
         public int BookId { get; set; }
         public List<BooksNamesSortByLanguageId> AllBookDescriptions { get; set; }
-        public IList<BooksNamesSortByLanguageId> BooksDescriptions { get; set; } // will not be used, for compatibility only
+        public List<BooksNamesSortByLanguageId> BooksDescriptions { get; set; } // will not be used, for compatibility only
     }
 
     public class BooksNamesSortByLanguageId

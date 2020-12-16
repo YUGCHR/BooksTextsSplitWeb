@@ -229,7 +229,7 @@ namespace BooksTextsSplit.Controllers
 
         // GET: api/BookTexts/BooksNamesIds/?where="bookId"&whereValue=1&startUploadVersion=1 - fetching list of all BookIds existing in Db
         [HttpGet("BooksNamesIds")]
-        public async Task<ActionResult<BooksNamesExistInDb>> GetBooksNamesIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int startUploadVersion)
+        public async Task<ActionResult<BookIdsListExistInDv>> GetBooksNamesIds([FromQuery] string where, [FromQuery] int whereValue, [FromQuery] int startUploadVersion)
         {            
             return await _data.FetchBooksNamesVersionsProperties();
         }

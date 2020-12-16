@@ -14,26 +14,26 @@ namespace BooksTextsSplit.Services
     {
         public Task<int[]> FetchAllBooksIds(string keyBooksIds, int languageId, string propName, int actualityLevel);
         public Task<int[]> FetchAllBooksIds(string keyBooksIds, int languageId, string propName, int actualityLevel, int currentBooksIds);
-        public Task<List<T>> FetchBooksNamesVersionsPropertiesFromCache<T>();
+        public Task<List<BookPropertiesExistInDb>> FetchAllBookIdsLanguageIdsFromCache();
     }
 
     public class ControllerCacheManager : IControllerCacheManager
     {
         private readonly ILogger<ControllerDataManager> _logger;
         private readonly ISettingConstants _constant;
-        private readonly IControllerDbManager _db;        
-        private readonly IAccessCacheData _access;        
+        private readonly IControllerDbManager _db;
+        private readonly IAccessCacheData _access;
 
         public ControllerCacheManager(
             ILogger<ControllerDataManager> logger,
             ISettingConstants constant,
-            IControllerDbManager db,            
+            IControllerDbManager db,
             IAccessCacheData access)
         {
             _logger = logger;
             _constant = constant;
-            _db = db;            
-            _access = access;            
+            _db = db;
+            _access = access;
         }
 
         public async Task<int[]> FetchAllBooksIds(string keyBooksIds, int languageId, string propName, int actualityLevel)
@@ -50,21 +50,50 @@ namespace BooksTextsSplit.Services
             return allBooksIds;
         }
 
-        public async Task<List<T>> FetchBooksNamesVersionsPropertiesFromCache<T>()
+        public async Task<List<BookPropertiesExistInDb>> FetchAllBookIdsLanguageIdsFromCache()
         {
             // определиться, откуда взять recordActualityLevel (from Constant or from UI - and UI will receive from Constant)
             int level = _constant.GetRecordActualityLevel; // Constants.RecordActualityLevel;
-
-            string keyBase = "books";
-            string keyHash = "data";
-            var redisKey = $"{keyBase}:{keyHash}";
-            string keySelectPage = "selectPage";
-            string keyBooksVersionsProperties = "booksVersionsProperties";
-            var fieldKey = $"{keySelectPage}:{keyBooksVersionsProperties}";
-
-            var booksVersionsProperties = await _access.FetchObjectAsync<List<T>>(redisKey, fieldKey, () => _db.FetchBooksNamesVersionsPropertiesFromDb<T>(level));
             
-            return booksVersionsProperties;
+            string keyBookId = "bookId";
+            string keyBookIdNum = "all";
+            var redisKey = $"{keyBookId}:{keyBookIdNum}";
+            string keyLanguageId = "languageId";
+            string keyLanguageIdNum = "all";
+            var fieldKey = $"{keyLanguageId}:{keyLanguageIdNum}";
+
+            List<BookPropertiesExistInDb> foundBooksIds = await _access.FetchObjectAsync<List<BookPropertiesExistInDb>>(redisKey, fieldKey, () => _db.FetchBooksNamesVersionsPropertiesFromDb(level));
+
+            return foundBooksIds;
+
+        }
+
+        public async Task<List<T>> FetchBookIdLanguageIdFromCache<T>()
+        {
+            int level = _constant.GetRecordActualityLevel;
+            List<BookPropertiesExistInDb> foundBooksIds = await _db.FetchBooksNamesVersionsPropertiesFromDb(level);
+
+            for (int i = 0; i < foundBooksIds.Count; i++)
+            {
+                string keyBookId = "bookId";
+                string keyBookIdNum = foundBooksIds[i].BookId.ToString();
+                var redisKey = $"{keyBookId}:{keyBookIdNum}";
+
+                for (int j = 0; j < 2; j++)
+                {
+                    var lang = foundBooksIds[i].BookVersionsLanguageInBook;
+
+                    string keyLanguageId = "languageId";
+                    string keyLanguageIdNum = lang[j].LanguageId.ToString();
+                    var fieldKey = $"{keyLanguageId}:{keyLanguageIdNum}";
+
+
+
+                    //var booksVersionsProperties = await _access.FetchObjectAsync<List<T>>(redisKey, fieldKey, () => ());
+                }
+            }
+            return default;
+
         }
     }
 }

@@ -18,7 +18,7 @@ namespace BooksTextsSplit.Services
         public Task<int> TotalRecordsCountWhereLanguageId(int languageId);
         public Task<TotalCounts> FetchTotalCounts(int languageId);
         public Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId);
-        public Task<BooksNamesExistInDb> FetchBooksNamesVersionsProperties();
+        public Task<BookIdsListExistInDv> FetchBooksNamesVersionsProperties();
         public Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value);
     }
 
@@ -197,6 +197,25 @@ namespace BooksTextsSplit.Services
                 }
                 ).ToList()
             };
+            // new version
+            //IEnumerable<IGrouping<int, TextSentence>> bookIdGroupBy = booksVersionsProperties.GroupBy(r => r.BookId);
+            //BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb
+            //{
+            //    BooksNamesIds = bookIdGroupBy.Select(p => new BooksNamesSortByLanguageIdSortByBookId
+            //    {
+            //        BookId = p.Key,
+            //        AllBookDescriptions = p.GroupBy(l => l.LanguageId).Select(v => new BooksNamesSortByLanguageId
+            //        {
+            //            LanguageId = v.Key,
+            //            BookVersionsOfBookId = v.Select(t => new BookVersionsTotaICount
+            //            {
+            //                UploadVersion = t.UploadVersion,
+            //                BookDescriptionDetails = t.BookProperties, // оставлен массив названий, исходя из предположения, что версии могут иметь свои аннотации
+            //                BookVersionCounts = t.TotalBookCounts
+            //            }).ToList()
+            //        }).ToList()
+            //    }).ToList()
+            //};
             #endregion
             return foundBooksVersion;
         }
@@ -225,31 +244,18 @@ namespace BooksTextsSplit.Services
         #endregion
 
         // Model TextSentence ver.6 
-        public async Task<BooksNamesExistInDb> FetchBooksNamesVersionsProperties()
+        public async Task<BookIdsListExistInDv> FetchBooksNamesVersionsProperties()
         { 
-            List<TextSentence> booksVersionsProperties = await _cache.FetchBooksNamesVersionsPropertiesFromCache<TextSentence>();
+            List<BookPropertiesExistInDb> foundAllBooksIds = await _cache.FetchAllBookIdsLanguageIdsFromCache();
 
-            IEnumerable<IGrouping<int, TextSentence>> bookIdGroupBy = booksVersionsProperties.GroupBy(r => r.BookId);
-            BooksNamesExistInDb foundBooksIds = new BooksNamesExistInDb
+            BookIdsListExistInDv ttt = new BookIdsListExistInDv
             {
-                BooksNamesIds = bookIdGroupBy.Select(p => new BooksNamesSortByLanguageIdSortByBookId
-                {
-                    BookId = p.Key,                    
-                    AllBookDescriptions = p.GroupBy(l => l.LanguageId).Select(v => new BooksNamesSortByLanguageId {
-                        LanguageId = v.Key,                        
-                        BookVersionsOfBookId = v.Select(t => new BookVersionsTotaICount
-                        {                            
-                            UploadVersion = t.UploadVersion,
-                            BookDescriptionDetails = t.BookProperties, // оставлен массив названий, исходя из предположения, что версии могут иметь свои аннотации
-                            BookVersionCounts = t.TotalBookCounts
-                        }).ToList()
-                    }).ToList()
-                }).ToList()
+                BooksNamesIds = foundAllBooksIds
             };
 
-            return foundBooksIds;
+            return ttt;
         }
-
+        
         public async Task<List<TextSentence>> FetchBooksNamesFromDb(string where, int whereValue)
         {
             // bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy); - it is needs to add checking of parameters existing 
