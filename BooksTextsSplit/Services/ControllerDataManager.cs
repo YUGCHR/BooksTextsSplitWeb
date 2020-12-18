@@ -17,6 +17,7 @@ namespace BooksTextsSplit.Services
         public Task<bool> RemoveTotalCountWhereLanguageId(int languageId);
         public Task<int> TotalRecordsCountWhereLanguageId(int languageId);
         public Task<TotalCounts> FetchTotalCounts(int languageId);
+        public TaskUploadPercents CreateTaskGuidKeys(string guid, TimeSpan? keysExistingTime = null, int bookId = 0, int textSentencesLength = 0);
         public Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId);
         public Task<BookIdsListExistInDv> FetchBooksNamesVersionsProperties();
         public Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value);
@@ -25,7 +26,7 @@ namespace BooksTextsSplit.Services
     static class Constants
     {
         public static int FieldsCountForTotalCounts = 4;
-        public static int RecordActualityLevel = 6;
+        public static int RecordActualityLevel = 6; // DELETE!
 
         public static string FieldNameLanguageId = "languageId";
         public static string FieldNameBookSentenceId = "bookSentenceId";
@@ -162,7 +163,52 @@ namespace BooksTextsSplit.Services
 
         #endregion
 
+        #region Upload Book
 
+        public TaskUploadPercents CreateTaskGuidKeys(string guid, TimeSpan? keysExistingTime = null, int bookId = 0, int textSentencesLength = 0)
+        {
+            string keyBookId = "bookId";
+            string keyBookIdAction = "upload";
+            var redisKey = $"{keyBookId}:{keyBookIdAction}";
+            string keyTaskGuid = guid;
+            string keyTaskPercents = "percents";
+            var fieldKeyPercents = $"{keyTaskGuid}:{keyTaskPercents}";
+            string keyIsTaskRunning = "isRunning";
+            var fieldKeyState = $"{keyTaskGuid}:{keyIsTaskRunning}";
+            TaskUploadPercents uploadPercents = new TaskUploadPercents
+            {
+                DoneInPercents = 0, // do not use
+                CurrentUploadingRecord = 0,
+                CurrentUploadedRecordRealTime = 0,
+                TotalUploadedRealTime = 0,
+                RecordsTotalCount = textSentencesLength,
+                CurrentTaskGuid = guid,
+                CurrentUploadingBookId = bookId,
+                RedisKey = redisKey,
+                FieldKeyPercents = fieldKeyPercents,
+                FieldKeyState = fieldKeyState
+            };
+            return uploadPercents;
+        }
+
+        #endregion
+
+        #region Select Books Pair
+
+        // Model TextSentence ver.6 
+        public async Task<BookIdsListExistInDv> FetchBooksNamesVersionsProperties()
+        { 
+            List<BookPropertiesExistInDb> foundAllBooksIds = await _cache.FetchAllBookIdsLanguageIdsFromCache();
+
+            return new BookIdsListExistInDv
+            {
+                BooksNamesIds = foundAllBooksIds
+            };
+        }
+
+        #endregion
+
+        #region LEGACY
 
         public async Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId)
         {
@@ -243,19 +289,7 @@ namespace BooksTextsSplit.Services
         }
         #endregion
 
-        // Model TextSentence ver.6 
-        public async Task<BookIdsListExistInDv> FetchBooksNamesVersionsProperties()
-        { 
-            List<BookPropertiesExistInDb> foundAllBooksIds = await _cache.FetchAllBookIdsLanguageIdsFromCache();
 
-            BookIdsListExistInDv ttt = new BookIdsListExistInDv
-            {
-                BooksNamesIds = foundAllBooksIds
-            };
-
-            return ttt;
-        }
-        
         public async Task<List<TextSentence>> FetchBooksNamesFromDb(string where, int whereValue)
         {
             // bool areWhereOrderByRealProperties = true; //AreParamsRealTextSentenceProperties(where, orderBy); - it is needs to add checking of parameters existing 
@@ -313,6 +347,8 @@ namespace BooksTextsSplit.Services
 
             return requestedSelectResult;
         }
+
+        #endregion
     }
 }
 

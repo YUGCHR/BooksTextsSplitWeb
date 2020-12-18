@@ -148,20 +148,22 @@ namespace BooksTextsSplit.Controllers
         public async Task<ActionResult<TaskUploadPercents>> GetUploadTaskPercents([FromQuery] string taskGuid)
         {
             //int percentDecrement = 0;
-            TaskUploadPercents taskStateCurrent = new TaskUploadPercents();
+            TaskUploadPercents taskStateCurrent = _data.CreateTaskGuidKeys(taskGuid);
+
             bool isUploadInProgress = false;
             while (!isUploadInProgress) // to wait when key taskGuid will appear
             {
-                isUploadInProgress = await _cache.KeyExistsAsync(taskGuid);
+                isUploadInProgress = await _access.KeyExistsAsync<TaskUploadPercents>(taskStateCurrent.RedisKey, taskStateCurrent.FieldKeyPercents);
                 if (isUploadInProgress)
                 {
-                    taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid);
+                    taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskStateCurrent.RedisKey, taskStateCurrent.FieldKeyPercents);
+                    
                     int previousState = taskStateCurrent.CurrentUploadingRecord;
                     int currentState = previousState;
                     int finishState = taskStateCurrent.RecordsTotalCount - 1;
                     while (currentState == previousState && currentState < finishState)
                     {
-                        taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskGuid); // after TimeSpan time the key can disappeared in some reasons
+                        taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskStateCurrent.RedisKey, taskStateCurrent.FieldKeyPercents); // after TimeSpan time the key can disappeared in some reasons
                         if (taskStateCurrent == null)
                         {
                             string message = "Incomplete UploadTaskPercents pending of RedisKey - {Guid} was not completed.";
@@ -190,7 +192,7 @@ namespace BooksTextsSplit.Controllers
             if (bookFile != null)
             {
                 string guid = Guid.NewGuid().ToString();                
-                _task2Queue.RecordFileToDbInBackground(bookFile, jsonBookDescription, guid);
+                _task2Queue.BackgroundRecordBookToDb(bookFile, jsonBookDescription, guid);
                 return Ok(guid);
             }
             return Problem("bad file");

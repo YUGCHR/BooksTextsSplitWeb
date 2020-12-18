@@ -12,13 +12,16 @@ namespace BooksTextsSplit.Services
     public interface IAccessCacheData
     {
         public Task<T> GetObjectAsync<T>(string key);
+        public Task<T> GetObjectAsync<T>(string key, string field);
         public Task InsertUser<T>(T user, string userId);
-        public Task<T> FetchObjectAsync<T>(string redisKey, string fieldKey, Func<Task<T>> func, TimeSpan? expiry = null);
+        public Task<T> FetchObjectAsync<T>(string redisKey, string fieldKey, Func<Task<T>> func, TimeSpan? expiry = null); // FetchHashedAsync
         public Task<T> FetchObjectAsync<T>(string key, Func<Task<T>> func, TimeSpan? expiry = null);
         public Task SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null);
+        public Task SetObjectAsync<T>(string redisKey, string fieldKey, T value, TimeSpan? ttl = null); // SetHashedAsync
         public Task<bool> SetObjectAsyncCheck<T>(string key, T value, TimeSpan? ttl = null);
         public Task<bool> RemoveAsync(string key);
         public Task<bool> KeyExistsAsync(string key);
+        public Task<bool> KeyExistsAsync<T>(string key, string field);
         public Task<bool> KeyExpireAsync(string key, DateTime expiration);
 
     }
@@ -42,6 +45,16 @@ namespace BooksTextsSplit.Services
         public async Task<T> GetObjectAsync<T>(string key)
         {
             var cacheValue = await _cache.GetObjectAsync<T>(key);
+            if (cacheValue != null)
+            {
+                return cacheValue;
+            }
+            return default;
+        }
+        
+        public async Task<T> GetObjectAsync<T>(string key, string field)
+        {
+            var cacheValue = await _cache.GetHashedAsync<T>(key, field);
             if (cacheValue != null)
             {
                 return cacheValue;
@@ -89,6 +102,11 @@ namespace BooksTextsSplit.Services
             await _cache.SetObjectAsync(key, value, ttl);
         }
 
+        public async Task SetObjectAsync<T>(string redisKey, string fieldKey, T value, TimeSpan? ttl = null)
+        {// Task SetHashedAsync<T>(string key, string field, T value, TimeSpan? ttl = null, When when = When.Always, CommandFlags flags = CommandFlags.None);
+            await _cache.SetHashedAsync<T>(redisKey, fieldKey, value, ttl);
+        }
+
         public async Task<bool> SetObjectAsyncCheck<T>(string key, T value, TimeSpan? ttl = null)
         {
             await _cache.SetObjectAsync(key, value, ttl);
@@ -104,6 +122,16 @@ namespace BooksTextsSplit.Services
         {
             return await _cache.KeyExistsAsync(key);
         }
+
+        public async Task<bool> KeyExistsAsync<T>(string key, string field)
+        {
+            var cacheValue = await _cache.GetHashedAsync<T>(key, field);
+            if (cacheValue != null)
+            {
+                return true;
+            }
+            return false;
+        }        
 
         public async Task<bool> KeyExpireAsync(string key, DateTime expiration) //Set a timeout on key. After the timeout has expired, the key will automatically be deleted
         {

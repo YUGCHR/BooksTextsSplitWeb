@@ -30,6 +30,15 @@ namespace BooksTextsSplit.Models
         [JsonProperty(PropertyName = "currentUploadingBookId")]
         public int CurrentUploadingBookId { get; set; }
 
+        [JsonProperty(PropertyName = "redisKey")]
+        public string RedisKey { get; set; }
+
+        [JsonProperty(PropertyName = "fieldKeyPercents")]
+        public string FieldKeyPercents { get; set; }
+
+        [JsonProperty(PropertyName = "fieldKeyState")]
+        public string FieldKeyState { get; set; }
+
         public TextSentence ShallowCopy()
         {
             return (TextSentence)this.MemberwiseClone();

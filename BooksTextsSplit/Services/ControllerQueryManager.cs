@@ -50,12 +50,22 @@ namespace BooksTextsSplit.Services
             return await _context.GetItemsListAsyncFromDb<T>(queryString);
 
         }
-        
+
         public async Task<List<T>> GetBooksNamesVersionsPropertiesFromDb<T>(int level)
         {
             // SELECT c.bookId, c.languageId, c.bookProperties, c.uploadVersion FROM c where c.recordActualityLevel = 6 AND c.recordId = 0
             string queryString = $"SELECT c.bookId, c.languageId, c.bookProperties, c.totalBookCounts, c.uploadVersion FROM c WHERE c.recordActualityLevel = {level} AND c.recordId = 0";
-                       
+
+            return await _context.GetItemsListAsyncFromDb<T>(queryString);
+        }
+
+        public async Task<List<T>> GetBookNameVersionsPropertiesInLanguageFromDb<T>(int level, int bookId, int languageId)
+        {
+            // SELECT c.uploadVersion, c.bookProperties, c.totalBookCounts FROM c where 
+            // c.recordActualityLevel = 6 AND c.recordId = 0 AND
+            // c.bookId = 74 AND c.languageId = 0
+            string queryString = $"SELECT c.bookId, c.languageId, c.bookProperties, c.totalBookCounts, c.uploadVersion FROM c WHERE c.recordActualityLevel = {level} AND c.recordId = 0";
+
             return await _context.GetItemsListAsyncFromDb<T>(queryString);
         }
     }
