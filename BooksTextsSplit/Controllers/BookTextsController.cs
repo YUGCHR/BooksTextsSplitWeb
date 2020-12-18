@@ -133,6 +133,7 @@ namespace BooksTextsSplit.Controllers
         #endregion
 
         #region Upload Books Files
+
         // GET: api/BookTexts/worker/
         [HttpGet("worker")]
         public ActionResult GetWorker()
@@ -146,43 +147,8 @@ namespace BooksTextsSplit.Controllers
         // GET: api/BookTexts/uploadTaskPercents/?taskGuid = e0ff4648-b183-49c7-b3d9-bc9fc99dcf8e
         [HttpGet("uploadTaskPercents")]
         public async Task<ActionResult<TaskUploadPercents>> GetUploadTaskPercents([FromQuery] string taskGuid)
-        {
-            //int percentDecrement = 0;
-            TaskUploadPercents taskStateCurrent = _data.CreateTaskGuidKeys(taskGuid);
-
-            bool isUploadInProgress = false;
-            while (!isUploadInProgress) // to wait when key taskGuid will appear
-            {
-                isUploadInProgress = await _access.KeyExistsAsync<TaskUploadPercents>(taskStateCurrent.RedisKey, taskStateCurrent.FieldKeyPercents);
-                if (isUploadInProgress)
-                {
-                    taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskStateCurrent.RedisKey, taskStateCurrent.FieldKeyPercents);
-                    
-                    int previousState = taskStateCurrent.CurrentUploadingRecord;
-                    int currentState = previousState;
-                    int finishState = taskStateCurrent.RecordsTotalCount - 1;
-                    while (currentState == previousState && currentState < finishState)
-                    {
-                        taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskStateCurrent.RedisKey, taskStateCurrent.FieldKeyPercents); // after TimeSpan time the key can disappeared in some reasons
-                        if (taskStateCurrent == null)
-                        {
-                            string message = "Incomplete UploadTaskPercents pending of RedisKey - {Guid} was not completed.";
-                            _logger.LogInformation(message, taskGuid);
-                            return default;
-                        }
-                        else
-                        {
-                            currentState = taskStateCurrent.CurrentUploadingRecord;
-                            await Task.Delay(10);
-                        }
-                    }
-                }
-                else
-                {
-                    await Task.Delay(10);
-                }
-            }
-            return taskStateCurrent;
+        {            
+            return await _data.FetchUploadTaskPercents(taskGuid);
         }
 
         // POST: api/BookTexts/UploadFile        

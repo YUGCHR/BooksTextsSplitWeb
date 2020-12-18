@@ -73,7 +73,7 @@ namespace BooksTextsSplit.Services
                     try
                     {
                         _logger.LogInformation("Queued Background Task RecordFileToDb {Guid} is running", guid);
-                        
+
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
                         {
                             // Check the time of one cycle, calculate the whole task run time, if it is more 10 sec, than percents will be shown - 1 state per second
@@ -97,7 +97,8 @@ namespace BooksTextsSplit.Services
                             await _access.SetObjectAsync(uploadPercents.RedisKey, uploadPercents.FieldKeyPercents, uploadPercents, keysExistingTime);
                         };
 
-                        bool removingResult = await RemoveKeysAfterRecording(desiredTextLanguage, guid); // ключ guid создавать через хэш
+                        // ключ guid создавать через хэш
+                        bool removingResult = await RemoveKeysAfterRecording(desiredTextLanguage, guid);
 
                         // здесь проверить, что задание последнее и если да, то восстановить ключи данных
                         // to create sentenceCounts for current language

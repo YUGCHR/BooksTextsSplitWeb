@@ -18,6 +18,7 @@ namespace BooksTextsSplit.Services
         public Task<int> TotalRecordsCountWhereLanguageId(int languageId);
         public Task<TotalCounts> FetchTotalCounts(int languageId);
         public TaskUploadPercents CreateTaskGuidKeys(string guid, TimeSpan? keysExistingTime = null, int bookId = 0, int textSentencesLength = 0);
+        public Task<TaskUploadPercents> FetchUploadTaskPercents(string taskGuid);
         public Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId);
         public Task<BookIdsListExistInDv> FetchBooksNamesVersionsProperties();
         public Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value);
@@ -189,6 +190,45 @@ namespace BooksTextsSplit.Services
                 FieldKeyState = fieldKeyState
             };
             return uploadPercents;
+        }
+
+        public async Task<TaskUploadPercents> FetchUploadTaskPercents(string taskGuid)
+        {
+            TaskUploadPercents taskStateCurrent = CreateTaskGuidKeys(taskGuid);
+
+            bool isUploadInProgress = false;
+            while (!isUploadInProgress) // to wait when key taskGuid will appear
+            {
+                isUploadInProgress = await _access.KeyExistsAsync<TaskUploadPercents>(taskStateCurrent.RedisKey, taskStateCurrent.FieldKeyPercents);
+                if (isUploadInProgress)
+                {
+                    taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskStateCurrent.RedisKey, taskStateCurrent.FieldKeyPercents);
+
+                    int previousState = taskStateCurrent.CurrentUploadingRecord;
+                    int currentState = previousState;
+                    int finishState = taskStateCurrent.RecordsTotalCount - 1;
+                    while (currentState == previousState && currentState < finishState)
+                    {
+                        taskStateCurrent = await _access.GetObjectAsync<TaskUploadPercents>(taskStateCurrent.RedisKey, taskStateCurrent.FieldKeyPercents); // after TimeSpan time the key can disappeared in some reasons
+                        if (taskStateCurrent == null)
+                        {
+                            string message = "Incomplete UploadTaskPercents pending of RedisKey - {Guid} was not completed.";
+                            _logger.LogInformation(message, taskGuid);
+                            return default;
+                        }
+                        else
+                        {
+                            currentState = taskStateCurrent.CurrentUploadingRecord;
+                            await Task.Delay(10);
+                        }
+                    }
+                }
+                else
+                {
+                    await Task.Delay(10);
+                }
+            }
+            return taskStateCurrent;
         }
 
         #endregion
