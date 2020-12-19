@@ -15,6 +15,7 @@ namespace BooksTextsSplit.Services
         public Task<int[]> FetchAllBooksIds(string keyBooksIds, int languageId, string propName, int actualityLevel);
         public Task<int[]> FetchAllBooksIds(string keyBooksIds, int languageId, string propName, int actualityLevel, int currentBooksIds);
         public Task<List<BookPropertiesExistInDb>> FetchAllBookIdsLanguageIdsFromCache();
+        public Task<bool> SetTaskGuidKeys(TaskUploadPercents uploadPercents);
     }
 
     public class ControllerCacheManager : IControllerCacheManager
@@ -93,7 +94,13 @@ namespace BooksTextsSplit.Services
                 }
             }
             return default;
+        }
 
+        public async Task<bool> SetTaskGuidKeys(TaskUploadPercents uploadPercents)
+        {
+            TimeSpan keysExistingTime = TimeSpan.FromMinutes(_constant.GetPersentsKeysExistingTimeInMinutes);
+            await _access.SetObjectAsync(uploadPercents.RedisKey, uploadPercents.FieldKeyPercents, uploadPercents, keysExistingTime);
+            return true;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace BooksTextsSplit.Models
 {
     public class BooksVersionsExistInDb
     {
-        public IList<SelectedBookIdGroupByLanguageId> SelectedBookIdAllVersions { get; set; }       
+        public IList<SelectedBookIdGroupByLanguageId> SelectedBookIdAllVersions { get; set; }
     }
 
     public class SelectedBookIdGroupByLanguageId

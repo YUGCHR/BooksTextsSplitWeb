@@ -55,11 +55,11 @@ namespace BooksTextsSplit.Services
             StreamReader reader = new StreamReader(bookFile.OpenReadStream());
             string text = reader.ReadToEnd();
 
-            TextSentence[] textSentences = FetchBookTextSentences(text, bookDescription, desiredTextLanguage); // add bookDescription
+            TextSentence[] textSentences = FetchBookTextSentences(text, bookDescription, desiredTextLanguage);
             int textSentencesLength = textSentences.Length;
 
             int taskDelayTimeInSeconds = _constant.GetTaskDelayTimeInSeconds;
-            TimeSpan keysExistingTime = TimeSpan.FromMinutes(_constant.GetPersentsKeysExistingTimeInMinutes);
+            TimeSpan keysExistingTime = TimeSpan.FromMinutes(_constant.GetPersentsKeysExistingTimeInMinutes); // TO DELETE!
 
             // Enqueue a background work item
             _taskQueue.QueueBackgroundWorkItem(async token =>
@@ -68,7 +68,9 @@ namespace BooksTextsSplit.Services
                 {
                     _logger.LogInformation("Queued Background Task RecordFileToDb {Guid} is starting", guid);
 
-                    TaskUploadPercents uploadPercents = await InitialiseTaskGuidKeys(guid, textSentencesLength, bookDescription.BookId, keysExistingTime);
+                    TaskUploadPercents uploadPercents = _data.CreateTaskGuidKeys(guid, bookDescription, textSentencesLength);
+                    uploadPercents.IsTaskRunning = true;  //inform all the task is started
+                    bool resultSetKey = await _data.SetTaskState(uploadPercents);
 
                     try
                     {
@@ -94,7 +96,8 @@ namespace BooksTextsSplit.Services
                             uploadPercents.CurrentUploadingRecord = tsi;
                             uploadPercents.CurrentUploadedRecordRealTime = tsMs;
                             uploadPercents.TotalUploadedRealTime += tsMs;
-                            await _access.SetObjectAsync(uploadPercents.RedisKey, uploadPercents.FieldKeyPercents, uploadPercents, keysExistingTime);
+                            bool resultSetKey1 = await SetTaskGuidKeys(uploadPercents, keysExistingTime);
+                            //await _access.SetObjectAsync(uploadPercents.RedisKey, uploadPercents.FieldKeyPercents, uploadPercents, keysExistingTime);
                         };
 
                         // ключ guid создавать через хэш
@@ -121,14 +124,10 @@ namespace BooksTextsSplit.Services
             //return "Task " + guid + " was Queued Background";
         }
 
-        private async Task<TaskUploadPercents> InitialiseTaskGuidKeys(string guid, int textSentencesLength, int bookId, TimeSpan keysExistingTime)
+        private async Task<bool> SetTaskGuidKeys(TaskUploadPercents uploadPercents, TimeSpan keysExistingTime)
         {
-            TaskUploadPercents uploadPercents = _data.CreateTaskGuidKeys(guid, keysExistingTime, bookId, textSentencesLength);
-            //string taskKeyForRedis = guid; // to initialize the key for procents
-            await _access.SetObjectAsync(uploadPercents.RedisKey, uploadPercents.FieldKeyPercents, uploadPercents, keysExistingTime);
-            bool isTaskRunning = true;
-            await _access.SetObjectAsync(uploadPercents.RedisKey, uploadPercents.FieldKeyState, isTaskRunning, keysExistingTime);
-            return uploadPercents;
+            await _access.SetObjectAsync(uploadPercents.RedisKey, uploadPercents.FieldKeyPercents, uploadPercents, keysExistingTime);            
+            return true;
         }
 
         private async Task<bool> RemoveKeysAfterRecording(int languageId, string guid)

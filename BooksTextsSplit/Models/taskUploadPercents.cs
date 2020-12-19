@@ -9,6 +9,21 @@ namespace BooksTextsSplit.Models
 {
     public class TaskUploadPercents
     {
+        [JsonProperty(PropertyName = "isTaskRunning")]
+        public bool IsTaskRunning { get; set; }
+
+        [JsonProperty(PropertyName = "currentTaskGuid")]
+        public string CurrentTaskGuid { get; set; }
+
+        [JsonProperty(PropertyName = "currentUploadingBookId")]
+        public int CurrentUploadingBookId { get; set; }
+
+        [JsonProperty(PropertyName = "currentUploadingLanguageId")]
+        public int CurrentUploadingLanguageId { get; set; }
+
+        [JsonProperty(PropertyName = "currentUploadingVersion")]
+        public int CurrentUploadingVersion { get; set; }
+
         [JsonProperty(PropertyName = "doneInProcents")]
         public int DoneInPercents { get; set; } //don't use
 
@@ -24,12 +39,6 @@ namespace BooksTextsSplit.Models
         [JsonProperty(PropertyName = "recordrsTotalCount")]
         public int RecordsTotalCount { get; set; }
 
-        [JsonProperty(PropertyName = "currentTaskGuid")]
-        public string CurrentTaskGuid { get; set; }
-
-        [JsonProperty(PropertyName = "currentUploadingBookId")]
-        public int CurrentUploadingBookId { get; set; }
-
         [JsonProperty(PropertyName = "redisKey")]
         public string RedisKey { get; set; }
 
@@ -37,7 +46,10 @@ namespace BooksTextsSplit.Models
         public string FieldKeyPercents { get; set; }
 
         [JsonProperty(PropertyName = "fieldKeyState")]
-        public string FieldKeyState { get; set; }
+        public string FieldKeyState { get; set; } //don't use
+        
+        [JsonProperty(PropertyName = "keysExistingTime")]
+        public TimeSpan? KeysExistingTime { get; set; }
 
         public TextSentence ShallowCopy()
         {

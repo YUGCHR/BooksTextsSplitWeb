@@ -17,7 +17,8 @@ namespace BooksTextsSplit.Services
         public Task<bool> RemoveTotalCountWhereLanguageId(int languageId);
         public Task<int> TotalRecordsCountWhereLanguageId(int languageId);
         public Task<TotalCounts> FetchTotalCounts(int languageId);
-        public TaskUploadPercents CreateTaskGuidKeys(string guid, TimeSpan? keysExistingTime = null, int bookId = 0, int textSentencesLength = 0);
+        public TaskUploadPercents CreateTaskGuidKeys(string guid, TextSentence bookDescription, int textSentencesLength = 0);
+        public Task<bool> SetTaskState(TaskUploadPercents uploadPercents);
         public Task<TaskUploadPercents> FetchUploadTaskPercents(string taskGuid);
         public Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId);
         public Task<BookIdsListExistInDv> FetchBooksNamesVersionsProperties();
@@ -166,7 +167,7 @@ namespace BooksTextsSplit.Services
 
         #region Upload Book
 
-        public TaskUploadPercents CreateTaskGuidKeys(string guid, TimeSpan? keysExistingTime = null, int bookId = 0, int textSentencesLength = 0)
+        public TaskUploadPercents CreateTaskGuidKeys(string guid, TextSentence bookDescription = null, int textSentencesLength = 0)
         {
             string keyBookId = "bookId";
             string keyBookIdAction = "upload";
@@ -176,19 +177,33 @@ namespace BooksTextsSplit.Services
             var fieldKeyPercents = $"{keyTaskGuid}:{keyTaskPercents}";
             string keyIsTaskRunning = "isRunning";
             var fieldKeyState = $"{keyTaskGuid}:{keyIsTaskRunning}";
-            TaskUploadPercents uploadPercents = new TaskUploadPercents
+            if (bookDescription == null)
             {
-                DoneInPercents = 0, // do not use
-                CurrentUploadingRecord = 0,
-                CurrentUploadedRecordRealTime = 0,
-                TotalUploadedRealTime = 0,
-                RecordsTotalCount = textSentencesLength,
-                CurrentTaskGuid = guid,
-                CurrentUploadingBookId = bookId,
-                RedisKey = redisKey,
-                FieldKeyPercents = fieldKeyPercents,
-                FieldKeyState = fieldKeyState
-            };
+                bookDescription = new TextSentence
+                {
+                    BookId = 0,
+                    LanguageId = -1,
+                    UploadVersion = 0
+                };
+            }
+                TaskUploadPercents uploadPercents = new TaskUploadPercents
+                {
+                    IsTaskRunning = false,
+                    CurrentTaskGuid = guid,
+                    CurrentUploadingBookId = bookDescription.BookId,
+                    CurrentUploadingLanguageId = bookDescription.LanguageId,
+                    CurrentUploadingVersion = bookDescription.UploadVersion,
+                    DoneInPercents = 0, // do not use
+                    CurrentUploadingRecord = 0,
+                    CurrentUploadedRecordRealTime = 0,
+                    TotalUploadedRealTime = 0,
+                    RecordsTotalCount = textSentencesLength,
+                    RedisKey = redisKey,
+                    FieldKeyPercents = fieldKeyPercents,
+                    FieldKeyState = fieldKeyState,
+                    KeysExistingTime = TimeSpan.FromMinutes(_constant.GetPersentsKeysExistingTimeInMinutes)
+                };
+            
             return uploadPercents;
         }
 
@@ -229,6 +244,12 @@ namespace BooksTextsSplit.Services
                 }
             }
             return taskStateCurrent;
+        }
+
+        public async Task<bool> SetTaskState(TaskUploadPercents uploadPercents)
+        {            
+            await _cache.SetTaskGuidKeys(uploadPercents);
+            return true;
         }
 
         #endregion
