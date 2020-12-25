@@ -17,7 +17,9 @@ namespace BooksTextsSplit.Helpers
             string resultKey = keyBase + languageId.ToString() + ":" + bookId.ToString();
             return resultKey;
 
-        }public static string KeyBaseAddLanguageId(this string keyBase, int languageId)
+        }
+        
+        public static string KeyBaseAddLanguageId(this string keyBase, int languageId)
         {
             if (keyBase == null)
             {
@@ -25,6 +27,17 @@ namespace BooksTextsSplit.Helpers
                 return null;
             }
             string resultKey = keyBase + languageId.ToString();
+            return resultKey;
+        }
+
+        public static string KeyBaseRedisKey(this string keyBase, string redisKeyNum)
+        {
+            if (keyBase == null)
+            {
+                Console.WriteLine("\n\n keyBase is undefined ");
+                return null;
+            }
+            string resultKey = $"{keyBase}:{redisKeyNum}";
             return resultKey;
         }
     }

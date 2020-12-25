@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace BooksTextsSplit.Services
     {
         public Task<bool> RemoveTotalCountWhereLanguageId(int languageId);
         public Task<int> TotalRecordsCountWhereLanguageId(int languageId);
-        public Task<TotalCounts> FetchTotalCounts(int languageId);
+        public Task<TotalCounts> FetchTotalCounts(int languageId, [CallerMemberName] string currentMethodNameName = "");
         public TaskUploadPercents CreateTaskGuidKeys(string guid, TextSentence bookDescription, int textSentencesLength = 0);
         public Task<bool> SetTaskState(TaskUploadPercents uploadPercents);
         public Task<TaskUploadPercents> FetchUploadTaskPercents(string taskGuid);
@@ -98,8 +99,8 @@ namespace BooksTextsSplit.Services
             int languageSentencesCount = await _context.GetCountAllLanguageItemsAsync(Constants.FieldNameLanguageId, languageId) ?? 0;
             return languageSentencesCount;
         }
-
-        public async Task<TotalCounts> FetchTotalCounts(int languageId)
+        
+        public async Task<TotalCounts> FetchTotalCounts(int languageId, [CallerMemberName] string currentMethodNameName = "")
         {
             // добавить в totalCounts названия полей и загружать их с сервера            
             //string keyBooksIds = Constants.GetBooksIdsArray + languageId.ToString(); // "GetBooksIdsArrayAndLanguageId:"
@@ -108,11 +109,7 @@ namespace BooksTextsSplit.Services
             string keySentencesCounts = Constants.GetSentencesCountsArray + languageId.ToString();
             int level = Constants.RecordActualityLevel; // при старте страницы делать запрос, чтобы получить последний
 
-            //for Debug Db only - start            
-            bool removeKeyResult1 = await _access.RemoveAsync(keyBooksIds);
-            bool removeKeyResult3 = await _access.RemoveAsync(keyParagraphsCounts);
-            bool removeKeyResult4 = await _access.RemoveAsync(keySentencesCounts);
-            //for Debug Db only - end 
+            await RemoveTotalCountsKeys(languageId, keyBooksIds, keyParagraphsCounts, keySentencesCounts); //for Debug Db only
 
             int[] allBooksIds = await _cache.FetchAllBooksIds(keyBooksIds, languageId, Constants.FieldNameBookIdProperty, level);
             int allBooksIdsLength = allBooksIds.Length;
@@ -143,13 +140,28 @@ namespace BooksTextsSplit.Services
             int[] paragraphsCounts = new int[] { 5, 5, 5, 5, 5 };
             int[] sentencesCounts = new int[] { 5, 5, 5, 5, 5 };
 
-            TotalCounts totalCountsFromCache = new TotalCounts(allBooksIds, allUploadedVersionsCounts, paragraphsCounts, sentencesCounts);
-            totalCountsFromCache.TotalRecordsCount = await TotalRecordsCountWhereLanguageId(languageId);
+            TotalCounts totalCountsFromCache = new TotalCounts(allBooksIds, allUploadedVersionsCounts, paragraphsCounts, sentencesCounts)
+            {
+                TotalRecordsCount = await TotalRecordsCountWhereLanguageId(languageId)
+            };
             return totalCountsFromCache;
         }
 
-
-
+        private async Task<bool> RemoveTotalCountsKeys(int languageId, string keyBooksIds, string keyParagraphsCounts, string keySentencesCounts, [CallerMemberName] string currentMethodNameName = "")
+        {
+            //for Debug Db only - start            
+            bool removeKeyResult1 = await _access.RemoveAsync(keyBooksIds);
+            bool removeKeyResult3 = await _access.RemoveAsync(keyParagraphsCounts);
+            bool removeKeyResult4 = await _access.RemoveAsync(keySentencesCounts);
+            bool removeKeyResult = removeKeyResult1 && removeKeyResult3 && removeKeyResult4;
+            //string currentMethodNameName = MethodBase.GetCurrentMethod()?.Name;
+            //string currentMethodNameName = ClassesMethodsNames.GetMyMethodName();
+            string message = $"Method {currentMethodNameName} with languageId = {languageId} tried to remove keys \n Keys Removing Results = {removeKeyResult1} / {removeKeyResult3} / {removeKeyResult4} \n";
+            _logger.LogInformation(message, currentMethodNameName, languageId, removeKeyResult1, removeKeyResult3, removeKeyResult4);
+            return removeKeyResult;
+            //for Debug Db only - end 
+        }
+        
         //string stringBooksIds = String.Join(",", allBooksIds.Select(p => p.ToString())); // ToString().ToArray()
 
         //SELECT DISTINCT c.chapterId FROM c where c.languageId = 0 AND c.uploadVersion = 1 AND c.bookId = 77
@@ -169,41 +181,41 @@ namespace BooksTextsSplit.Services
 
         public TaskUploadPercents CreateTaskGuidKeys(string guid, TextSentence bookDescription = null, int textSentencesLength = 0)
         {
-            string keyBookId = "bookId";
-            string keyBookIdAction = "upload";
-            var redisKey = $"{keyBookId}:{keyBookIdAction}";
-            string keyTaskGuid = guid;
-            string keyTaskPercents = "percents";
-            var fieldKeyPercents = $"{keyTaskGuid}:{keyTaskPercents}";
-            string keyIsTaskRunning = "isRunning";
-            var fieldKeyState = $"{keyTaskGuid}:{keyIsTaskRunning}";
-            if (bookDescription == null)
-            {
-                bookDescription = new TextSentence
-                {
-                    BookId = 0,
-                    LanguageId = -1,
-                    UploadVersion = 0
-                };
-            }
-                TaskUploadPercents uploadPercents = new TaskUploadPercents
-                {
-                    IsTaskRunning = false,
-                    CurrentTaskGuid = guid,
-                    CurrentUploadingBookId = bookDescription.BookId,
-                    CurrentUploadingLanguageId = bookDescription.LanguageId,
-                    CurrentUploadingVersion = bookDescription.UploadVersion,
-                    DoneInPercents = 0, // do not use
-                    CurrentUploadingRecord = 0,
-                    CurrentUploadedRecordRealTime = 0,
-                    TotalUploadedRealTime = 0,
-                    RecordsTotalCount = textSentencesLength,
-                    RedisKey = redisKey,
-                    FieldKeyPercents = fieldKeyPercents,
-                    FieldKeyState = fieldKeyState,
-                    KeysExistingTime = TimeSpan.FromMinutes(_constant.GetPersentsKeysExistingTimeInMinutes)
-                };
+            string keyBookId = _constant.GetKeyBookId; // bookId
+            string keyBookIdAction = _constant.GetKeyBookIdAction; // upload
+            string redisKey = keyBookId.KeyBaseRedisKey(keyBookIdAction); // bookId:upload
             
+            string keyTaskPercents = _constant.GetKeyTaskPercents; // percents
+            string fieldKeyPercents = guid.KeyBaseRedisKey(keyTaskPercents); // guid:percents
+            
+            string keyIsTaskRunning = _constant.GetKeyIsTaskRunning; // isRunning
+            string fieldKeyState = guid.KeyBaseRedisKey(keyIsTaskRunning); // guid:isRunning
+            
+            bookDescription ??= new TextSentence
+            {
+                BookId = 0,
+                LanguageId = -1,
+                UploadVersion = 0
+            };
+            
+            TaskUploadPercents uploadPercents = new TaskUploadPercents
+            {
+                IsTaskRunning = false,
+                CurrentTaskGuid = guid,
+                CurrentUploadingBookId = bookDescription.BookId,
+                CurrentUploadingLanguageId = bookDescription.LanguageId,
+                CurrentUploadingVersion = bookDescription.UploadVersion,
+                DoneInPercents = 0, // do not use
+                CurrentUploadingRecord = 0,
+                CurrentUploadedRecordRealTime = 0,
+                TotalUploadedRealTime = 0,
+                RecordsTotalCount = textSentencesLength,
+                RedisKey = redisKey,
+                FieldKeyPercents = fieldKeyPercents,
+                FieldKeyState = fieldKeyState,
+                KeysExistingTime = TimeSpan.FromMinutes(_constant.GetPercentsKeysExistingTimeInMinutes)
+            };
+
             return uploadPercents;
         }
 
@@ -247,7 +259,7 @@ namespace BooksTextsSplit.Services
         }
 
         public async Task<bool> SetTaskState(TaskUploadPercents uploadPercents)
-        {            
+        {
             await _cache.SetTaskGuidKeys(uploadPercents);
             return true;
         }
@@ -258,7 +270,7 @@ namespace BooksTextsSplit.Services
 
         // Model TextSentence ver.6 
         public async Task<BookIdsListExistInDv> FetchBooksNamesVersionsProperties()
-        { 
+        {
             List<BookPropertiesExistInDb> foundAllBooksIds = await _cache.FetchAllBookIdsLanguageIdsFromCache();
 
             return new BookIdsListExistInDv

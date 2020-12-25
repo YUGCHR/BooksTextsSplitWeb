@@ -31,7 +31,7 @@ namespace BooksTextsSplit.Controllers
     public class BookTextsController : ControllerBase
     {
         #region Declarations
-        private IBackgroungTasksService _task2Queue;
+        private IBackgroundTasksService _task2Queue;
         private readonly ILogger<BookTextsController> _logger;
         private readonly IControllerDataManager _data;
         private readonly ICacheProviderAsync _cache;
@@ -41,7 +41,7 @@ namespace BooksTextsSplit.Controllers
         private IResultDataService _result;
 
         public BookTextsController(
-            IBackgroungTasksService task2Queue,
+            IBackgroundTasksService task2Queue,
             ILogger<BookTextsController> logger,
             IControllerDataManager data,
             ICosmosDbService cosmosDbService,

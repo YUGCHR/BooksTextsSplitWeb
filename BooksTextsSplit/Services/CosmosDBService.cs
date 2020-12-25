@@ -15,8 +15,8 @@ namespace BooksTextsSplit.Services
 {
     public class CosmosDbService : ICosmosDbService
     {
-        private Container _container;
-        private Container _containerUser;
+        private readonly Container _container;
+        private readonly Container _containerUser;
         private readonly ILogger<CosmosDbService> _logger;
 
         public CosmosDbService(

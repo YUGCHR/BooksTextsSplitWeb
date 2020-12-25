@@ -63,7 +63,7 @@ namespace BooksTextsSplit
             //services.AddSingleton<MonitorLoop>();
             services.AddHostedService<QueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
-            services.AddScoped<IBackgroungTasksService, BackgroungTasksService>();
+            services.AddScoped<IBackgroundTasksService, BackgroundTasksService>();
 
             //CookieAuthenticationOptions
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>

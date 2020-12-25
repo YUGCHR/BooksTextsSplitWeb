@@ -14,23 +14,23 @@ using System.Linq;
 
 namespace BooksTextsSplit.Services
 {
-    public interface IBackgroungTasksService
+    public interface IBackgroundTasksService
     {
         void BackgroundRecordBookToDb(IFormFile bookFile, string jsonBookDescription, string guid);
         void WorkerSample(string guid);
     }
-    public class BackgroungTasksService : IBackgroungTasksService
+    public class BackgroundTasksService : IBackgroundTasksService
     {
         private readonly IBackgroundTaskQueue _taskQueue;
-        private readonly ILogger<BackgroungTasksService> _logger;
+        private readonly ILogger<BackgroundTasksService> _logger;
         private readonly ISettingConstants _constant;
         private readonly IControllerDataManager _data;
         private readonly IAccessCacheData _access;
         private readonly ICosmosDbService _context;
 
-        public BackgroungTasksService(
+        public BackgroundTasksService(
             IBackgroundTaskQueue taskQueue,
-            ILogger<BackgroungTasksService> logger,
+            ILogger<BackgroundTasksService> logger,
             ISettingConstants constant,
             IControllerDataManager data,
             ICosmosDbService cosmosDbService,
@@ -50,6 +50,10 @@ namespace BooksTextsSplit.Services
             TextSentence bookDescription = JsonSerializer.Deserialize<TextSentence>(jsonBookDescription, options);
             int desiredTextLanguage = bookDescription.LanguageId;
 
+            // Define the cancellation token for Task.Delay
+            CancellationTokenSource source = new CancellationTokenSource();
+            CancellationToken tokenDelay = source.Token;
+
             // move to FetchBookTextSentences?
             string fileName = bookFile.FileName;
             StreamReader reader = new StreamReader(bookFile.OpenReadStream());
@@ -57,9 +61,6 @@ namespace BooksTextsSplit.Services
 
             TextSentence[] textSentences = FetchBookTextSentences(text, bookDescription, desiredTextLanguage);
             int textSentencesLength = textSentences.Length;
-
-            int taskDelayTimeInSeconds = _constant.GetTaskDelayTimeInSeconds;
-            TimeSpan keysExistingTime = TimeSpan.FromMinutes(_constant.GetPersentsKeysExistingTimeInMinutes); // TO DELETE!
 
             // Enqueue a background work item
             _taskQueue.QueueBackgroundWorkItem(async token =>
@@ -74,7 +75,7 @@ namespace BooksTextsSplit.Services
 
                     try
                     {
-                        _logger.LogInformation("Queued Background Task RecordFileToDb {Guid} is running", guid);
+                        _logger.LogInformation($"Queued Background Task RecordFileToDb {guid} is running", guid);
 
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
                         {
@@ -84,24 +85,18 @@ namespace BooksTextsSplit.Services
 
                             if (textSentencesLength < 20)
                             {
-                                await Task.Delay(taskDelayTimeInSeconds * 1000); // delay to emulate upload of a real book - 
+                                await Task.Delay(_constant.GetTaskDelayTimeInSeconds * 1000, tokenDelay); // delay to emulate upload of a real book - 
                             }
 
-                            await _context.AddItemAsync(textSentences[tsi]);
+                            await _context.AddItemAsync(textSentences[tsi]); // возвращать значение charges - если не нулевое, значит что-то записалось
 
                             stopWatch.Stop();
-                            // Get the elapsed time as a TimeSpan value.
-                            TimeSpan ts = stopWatch.Elapsed;
-                            int tsMs = ts.Milliseconds;
-                            uploadPercents.CurrentUploadingRecord = tsi;
-                            uploadPercents.CurrentUploadedRecordRealTime = tsMs;
-                            uploadPercents.TotalUploadedRealTime += tsMs;
-                            bool resultSetKey1 = await SetTaskGuidKeys(uploadPercents, keysExistingTime);
-                            //await _access.SetObjectAsync(uploadPercents.RedisKey, uploadPercents.FieldKeyPercents, uploadPercents, keysExistingTime);
+                            TimeSpan ts = stopWatch.Elapsed; // Get the elapsed time as a TimeSpan value.
+                            bool resultSetKey1 = await SetTaskState(uploadPercents, ts, tsi);
                         };
 
                         // ключ guid создавать через хэш
-                        bool removingResult = await RemoveKeysAfterRecording(desiredTextLanguage, guid);
+                        bool removingResult = await UpdateKeysAfterRecording(desiredTextLanguage, guid);
 
                         // здесь проверить, что задание последнее и если да, то восстановить ключи данных
                         // to create sentenceCounts for current language
@@ -112,7 +107,7 @@ namespace BooksTextsSplit.Services
                     }
                     catch (Exception ex)
                     {
-                        string message = "Queued Background Task RecordFileToDb {Guid} is crashed. \n {Message} \n";
+                        string message = $"Queued Background Task RecordFileToDb {guid} is crashed. \n {ex.Message} \n";
                         _logger.LogInformation(message, guid, ex.Message);
                     }
                 }
@@ -123,27 +118,29 @@ namespace BooksTextsSplit.Services
             });
             //return "Task " + guid + " was Queued Background";
         }
-
-        private async Task<bool> SetTaskGuidKeys(TaskUploadPercents uploadPercents, TimeSpan keysExistingTime)
+        
+        private async Task<bool> SetTaskState(TaskUploadPercents uploadPercents, TimeSpan ts, int tsi)
         {
-            await _access.SetObjectAsync(uploadPercents.RedisKey, uploadPercents.FieldKeyPercents, uploadPercents, keysExistingTime);            
-            return true;
+            int tsMs = ts.Milliseconds;
+            uploadPercents.CurrentUploadingRecord = tsi;
+            uploadPercents.CurrentUploadedRecordRealTime = tsMs;
+            uploadPercents.TotalUploadedRealTime += tsMs;
+            return await _data.SetTaskState(uploadPercents);
         }
-
-        private async Task<bool> RemoveKeysAfterRecording(int languageId, string guid)
+        
+        private async Task<bool> UpdateKeysAfterRecording(int languageId, string guid)
         {
-            // to delete GetTotalCountWhereLanguageId:languageId
-            bool removeKeyResult = await _data.RemoveTotalCountWhereLanguageId(languageId);
+            // здесь проверить наличие ключей других процессов и параметр isRunning в них
+            // ещё можно проверять с каким языком процесс, но пока непонятно зачем
+            // update key with all bookIds in all languages with all versions
+            await _data.FetchBooksNamesVersionsProperties();
 
-            // to remove redis keys about books
-            string keyBase = "books";
-            string keyHash = "data";
-            var redisKey = $"{keyBase}:{keyHash}";
-            bool removeKeyResult1 = await _access.RemoveAsync(redisKey);
+            // TO update key with TotalCount(s) here
+            await _data.FetchTotalCounts(languageId);
 
-            _logger.LogInformation("QBTask {Guid} has removed key {redisKey} successfully - {removeKeyResult1}", guid, redisKey, removeKeyResult1);
+            _logger.LogInformation("QBTask {Guid} has updated key successfully - {languageId}", guid, languageId.ToString());
 
-            return removeKeyResult && removeKeyResult1;
+            return true;
         }
 
         private TextSentence[] FetchBookTextSentences(string text, TextSentence bookDescription, int desiredTextLanguage)

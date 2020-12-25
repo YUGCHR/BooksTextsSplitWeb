@@ -28,16 +28,19 @@ namespace BooksTextsSplit.Services
     public class AccessCacheData : IAccessCacheData
     {
         private readonly ILogger<AccessCacheData> _logger;
+        private readonly ISettingConstants _constant;
         private readonly ICacheProviderAsync _cache;
         private readonly ICosmosDbService _context;
 
         public AccessCacheData(
             ILogger<AccessCacheData> logger,
+            ISettingConstants constant,
             ICosmosDbService cosmosDbService,
             //RedisContext c)
             ICacheProviderAsync cache)
         {
             _logger = logger;
+            _constant = constant;
             _cache = cache;
             _context = cosmosDbService;
         }
@@ -103,7 +106,8 @@ namespace BooksTextsSplit.Services
         }
 
         public async Task SetObjectAsync<T>(string redisKey, string fieldKey, T value, TimeSpan? ttl = null)
-        {// Task SetHashedAsync<T>(string key, string field, T value, TimeSpan? ttl = null, When when = When.Always, CommandFlags flags = CommandFlags.None);
+        {
+            //ttl ??= TimeSpan.FromMinutes(_constant.GetPercentsKeysExistingTimeInMinutes);
             await _cache.SetHashedAsync<T>(redisKey, fieldKey, value, ttl);
         }
 

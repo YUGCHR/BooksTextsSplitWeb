@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
+using BooksTextsSplit.Helpers;
 
 namespace BooksTextsSplit.Services
 {
@@ -55,18 +56,17 @@ namespace BooksTextsSplit.Services
         {
             // определиться, откуда взять recordActualityLevel (from Constant or from UI - and UI will receive from Constant)
             int level = _constant.GetRecordActualityLevel; // Constants.RecordActualityLevel;
-            
-            string keyBookId = "bookId";
-            string keyBookIdNum = "all";
-            var redisKey = $"{keyBookId}:{keyBookIdNum}";
-            string keyLanguageId = "languageId";
-            string keyLanguageIdNum = "all";
-            var fieldKey = $"{keyLanguageId}:{keyLanguageIdNum}";
+
+            string keyBookId = _constant.GetKeyBookId; // bookId
+            string keyBookIdNum = _constant.GetKeyAllNumbers; // all
+            string redisKey = keyBookId.KeyBaseRedisKey(keyBookIdNum); // bookId:all
+            string keyLanguageId = _constant.GetKeyLanguageId; // languageId
+            string keyLanguageIdNum = _constant.GetKeyAllNumbers; // all
+            string fieldKey = keyLanguageId.KeyBaseRedisKey(keyLanguageIdNum); // languageId:all
 
             List<BookPropertiesExistInDb> foundBooksIds = await _access.FetchObjectAsync<List<BookPropertiesExistInDb>>(redisKey, fieldKey, () => _db.FetchBooksNamesVersionsPropertiesFromDb(level));
 
             return foundBooksIds;
-
         }
 
         public async Task<List<T>> FetchBookIdLanguageIdFromCache<T>()
@@ -98,7 +98,7 @@ namespace BooksTextsSplit.Services
 
         public async Task<bool> SetTaskGuidKeys(TaskUploadPercents uploadPercents)
         {
-            TimeSpan keysExistingTime = TimeSpan.FromMinutes(_constant.GetPersentsKeysExistingTimeInMinutes);
+            TimeSpan keysExistingTime = TimeSpan.FromMinutes(_constant.GetPercentsKeysExistingTimeInMinutes);
             await _access.SetObjectAsync(uploadPercents.RedisKey, uploadPercents.FieldKeyPercents, uploadPercents, keysExistingTime);
             return true;
         }
