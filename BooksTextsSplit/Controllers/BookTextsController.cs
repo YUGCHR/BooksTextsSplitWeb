@@ -1,24 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using BooksTextsSplit.Models;
-using BooksTextsSplit.Services;
-using System.IO;
-using System.Text.Json;
+using BooksTextsSplit.Library.Models;
+using BooksTextsSplit.Library.Services;
 using System.Reflection;
-using System.ComponentModel.Design;
-using System.Data;
-using StackExchange.Redis;
-using CachingFramework.Redis;
-using Microsoft.Extensions.Localization;
-using BooksTextsSplit.Helpers;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using CachingFramework.Redis.Contracts.Providers;
 
@@ -31,14 +20,14 @@ namespace BooksTextsSplit.Controllers
     public class BookTextsController : ControllerBase
     {
         #region Declarations
-        private IBackgroundTasksService _task2Queue;
+        private readonly IBackgroundTasksService _task2Queue;
         private readonly ILogger<BookTextsController> _logger;
         private readonly IControllerDataManager _data;
         private readonly ICacheProviderAsync _cache;
         private readonly IAccessCacheData _access;
         private readonly ICosmosDbService _context;
-        private IAuthService _authService;
-        private IResultDataService _result;
+        private readonly IAuthService _authService;
+        private readonly IResultDataService _result;
 
         public BookTextsController(
             IBackgroundTasksService task2Queue,
@@ -123,7 +112,7 @@ namespace BooksTextsSplit.Controllers
             await _access.InsertUser<UserData>(user, user.Email);
 
             var redisKey = "users:added";
-            var fieldKey = "user:id:" + user.Email;
+            var fieldKey = $"user:id:{user.Email}";
 
             UserData addedUsed = await _cache.GetHashedAsync<UserData>(redisKey, fieldKey);
 
@@ -147,7 +136,7 @@ namespace BooksTextsSplit.Controllers
         // GET: api/BookTexts/uploadTaskPercents/?taskGuid = e0ff4648-b183-49c7-b3d9-bc9fc99dcf8e
         [HttpGet("uploadTaskPercents")]
         public async Task<ActionResult<TaskUploadPercents>> GetUploadTaskPercents([FromQuery] string taskGuid)
-        {            
+        {
             return await _data.FetchUploadTaskPercents(taskGuid);
         }
 
@@ -157,6 +146,7 @@ namespace BooksTextsSplit.Controllers
         {            
             if (bookFile != null)
             {
+                // хорошо бы проверить, если запущены оба процесса, то не разрешать загружать или принудительно прекратить предыдущие процессы (если там давно ничего не меняется?)
                 string guid = Guid.NewGuid().ToString();                
                 _task2Queue.BackgroundRecordBookToDb(bookFile, jsonBookDescription, guid);
                 return Ok(guid);
