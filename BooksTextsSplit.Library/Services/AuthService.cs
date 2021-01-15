@@ -15,7 +15,7 @@ namespace BooksTextsSplit.Library.Services
     {
         Task<UserData> Authenticate(string email, string password);
         Task<UserData> AuthByToken(string authKey);
-        Task Logout();
+        IDisposable Logout();
         //Task AuthenticateToCookie(string userName);
         //Task<IEnumerable<User>> GetAll();
     }
@@ -115,7 +115,7 @@ namespace BooksTextsSplit.Library.Services
             return null; // return null if user not found or pswd is wrong
         }
 
-        public async Task SetUsersToCacheFromDb()
+        public async IDisposable SetUsersToCacheFromDb()
         {
             List<UserData> allUsersData = await _context.GetUsersListAsync<UserData>(0);
             foreach (UserData u in allUsersData)
@@ -126,7 +126,7 @@ namespace BooksTextsSplit.Library.Services
             return;
         }
 
-        public async Task Logout()
+        public async IDisposable Logout()
         {
             await _httpContext.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return;
@@ -149,7 +149,7 @@ namespace BooksTextsSplit.Library.Services
         }
         #endregion
 
-        private async Task AuthByCookie(string userName)
+        private async IDisposable AuthByCookie(string userName)
         {
             // создаем один claim
             var claims = new List<Claim> {
