@@ -50,22 +50,20 @@ namespace BackgroundTasksQueue
 
         public void Monitor()
         {
-            //_keyEvents.Subscribe(KeyEventSubscriptionType.All, (key, cmd) =>
-            //{
-            //    _logger.LogInformation("key {0} - command {1}", key, cmd);
-            //});
+            string eventKeyFrom = "taskFrom";
+            KeyEvent eventKeyHash = KeyEvent.HashSet;
+            //Action<string, KeyEvent> keyCmd = CallFrontService;
+            SubscribeKeyEventHashSet(eventKeyFrom, eventKeyHash);
 
-            string eventKey = "task:run";
+            //string eventKey = "task:run";
+            //Action<string, KeyEvent> keyCmd = KeySub;
+            //_keyEvents.Subscribe(eventKey, keyCmd);
+            //string eventKeyCommand = $"Key {eventKey}, HashSet command";
+            //_logger.LogInformation("You subscribed on event - {EventKey}.", eventKeyCommand);
 
-            Action<string, KeyEvent> keyCmd = KeySub;
-            _keyEvents.Subscribe(eventKey, keyCmd);
+            bool cancellationIsNotYet = !_cancellationToken.IsCancellationRequested; // add special key from Redis
 
-            string eventKeyCommand = $"Key {eventKey}, HashSet command";
-            _logger.LogInformation("You subscribed on event - {EventKey}.", eventKeyCommand);
-
-            bool cancellationNotYet = !_cancellationToken.IsCancellationRequested; // add special key from Redis
-
-            while (cancellationNotYet)
+            while (cancellationIsNotYet)
             {
                 //_pubSub.Publish(eventKey, ("while"));
 
@@ -83,10 +81,50 @@ namespace BackgroundTasksQueue
         {
             if (cmd == KeyEvent.HashSet)
             {
-                _logger.LogInformation("key {Key} - command {Cmd} received, task sent to Queue ", key, cmd); 
-                _task2Queue.StartWorkItem();
+                string guid = Guid.NewGuid().ToString();
+                _logger.LogInformation("key {Key} - command {Cmd} received, task {Guid} sent to Queue ", key, cmd, guid);
+                //_task2Queue.StartWorkItem(guid);
+            }
+        }
+        private void SubscribeKeyEventHashSet(string eventKey, KeyEvent eventKeyHash)
+        {
+            _keyEvents.Subscribe(eventKey, (string key, KeyEvent cmd) =>
+            {
+                if (cmd == eventKeyHash)
+                {
+                    _logger.LogInformation("Key {Key} with command {Cmd} was received.", eventKey, cmd);
+                    ServerFrontEndEmulation(eventKey).Wait();
+                }
+            });
+            string eventKeyCommand = $"Key - {eventKey}, Command - {eventKeyHash}";
+            _logger.LogInformation("You subscribed on event - {Event}.", eventKeyCommand);
+        }
+
+        private void CallFrontService(string eventKeyFrom, KeyEvent cmd)
+        {
+            KeyEvent eventKeyHash = KeyEvent.HashSet;
+            string eventKeyRun = "task:run";
+            string eventFieldFromBase = "task:";
+
+            if (cmd == eventKeyHash)
+            {
+
             }
         }
 
+        public async Task ServerFrontEndEmulation(string eventKeyFrom)
+        {
+            int tasksCount = await _cache.GetHashedAsync<int>(eventKeyFrom, "tasks:count"); //получить число задач
+            _logger.LogInformation("TaskCount = {TasksCount} from key {Key}", tasksCount, eventKeyFrom);
+            if (tasksCount < 10) tasksCount = 10;
+            if (tasksCount > 50) tasksCount = 50;
+            for (int i = 0; i < tasksCount; i++)
+            {
+                string guid = Guid.NewGuid().ToString();
+                int cycleCount = Math.Abs(guid.GetHashCode()) % 10;
+                _task2Queue.StartWorkItem(guid, cycleCount);
+                _logger.LogInformation("Task {I} from {TasksCount} with ID {Guid} and {CycleCount} cycles sent to Queue ", i, tasksCount, guid, cycleCount);
+            }
+        }
     }
 }

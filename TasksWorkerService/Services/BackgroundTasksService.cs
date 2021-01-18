@@ -10,7 +10,7 @@ namespace BackgroundTasksQueue.Services
 {
     public interface IBackgroundTasksService
     {
-        void StartWorkItem();
+        void StartWorkItem(string guid, int loopCount);
 
     }
 
@@ -29,7 +29,7 @@ namespace BackgroundTasksQueue.Services
             _logger = logger;
         }
 
-        public void StartWorkItem()
+        public void StartWorkItem(string guid, int loopCount)
         {
             // Enqueue a background work item
             _taskQueue.QueueBackgroundWorkItem(async token =>
@@ -37,11 +37,11 @@ namespace BackgroundTasksQueue.Services
                 // Simulate three 5-second tasks to complete for each enqueued work item
 
                 int delayLoop = 0;
-                var guid = Guid.NewGuid().ToString();
+                //var guid = Guid.NewGuid().ToString();
 
                 _logger.LogInformation("Queued Background Task {Guid} is starting.", guid);
 
-                while (!token.IsCancellationRequested && delayLoop < 3)
+                while (!token.IsCancellationRequested && delayLoop < loopCount)
                 {
                     try
                     {

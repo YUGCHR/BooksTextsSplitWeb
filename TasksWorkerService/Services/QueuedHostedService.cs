@@ -37,46 +37,15 @@ namespace BackgroundTasksQueue.Services
             _logger.LogInformation($"Queued Hosted Service is running.{Environment.NewLine}" +
                                    $"{Environment.NewLine}Tap W to add a work item to the " +
                                    $"background queue.{Environment.NewLine}");
-            _logger.LogInformation("Queued Hosted Service waits W.");
 
             await BackgroundProcessing(stoppingToken);
         }
 
         private async Task BackgroundProcessing(CancellationToken stoppingToken)
         {
-            //Action<CancellationToken> process = async token =>
-            //{
-            //    while (!stoppingToken.IsCancellationRequested)
-            //    {
-            //        var workItem = await TaskQueue.DequeueAsync(stoppingToken);
-
-            //        try
-            //        {
-            //            await workItem(stoppingToken);
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            _logger.LogError(ex, "Error occurred executing {WorkItem}.", nameof(workItem));
-            //        }
-            //    }
-            //};
-
             int tasksCount = 0;
 
-            await _cache.SetObjectAsync("tasksCount", 3);
-
-            //List<Task> tasks = new List<Task>();
-
-            //for (int i = 0; i < tasksCount; i++)
-            //{
-            //    tasks.Add(Task.Run(() => ProcessingMethod(stoppingToken), stoppingToken));
-            //}
-
-            //Task task1 = ;
-            //Task task2 = Task.Run(() => ProcessingMethod(stoppingToken), stoppingToken);
-            //Task task3 = Task.Run(() => ProcessingMethod(stoppingToken), stoppingToken);
-
-            //await Task.WhenAll(task1, task2, task3);
+            //await _cache.SetObjectAsync("tasksCount", 3);
 
             string eventKey = "task:add";
             string cancelKey = "task:del";
@@ -85,26 +54,24 @@ namespace BackgroundTasksQueue.Services
             {
                 if (cmd == KeyEvent.HashSet)
                 {
-                    _logger.LogInformation("key {0} - command {1}", key, cmd);
+                    _logger.LogInformation("Received key {0} with command {1}", eventKey, cmd);
 
                     string guid = Guid.NewGuid().ToString();
                     CancellationTokenSource newCts = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
                     CancellationToken newToken = newCts.Token;
 
-                    // положить newCts в словарь (айди таска, цтс)
                     tasks.Add(new BackgroundProcessingTask()
                     {
                         TaskId = tasksCount + 1,
                         ProcessingTaskId = guid,
-                        ProcessingTask = Task.Run(() => ProcessingMethod(newToken), newToken),
+                        ProcessingTask = Task.Run(() => ProcessingTaskMethod(newToken), newToken),
                         CancellationTaskToken = newCts
                     });
                     tasksCount++;
 
-                    //tasks.Add(Task.Run(() => ProcessingMethod(newToken), newToken));
+                    //tasks.Add(Task.Run(() => ProcessingTaskMethod(newToken), newToken));
                     _logger.LogInformation("New Task for Background Processes was added, total count became {Count}", tasksCount);
                 }
-                Console.WriteLine("command " + cmd);
             });
 
             string eventKeyCommand = $"Key {eventKey}, HashSet command";
@@ -128,19 +95,17 @@ namespace BackgroundTasksQueue.Services
                     {
                         _logger.LogInformation("Task for Background Processes cannot be removed for some reason, total count is {Count}", tasksCount);
                     }
-                    //tasks.Add(Task.Run(() => ProcessingMethod(newToken), newToken));
                 }
-                Console.WriteLine("command " + cmd);
             });
 
             List<Task> processingTask = tasks.Select(t => t.ProcessingTask).ToList();
-            
+
             await Task.WhenAll(processingTask);
 
             _logger.LogInformation("All Background Processes were finished, total count was {Count}", processingTask.Count);
         }
 
-        private async Task ProcessingMethod(CancellationToken token)
+        private async Task ProcessingTaskMethod(CancellationToken token)
         {
             while (!token.IsCancellationRequested)
             {
@@ -163,12 +128,6 @@ namespace BackgroundTasksQueue.Services
 
 
             await base.StopAsync(stoppingToken);
-        }
-
-        public void StopTask(int taskId)
-        {
-            //var cts = CtsDictionary[taskId];
-            //cts.Cancel();
         }
     }
 }
