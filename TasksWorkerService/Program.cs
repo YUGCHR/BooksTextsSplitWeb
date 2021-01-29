@@ -46,6 +46,9 @@ namespace BackgroundTasksQueue
                     services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
                     services.AddSingleton<MonitorLoop>();
                     services.AddSingleton<IBackgroundTasksService, BackgroundTasksService>();
+                    services.AddSingleton<IOnKeysEventsSubscribeService, OnKeysEventsSubscribeService>();
+                    services.AddSingleton<IFrontServerEmulationService, FrontServerEmulationService>();
+
                 });
     }
 }
