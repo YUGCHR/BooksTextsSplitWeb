@@ -67,6 +67,11 @@ namespace BackgroundTasksQueue.Services
                 string guid = Guid.NewGuid().ToString();
                 int cycleCount = Math.Abs(guid.GetHashCode()) % 10;
 
+                if (cycleCount < 3)
+                {
+                    cycleCount += 3;
+                }
+
                 taskPackage.Add(guid, cycleCount);
                 _logger.LogInformation("Task {I} from {TasksCount} with ID {Guid} and {CycleCount} cycles was added to taskPackage key.", i, tasksCount, guid, cycleCount);
             }
@@ -76,14 +81,12 @@ namespace BackgroundTasksQueue.Services
             //        var (guid, cycleCount) = t;
             //        await _cache.SetHashedAsync(packageGuid, guid, cycleCount); // записываем пакет ключей с данными для каждой задачи или можно записать один ключ с пакетом (лист) задач
             //        _logger.LogInformation("Key {0}, field {1} with {2} cycles was set.", packageGuid, guid, cycleCount);
-
             //    });
 
-            foreach (var t in taskPackage)
+            foreach (KeyValuePair<string, int> t in taskPackage)
             {
-                var (guid, cycleCount) = t;
-                await _cache.SetHashedAsync(packageGuid, guid,
-                    cycleCount); // записываем пакет ключей с данными для каждой задачи или можно записать один ключ с пакетом (лист) задач
+                (string guid, int cycleCount) = t;
+                await _cache.SetHashedAsync(packageGuid, guid, cycleCount); // записываем пакет ключей с данными для каждой задачи или можно записать один ключ с пакетом (лист) задач
                 _logger.LogInformation("Key {0}, field {1} with {2} cycles was set.", packageGuid, guid, cycleCount);
             }
 
