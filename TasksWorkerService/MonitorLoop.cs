@@ -14,32 +14,17 @@ namespace BackgroundTasksQueue
 {
     public class MonitorLoop
     {
-        //private readonly IBackgroundTaskQueue _taskQueue;
-        //private readonly IBackgroundTasksService _task2Queue;
-        //private readonly ICacheProviderAsync _cache;
-        //private readonly IPubSubProvider _pubSub;
-        //private readonly IKeyEventsProvider _events;
         private readonly ILogger<MonitorLoop> _logger;
         private readonly CancellationToken _cancellationToken;
         private readonly IOnKeysEventsSubscribeService _subscribe;
 
-        public MonitorLoop(
-            //IBackgroundTaskQueue taskQueue,
+        public MonitorLoop(            
             ILogger<MonitorLoop> logger,
-            IHostApplicationLifetime applicationLifetime,
-            //IBackgroundTasksService task2Queue,
-            //ICacheProviderAsync cache,
-            //IPubSubProvider pubSub,
-            //IKeyEventsProvider events,
+            IHostApplicationLifetime applicationLifetime,            
             IOnKeysEventsSubscribeService subscribe)
         {
-            //_taskQueue = taskQueue;
             _logger = logger;
-            //_task2Queue = task2Queue;
-            //_cache = cache;
-            //_events = events;
             _subscribe = subscribe;
-            //_pubSub = pubSub;
             _cancellationToken = applicationLifetime.ApplicationStopping;
         }
 
@@ -51,7 +36,7 @@ namespace BackgroundTasksQueue
             Task.Run(Monitor, _cancellationToken);
         }
 
-        public void Monitor()
+        public async Task Monitor()
         {
             // To start tasks batch enter from Redis console the command - hset subscribeOnFrom tasks:count 30 (where 30 is tasks count - from 10 to 50)
 
@@ -59,12 +44,18 @@ namespace BackgroundTasksQueue
             // все ключи положить в константы
             string eventKeyFrom = "subscribeOnFrom"; // ключ для подписки на команду запуска эмулятора сервера
             string eventFieldFrom = "count";
-            string eventKeyRun = "task:run"; // ключ и поле для подписки на ключи задач, создаваемые сервером (или эмулятором)
-            string eventFieldRun = "ttt"; 
-            
-            _subscribe.SubscribeOnEventFrom(eventKeyFrom, eventFieldFrom, eventCmdSet, eventKeyRun, eventFieldRun);
 
-            _subscribe.SubscribeOnEventRun(eventKeyRun, eventCmdSet, eventKeyRun, eventFieldRun);
+            // заменить ключ и поле на guid, чтобы никто не мог случайно вызвать?
+            string eventKeyRun = "task:run"; // ключ и поле для подписки на ключи задач, создаваемые сервером (или эмулятором)
+            string eventFieldRun = "ttt";
+            // сервер кладёт название поля ключа в заранее обусловленную ячейку ("task:run/count") и тут её можно прочитать
+            string eventGuidFieldRun = await _subscribe.FetchGuidFieldTaskRun(eventKeyRun, eventFieldRun);
+
+            _subscribe.SubscribeOnEventFrom(eventKeyFrom, eventFieldFrom, eventCmdSet, eventKeyRun, eventGuidFieldRun);
+
+            // несколько процессов с подпиской на ключ появления задания эмулируют несколько background серверов
+            _subscribe.SubscribeOnEventRun(eventKeyRun, eventCmdSet, eventGuidFieldRun, 1); // 1 - номер сервера, потом можно заменить на guid
+            _subscribe.SubscribeOnEventRun(eventKeyRun, eventCmdSet, eventGuidFieldRun, 2);
 
             //string eventKeyAdd = "task:add";
             //_subscribe.SubscribeOnEventAdd(eventKeyAdd, eventCmdSet);
@@ -72,12 +63,10 @@ namespace BackgroundTasksQueue
             //KeyEvent eventCmdDel = KeyEvent.Delete;
 
             //string eventKey = "subscribeOnFrom";
-            
+
             //_subscribe.SubscribeOnEventFrom(eventKey, eventCmdDel);
 
-            bool cancellationIsNotYet = !_cancellationToken.IsCancellationRequested; // add special key from Redis?
-
-            while (cancellationIsNotYet)
+            while (IsCancellationNotYet())
             {
                 var keyStroke = Console.ReadKey();
 
@@ -86,6 +75,11 @@ namespace BackgroundTasksQueue
                     _logger.LogInformation("ConsoleKey was received {KeyStroke}.", keyStroke.Key);
                 }
             }
+        }
+
+        private bool IsCancellationNotYet ()
+        {
+            return !_cancellationToken.IsCancellationRequested; // add special key from Redis?
         }
     }
 }
