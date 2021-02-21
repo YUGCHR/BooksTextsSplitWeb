@@ -19,6 +19,14 @@ namespace BooksTextsSplit.Controllers
 
     public class BookTextsController : ControllerBase
     {
+        #region ToDo
+        // книги загружать в редис, ключ - книга: язык: guid, поле - номер главы
+        // и только после редактирования, когда будет отметка пригодности к чтению пары, загружать в базу (в фоне)
+        // или сразу в фоне загружать в базу, чтобы не потерять работы по редактированию
+        // отметки готовности ставить на главы, а общая в процентах в зависимости от готовности глав
+        // потом можно редактирование хранить в отдельной записи в разностном виде
+        #endregion
+
         #region Declarations
         private readonly IBackgroundTasksService _task2Queue;
         private readonly ILogger<BookTextsController> _logger;

@@ -39,7 +39,6 @@ namespace BackgroundTasksQueue.Services
             _cache = cache;
             _keyEvents = keyEvents;
             _front = front;
-
         }
 
         public async Task<string> FetchGuidFieldTaskRun(string eventKeyRun, string eventFieldRun)

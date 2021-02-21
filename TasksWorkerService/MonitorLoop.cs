@@ -44,6 +44,7 @@ namespace BackgroundTasksQueue
             // все ключи положить в константы
             string eventKeyFrom = "subscribeOnFrom"; // ключ для подписки на команду запуска эмулятора сервера
             string eventFieldFrom = "count";
+            TimeSpan ttl = TimeSpan.FromDays(1); // срок хранения всех ключей
 
             // заменить ключ и поле на guid, чтобы никто не мог случайно вызвать?
             string eventKeyRun = "task:run"; // ключ и поле для подписки на ключи задач, создаваемые сервером (или эмулятором)

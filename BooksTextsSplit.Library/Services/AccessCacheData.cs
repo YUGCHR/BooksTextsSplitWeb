@@ -9,11 +9,11 @@ namespace BooksTextsSplit.Library.Services
     {
         public Task<T> GetObjectAsync<T>(string key);
         public Task<T> GetObjectAsync<T>(string key, string field);
-        public IDisposable InsertUser<T>(T user, string userId);
+        public Task InsertUser<T>(T user, string userId);
         public Task<T> FetchObjectAsync<T>(string redisKey, string fieldKey, Func<Task<T>> func, TimeSpan? expiry = null); // FetchHashedAsync
         public Task<T> FetchObjectAsync<T>(string key, Func<Task<T>> func, TimeSpan? expiry = null);
-        public IDisposable SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null);
-        public IDisposable SetObjectAsync<T>(string redisKey, string fieldKey, T value, TimeSpan? ttl = null); // SetHashedAsync
+        public Task<T> SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null);
+        public Task<T> SetObjectAsync<T>(string redisKey, string fieldKey, T value, TimeSpan? ttl = null); // SetHashedAsync
         public Task<bool> SetObjectAsyncCheck<T>(string key, T value, TimeSpan? ttl = null);
         public Task<bool> RemoveAsync(string key);
         public Task<bool> KeyExistsAsync(string key);
@@ -61,7 +61,7 @@ namespace BooksTextsSplit.Library.Services
             return default;
         }
 
-        public async IDisposable InsertUser<T>(T user, string userId) // for GetTest() only
+        public async Task InsertUser<T>(T user, string userId) // for GetTest() only
         {
             var redisKey = "users:added";
             var fieldKey = $"user:id:{userId}";
@@ -96,12 +96,12 @@ namespace BooksTextsSplit.Library.Services
             }
         }
 
-        public async IDisposable SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null)
+        public async Task SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null)
         {
             await _cache.SetObjectAsync(key, value, ttl);
         }
 
-        public async IDisposable SetObjectAsync<T>(string redisKey, string fieldKey, T value, TimeSpan? ttl = null)
+        public async Task SetObjectAsync<T>(string redisKey, string fieldKey, T value, TimeSpan? ttl = null)
         {
             //ttl ??= TimeSpan.FromMinutes(_constant.GetPercentsKeysExistingTimeInMinutes);
             await _cache.SetHashedAsync<T>(redisKey, fieldKey, value, ttl);
