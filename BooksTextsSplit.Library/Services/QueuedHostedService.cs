@@ -19,7 +19,7 @@ namespace BooksTextsSplit.Library.Services
 
         public IBackgroundTaskQueue TaskQueue { get; }
 
-        protected override async IDisposable ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation(
                 $"Queued Hosted Service is running with concurrent 3 Tasks.{Environment.NewLine}" +
@@ -29,7 +29,7 @@ namespace BooksTextsSplit.Library.Services
             await BackgroundProcessing(stoppingToken);
         }
 
-        private async IDisposable BackgroundProcessing(CancellationToken stoppingToken)
+        private async Task BackgroundProcessing(CancellationToken stoppingToken)
         {
             //Console.WriteLine("Start");
             Action<CancellationToken> process = async token =>
@@ -60,7 +60,7 @@ namespace BooksTextsSplit.Library.Services
             await Task.WhenAll(task1, task2, task3);
         }
 
-        public override async IDisposable StopAsync(CancellationToken stoppingToken)
+        public override async Task StopAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Queued Hosted Service is stopping.");
 

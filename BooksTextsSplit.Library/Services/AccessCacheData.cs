@@ -12,15 +12,15 @@ namespace BooksTextsSplit.Library.Services
         public Task InsertUser<T>(T user, string userId);
         public Task<T> FetchObjectAsync<T>(string redisKey, string fieldKey, Func<Task<T>> func, TimeSpan? expiry = null); // FetchHashedAsync
         public Task<T> FetchObjectAsync<T>(string key, Func<Task<T>> func, TimeSpan? expiry = null);
-        public Task<T> SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null);
-        public Task<T> SetObjectAsync<T>(string redisKey, string fieldKey, T value, TimeSpan? ttl = null); // SetHashedAsync
+        public Task SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null);
+        public Task SetObjectAsync<T>(string redisKey, string fieldKey, T value, TimeSpan? ttl = null); // SetHashedAsync
         public Task<bool> SetObjectAsyncCheck<T>(string key, T value, TimeSpan? ttl = null);
         public Task<bool> RemoveAsync(string key);
         public Task<bool> KeyExistsAsync(string key);
         public Task<bool> KeyExistsAsync<T>(string key, string field);
         public Task<bool> KeyExpireAsync(string key, DateTime expiration);
-
     }
+
     public class AccessCacheData : IAccessCacheData
     {
         private readonly ILogger<AccessCacheData> _logger;

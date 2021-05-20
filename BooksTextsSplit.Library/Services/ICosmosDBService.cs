@@ -13,9 +13,9 @@ namespace BooksTextsSplit.Library.Services
         public Task<T> GetItemCountAsync<T>(string queryString);
         public Task<List<T>> GetUsersListAsync<T>(int userCount);
         Task<TextSentence> GetItemAsync(string id);
-        IDisposable AddItemAsync(TextSentence item);
-        IDisposable UpdateItemAsync(string id, TextSentence item);
-        IDisposable DeleteItemAsync(string id);
+        Task AddItemAsync(TextSentence item);
+        Task UpdateItemAsync(string id, TextSentence item);
+        Task DeleteItemAsync(string id);
     }
 }
 

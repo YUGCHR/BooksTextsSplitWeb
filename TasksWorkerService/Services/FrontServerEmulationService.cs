@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using BackgroundTasksQueue.Models;
-using CachingFramework.Redis.Contracts;
 using CachingFramework.Redis.Contracts.Providers;
 using Microsoft.Extensions.Logging;
 
-namespace BackgroundTasksQueue.Services
+namespace OldBackgroundTasksQueue.Services
 {
     public interface IFrontServerEmulationService
     {

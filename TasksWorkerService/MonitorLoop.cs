@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using BackgroundTasksQueue.Services;
 using CachingFramework.Redis.Contracts;
-using CachingFramework.Redis.Contracts.Providers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OldBackgroundTasksQueue.Services;
 
-namespace BackgroundTasksQueue
+namespace OldBackgroundTasksQueue
 {
     public class MonitorLoop
     {

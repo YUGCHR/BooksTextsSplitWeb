@@ -1,12 +1,13 @@
 using System;
-using BackgroundTasksQueue.Services;
+using BackgroundTasksQueue;
 using CachingFramework.Redis;
 using CachingFramework.Redis.Contracts.Providers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OldBackgroundTasksQueue.Services;
 using StackExchange.Redis;
 
-namespace BackgroundTasksQueue
+namespace OldBackgroundTasksQueue
 {
     public class Program
     {

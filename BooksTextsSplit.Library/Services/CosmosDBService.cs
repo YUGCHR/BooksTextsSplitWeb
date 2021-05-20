@@ -27,7 +27,7 @@ namespace BooksTextsSplit.Library.Services
             _logger.LogInformation("CosmosDbService started");
         }
 
-        public async IDisposable AddItemAsync(TextSentence item)
+        public async Task AddItemAsync(TextSentence item)
         {
             //ItemResponse<dynamic> itemResponse = await this._container.CreateItemAsync<dynamic>(item: new { id = item.Id, pk = item.Id, payload = item }, partitionKey: new PartitionKey(item.Id));
             ItemResponse<TextSentence> itemResponse = await this._container.CreateItemAsync<TextSentence>(item, new PartitionKey(item.Id));
@@ -37,7 +37,7 @@ namespace BooksTextsSplit.Library.Services
             // await this._container.CreateItemAsync<TextSentence>(item, new PartitionKey(item.Id));
         }
 
-        public async IDisposable DeleteItemAsync(string id)
+        public async Task DeleteItemAsync(string id)
         {
             await this._container.DeleteItemAsync<TextSentence>(id, new PartitionKey(id));
         }
@@ -209,7 +209,7 @@ namespace BooksTextsSplit.Library.Services
 
 
 
-        public async IDisposable UpdateItemAsync(string id, TextSentence item)
+        public async Task UpdateItemAsync(string id, TextSentence item)
         {
             await this._container.UpsertItemAsync<TextSentence>(item, new PartitionKey(id));
         }

@@ -5,8 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using BooksTextsSplit.Models;
+using BooksTextsSplit.Library.Models;
 using FluentAssertions;
+using BooksTextsSplit.Library.BookAnalysis;
 
 namespace BooksTextsSplit.Integration_Tests
 {

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using BackgroundTasksQueue;
 using CachingFramework.Redis.Contracts.Providers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace BackgroundTasksQueue.Services
+namespace OldBackgroundTasksQueue.Services
 {
     public interface IBackgroundTasksService
     {
