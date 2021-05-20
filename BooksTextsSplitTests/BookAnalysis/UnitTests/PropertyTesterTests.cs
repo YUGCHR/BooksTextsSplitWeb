@@ -1,5 +1,5 @@
 ﻿using BooksTextsSplit.Controllers;
-using BooksTextsSplit.Models;
+using BooksTextsSplit.Library.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

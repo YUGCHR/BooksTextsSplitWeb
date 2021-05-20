@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,14 +8,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
-using BooksTextsSplit.Services;
+using BooksTextsSplit.Library.Services;
 using StackExchange.Redis;
 using CachingFramework.Redis;
-using System.Diagnostics.Contracts;
 using System;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Authentication;
-using BooksTextsSplit.Helpers;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -57,7 +52,7 @@ namespace BooksTextsSplit
             // configure DI for application services            
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IResultDataService, ResultDataService>();
-            services.AddScoped<BooksTextsSplit.Models.UserData>(); // ?
+            services.AddScoped<BooksTextsSplit.Library.Models.UserData>(); // ?
 
             // Consuming a scoped service in a background task
             //services.AddSingleton<MonitorLoop>();
@@ -87,8 +82,8 @@ namespace BooksTextsSplit
             }
             catch (Exception ex)
             {
-                string Message = ex.Message;
-                Console.WriteLine("\n\n CosmosDbService was not initialized: \n\n" + Message + "\n\n");
+                string message = ex.Message;
+                Console.WriteLine($"\n\n CosmosDbService was not initialized: \n {message} \n");
                 throw;
             }
 
@@ -101,8 +96,8 @@ namespace BooksTextsSplit
             }
             catch (Exception ex)
             {
-                string Message = ex.Message;
-                Console.WriteLine("\n\n Redis server did not start: \n\n" + Message + "\n\n");
+                string message = ex.Message;
+                Console.WriteLine($"\n\n Redis server did not start: \n + {message} \n");
                 throw;
             }
 
