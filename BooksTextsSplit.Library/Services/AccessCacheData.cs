@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using BooksTextsSplit.Library.Models;
 using CachingFramework.Redis.Contracts.Providers;
 using Microsoft.Extensions.Logging;
 
@@ -12,8 +14,11 @@ namespace BooksTextsSplit.Library.Services
         public Task InsertUser<T>(T user, string userId);
         public Task<T> FetchObjectAsync<T>(string redisKey, string fieldKey, Func<Task<T>> func, TimeSpan? expiry = null); // FetchHashedAsync
         public Task<T> FetchObjectAsync<T>(string key, Func<Task<T>> func, TimeSpan? expiry = null);
+        public Task<IDictionary<TK, TV>> FetchAndCheckBookId<TK, TV>(string key);
         public Task SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null);
         public Task SetObjectAsync<T>(string redisKey, string fieldKey, T value, TimeSpan? ttl = null); // SetHashedAsync
+        public Task WriteHashedAsync<T>(string key, string field, T value, double ttl);
+        public Task WriteHashedAsync<TK, TV>(string key, TK field, TV value, double ttl);
         public Task<bool> SetObjectAsyncCheck<T>(string key, T value, TimeSpan? ttl = null);
         public Task<bool> RemoveAsync(string key);
         public Task<bool> KeyExistsAsync(string key);
@@ -40,6 +45,8 @@ namespace BooksTextsSplit.Library.Services
             _cache = cache;
             _context = cosmosDbService;
         }
+
+        //private static Serilog.ILogger Logs => Serilog.Log.ForContext<CacheManageService>();
 
         public async Task<T> GetObjectAsync<T>(string key)
         {
@@ -96,6 +103,28 @@ namespace BooksTextsSplit.Library.Services
             }
         }
 
+
+        public async Task<IDictionary<TK, TV>> FetchAndCheckBookId<TK, TV>(string key)
+        {
+            bool isBookIdExist = await _cache.KeyExistsAsync(key);
+            if(!isBookIdExist)
+            {
+                return null;
+            }
+
+            IDictionary<TK, TV> existedBookIds = await _cache.GetHashedAllAsync<TK, TV>(key);
+            //Logs.Here().Error("{@K} removing was failed.", new { Key = key });
+            return existedBookIds;
+        }
+
+
+
+
+
+
+
+
+
         public async Task SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null)
         {
             await _cache.SetObjectAsync(key, value, ttl);
@@ -112,6 +141,18 @@ namespace BooksTextsSplit.Library.Services
             await _cache.SetObjectAsync(key, value, ttl);
             return await _cache.KeyExistsAsync(key);
         }
+
+        public async Task WriteHashedAsync<T>(string key, string field, T value, double ttl)
+        {
+            await _cache.SetHashedAsync<T>(key, field, value, TimeSpan.FromDays(ttl));
+        }
+
+        public async Task WriteHashedAsync<TK, TV>(string key, TK field, TV value, double ttl)
+        {
+            await _cache.SetHashedAsync<TK, TV>(key, field, value, TimeSpan.FromDays(ttl));
+
+        }
+
 
         public async Task<bool> RemoveAsync(string key)
         {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using BooksTextsSplit.Library.Models;
 using System.IO;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using BooksTextsSplit.Library.BookAnalysis;
+using BooksTextsSplit.Library.Models;
 
 namespace BooksTextsSplit.Library.Services
 {
@@ -98,6 +98,41 @@ namespace BooksTextsSplit.Library.Services
 
                     try
                     {
+                        // порядок действий -
+                        // проверяем наличие ключа таблиц (bookTableKey)
+                        // если его нет, создаём всю таблицу, но потом, после записи глав
+                        // сначала создаём List ключей глав
+                        // записываем в него ключи глав в цикле tsi
+                        // создаём List версий
+                        // создаём таблицу
+                        // записываем её в ключ таблиц в поле bookId
+                        // - если ключ есть, проверяем, есть ли в нем поле bookId
+                        // - если нет, создаём всю таблицу, как описано выше
+                        // -- если такое поле есть, достаем из него таблицу (как уже сделано)
+                        // -- из таблицы достаем List версий
+                        // -- проверяем есть ли текущая версия
+                        // -- если нет, создаём List ключей глав, заполняем его, как указано выше (в цикле tsi)
+                        // --- если такая версия есть, достаем из неё List ключей глав
+                        // --- тут ещё можно проверить совпадение количества глав - на всякий случай
+                        // --- что делать, если не совпадают, непонятно, просто сообщить
+                        // --- в цикле отключаем генерацию ключей глав, берём ключи из List
+                        // --- после записи всех глав ничего делать не надо, таблица не меняется
+                        // -- после записи глав создаём новый элемент List версий, вставляем в него созданный List ключей глав, записываем обновленную таблицу в поле bookId
+                        // - создаём List версий, создаём новый элемент List версий, вставляем в него созданный List ключей глав, создаём таблицу, записываем в поле bookId
+
+
+                        TextSentence chapterContext = textSentences[0];
+                        string recordGuid = chapterContext.Id;
+                        int bookId = chapterContext.BookId;
+                        int recordActualityLevel = chapterContext.RecordActualityLevel;
+                        int uploadVersion = chapterContext.UploadVersion;
+                        int languageId = chapterContext.LanguageId;
+
+                        // проверить, есть ли такой bookId в ключе таблиц
+                        BookTable bookTable = await _data.CheckBookId(bookId, uploadVersion, recordActualityLevel);
+
+                        //List<BookTable.UploadVersionContent.ChaptersPair> chaptersPairKeys = bookTable.UploadVersions;
+
                         _logger.LogInformation($"Queued Background Task RecordFileToDb {guid} is running", guid);
 
                         for (int tsi = 0; tsi < textSentencesLength; tsi++)
@@ -113,10 +148,30 @@ namespace BooksTextsSplit.Library.Services
 
                             await _context.AddItemAsync(textSentences[tsi]); // возвращать значение charges - если не нулевое, значит что-то записалось
 
+                            // каждая пара глав (eng-rus) хранится в отдельном ключе guid
+                            // все главы пары книг собираются в лист и хранятся в таблице, которая хранится в общем ключе с полем bookId
+                            // проверить, есть ли такая книга на другом языке, если есть, guid брать готовые
+
+
+                            string currentChapterKey = Guid.NewGuid().ToString();
+                            chaptersPairKeys.Add(new BookTable.UploadVersionContent.ChaptersPair
+                            {
+                                ChaptersKey = currentChapterKey,
+                                ChapterNumber = tsi
+                            });
+
+
+                            await _data.AddChapter(currentChapterKey, languageId, textSentences[tsi]);
+
+
                             stopWatch.Stop();
                             TimeSpan ts = stopWatch.Elapsed; // Get the elapsed time as a TimeSpan value.
                             bool resultSetKey1 = await SetTaskState(uploadPercents, ts, tsi);
                         };
+
+
+
+
 
                         // ключ guid создавать через хэш
                         bool removingResult = await UpdateKeysAfterRecording(desiredTextLanguage, guid);
@@ -141,7 +196,7 @@ namespace BooksTextsSplit.Library.Services
             });
             //return "Task " + guid + " was Queued Background";
         }
-        
+
         private async Task<bool> SetTaskState(TaskUploadPercents uploadPercents, TimeSpan ts, int tsi)
         {
             int tsMs = ts.Milliseconds;
@@ -150,7 +205,7 @@ namespace BooksTextsSplit.Library.Services
             uploadPercents.TotalUploadedRealTime += tsMs;
             return await _data.SetTaskState(uploadPercents);
         }
-        
+
         private async Task<bool> UpdateKeysAfterRecording(int languageId, string guid)
         {
             // здесь проверить наличие ключей других процессов и параметр isRunning в них

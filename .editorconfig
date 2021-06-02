@@ -2,3 +2,6 @@
 
 # IDE0039: Use local function
 dotnet_diagnostic.IDE0039.severity = none
+
+# CA1715: Identifiers should have correct prefix
+dotnet_diagnostic.CA1715.severity = none

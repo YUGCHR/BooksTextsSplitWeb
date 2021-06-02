@@ -134,7 +134,7 @@ namespace BooksTextsSplit.Controllers
 
         // GET: api/BookTexts/worker/
         [HttpGet("worker")]
-        public ActionResult GetWorker()
+        public ActionResult GetWorker() // test sample
         {
             string guid = Guid.NewGuid().ToString();
             _task2Queue.WorkerSample(guid);

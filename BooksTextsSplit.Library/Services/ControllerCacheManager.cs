@@ -14,6 +14,8 @@ namespace BooksTextsSplit.Library.Services
         public Task<List<BookPropertiesExistInDb>> FetchAllBookIdsLanguageIdsFromCache();
         public Task<TaskUploadPercents> FetchTaskState(TaskUploadPercents taskStateCurrent);
         public Task<bool> SetTaskGuidKeys(TaskUploadPercents uploadPercents, int keysExistingTimeFactor);
+        public Task<BookTable> CheckBookId(string bookTablesKey, int bookId);
+        public Task AddChapter(string currentChapterKey, int languageId, TextSentence chapterContext);
     }
 
     public class ControllerCacheManager : IControllerCacheManager
@@ -103,6 +105,38 @@ namespace BooksTextsSplit.Library.Services
             TimeSpan keysExistingTime = TimeSpan.FromMinutes(_constant.GetPercentsKeysExistingTimeInMinutes) * keysExistingTimeFactor;
             await _access.SetObjectAsync(uploadPercents.RedisKey, uploadPercents.FieldKeyPercents, uploadPercents, keysExistingTime);
             return true;
+        }
+
+        public async Task<BookTable> CheckBookId(string bookTablesKey, int bookId)
+        {
+            IDictionary<int, BookTable> existedBookIds = await _access.FetchAndCheckBookId<int, BookTable>(bookTablesKey);
+
+            if(existedBookIds == null)
+            {
+                return null;
+            }
+
+            foreach (var b in existedBookIds)
+            {
+                var (bookNumber, bookTable) = b;
+
+                if(bookNumber == bookId)
+                {
+                    return bookTable;
+                }
+
+            }
+                return null;
+        }
+
+        public async Task AddChapter(string currentChapterKey, int languageId, TextSentence chapterContext)
+        {
+            //double tablesExistingTime = 7; // время хранения книг в кэше, взять из констант
+            double chaptersExistingTime = 7; // время хранения книг в кэше, взять из констант
+            //string bookTablesKey = "bookTableKey";
+            //string bookChaptersKey = "bookTableKey";
+            //await _access.WriteHashedAsync<int, TextSentence>(bookTablesKey, bookId, chapterContext, tablesExistingTime);
+            await _access.WriteHashedAsync<int, TextSentence>(currentChapterKey, languageId, chapterContext, chaptersExistingTime);
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using BooksTextsSplit.Library.Helpers;
-using BooksTextsSplit.Library.Models;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using BooksTextsSplit.Library.Helpers;
+using BooksTextsSplit.Library.Models;
 
 namespace BooksTextsSplit.Library.Services
 {
@@ -23,6 +23,8 @@ namespace BooksTextsSplit.Library.Services
         public Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId);
         public Task<BookIdsListExistInDv> FetchBooksNamesVersionsProperties();
         public Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value);
+        public Task<BookTable> CheckBookId(int bookId, int uploadVersion, int recordActualityLevel);
+        public Task AddChapter(string currentChapterKey, int languageId, TextSentence chapterContext);
     }
 
     static class Constants
@@ -284,6 +286,79 @@ namespace BooksTextsSplit.Library.Services
         {
             await _cache.SetTaskGuidKeys(uploadPercents, keysExistingTimeFactor);
             return true;
+        }
+
+        public async Task<BookTable> CheckBookId(int bookId, int uploadVersion, int recordActualityLevel)
+        {
+            // 
+            string bookTablesKey = "bookTableKey";
+            BookTable bookTable = await _cache.CheckBookId(bookTablesKey, bookId);
+
+            if (bookTable == null)
+            {
+                return BookTableInit(bookId, uploadVersion, recordActualityLevel);
+            }
+
+            // проверить существует ли такой uploadVersion
+            foreach (var v in bookTable.UploadVersions)
+            {
+                if (v.UploadVersion == uploadVersion)
+                {
+                    // если такой uploadVersion есть, значит уже есть книга из этой пары и все ключи глав сгенерированы
+                    // как об этом сообщить в вызывающий метод? 
+                    return bookTable;
+                }
+            }
+
+            // uploadVersion не найден, добавить в таблицу bookTable новый uploadVersion
+            return BookTableAddVersion(bookTable, bookId, uploadVersion, recordActualityLevel);
+        }
+
+        private BookTable BookTableAddVersion(BookTable bookTable, int bookId, int uploadVersion, int recordActualityLevel)
+        {
+            List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair = new();
+
+            bookTable.UploadVersions.Add(new BookTable.UploadVersionContent()
+            {
+                UploadVersion = uploadVersion,
+                RecordActualityLevel = recordActualityLevel,
+                ChaptersPairs = chaptersPair
+            });
+
+            return bookTable;
+        }
+
+        private BookTable BookTableInit(int bookId, int uploadVersion, int recordActualityLevel)
+        {
+            List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair = new();
+
+            List<BookTable.UploadVersionContent> uploadVersions = new();
+            uploadVersions.Add(new BookTable.UploadVersionContent()
+            {
+                UploadVersion = uploadVersion,
+                RecordActualityLevel = recordActualityLevel,
+                ChaptersPairs = chaptersPair
+            });
+
+            BookTable bookTable = new()
+            {
+                BookGuid = Guid.NewGuid().ToString(),
+                BookId = bookId,
+                UploadVersions = uploadVersions
+            };
+
+            return bookTable;
+        }
+
+        public async Task AddChapter(string currentChapterKey, int languageId, TextSentence chapterContext)
+        {
+            string recordGuid = chapterContext.Id;
+            int recordId = chapterContext.RecordId;
+            int chapterId = chapterContext.ChapterId;
+
+            //string chaptersKey = bookTable.UploadVersions
+
+            await _cache.AddChapter(currentChapterKey, languageId, chapterContext);
         }
 
         #endregion
