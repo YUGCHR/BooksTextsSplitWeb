@@ -23,8 +23,11 @@ namespace BooksTextsSplit.Library.Services
         public Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId);
         public Task<BookIdsListExistInDv> FetchBooksNamesVersionsProperties();
         public Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value);
-        public Task<BookTable> CheckBookId(int bookId, int uploadVersion, int recordActualityLevel);
+        public Task<(bool, List<BookTable.UploadVersionContent.ChaptersPair>)> CheckBookId(string bookTablesKey, int bookId, int uploadVersion);
+        public Task<BookTable> BookTableAddVersion(List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair, string bookTablesKey, int bookId, int uploadVersion, int recordActualityLevel);
+        public BookTable BookTableInit(List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair, int bookId, int uploadVersion, int recordActualityLevel);
         public Task AddChapter(string currentChapterKey, int languageId, TextSentence chapterContext);
+        public Task AddBookTable(string bookTablesKey, int bookId, BookTable bookTable);
     }
 
     static class Constants
@@ -288,36 +291,41 @@ namespace BooksTextsSplit.Library.Services
             return true;
         }
 
-        public async Task<BookTable> CheckBookId(int bookId, int uploadVersion, int recordActualityLevel)
+        public async Task<(bool, List<BookTable.UploadVersionContent.ChaptersPair>)> CheckBookId(string bookTablesKey, int bookId, int uploadVersion)
         {
-            // 
-            string bookTablesKey = "bookTableKey";
+            bool doesBookIdExist = false;
+            List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair = new();
             BookTable bookTable = await _cache.CheckBookId(bookTablesKey, bookId);
 
             if (bookTable == null)
             {
-                return BookTableInit(bookId, uploadVersion, recordActualityLevel);
+                // вариант, когда ключа нет вообще или нет поля с таким bookId
+                // возвращаем - bookId нет и пустой List ключей глав
+                return (doesBookIdExist, chaptersPair);
             }
-
-            // проверить существует ли такой uploadVersion
+            // bookTable получили, значит такой бук уже есть, проверяем, существует ли в его таблице такой uploadVersion
             foreach (var v in bookTable.UploadVersions)
             {
                 if (v.UploadVersion == uploadVersion)
                 {
                     // если такой uploadVersion есть, значит уже есть книга из этой пары и все ключи глав сгенерированы
-                    // как об этом сообщить в вызывающий метод? 
-                    return bookTable;
+                    // как об этом сообщить в вызывающий метод? - возвращаем полный List ключей глав
+                    // при проверке пустой или полный List будет понятно, есть уже такой uploadVersion или это новый
+                    doesBookIdExist = true;
+                    return (doesBookIdExist, v.ChaptersPairs);
                 }
             }
 
             // uploadVersion не найден, добавить в таблицу bookTable новый uploadVersion
-            return BookTableAddVersion(bookTable, bookId, uploadVersion, recordActualityLevel);
+            // возвращаем - bookId есть и пустой List ключей глав, остальное создадим после его заполнения
+            doesBookIdExist = true;
+            return (doesBookIdExist, chaptersPair);
         }
 
-        private BookTable BookTableAddVersion(BookTable bookTable, int bookId, int uploadVersion, int recordActualityLevel)
+        public async Task<BookTable> BookTableAddVersion(List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair, string bookTablesKey, int bookId, int uploadVersion, int recordActualityLevel)
         {
-            List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair = new();
-
+            // 
+            BookTable bookTable = await _cache.CheckBookId(bookTablesKey, bookId);
             bookTable.UploadVersions.Add(new BookTable.UploadVersionContent()
             {
                 UploadVersion = uploadVersion,
@@ -328,10 +336,8 @@ namespace BooksTextsSplit.Library.Services
             return bookTable;
         }
 
-        private BookTable BookTableInit(int bookId, int uploadVersion, int recordActualityLevel)
+        public BookTable BookTableInit(List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair, int bookId, int uploadVersion, int recordActualityLevel)
         {
-            List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair = new();
-
             List<BookTable.UploadVersionContent> uploadVersions = new();
             uploadVersions.Add(new BookTable.UploadVersionContent()
             {
@@ -352,14 +358,14 @@ namespace BooksTextsSplit.Library.Services
 
         public async Task AddChapter(string currentChapterKey, int languageId, TextSentence chapterContext)
         {
-            string recordGuid = chapterContext.Id;
-            int recordId = chapterContext.RecordId;
-            int chapterId = chapterContext.ChapterId;
-
-            //string chaptersKey = bookTable.UploadVersions
-
-            await _cache.AddChapter(currentChapterKey, languageId, chapterContext);
+            await _cache.AddHashValue<TextSentence>(currentChapterKey, languageId, chapterContext);
         }
+
+        public async Task AddBookTable(string bookTablesKey, int bookId, BookTable bookTable)
+        {
+            await _cache.AddHashValue<BookTable>(bookTablesKey, bookId, bookTable);
+        }
+
 
         #endregion
 

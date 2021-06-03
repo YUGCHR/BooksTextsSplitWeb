@@ -15,7 +15,7 @@ namespace BooksTextsSplit.Library.Services
         public Task<TaskUploadPercents> FetchTaskState(TaskUploadPercents taskStateCurrent);
         public Task<bool> SetTaskGuidKeys(TaskUploadPercents uploadPercents, int keysExistingTimeFactor);
         public Task<BookTable> CheckBookId(string bookTablesKey, int bookId);
-        public Task AddChapter(string currentChapterKey, int languageId, TextSentence chapterContext);
+        public Task AddHashValue<T>(string Key, int id, T context);
     }
 
     public class ControllerCacheManager : IControllerCacheManager
@@ -129,14 +129,11 @@ namespace BooksTextsSplit.Library.Services
                 return null;
         }
 
-        public async Task AddChapter(string currentChapterKey, int languageId, TextSentence chapterContext)
+        public async Task AddHashValue<T>(string Key, int id, T context)
         {
-            //double tablesExistingTime = 7; // время хранения книг в кэше, взять из констант
-            double chaptersExistingTime = 7; // время хранения книг в кэше, взять из констант
-            //string bookTablesKey = "bookTableKey";
-            //string bookChaptersKey = "bookTableKey";
-            //await _access.WriteHashedAsync<int, TextSentence>(bookTablesKey, bookId, chapterContext, tablesExistingTime);
-            await _access.WriteHashedAsync<int, TextSentence>(currentChapterKey, languageId, chapterContext, chaptersExistingTime);
-        }
+            double chaptersExistingTime = 0.01; // время хранения книг в кэше, взять из констант
+            
+            await _access.WriteHashedAsync<int, T>(Key, id, context, chaptersExistingTime);
+        }                
     }
 }

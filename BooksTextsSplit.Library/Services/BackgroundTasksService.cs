@@ -99,7 +99,7 @@ namespace BooksTextsSplit.Library.Services
                     try
                     {
                         // порядок действий -
-                        // проверяем наличие ключа таблиц (bookTableKey)
+                        // проверяем наличие ключа таблиц (bookTableKey)                        
                         // если его нет, создаём всю таблицу, но потом, после записи глав
                         // сначала создаём List ключей глав (chaptersPair)
                         // записываем в него ключи глав в цикле tsi
@@ -122,7 +122,7 @@ namespace BooksTextsSplit.Library.Services
                         // то есть, результатом любой из проверок нужен List ключей глав, полный или пустой
                         // поэтому именно его надо вернуть из метода проверки (CheckBookId)
                         // но при этом потеряется вся таблица, а она нужна после цикла, чтобы сохранить в ключе
-                        // из CheckBookId можно вернуть c, bool есть ли uploadVersion и chaptersPair
+                        // из CheckBookId можно вернуть bool есть ли bookId, bool есть ли uploadVersion и chaptersPair
                         // если есть uploadVersion, то chaptersPair будет полный, иначе пустой, поэтому этот bool не нужен
                         // но bool версий надо создать перед циклом при проверке List ключей глав - пустой или полный
                         // тогда только bool есть ли bookId - чтобы после цикла выбрать один из трёх вариантов
@@ -130,7 +130,8 @@ namespace BooksTextsSplit.Library.Services
                         // 2 - создаём новый элемент версии, обновляем таблицу, пишем на то же место (uploadVersion нет)
                         // 3 - ничего не делаем (uploadVersion есть)
 
-
+                        string bookTablesKey = "bookTableKey";
+                        //string bookChaptersKey = "bookTableKey";
                         TextSentence chapterContext = textSentences[0];
                         string recordGuid = chapterContext.Id;
                         int bookId = chapterContext.BookId;
@@ -138,10 +139,15 @@ namespace BooksTextsSplit.Library.Services
                         int uploadVersion = chapterContext.UploadVersion;
                         int languageId = chapterContext.LanguageId;
 
-                        // проверить, есть ли такой bookId в ключе таблиц
-                        BookTable bookTable = await _data.CheckBookId(bookId, uploadVersion, recordActualityLevel);
+                        (bool doesBookIdExist, List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair) = await _data.CheckBookId(bookTablesKey, bookId, uploadVersion);
+                        // bool версий надо создать перед циклом при проверке List ключей глав - пустой или полный
+                        bool doesUploadVersionExist = false;
+                        int chaptersPairCount = chaptersPair.Count;
+                        if (chaptersPairCount > 0)
+                        {
+                            doesUploadVersionExist = true;
+                        }
 
-                        //List<BookTable.UploadVersionContent.ChaptersPair> chaptersPairKeys = bookTable.UploadVersions;
 
                         _logger.LogInformation($"Queued Background Task RecordFileToDb {guid} is running", guid);
 
@@ -158,18 +164,31 @@ namespace BooksTextsSplit.Library.Services
 
                             await _context.AddItemAsync(textSentences[tsi]); // возвращать значение charges - если не нулевое, значит что-то записалось
 
+
                             // каждая пара глав (eng-rus) хранится в отдельном ключе guid
                             // все главы пары книг собираются в лист и хранятся в таблице, которая хранится в общем ключе с полем bookId
                             // проверить, есть ли такая книга на другом языке, если есть, guid брать готовые
+                            string currentChapterKey = "";
 
-
-                            string currentChapterKey = Guid.NewGuid().ToString();
-                            chaptersPairKeys.Add(new BookTable.UploadVersionContent.ChaptersPair
+                            if (doesUploadVersionExist)
                             {
-                                ChaptersKey = currentChapterKey,
-                                ChapterNumber = tsi
-                            });
+                                currentChapterKey = chaptersPair[tsi].ChaptersKey;
+                                int t = chaptersPair[tsi].ChapterNumber;
+                                if (t != tsi)
+                                {
+                                    //Logs.Here().Warning("ChapterNumber {0} is not equal tsi {1}.", t, tsi);
 
+                                }
+                            }
+                            else
+                            {
+                                currentChapterKey = Guid.NewGuid().ToString();
+                                chaptersPair.Add(new BookTable.UploadVersionContent.ChaptersPair
+                                {
+                                    ChaptersKey = currentChapterKey,
+                                    ChapterNumber = textSentences[tsi].ChapterId
+                                });
+                            }
 
                             await _data.AddChapter(currentChapterKey, languageId, textSentences[tsi]);
 
@@ -179,8 +198,24 @@ namespace BooksTextsSplit.Library.Services
                             bool resultSetKey1 = await SetTaskState(uploadPercents, ts, tsi);
                         };
 
+                        if (!doesUploadVersionExist)
+                        {
+                            BookTable bookTable = new();
 
-
+                            if (doesBookIdExist)
+                            {
+                                // 2 - создаём новый элемент версии, обновляем таблицу, пишем на то же место (uploadVersion нет)
+                                bookTable = await _data.BookTableAddVersion(chaptersPair, bookTablesKey, bookId, uploadVersion, recordActualityLevel);
+                            }
+                            else
+                            {
+                                // 1 - создаём новую таблицу (bookId нет)
+                                bookTable = _data.BookTableInit(chaptersPair, bookId, uploadVersion, recordActualityLevel);                                
+                            }
+                            // записываем обновленную таблицу в поле bookId
+                            await _data.AddBookTable(bookTablesKey, bookId, bookTable);
+                        }
+                        // 3 - ничего не делаем (uploadVersion есть)
 
 
                         // ключ guid создавать через хэш
