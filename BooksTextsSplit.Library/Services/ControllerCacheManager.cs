@@ -14,7 +14,7 @@ namespace BooksTextsSplit.Library.Services
         public Task<List<BookPropertiesExistInDb>> FetchAllBookIdsLanguageIdsFromCache();
         public Task<TaskUploadPercents> FetchTaskState(TaskUploadPercents taskStateCurrent);
         public Task<bool> SetTaskGuidKeys(TaskUploadPercents uploadPercents, int keysExistingTimeFactor);
-        public Task<BookTable> CheckBookId(string bookTablesKey, int bookId);
+        public Task<BookTable> CheckBookId(string bookTablesKey, int uploadVersion);
         public Task AddHashValue<T>(string Key, int id, T context);
     }
 
@@ -97,7 +97,7 @@ namespace BooksTextsSplit.Library.Services
 
         public async Task<TaskUploadPercents> FetchTaskState(TaskUploadPercents taskStateCurrent)
         {
-            return await _access.GetObjectAsync<TaskUploadPercents>(taskStateCurrent.RedisKey, taskStateCurrent.FieldKeyPercents); 
+            return await _access.GetObjectAsync<TaskUploadPercents>(taskStateCurrent.RedisKey, taskStateCurrent.FieldKeyPercents);
         }
 
         public async Task<bool> SetTaskGuidKeys(TaskUploadPercents uploadPercents, int keysExistingTimeFactor)
@@ -107,33 +107,18 @@ namespace BooksTextsSplit.Library.Services
             return true;
         }
 
-        public async Task<BookTable> CheckBookId(string bookTablesKey, int bookId)
+        public async Task<BookTable> CheckBookId(string bookTableKey, int uploadVersion)
         {
-            IDictionary<int, BookTable> existedBookIds = await _access.FetchAndCheckBookId<int, BookTable>(bookTablesKey);
+            BookTable bookTable = await _access.FetchBookTable<BookTable>(bookTableKey, uploadVersion);
 
-            if(existedBookIds == null)
-            {
-                return null;
-            }
-
-            foreach (var b in existedBookIds)
-            {
-                var (bookNumber, bookTable) = b;
-
-                if(bookNumber == bookId)
-                {
-                    return bookTable;
-                }
-
-            }
-                return null;
+            return bookTable;
         }
 
         public async Task AddHashValue<T>(string Key, int id, T context)
         {
             double chaptersExistingTime = 0.01; // время хранения книг в кэше, взять из констант
-            
+
             await _access.WriteHashedAsync<int, T>(Key, id, context, chaptersExistingTime);
-        }                
+        }
     }
 }

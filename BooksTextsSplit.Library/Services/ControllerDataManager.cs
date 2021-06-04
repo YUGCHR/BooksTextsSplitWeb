@@ -23,11 +23,8 @@ namespace BooksTextsSplit.Library.Services
         public Task<BooksVersionsExistInDb> FetchBookNameVersions(string where, int whereValue, int bookId);
         public Task<BookIdsListExistInDv> FetchBooksNamesVersionsProperties();
         public Task<BooksPairTextsFromDb> FetchBooksPairTexts(string where1, int where1Value, string where2, int where2Value);
-        public Task<(bool, List<BookTable.UploadVersionContent.ChaptersPair>)> CheckBookId(string bookTablesKey, int bookId, int uploadVersion);
-        public Task<BookTable> BookTableAddVersion(List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair, string bookTablesKey, int bookId, int uploadVersion, int recordActualityLevel);
-        public BookTable BookTableInit(List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair, int bookId, int uploadVersion, int recordActualityLevel);
-        public Task AddChapter(string currentChapterKey, int languageId, TextSentence chapterContext);
-        public Task AddBookTable(string bookTablesKey, int bookId, BookTable bookTable);
+        public Task<BookTable> CheckBookId(string bookTablesKeyPrefix, int bookId, int uploadVersion, int recordActualityLevel, string textSentencesKeyPrefix1, string textSentencesKeyPrefix2);
+        public Task AddChapter(string currentChapterKey, int languageId, TextSentence chapterContext);        
     }
 
     static class Constants
@@ -291,79 +288,39 @@ namespace BooksTextsSplit.Library.Services
             return true;
         }
 
-        public async Task<(bool, List<BookTable.UploadVersionContent.ChaptersPair>)> CheckBookId(string bookTablesKey, int bookId, int uploadVersion)
+        public async Task<BookTable> CheckBookId(string bookTablesKeyPrefix, int bookId, int uploadVersion, int recordActualityLevel, string textSentencesKeyPrefix1, string textSentencesKeyPrefix2)
         {
-            bool doesBookIdExist = false;
-            List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair = new();
-            BookTable bookTable = await _cache.CheckBookId(bookTablesKey, bookId);
+            string bookTableKey = ($"{bookTablesKeyPrefix}{bookId}");
+            string textSentenceKey = ($"{textSentencesKeyPrefix1}{bookId}:{textSentencesKeyPrefix2}{uploadVersion}");
+
+            // три варианта возврата -
+            // 1 null - вообще нет такого bookId
+            // 2 таблица вернулась, но пустая - ключ есть, версии (поля) нет - пусть будет тоже null
+            // какая разница - всё равно нужной таблицы нет и её надо создать
+            // 3 заполненная таблица - всё есть
+            BookTable bookTable = await _cache.CheckBookId(bookTableKey, uploadVersion);
 
             if (bookTable == null)
             {
-                // вариант, когда ключа нет вообще или нет поля с таким bookId
-                // возвращаем - bookId нет и пустой List ключей глав
-                return (doesBookIdExist, chaptersPair);
-            }
-            // bookTable получили, значит такой бук уже есть, проверяем, существует ли в его таблице такой uploadVersion
-            foreach (var v in bookTable.UploadVersions)
-            {
-                if (v.UploadVersion == uploadVersion)
+                // вариант, когда ключа нет с таким bookId или нет поля с таким uploadVersion
+                bookTable = new()
                 {
-                    // если такой uploadVersion есть, значит уже есть книга из этой пары и все ключи глав сгенерированы
-                    // как об этом сообщить в вызывающий метод? - возвращаем полный List ключей глав
-                    // при проверке пустой или полный List будет понятно, есть уже такой uploadVersion или это новый
-                    doesBookIdExist = true;
-                    return (doesBookIdExist, v.ChaptersPairs);
-                }
+                    BookId = bookId,
+                    UploadVersion = uploadVersion,
+                    RecordActualityLevel = recordActualityLevel,
+                    TextSentencesKey = textSentenceKey
+                };
             }
-
-            // uploadVersion не найден, добавить в таблицу bookTable новый uploadVersion
-            // возвращаем - bookId есть и пустой List ключей глав, остальное создадим после его заполнения
-            doesBookIdExist = true;
-            return (doesBookIdExist, chaptersPair);
-        }
-
-        public async Task<BookTable> BookTableAddVersion(List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair, string bookTablesKey, int bookId, int uploadVersion, int recordActualityLevel)
-        {
-            // 
-            BookTable bookTable = await _cache.CheckBookId(bookTablesKey, bookId);
-            bookTable.UploadVersions.Add(new BookTable.UploadVersionContent()
-            {
-                UploadVersion = uploadVersion,
-                RecordActualityLevel = recordActualityLevel,
-                ChaptersPairs = chaptersPair
-            });
-
-            return bookTable;
-        }
-
-        public BookTable BookTableInit(List<BookTable.UploadVersionContent.ChaptersPair> chaptersPair, int bookId, int uploadVersion, int recordActualityLevel)
-        {
-            List<BookTable.UploadVersionContent> uploadVersions = new();
-            uploadVersions.Add(new BookTable.UploadVersionContent()
-            {
-                UploadVersion = uploadVersion,
-                RecordActualityLevel = recordActualityLevel,
-                ChaptersPairs = chaptersPair
-            });
-
-            BookTable bookTable = new()
-            {
-                BookGuid = Guid.NewGuid().ToString(),
-                BookId = bookId,
-                UploadVersions = uploadVersions
-            };
-
-            return bookTable;
+            // записываем ключ с полем и возвращаем заполненную таблицу
+            // нет, запишем ключ в конце - после возврата
+            // нет, записать ключ немедленно
+            await _cache.AddHashValue<BookTable>(bookTableKey, uploadVersion, bookTable);
+            return bookTable;            
         }
 
         public async Task AddChapter(string currentChapterKey, int languageId, TextSentence chapterContext)
         {
             await _cache.AddHashValue<TextSentence>(currentChapterKey, languageId, chapterContext);
-        }
-
-        public async Task AddBookTable(string bookTablesKey, int bookId, BookTable bookTable)
-        {
-            await _cache.AddHashValue<BookTable>(bookTablesKey, bookId, bookTable);
         }
 
 

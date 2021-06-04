@@ -14,7 +14,7 @@ namespace BooksTextsSplit.Library.Services
         public Task InsertUser<T>(T user, string userId);
         public Task<T> FetchObjectAsync<T>(string redisKey, string fieldKey, Func<Task<T>> func, TimeSpan? expiry = null); // FetchHashedAsync
         public Task<T> FetchObjectAsync<T>(string key, Func<Task<T>> func, TimeSpan? expiry = null);
-        public Task<IDictionary<TK, TV>> FetchAndCheckBookId<TK, TV>(string key);
+        public Task<T> FetchBookTable<T>(string key, int field);
         public Task SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null);
         public Task SetObjectAsync<T>(string redisKey, string fieldKey, T value, TimeSpan? ttl = null); // SetHashedAsync
         public Task WriteHashedAsync<T>(string key, string field, T value, double ttl);
@@ -104,25 +104,20 @@ namespace BooksTextsSplit.Library.Services
         }
 
 
-        public async Task<IDictionary<TK, TV>> FetchAndCheckBookId<TK, TV>(string key)
+        public async Task<T> FetchBookTable<T>(string key, int field)
         {
-            bool isBookIdExist = await _cache.KeyExistsAsync(key);
-            if(!isBookIdExist)
+            bool isKeyExist = await _cache.KeyExistsAsync(key);
+            if(isKeyExist)
             {
-                return null;
+                T value = await _cache.GetHashedAsync<int, T>(key, field);
+                //Logs.Here().Error("{@K} removing was failed.", new { Key = key });
+                if (value != null)
+                {
+                    return value;
+                }
             }
-
-            IDictionary<TK, TV> existedBookIds = await _cache.GetHashedAllAsync<TK, TV>(key);
-            //Logs.Here().Error("{@K} removing was failed.", new { Key = key });
-            return existedBookIds;
+            return default;
         }
-
-
-
-
-
-
-
 
 
         public async Task SetObjectAsync<T>(string key, T value, TimeSpan? ttl = null)
