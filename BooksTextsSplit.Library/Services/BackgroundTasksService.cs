@@ -154,11 +154,9 @@ namespace BooksTextsSplit.Library.Services
                             await _context.AddItemAsync(textSentences[tsi]); // возвращать значение charges - если не нулевое, значит что-то записалось
 
 
-
                             int chapterId = textSentences[tsi].ChapterId;
                             int textSentenceField = languageId * shiftFactor + chapterId;
                             await _data.AddChapter(textSentenceKey, textSentenceField, textSentences[tsi]);
-
 
 
                             stopWatch.Stop();
@@ -186,8 +184,7 @@ namespace BooksTextsSplit.Library.Services
                 {
                     // Prevent throwing if the Delay is cancelled
                 }
-            });
-            //return "Task " + guid + " was Queued Background";
+            });            
         }
 
         private async Task<bool> SetTaskState(TaskUploadPercents uploadPercents, TimeSpan ts, int tsi)
