@@ -1,0 +1,41 @@
+
+[16:06:57 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[16:06:57 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 56] 
+ Queued Hosted Service is running.
+
+Tap W to add a work item to the background queue.
+ 
+ 
+[16:06:58 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 226] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[16:06:58 INF (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 253] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:65757036-025a-45cb-b306-a9a8869f6733" } 
+ 
+[16:06:58 INF (4) BackgroundTasksQueue.Services.QueuedHostedService.BackgroundProcessing - 91] 
+ Server Guid was fetched in QueuedHostedService. 
+ { ServerId: "backserver:65757036-025a-45cb-b306-a9a8869f6733" } 
+ 
+[16:06:58 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.BackgroundProcessing - 100] 
+ Creation of the processes was subscribed on necessary count. 
+ { Key: "process:add:65757036-025a-45cb-b306-a9a8869f6733" } / { Field: "ttt" } 
+ 
+[16:06:58 INF (18) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[16:06:58 DBG (18) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[16:06:58 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.BackgroundProcessing - 133] 
+ You subscribed on EventSet. 
+ { EventSet: "Key process:add:65757036-025a-45cb-b306-a9a8869f6733, HashSet command" } 
+ 
+[16:06:58 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.BackgroundProcessing - 163] 
+ All Background Processes were finished, total count was 0 
+ 

@@ -1,0 +1,2088 @@
+
+[17:32:30 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[17:34:05 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[17:34:29 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:17:33 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:18:28 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:18:28 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[19:18:28 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[19:18:28 INF (6) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 233] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:2dceaed8-863f-4501-b96a-cc87693437b9" } 
+ 
+[19:18:28 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[19:18:28 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[19:18:55 DBG (25) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[19:18:55 DBG (25) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[19:18:55 DBG (25) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[19:18:55 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:18:55 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[19:18:55 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[19:18:55 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:18:55 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[19:18:55 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[19:18:55 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 5 }. 
+ 
+[19:18:55 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 4 }. 
+ 
+[19:18:55 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 446068 }. 
+ 
+[19:18:55 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 0 }. 
+ 
+[19:18:55 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[19:18:55 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:810faab8-0e8c-437c-a2aa-8b4153c9ac73" } 
+ 
+[19:18:55 INF (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:810faab8-0e8c-437c-a2aa-8b4153c9ac73" }. 
+ 
+[19:18:55 WRN (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[19:18:55 INF (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:810faab8-0e8c-437c-a2aa-8b4153c9ac73" } 
+ 
+[19:18:55 DBG (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:810faab8-0e8c-437c-a2aa-8b4153c9ac73, Command = HashSet" } 
+ 
+[19:18:55 DBG (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 40] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:810faab8-0e8c-437c-a2aa-8b4153c9ac73" } 
+ 
+[19:18:55 VRB (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 59] 
+ RegisterTasksPackageGuid called. 
+ 
+[19:18:55 DBG (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[19:18:55 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 215] 
+ Tasks package was registered. 
+ { Package: "package:810faab8-0e8c-437c-a2aa-8b4153c9ac73" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[19:18:55 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[19:18:55 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ Key "process:add:2dceaed8-863f-4501-b96a-cc87693437b9" about new package was created for processes solver. 
+ { Field: "ttt" } 
+ { Package: "package:810faab8-0e8c-437c-a2aa-8b4153c9ac73" } 
+ 
+[19:18:55 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 61] 
+ RegisterTasksPackageGuid finished. 
+ 
+[19:18:55 INF (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 184] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 4, needed processes count = 2. 
+ 
+[19:25:09 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:25:09 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[19:25:10 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[19:25:10 INF (18) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 233] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:2990ef09-b5ba-4cb8-9cac-88810ef871b9" } 
+ 
+[19:25:10 INF (18) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[19:25:10 DBG (18) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[19:25:19 DBG (29) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[19:25:19 DBG (29) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[19:25:19 DBG (29) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[19:25:19 DBG (29) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:25:19 DBG (29) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[19:25:19 DBG (29) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[19:25:19 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:25:19 DBG (29) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[19:25:19 DBG (29) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[19:25:19 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 9 }. 
+ 
+[19:25:19 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 8 }. 
+ 
+[19:25:19 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 466768 }. 
+ 
+[19:25:19 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 0 }. 
+ 
+[19:25:19 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[19:25:19 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:fa043a71-2be1-42ea-97ee-6256316cbdbf" } 
+ 
+[19:25:19 INF (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:fa043a71-2be1-42ea-97ee-6256316cbdbf" }. 
+ 
+[19:25:19 WRN (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[19:25:19 INF (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:fa043a71-2be1-42ea-97ee-6256316cbdbf" } 
+ 
+[19:25:19 DBG (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:fa043a71-2be1-42ea-97ee-6256316cbdbf, Command = HashSet" } 
+ 
+[19:25:19 DBG (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:fa043a71-2be1-42ea-97ee-6256316cbdbf" } 
+ 
+[19:25:19 VRB (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[19:25:19 DBG (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[19:25:19 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 216] 
+ Tasks package was registered. 
+ { Package: "package:fa043a71-2be1-42ea-97ee-6256316cbdbf" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[19:25:19 VRB (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 225] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[19:25:19 INF (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 234] 
+ Key "process:add:2990ef09-b5ba-4cb8-9cac-88810ef871b9" about new package was created for processes solver. 
+ { Field: "ttt" } 
+ { Package: "package:fa043a71-2be1-42ea-97ee-6256316cbdbf" } 
+ 
+[19:25:19 VRB (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[19:25:19 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 185] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 5, needed processes count = 2. 
+ 
+[19:35:39 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:35:39 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[19:35:39 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[19:35:39 INF (19) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 233] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:477f136a-54cd-4194-a594-9be678162da7" } 
+ 
+[19:35:39 INF (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[19:35:39 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[19:35:46 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[19:35:46 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[19:35:46 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[19:35:47 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:35:47 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[19:35:47 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:35:47 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[19:35:47 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 13 }. 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 12 }. 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 708390 }. 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 6 }. 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:6ee1f00f-c437-4d32-99f7-f20094ec66af" } 
+ 
+[19:35:47 INF (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:6ee1f00f-c437-4d32-99f7-f20094ec66af" }. 
+ 
+[19:35:47 WRN (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[19:35:47 INF (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:6ee1f00f-c437-4d32-99f7-f20094ec66af" } 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:6ee1f00f-c437-4d32-99f7-f20094ec66af, Command = HashSet" } 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:6ee1f00f-c437-4d32-99f7-f20094ec66af" } 
+ 
+[19:35:47 VRB (19) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[19:35:47 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:6ee1f00f-c437-4d32-99f7-f20094ec66af" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[19:35:47 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[19:35:47 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 242] 
+ Key "process:add:477f136a-54cd-4194-a594-9be678162da7" about new package was created for processes solver. 
+ { Field: "ttt" } 
+ { Package: "package:6ee1f00f-c437-4d32-99f7-f20094ec66af" } 
+ 
+[19:35:47 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[19:35:47 INF (19) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = {1}. 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 3, needed processes count = 1. 
+ 
+[19:35:47 INF (19) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = {1}. 
+ 
+[19:35:47 DBG (19) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[19:38:13 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:38:14 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[19:38:14 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[19:38:14 INF (17) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 233] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:7c5e23ed-aa1d-4ed7-8607-b9ad7f0bc3b2" } 
+ 
+[19:38:14 INF (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[19:38:14 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[19:38:19 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[19:38:19 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[19:38:19 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[19:38:19 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:38:19 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[19:38:19 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[19:38:19 DBG (27) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:38:19 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[19:38:19 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[19:38:19 DBG (27) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 17 }. 
+ 
+[19:38:19 DBG (27) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 16 }. 
+ 
+[19:38:19 DBG (27) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 303919 }. 
+ 
+[19:38:19 DBG (27) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 15 }. 
+ 
+[19:38:19 DBG (27) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[19:38:19 DBG (27) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:5b6523d7-18c4-4a97-a713-0c983b633d91" } 
+ 
+[19:38:19 INF (27) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:5b6523d7-18c4-4a97-a713-0c983b633d91" }. 
+ 
+[19:38:19 WRN (27) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[19:38:19 INF (27) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:5b6523d7-18c4-4a97-a713-0c983b633d91" } 
+ 
+[19:38:19 DBG (27) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:5b6523d7-18c4-4a97-a713-0c983b633d91, Command = HashSet" } 
+ 
+[19:38:19 DBG (27) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:5b6523d7-18c4-4a97-a713-0c983b633d91" } 
+ 
+[19:38:19 VRB (27) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[19:38:19 DBG (27) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[19:38:19 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:5b6523d7-18c4-4a97-a713-0c983b633d91" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[19:38:19 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[19:38:19 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 242] 
+ Key "process:add:7c5e23ed-aa1d-4ed7-8607-b9ad7f0bc3b2" about new package was created for processes solver. 
+ { Field: "ttt" } 
+ { Package: "package:5b6523d7-18c4-4a97-a713-0c983b633d91" } 
+ 
+[19:38:19 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[19:38:19 INF (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = {1}. 
+ 
+[19:38:19 DBG (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 4, needed processes count = 2. 
+ 
+[19:38:19 INF (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = {1}. 
+ 
+[19:38:19 DBG (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[19:39:26 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:39:27 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[19:39:27 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[19:39:27 INF (6) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 233] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:b1c363be-790a-4b95-b0fd-fa7130bed001" } 
+ 
+[19:39:27 INF (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[19:39:27 DBG (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[19:39:41 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:39:41 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[19:39:41 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:39:41 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[19:39:41 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 21 }. 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 20 }. 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 413412 }. 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 12 }. 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:9200eeb3-d568-4a24-9720-cb8b6e40cb95" } 
+ 
+[19:39:41 INF (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:9200eeb3-d568-4a24-9720-cb8b6e40cb95" }. 
+ 
+[19:39:41 WRN (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[19:39:41 INF (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:9200eeb3-d568-4a24-9720-cb8b6e40cb95" } 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:9200eeb3-d568-4a24-9720-cb8b6e40cb95, Command = HashSet" } 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:9200eeb3-d568-4a24-9720-cb8b6e40cb95" } 
+ 
+[19:39:41 VRB (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[19:39:41 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:9200eeb3-d568-4a24-9720-cb8b6e40cb95" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[19:39:41 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[19:39:41 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 242] 
+ Key "process:add:b1c363be-790a-4b95-b0fd-fa7130bed001" about new package was created for processes solver. 
+ { Field: "ttt" } 
+ { Package: "package:9200eeb3-d568-4a24-9720-cb8b6e40cb95" } 
+ 
+[19:39:41 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[19:39:41 INF (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = {1}. 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 9, needed processes count = 3. 
+ 
+[19:39:41 INF (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = {1}. 
+ 
+[19:39:41 DBG (6) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[19:41:59 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:42:00 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[19:42:00 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[19:42:00 INF (5) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 233] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:1933a135-06bb-45e7-8181-e97dbb287a47" } 
+ 
+[19:42:00 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[19:42:00 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[19:42:04 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[19:42:04 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[19:42:04 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[19:42:04 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:42:04 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[19:42:04 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[19:42:04 DBG (28) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:42:04 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[19:42:04 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[19:42:04 DBG (28) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 25 }. 
+ 
+[19:42:04 DBG (28) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 24 }. 
+ 
+[19:42:04 DBG (28) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 594609 }. 
+ 
+[19:42:04 DBG (28) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 9 }. 
+ 
+[19:42:04 DBG (28) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[19:42:04 DBG (28) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:be83f182-03e3-4549-81db-846b20f9bc91" } 
+ 
+[19:42:04 INF (28) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:be83f182-03e3-4549-81db-846b20f9bc91" }. 
+ 
+[19:42:04 WRN (28) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[19:42:04 INF (28) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:be83f182-03e3-4549-81db-846b20f9bc91" } 
+ 
+[19:42:04 DBG (28) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:be83f182-03e3-4549-81db-846b20f9bc91, Command = HashSet" } 
+ 
+[19:42:04 DBG (28) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:be83f182-03e3-4549-81db-846b20f9bc91" } 
+ 
+[19:42:04 VRB (28) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[19:42:04 DBG (28) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[19:42:04 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:be83f182-03e3-4549-81db-846b20f9bc91" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[19:42:04 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[19:42:04 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 242] 
+ Key "process:add:1933a135-06bb-45e7-8181-e97dbb287a47" about new package was created for processes solver. 
+ { Field: "ttt" } 
+ { Package: "package:be83f182-03e3-4549-81db-846b20f9bc91" } 
+ 
+[19:42:04 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[19:42:04 INF (5) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = {1}. 
+ 
+[19:42:04 DBG (5) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 8, needed processes count = 3. 
+ 
+[19:42:04 INF (5) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = {1}. 
+ 
+[19:42:17 DBG (5) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[19:47:01 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:47:02 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[19:47:02 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[19:47:02 INF (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 233] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:3d196bd6-569c-4970-a972-6a2dd6d245ec" } 
+ 
+[19:47:02 INF (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[19:47:02 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[19:47:21 DBG (25) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:47:21 DBG (25) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[19:47:21 DBG (25) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:47:21 DBG (25) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[19:47:21 DBG (25) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 29 }. 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 28 }. 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 340137 }. 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 21 }. 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:94356077-e719-44a6-ad63-ae4bb52abe94" } 
+ 
+[19:47:21 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:94356077-e719-44a6-ad63-ae4bb52abe94" }. 
+ 
+[19:47:21 WRN (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[19:47:21 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:94356077-e719-44a6-ad63-ae4bb52abe94" } 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:94356077-e719-44a6-ad63-ae4bb52abe94, Command = HashSet" } 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:94356077-e719-44a6-ad63-ae4bb52abe94" } 
+ 
+[19:47:21 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[19:47:21 DBG (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:94356077-e719-44a6-ad63-ae4bb52abe94" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[19:47:21 VRB (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[19:47:21 INF (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 242] 
+ Key "process:add:3d196bd6-569c-4970-a972-6a2dd6d245ec" about new package was created for processes solver. 
+ { Field: "ttt" } 
+ { Package: "package:94356077-e719-44a6-ad63-ae4bb52abe94" } 
+ 
+[19:47:21 VRB (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[19:47:21 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = {1}. 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 4, needed processes count = 2. 
+ 
+[19:47:21 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = {1}. 
+ 
+[19:47:21 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[19:50:12 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:50:13 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[19:50:13 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[19:50:13 INF (17) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 233] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:13f08f25-854c-43e4-bdee-29e89c8fc834" } 
+ 
+[19:50:13 INF (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[19:50:13 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[19:50:29 DBG (26) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[19:50:29 DBG (26) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[19:50:30 DBG (26) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[19:50:30 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:50:30 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[19:50:30 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[19:50:30 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:50:30 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[19:50:30 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[19:50:30 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 33 }. 
+ 
+[19:50:30 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 32 }. 
+ 
+[19:50:30 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 272118 }. 
+ 
+[19:50:30 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 22 }. 
+ 
+[19:50:30 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[19:50:30 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:84ff0c40-2eb2-4a40-b2a2-e88010faecb7" } 
+ 
+[19:50:30 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:84ff0c40-2eb2-4a40-b2a2-e88010faecb7" }. 
+ 
+[19:50:30 WRN (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[19:50:30 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:84ff0c40-2eb2-4a40-b2a2-e88010faecb7" } 
+ 
+[19:50:30 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:84ff0c40-2eb2-4a40-b2a2-e88010faecb7, Command = HashSet" } 
+ 
+[19:50:30 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:84ff0c40-2eb2-4a40-b2a2-e88010faecb7" } 
+ 
+[19:50:30 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[19:50:30 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[19:50:30 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:84ff0c40-2eb2-4a40-b2a2-e88010faecb7" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[19:50:30 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[19:50:30 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 242] 
+ Key "process:add:13f08f25-854c-43e4-bdee-29e89c8fc834" about new package was created for processes solver. 
+ { Field: "ttt" } 
+ { Package: "package:84ff0c40-2eb2-4a40-b2a2-e88010faecb7" } 
+ 
+[19:50:30 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[19:50:30 INF (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = {1}. 
+ 
+[19:50:30 DBG (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 3, needed processes count = 1. 
+ 
+[19:50:30 INF (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = {1}. 
+ 
+[19:50:30 DBG (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[19:52:20 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:52:21 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[19:52:21 DBG (19) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[19:53:55 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[19:53:55 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[19:53:55 DBG (17) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[19:54:56 INF (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 233] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:d0cfccd8-5908-4b87-bf89-c75109c6829a" } 
+ 
+[19:54:56 INF (25) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[19:54:56 DBG (25) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[19:55:27 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[19:55:27 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[19:55:27 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[19:55:27 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:55:27 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[19:55:27 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[19:55:27 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[19:55:27 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 37 }. 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 36 }. 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 422669 }. 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 29 }. 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:6868d30a-3eef-4d8e-b0c5-b3a07e87ffe1" } 
+ 
+[19:55:27 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:6868d30a-3eef-4d8e-b0c5-b3a07e87ffe1" }. 
+ 
+[19:55:27 WRN (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[19:55:27 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:6868d30a-3eef-4d8e-b0c5-b3a07e87ffe1" } 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:6868d30a-3eef-4d8e-b0c5-b3a07e87ffe1, Command = HashSet" } 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:6868d30a-3eef-4d8e-b0c5-b3a07e87ffe1" } 
+ 
+[19:55:27 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[19:55:27 DBG (25) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:6868d30a-3eef-4d8e-b0c5-b3a07e87ffe1" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[19:55:27 VRB (25) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[19:55:27 INF (25) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 242] 
+ Key "process:add:d0cfccd8-5908-4b87-bf89-c75109c6829a" about new package was created for processes solver. 
+ { Field: "ttt" } 
+ { Package: "package:6868d30a-3eef-4d8e-b0c5-b3a07e87ffe1" } 
+ 
+[19:55:27 VRB (25) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[19:55:27 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = {1}. 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 5, needed processes count = 2. 
+ 
+[19:55:27 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = {1}. 
+ 
+[19:55:27 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:17:34 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[20:17:34 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[20:17:34 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[20:17:34 INF (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 232] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:fa6c9b01-6ff0-484f-976f-72bc1c34f1db" } 
+ 
+[20:17:34 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[20:17:34 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[20:17:45 DBG (26) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[20:17:45 DBG (26) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[20:17:45 DBG (26) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[20:17:45 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:17:45 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[20:17:45 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[20:17:45 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:17:45 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[20:17:45 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[20:17:45 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 41 }. 
+ 
+[20:17:45 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 40 }. 
+ 
+[20:17:45 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 920917 }. 
+ 
+[20:17:45 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 37 }. 
+ 
+[20:17:45 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[20:17:45 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:2068a24b-bb36-4257-86c9-6d5cad7aaa65" } 
+ 
+[20:17:45 INF (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:2068a24b-bb36-4257-86c9-6d5cad7aaa65" }. 
+ 
+[20:17:45 WRN (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[20:17:45 INF (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:2068a24b-bb36-4257-86c9-6d5cad7aaa65" } 
+ 
+[20:17:45 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:2068a24b-bb36-4257-86c9-6d5cad7aaa65, Command = HashSet" } 
+ 
+[20:17:45 DBG (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:2068a24b-bb36-4257-86c9-6d5cad7aaa65" } 
+ 
+[20:17:45 VRB (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[20:17:45 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[20:17:45 DBG (33) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:2068a24b-bb36-4257-86c9-6d5cad7aaa65" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[20:17:45 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[20:17:45 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[20:17:45 INF (26) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = {1}. 
+ 
+[20:17:45 DBG (26) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 5, needed processes count = 2. 
+ 
+[20:17:45 INF (26) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = {1}. 
+ 
+[20:17:45 DBG (26) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:17:45 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 176] 
+ CarrierProcesses total count is {1}. 
+ 
+[20:17:45 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 181] 
+ Actual Processes labels (guids) count is 0. 
+ 
+[20:17:45 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 116] 
+ actualProcessesCount was fetched, Processes exist = {1}. 
+ 
+[20:17:45 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 122] 
+ correctionProcessesCount was calculated, correction needed = {1}. 
+ 
+[20:17:45 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 161] 
+ required processes count < 0, Count = 2, needs to call AddCarrierProcesses. 
+ 
+[20:17:45 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 79] 
+ CarrierProcesses addition is started, required additional count = 2, total count was 0. 
+ 
+[20:17:45 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 0. 
+ 
+[20:17:45 DBG (30) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 1. 
+ 
+[20:17:45 DBG (30) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 1. 
+ 
+[20:17:45 DBG (30) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 2. 
+ 
+[20:17:45 DBG (30) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 111] 
+ New processes count was checked, count++ = 2, total count = 2. 
+ 
+[20:17:45 DBG (30) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:17:45 DBG (30) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 176] 
+ CarrierProcesses total count is {1}. 
+ 
+[20:18:51 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[20:18:52 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[20:18:52 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[20:18:52 INF (11) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 232] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:f1418ec1-d56e-42fb-959e-068cad8039cb" } 
+ 
+[20:18:52 INF (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[20:18:52 DBG (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[20:19:24 DBG (25) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[20:19:24 DBG (25) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[20:19:24 DBG (25) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[20:19:24 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:19:24 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[20:19:24 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:19:24 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[20:19:24 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 45 }. 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 44 }. 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 42740 }. 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 16 }. 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:2cb64bfd-c69b-4b2c-a4f0-4aed6a37a9da" } 
+ 
+[20:19:24 INF (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:2cb64bfd-c69b-4b2c-a4f0-4aed6a37a9da" }. 
+ 
+[20:19:24 WRN (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[20:19:24 INF (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:2cb64bfd-c69b-4b2c-a4f0-4aed6a37a9da" } 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:2cb64bfd-c69b-4b2c-a4f0-4aed6a37a9da, Command = HashSet" } 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:2cb64bfd-c69b-4b2c-a4f0-4aed6a37a9da" } 
+ 
+[20:19:24 VRB (11) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[20:19:24 DBG (25) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:2cb64bfd-c69b-4b2c-a4f0-4aed6a37a9da" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[20:19:24 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[20:19:24 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[20:19:24 INF (11) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = {1}. 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 6, needed processes count = 3. 
+ 
+[20:19:24 INF (11) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = {1}. 
+ 
+[20:19:24 DBG (11) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:19:57 DBG (25) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 176] 
+ CarrierProcesses total count is {1}. 
+ 
+[20:20:52 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 181] 
+ Actual Processes labels (guids) count is 0. 
+ 
+[20:22:24 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 116] 
+ actualProcessesCount was fetched, Processes exist = {1}. 
+ 
+[20:22:47 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 122] 
+ correctionProcessesCount was calculated, correction needed = {1}. 
+ 
+[20:22:56 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 161] 
+ required processes count < 0, Count = 3, needs to call AddCarrierProcesses. 
+ 
+[20:22:56 DBG (25) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 79] 
+ CarrierProcesses addition is started, required additional count = 3, total count was 0. 
+ 
+[20:22:56 DBG (25) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 0. 
+ 
+[20:22:56 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 1. 
+ 
+[20:22:56 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 1. 
+ 
+[20:22:56 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 2. 
+ 
+[20:22:56 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 2. 
+ 
+[20:22:56 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 3. 
+ 
+[20:22:56 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 111] 
+ New processes count was checked, count++ = 3, total count = 3. 
+ 
+[20:24:48 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[20:24:48 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[20:24:48 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[20:24:48 INF (11) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 232] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:b7934236-0478-47e0-93e4-59b7edc01690" } 
+ 
+[20:24:48 INF (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[20:24:48 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[20:24:57 DBG (28) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[20:24:57 DBG (28) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[20:24:57 DBG (28) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[20:24:57 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:24:57 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[20:24:57 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[20:24:57 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:24:57 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[20:24:57 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[20:24:57 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 49 }. 
+ 
+[20:24:57 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 48 }. 
+ 
+[20:24:57 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 430918 }. 
+ 
+[20:24:57 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 22 }. 
+ 
+[20:24:57 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[20:24:57 DBG (11) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:4f930988-3995-454e-8dd9-f53cc12bba2f" } 
+ 
+[20:24:57 INF (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:4f930988-3995-454e-8dd9-f53cc12bba2f" }. 
+ 
+[20:24:57 WRN (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[20:24:57 INF (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:4f930988-3995-454e-8dd9-f53cc12bba2f" } 
+ 
+[20:24:57 DBG (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:4f930988-3995-454e-8dd9-f53cc12bba2f, Command = HashSet" } 
+ 
+[20:24:57 DBG (11) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:4f930988-3995-454e-8dd9-f53cc12bba2f" } 
+ 
+[20:24:57 VRB (11) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[20:24:57 DBG (11) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[20:24:57 DBG (29) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:4f930988-3995-454e-8dd9-f53cc12bba2f" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[20:24:57 VRB (29) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[20:24:57 VRB (29) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[20:24:57 INF (32) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = 4. 
+ 
+[20:24:57 DBG (32) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 4, needed processes count = 2. 
+ 
+[20:24:57 INF (32) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = 2. 
+ 
+[20:24:57 DBG (32) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:24:57 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 176] 
+ CarrierProcesses total count is {1}. 
+ 
+[20:24:57 DBG (19) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 181] 
+ Actual Processes labels (guids) count is 0. 
+ 
+[20:24:57 INF (19) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 116] 
+ actualProcessesCount was fetched, Processes exist = 0. 
+ 
+[20:24:57 INF (19) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 122] 
+ correctionProcessesCount was calculated, correction needed = 2. 
+ 
+[20:24:57 DBG (19) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 161] 
+ required processes count < 0, Count = 2, needs to call AddCarrierProcesses. 
+ 
+[20:24:57 DBG (19) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 79] 
+ CarrierProcesses addition is started, required additional count = 2, total count was 0. 
+ 
+[20:24:57 DBG (19) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 0. 
+ 
+[20:24:57 DBG (29) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 1. 
+ 
+[20:24:57 DBG (29) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 1. 
+ 
+[20:24:57 DBG (29) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 2. 
+ 
+[20:24:57 DBG (29) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 111] 
+ New processes count was checked, count++ = 2, total count = 2. 
+ 
+[20:24:57 DBG (29) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:24:57 DBG (29) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 176] 
+ CarrierProcesses total count is {1}. 
+ 
+[20:26:39 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[20:26:39 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[20:26:40 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[20:26:40 INF (17) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 232] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:88536bb6-7e9a-4d29-9078-cdb29491cbd9" } 
+ 
+[20:26:40 INF (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[20:26:40 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[20:26:46 DBG (26) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[20:26:46 DBG (26) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[20:26:46 DBG (26) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[20:26:46 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[20:26:46 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 53 }. 
+ 
+[20:26:46 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 52 }. 
+ 
+[20:26:46 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 804024 }. 
+ 
+[20:26:46 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 0 }. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:4a1efe10-26a1-4582-99a1-809ebce180c5" } 
+ 
+[20:26:46 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:4a1efe10-26a1-4582-99a1-809ebce180c5" }. 
+ 
+[20:26:46 WRN (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[20:26:46 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:4a1efe10-26a1-4582-99a1-809ebce180c5" } 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:4a1efe10-26a1-4582-99a1-809ebce180c5, Command = HashSet" } 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:4a1efe10-26a1-4582-99a1-809ebce180c5" } 
+ 
+[20:26:46 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[20:26:46 DBG (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:4a1efe10-26a1-4582-99a1-809ebce180c5" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[20:26:46 VRB (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[20:26:46 VRB (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[20:26:46 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = 4. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 4, needed processes count = 2. 
+ 
+[20:26:46 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = 2. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:26:46 DBG (19) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 176] 
+ CarrierProcesses total count is 0. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 181] 
+ Actual Processes labels (guids) count is 0. 
+ 
+[20:26:46 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 116] 
+ actualProcessesCount was fetched, Processes exist = 0. 
+ 
+[20:26:46 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 122] 
+ correctionProcessesCount was calculated, correction needed = 2. 
+ 
+[20:26:46 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 161] 
+ required processes count < 0, Count = 2, needs to call AddCarrierProcesses. 
+ 
+[20:26:46 DBG (19) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 79] 
+ CarrierProcesses addition is started, required additional count = 2, total count was 0. 
+ 
+[20:26:47 DBG (19) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 0. 
+ 
+[20:26:47 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 1. 
+ 
+[20:26:47 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 1. 
+ 
+[20:26:47 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 2. 
+ 
+[20:26:47 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 111] 
+ New processes count was checked, count++ = 2, total count = 2. 
+ 
+[20:26:47 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count < 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:26:47 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 176] 
+ CarrierProcesses total count is 2. 
+ 
+[20:30:33 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[20:30:34 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[20:30:34 DBG (19) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[20:30:34 INF (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 232] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:b342fd45-5902-48cb-b3b8-17e7b48fa502" } 
+ 
+[20:30:34 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[20:30:34 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[20:30:40 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:30:40 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[20:30:40 DBG (19) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:30:40 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[20:30:40 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 57 }. 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 56 }. 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 215190 }. 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 38 }. 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:ccd0eb59-6f4a-4943-8cad-da1581895c60" } 
+ 
+[20:30:40 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:ccd0eb59-6f4a-4943-8cad-da1581895c60" }. 
+ 
+[20:30:40 WRN (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[20:30:40 INF (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:ccd0eb59-6f4a-4943-8cad-da1581895c60" } 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:ccd0eb59-6f4a-4943-8cad-da1581895c60, Command = HashSet" } 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:ccd0eb59-6f4a-4943-8cad-da1581895c60" } 
+ 
+[20:30:40 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[20:30:40 DBG (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:ccd0eb59-6f4a-4943-8cad-da1581895c60" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[20:30:40 VRB (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[20:30:40 VRB (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[20:30:40 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = 7. 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 7, needed processes count = 3. 
+ 
+[20:30:40 INF (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = 3. 
+ 
+[20:30:40 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count = 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:30:43 DBG (17) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 176] 
+ CarrierProcesses total count is 0. 
+ 
+[20:30:43 DBG (25) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 181] 
+ Actual Processes labels (guids) count is 0. 
+ 
+[20:30:43 INF (25) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 116] 
+ actualProcessesCount was fetched, Processes exist = 0. 
+ 
+[20:30:43 INF (25) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 122] 
+ correctionProcessesCount was calculated, correction needed = 3. 
+ 
+[20:30:43 DBG (25) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 161] 
+ required processes count > 0, Count = 3, needs to call AddCarrierProcesses. 
+ 
+[20:30:43 DBG (25) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 79] 
+ CarrierProcesses addition is started, required additional count = 3, total count was 0. 
+ 
+[20:30:43 DBG (25) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 0. 
+ 
+[20:30:43 DBG (25) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 1. 
+ 
+[20:30:43 DBG (25) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 1. 
+ 
+[20:30:43 DBG (27) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 2. 
+ 
+[20:30:43 DBG (27) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 2. 
+ 
+[20:30:43 DBG (27) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 3. 
+ 
+[20:30:43 DBG (27) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 111] 
+ New processes count was checked, count++ = 3, total count = 3. 
+ 
+[20:30:43 DBG (27) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count = 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:32:03 DBG (27) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 176] 
+ CarrierProcesses total count is 3. 
+ 
+[20:35:10 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[20:35:11 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 53] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[20:35:11 DBG (17) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 202] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[20:35:11 INF (17) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 232] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:55445858-a680-4ed9-b86d-fe806ca0b715" } 
+ 
+[20:35:11 INF (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 72] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[20:35:11 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 98] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[20:35:19 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 91] 
+ CheckKeyFrontGivesTask will be called No:0, Event permit = False 
+ { Key: "key-event-front-server-gives-task-package" } with { Command: HashSet } was received. 
+ 
+ 
+[20:35:19 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 104] 
+ CheckKeyFrontGivesTask was called No:1. 
+ 
+[20:35:19 DBG (19) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 108] 
+ KeyFrontGivesTask will be checked now. 
+ 
+[20:35:19 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 110] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:35:19 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 41] 
+ BackServer started AttemptToCaptureTasksPackage. 
+ 
+[20:35:19 DBG (4) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 59] 
+ KeyExistsAsync will call now. 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 61] 
+ KeyFrontGivesTask { isExisted: True }. 
+ 
+[20:35:19 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 116] 
+ FreshTaskPackageAppeared was passed, Subscribe permit = False. 
+ 
+[20:35:19 DBG (4) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.CheckKeyFrontGivesTask - 118] 
+ CheckKeyFrontGivesTask finished No:1. 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 74] 
+ TasksList fetched - { TaskCount: 61 }. 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 122] 
+ DiceRoll is prepared to roll { BaseValue: 60 }. 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 128] 
+ DiceRollRow rolled { RowValue: 679638 }. 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.DiceRoll - 131] 
+ DiceRoll rolled { Facet: 18 }. 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 91] 
+ BackServer reported - { TasksPackageFieldWasDeletedSuccessfully: True }. 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.TasksPackageCaptureService.AttemptToCaptureTasksPackage - 97] 
+ Task Package fetched. 
+ { Package: "package:54ed7506-2999-4c95-aaac-ea8685abab15" } 
+ 
+[20:35:19 INF (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 152] 
+ AttemptToCaptureTasksPackage captured the TaskPackage. 
+ { TaskPackage: "package:54ed7506-2999-4c95-aaac-ea8685abab15" }. 
+ 
+[20:35:19 WRN (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 154] 
+ AttemptToCaptureTasksPackage captured new TaskPackage. 
+ "##########################################################################################" 
+ 
+ 
+[20:35:19 INF (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 229] 
+ BackServer subscribed on EventKey Server Guid. 
+ { EventKey: "completed:package:54ed7506-2999-4c95-aaac-ea8685abab15" } 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventPackageCompleted - 247] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = completed:package:54ed7506-2999-4c95-aaac-ea8685abab15, Command = HashSet" } 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 41] 
+ This BackServer fetched Task Package successfully. 
+ { Package: "package:54ed7506-2999-4c95-aaac-ea8685abab15" } 
+ 
+[20:35:19 VRB (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 60] 
+ RegisterTasksPackageGuid called. 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.FreshTaskPackageAppeared - 164] 
+ WhenTasksPackageWasCaptured passed without awaiting. 
+ 
+[20:35:19 DBG (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 224] 
+ Tasks package was registered. 
+ { Package: "package:54ed7506-2999-4c95-aaac-ea8685abab15" } 
+ { EventKey: "key-event-backs-servers-tasks-packages-proceed" } 
+ 
+[20:35:19 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.RegisterTasksPackageGuid - 233] 
+ This BackServer registered task package and RegisterTasksPackageGuid returned true. 
+ 
+[20:35:19 VRB (4) BackgroundTasksQueue.Services.TasksBatchProcessingService.WhenTasksPackageWasCaptured - 62] 
+ RegisterTasksPackageGuid finished. 
+ 
+[20:35:19 INF (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 108] 
+ taskPackageCount was fetched, Task Count = 3. 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CalcNeededProcessesCountForPackage - 193] 
+ CalcNeededProcessesCountForPackage - balance = 2, Task Count = 3, needed processes count = 1. 
+ 
+[20:35:19 INF (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 112] 
+ neededProcessesCount was calculated, Processes needed = 1. 
+ 
+[20:35:19 DBG (17) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count = 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:35:25 DBG (4) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 176] 
+ CarrierProcesses total count is 0. 
+ 
+[20:35:25 DBG (26) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 181] 
+ Actual Processes labels (guids) count is 0. 
+ 
+[20:35:25 INF (26) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 116] 
+ actualProcessesCount was fetched, Processes exist = 0. 
+ 
+[20:35:25 INF (26) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesSolver - 122] 
+ correctionProcessesCount was calculated, correction needed = 1. 
+ 
+[20:35:25 DBG (26) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 161] 
+ required processes count > 0, Count = 1, needs to call AddCarrierProcesses. 
+ 
+[20:35:25 DBG (26) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 79] 
+ CarrierProcesses addition is started, required additional count = 1, total count was 0. 
+ 
+[20:35:25 DBG (26) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 86] 
+ CarrierProcessesManager creates process No 0. 
+ 
+[20:35:25 DBG (31) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 107] 
+ New Task for Background Processes was added, total count became 1. 
+ 
+[20:35:25 DBG (31) BackgroundTasksQueue.BackgroundTaskQueue.AddCarrierProcesses - 111] 
+ New processes count was checked, count++ = 1, total count = 1. 
+ 
+[20:35:25 DBG (31) BackgroundTasksQueue.Services.TasksBatchProcessingService.CarrierProcessesManager - 156] 
+ required processes count = 0, Count = 0, needs to call CarrierProcessesCount. 
+ 
+[20:35:29 DBG (31) BackgroundTasksQueue.BackgroundTaskQueue.CarrierProcessesCount - 176] 
+ CarrierProcesses total count is 1. 
+ 

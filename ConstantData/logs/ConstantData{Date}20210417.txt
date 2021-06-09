@@ -1,0 +1,40 @@
+
+[17:46:38 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[17:46:38 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 47] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[17:46:38 INF (20) ConstantData.MonitorLoop.ConstantsMountingMonitor - 59] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 1. 
+ 
+[17:46:38 INF (20) ConstantData.MonitorLoop.ConstantsMountingMonitor - 63] 
+ ConstantData send constants {0} to SetStartConstants. 
+ 
+[21:36:28 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[21:36:29 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 47] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[21:36:29 INF (18) ConstantData.MonitorLoop.ConstantsMountingMonitor - 61] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 1. 
+ 
+[21:36:29 INF (18) ConstantData.MonitorLoop.ConstantsMountingMonitor - 65] 
+ ConstantData send constants {0} to SetStartConstants. 
+ 
+[22:47:03 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[22:47:03 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 47] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[22:47:03 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 61] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 1. 
+ 
+[22:47:03 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 65] 
+ ConstantData send constants {0} to SetStartConstants. 
+ 

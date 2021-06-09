@@ -1,0 +1,3953 @@
+
+[17:53:25 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[17:53:25 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 153] 
+ Constants in Dictionary Test started. 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 0, description - "current model version of Db data structure" 
+ property name = "RecordActualityLevel", 
+ value = "6" time = "-1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds" 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = "300" time = "-1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)" 
+ property name = "RandomRangeExtended", 
+ value = "1000000" time = "-1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution " 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = "2" time = "-1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)" 
+ property name = "MaxProcessesCountOnServer", 
+ value = "3" time = "-1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server" 
+ property name = "MinBackProcessesServersCount", 
+ value = "2" time = "-1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 6, description - "key to fetch task package from controller/emulator" 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 7, description - "key " 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 8, description - "key " 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package" time = "2" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 9, description - "key " 
+ property name = "EventKeyUpdateConstants", 
+ value = "update" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 10, description - "key " 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 11, description - "key " 
+ property name = "PrefixRequest", 
+ value = "request" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 12, description - "key " 
+ property name = "PrefixPackage", 
+ value = "package" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 13, description - "key " 
+ property name = "PrefixPackageControl", 
+ value = "control" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 14, description - "key " 
+ property name = "PrefixPackageCompleted", 
+ value = "completed" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 15, description - "key " 
+ property name = "PrefixTask", 
+ value = "task" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 16, description - "key " 
+ property name = "PrefixBackServer", 
+ value = "backserver" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 17, description - "key " 
+ property name = "PrefixProcessAdd", 
+ value = "process:add" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 18, description - "key " 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 19, description - "key " 
+ property name = "PrefixProcessCount", 
+ value = "process:count" time = "1" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 20, description - "field " 
+ property name = "EventFieldFrom", 
+ value = "count" time = "0" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 21, description - "field " 
+ property name = "EventFieldBack", 
+ value = "ttt" time = "0" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.DictionaryTest - 160] 
+ Key No: 22, description - "field " 
+ property name = null, 
+ value = "ttt" time = "0" 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 71] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[17:53:25 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 75] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[17:53:25 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[17:53:25 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:065c73d2-e084-4952-bfbd-2ff16ec93ad8":1. 
+ 
+[18:58:10 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[18:58:11 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 153] 
+ Constants in Dictionary Test started. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 2. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 1. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 71] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[18:58:11 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 75] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[18:58:11 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[18:58:11 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:cc0a3375-cab2-43cc-8944-daed02b191ca":1. 
+ 
+[18:59:36 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[18:59:37 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 153] 
+ Constants in Dictionary Test started. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 161] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.DictionaryTest - 167] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.ConstantsMountingMonitor - 71] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[18:59:37 INF (17) ConstantData.MonitorLoop.ConstantsMountingMonitor - 75] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[18:59:37 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[18:59:37 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:e63a0ed8-aa81-4b7f-8fae-76a579ad3960":1. 
+ 
+[21:56:14 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[21:56:15 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "property" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:56:15 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[21:56:15 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[21:56:15 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[21:56:15 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:4dcd5d79-8d0e-46f6-9a65-87115af49e13":1. 
+ 
+[21:59:03 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[21:59:03 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[21:59:03 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventKeyFrom" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventKeyBackReadiness" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventKeyFrontGivesTask" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventKeyUpdateConstants" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventKeyBacksTasksProceed" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixRequest" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixPackage" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixPackageControl" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixPackageCompleted" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixTask" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:03 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixBackServer" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixProcessAdd" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixProcessCancel" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixProcessCount" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventFieldFrom" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventFieldBack" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventFieldFront" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RecordActualityLevel" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "RandomRangeExtended" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "BalanceOfTasksAndProcesses" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MaxProcessesCountOnServer" 
+ 
+[21:59:04 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 47] 
+ Property of SettingConstants.ConstantsList - "MinBackProcessesServersCount" 
+ 
+[21:59:04 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[21:59:04 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[21:59:04 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[21:59:04 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:bd9b332a-190e-47b9-b0f0-0b7de9cc9c80":1. 
+ 
+[22:03:38 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[22:03:39 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "RecordActualityLevel" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 49] 
+ Property of ConstantsSet "RecordActualityLevel" =
+= Property of SettingConstants.ConstantsList "RecordActualityLevel" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 49] 
+ Property of ConstantsSet "TaskEmulatorDelayTimeInMilliseconds" =
+= Property of SettingConstants.ConstantsList "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "RandomRangeExtended" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 49] 
+ Property of ConstantsSet "RandomRangeExtended" =
+= Property of SettingConstants.ConstantsList "RandomRangeExtended" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "BalanceOfTasksAndProcesses" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 49] 
+ Property of ConstantsSet "BalanceOfTasksAndProcesses" =
+= Property of SettingConstants.ConstantsList "BalanceOfTasksAndProcesses" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "MaxProcessesCountOnServer" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 49] 
+ Property of ConstantsSet "MaxProcessesCountOnServer" =
+= Property of SettingConstants.ConstantsList "MaxProcessesCountOnServer" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "MinBackProcessesServersCount" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 49] 
+ Property of ConstantsSet "MinBackProcessesServersCount" =
+= Property of SettingConstants.ConstantsList "MinBackProcessesServersCount" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventKeyFrom" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventKeyBackReadiness" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventKeyFrontGivesTask" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventKeyUpdateConstants" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventKeyBacksTasksProceed" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixRequest" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixPackage" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixPackageControl" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixPackageCompleted" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixTask" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixBackServer" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixProcessAdd" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixProcessCancel" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "PrefixProcessCount" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventFieldFrom" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventFieldBack" 
+ 
+[22:03:39 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 42] 
+ Property of ConstantsSet - "EventFieldFront" 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[22:03:39 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[22:03:39 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[22:03:39 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:58c1552c-efe1-488e-8881-a7ff1bf070d9":1. 
+ 
+[22:10:29 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[22:10:29 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[22:10:29 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[22:10:29 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RecordActualityLevel" 
+ 
+[22:11:11 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[22:11:12 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RecordActualityLevel" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "RecordActualityLevel" =
+= Property of SettingConstants.ConstantsList "RecordActualityLevel" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "TaskEmulatorDelayTimeInMilliseconds" =
+= Property of SettingConstants.ConstantsList "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RandomRangeExtended" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "RandomRangeExtended" =
+= Property of SettingConstants.ConstantsList "RandomRangeExtended" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "BalanceOfTasksAndProcesses" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "BalanceOfTasksAndProcesses" =
+= Property of SettingConstants.ConstantsList "BalanceOfTasksAndProcesses" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MaxProcessesCountOnServer" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "MaxProcessesCountOnServer" =
+= Property of SettingConstants.ConstantsList "MaxProcessesCountOnServer" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MinBackProcessesServersCount" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "MinBackProcessesServersCount" =
+= Property of SettingConstants.ConstantsList "MinBackProcessesServersCount" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrom" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBackReadiness" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrontGivesTask" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyUpdateConstants" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBacksTasksProceed" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixRequest" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackage" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageControl" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageCompleted" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixTask" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixBackServer" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessAdd" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCancel" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCount" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFrom" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldBack" 
+ 
+[22:11:12 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFront" 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[22:11:12 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[22:11:12 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[22:11:12 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:e9e3db92-bddd-4566-8acb-6aa38c3a201a":1. 
+ 
+[22:12:15 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[22:12:16 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RecordActualityLevel" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "RecordActualityLevel" =
+= Property of SettingConstants.ConstantsList "RecordActualityLevel" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "TaskEmulatorDelayTimeInMilliseconds" =
+= Property of SettingConstants.ConstantsList "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RandomRangeExtended" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "RandomRangeExtended" =
+= Property of SettingConstants.ConstantsList "RandomRangeExtended" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "BalanceOfTasksAndProcesses" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "BalanceOfTasksAndProcesses" =
+= Property of SettingConstants.ConstantsList "BalanceOfTasksAndProcesses" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MaxProcessesCountOnServer" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "MaxProcessesCountOnServer" =
+= Property of SettingConstants.ConstantsList "MaxProcessesCountOnServer" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MinBackProcessesServersCount" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet "MinBackProcessesServersCount" =
+= Property of SettingConstants.ConstantsList "MinBackProcessesServersCount" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrom" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBackReadiness" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrontGivesTask" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyUpdateConstants" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBacksTasksProceed" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixRequest" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackage" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageControl" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageCompleted" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixTask" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixBackServer" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessAdd" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCancel" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCount" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFrom" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldBack" 
+ 
+[22:12:16 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFront" 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[22:12:16 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[22:12:16 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[22:12:16 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:69aa33a8-2da4-42d3-8796-98c3b8a4259c":1. 
+ 
+[22:23:57 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[22:23:58 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RecordActualityLevel" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ Property of ConstantsSet value = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ Property of ConstantsSet value = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RandomRangeExtended" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ Property of ConstantsSet value = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "BalanceOfTasksAndProcesses" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ Property of ConstantsSet value = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MaxProcessesCountOnServer" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ Property of ConstantsSet value = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MinBackProcessesServersCount" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ Property of ConstantsSet value = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrom" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBackReadiness" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrontGivesTask" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyUpdateConstants" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBacksTasksProceed" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixRequest" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackage" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageControl" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageCompleted" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixTask" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixBackServer" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessAdd" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCancel" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCount" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFrom" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldBack" 
+ 
+[22:23:58 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFront" 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[22:23:58 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[22:23:58 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[22:23:58 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:165937c1-2e81-4f44-9f2d-4831696ec17c":1. 
+ 
+[22:29:40 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[22:29:40 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RecordActualityLevel" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "RecordActualityLevel"} 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "TaskEmulatorDelayTimeInMilliseconds"} 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RandomRangeExtended" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "RandomRangeExtended"} 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "BalanceOfTasksAndProcesses" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "BalanceOfTasksAndProcesses"} 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MaxProcessesCountOnServer" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "MaxProcessesCountOnServer"} 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MinBackProcessesServersCount" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "MinBackProcessesServersCount"} 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrom" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBackReadiness" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrontGivesTask" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyUpdateConstants" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBacksTasksProceed" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixRequest" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackage" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageControl" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageCompleted" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixTask" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixBackServer" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessAdd" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCancel" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCount" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFrom" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldBack" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFront" 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 57] 
+ TaskEmulatorDelayTimeInMilliseconds = 300} 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 58] 
+ BalanceOfTasksAndProcesses = 2} 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 59] 
+ MaxProcessesCountOnServer = 3} 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 60] 
+ MinBackProcessesServersCount = 2} 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 61] 
+ RandomRangeExtended = 1000000} 
+ 
+[22:29:40 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 62] 
+ RecordActualityLevel = 6} 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[22:29:40 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[22:29:40 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[22:29:40 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:a58512c5-778e-47bd-a67d-f98292020a4c":1. 
+ 
+[22:31:20 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[22:31:20 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RecordActualityLevel" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "RecordActualityLevel"} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "TaskEmulatorDelayTimeInMilliseconds"} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RandomRangeExtended" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "RandomRangeExtended"} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "BalanceOfTasksAndProcesses" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "BalanceOfTasksAndProcesses"} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MaxProcessesCountOnServer" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "MaxProcessesCountOnServer"} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MinBackProcessesServersCount" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 51] 
+ Property of ConstantsSet set "MinBackProcessesServersCount"} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrom" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBackReadiness" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrontGivesTask" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyUpdateConstants" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBacksTasksProceed" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixRequest" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackage" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageControl" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageCompleted" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixTask" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixBackServer" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessAdd" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCancel" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCount" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFrom" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldBack" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFront" 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 57] 
+ TaskEmulatorDelayTimeInMilliseconds = "delay time to emulate upload of a real book - in seconds"} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 58] 
+ TaskEmulatorDelayTimeInMilliseconds = "TaskEmulatorDelayTimeInMilliseconds"} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 59] 
+ TaskEmulatorDelayTimeInMilliseconds = 300} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 60] 
+ TaskEmulatorDelayTimeInMilliseconds = -1} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 61] 
+ BalanceOfTasksAndProcesses = 2} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 62] 
+ MaxProcessesCountOnServer = 3} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 63] 
+ MinBackProcessesServersCount = 2} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 64] 
+ RandomRangeExtended = 1000000} 
+ 
+[22:31:20 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 65] 
+ RecordActualityLevel = 6} 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[22:31:20 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[22:31:20 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[22:31:20 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:f79c913d-9f6f-4ab2-9fc2-884b2cd009d3":1. 
+ 
+[22:39:42 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[22:39:43 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RecordActualityLevel" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ property.GetValue = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ Property of ConstantsSet set "RecordActualityLevel"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ property.GetValue = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ Property of ConstantsSet set "TaskEmulatorDelayTimeInMilliseconds"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RandomRangeExtended" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ property.GetValue = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ Property of ConstantsSet set "RandomRangeExtended"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "BalanceOfTasksAndProcesses" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ property.GetValue = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ Property of ConstantsSet set "BalanceOfTasksAndProcesses"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MaxProcessesCountOnServer" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ property.GetValue = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ Property of ConstantsSet set "MaxProcessesCountOnServer"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MinBackProcessesServersCount" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 52] 
+ property.GetValue = "Shared.Library.Models.ConstantNameValue"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ Property of ConstantsSet set "MinBackProcessesServersCount"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrom" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBackReadiness" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrontGivesTask" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyUpdateConstants" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBacksTasksProceed" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixRequest" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackage" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageControl" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageCompleted" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixTask" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixBackServer" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessAdd" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCancel" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCount" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFrom" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldBack" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFront" 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 59] 
+ TaskEmulatorDelayTimeInMilliseconds = "delay time to emulate upload of a real book - in seconds"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 60] 
+ TaskEmulatorDelayTimeInMilliseconds = "TaskEmulatorDelayTimeInMilliseconds"} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 61] 
+ TaskEmulatorDelayTimeInMilliseconds = 300} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 62] 
+ TaskEmulatorDelayTimeInMilliseconds = -1} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 63] 
+ BalanceOfTasksAndProcesses = 2} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 64] 
+ MaxProcessesCountOnServer = 3} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 65] 
+ MinBackProcessesServersCount = 2} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 66] 
+ RandomRangeExtended = 1000000} 
+ 
+[22:39:43 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 67] 
+ RecordActualityLevel = 6} 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[22:39:43 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[22:39:43 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[22:39:43 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:fff6a868-db09-43b3-b451-e553dacd818a":1. 
+ 
+[22:43:30 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[22:43:30 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 0, description - "current model version of Db data structure", 
+ property name = "RecordActualityLevel", 
+ value = 6, time = -1. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 1, description - "delay time to emulate upload of a real book - in seconds", 
+ property name = "TaskEmulatorDelayTimeInMilliseconds", 
+ value = 300, time = -1. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 2, description - "int diceRollRow = RandomProvider.Next(0, RandomRangeExtended)", 
+ property name = "RandomRangeExtended", 
+ value = 1000000, time = -1. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 3, description - "tasks number / processes ratio for the back-servers execution ", 
+ property name = "BalanceOfTasksAndProcesses", 
+ value = 2, time = -1. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 4, description - "maximum processes number on back-servers (min = 1)", 
+ property name = "MaxProcessesCountOnServer", 
+ value = 3, time = -1. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 162] 
+ Key No: 5, description - "minimum number of back-servers at the start of the front-server", 
+ property name = "MinBackProcessesServersCount", 
+ value = 2, time = -1. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 0, description - "key to fetch task package from controller/emulator", 
+ property name = "EventKeyFrom", 
+ value = "subscribeOnFrom", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 1, description - "key for back-servers registration", 
+ property name = "EventKeyBackReadiness", 
+ value = "key-event-back-processes-servers-readiness-list", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 2, description - "key for tasks cafe", 
+ property name = "EventKeyFrontGivesTask", 
+ value = "key-event-front-server-gives-task-package", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 3, description - "key to send new constants values", 
+ property name = "EventKeyUpdateConstants", 
+ value = "update", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 4, description - "key ", 
+ property name = "EventKeyBacksTasksProceed", 
+ value = "key-event-backs-servers-tasks-packages-proceed", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 5, description - "key ", 
+ property name = "PrefixRequest", 
+ value = "request", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 6, description - "key ", 
+ property name = "PrefixPackage", 
+ value = "package", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 7, description - "key ", 
+ property name = "PrefixPackageControl", 
+ value = "control", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 8, description - "key ", 
+ property name = "PrefixPackageCompleted", 
+ value = "completed", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 9, description - "key ", 
+ property name = "PrefixTask", 
+ value = "task", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 10, description - "key ", 
+ property name = "PrefixBackServer", 
+ value = "backserver", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 11, description - "key ", 
+ property name = "PrefixProcessAdd", 
+ value = "process:add", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 12, description - "key ", 
+ property name = "PrefixProcessCancel", 
+ value = "process:cancel", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 13, description - "key ", 
+ property name = "PrefixProcessCount", 
+ value = "process:count", time = 0.999. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 14, description - "field ", 
+ property name = "EventFieldFrom", 
+ value = "count", time = 0. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 15, description - "field ", 
+ property name = "EventFieldBack", 
+ value = "ttt", time = 0. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 168] 
+ Key No: 16, description - "field ", 
+ property name = null, 
+ value = "ttt", time = 0. 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RecordActualityLevel" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ property.GetValue = 6} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 54] 
+ Property of ConstantsSet set "RecordActualityLevel"} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "TaskEmulatorDelayTimeInMilliseconds" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ property.GetValue = 300} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 54] 
+ Property of ConstantsSet set "TaskEmulatorDelayTimeInMilliseconds"} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "RandomRangeExtended" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ property.GetValue = 1000000} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 54] 
+ Property of ConstantsSet set "RandomRangeExtended"} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "BalanceOfTasksAndProcesses" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ property.GetValue = 2} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 54] 
+ Property of ConstantsSet set "BalanceOfTasksAndProcesses"} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MaxProcessesCountOnServer" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ property.GetValue = 3} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 54] 
+ Property of ConstantsSet set "MaxProcessesCountOnServer"} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "MinBackProcessesServersCount" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 53] 
+ property.GetValue = 2} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 54] 
+ Property of ConstantsSet set "MinBackProcessesServersCount"} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrom" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBackReadiness" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyFrontGivesTask" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyUpdateConstants" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventKeyBacksTasksProceed" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixRequest" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackage" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageControl" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixPackageCompleted" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixTask" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixBackServer" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessAdd" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCancel" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "PrefixProcessCount" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFrom" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldBack" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 43] 
+ Property of ConstantsSet - "EventFieldFront" 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 60] 
+ TaskEmulatorDelayTimeInMilliseconds = "delay time to emulate upload of a real book - in seconds"} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 61] 
+ TaskEmulatorDelayTimeInMilliseconds = "TaskEmulatorDelayTimeInMilliseconds"} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 62] 
+ TaskEmulatorDelayTimeInMilliseconds = 300} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 63] 
+ TaskEmulatorDelayTimeInMilliseconds = -1} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 64] 
+ BalanceOfTasksAndProcesses = 2} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 65] 
+ MaxProcessesCountOnServer = 3} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 66] 
+ MinBackProcessesServersCount = 2} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 67] 
+ RandomRangeExtended = 1000000} 
+ 
+[22:43:30 INF (4) ConstantData.Services.ConstantsCollectionService.InitialiseConstantsSet - 68] 
+ RecordActualityLevel = 6} 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[22:43:30 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[22:43:30 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[22:43:30 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:525a8154-0e97-44c4-b392-70bac85b59ea":1. 
+ 
+[23:27:30 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[23:27:30 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[23:27:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[23:27:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 156] 
+ SettingConstants TaskEmulatorDelayTimeInMilliseconds = 300. 
+ 
+[23:27:30 INF (4) ConstantData.MonitorLoop.DictionaryTest - 157] 
+ SettingConstants  = "ttt". 
+ 
+[23:27:30 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[23:27:30 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[23:27:30 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[23:27:30 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:749df7e6-6faf-4d81-b05e-64e1c37c5927":1. 
+ 
+[23:30:54 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[23:30:55 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[23:30:55 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[23:30:55 INF (4) ConstantData.MonitorLoop.DictionaryTest - 156] 
+ SettingConstants TaskEmulatorDelayTimeInMilliseconds = 300. 
+ 
+[23:30:55 INF (4) ConstantData.MonitorLoop.DictionaryTest - 157] 
+ SettingConstants  = "ttt". 
+ 
+[23:30:55 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[23:30:55 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[23:30:55 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[23:30:55 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:928f12bb-2447-4dc7-a70a-717f338ee04e":1. 
+ 
+[23:32:35 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[23:32:35 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[23:32:35 INF (19) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[23:32:35 INF (19) ConstantData.MonitorLoop.DictionaryTest - 156] 
+ SettingConstants TaskEmulatorDelayTimeInMilliseconds = 300. 
+ 
+[23:32:35 INF (19) ConstantData.MonitorLoop.DictionaryTest - 157] 
+ SettingConstants  = "ttt". 
+ 
+[23:32:35 INF (19) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[23:32:35 INF (19) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[23:32:35 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[23:32:35 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:351b1c8e-c8e8-41e4-b4d9-8732e9d73371":1. 
+ 
+[23:33:31 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[23:33:31 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[23:33:31 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[23:33:31 INF (4) ConstantData.MonitorLoop.DictionaryTest - 156] 
+ SettingConstants TaskEmulatorDelayTimeInMilliseconds = 300. 
+ 
+[23:33:31 INF (4) ConstantData.MonitorLoop.DictionaryTest - 157] 
+ SettingConstants EventFieldBack Value = "ttt". 
+ 
+[23:33:31 INF (4) ConstantData.MonitorLoop.DictionaryTest - 158] 
+ SettingConstants EventFieldBack LifeTime = 0. 
+ 
+[23:33:31 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[23:33:31 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[23:33:31 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[23:33:31 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:d190ed9f-eab1-46af-88dc-1c6a420b7fa9":1. 
+ 
+[23:34:13 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[23:34:13 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[23:34:13 INF (19) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[23:34:13 INF (19) ConstantData.MonitorLoop.DictionaryTest - 156] 
+ SettingConstants TaskEmulatorDelayTimeInMilliseconds = 300. 
+ 
+[23:34:13 INF (19) ConstantData.MonitorLoop.DictionaryTest - 157] 
+ SettingConstants EventKeyFrontGivesTask Value = "key-event-front-server-gives-task-package". 
+ 
+[23:34:13 INF (19) ConstantData.MonitorLoop.DictionaryTest - 158] 
+ SettingConstants EventKeyFrontGivesTask LifeTime = 0.999. 
+ 
+[23:34:13 INF (19) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[23:34:13 INF (19) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[23:34:13 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[23:34:14 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:4d245f7d-1b5e-4788-ab77-043eb059af2d":1. 
+ 
+[23:40:54 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[23:40:55 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[23:40:55 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[23:40:55 INF (4) ConstantData.MonitorLoop.DictionaryTest - 156] 
+ SettingConstants TaskEmulatorDelayTimeInMilliseconds = 300. 
+ 
+[23:40:55 INF (4) ConstantData.MonitorLoop.DictionaryTest - 157] 
+ SettingConstants EventKeyFrontGivesTask Value = "key-event-front-server-gives-task-package". 
+ 
+[23:40:55 INF (4) ConstantData.MonitorLoop.DictionaryTest - 158] 
+ SettingConstants EventKeyFrontGivesTask LifeTime = 0.999. 
+ 
+[23:40:55 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[23:40:55 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[23:40:55 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[23:40:55 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:ae5f0952-1c00-4f3a-8ffa-84627f3ff9af":1. 
+ 
+[23:43:45 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[23:43:45 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 54] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[23:43:45 INF (4) ConstantData.MonitorLoop.DictionaryTest - 154] 
+ Constants in Dictionary Test started. 
+ 
+[23:43:45 INF (4) ConstantData.MonitorLoop.DictionaryTest - 156] 
+ SettingConstants TaskEmulatorDelayTimeInMilliseconds = 300. 
+ 
+[23:43:45 INF (4) ConstantData.MonitorLoop.DictionaryTest - 157] 
+ SettingConstants EventKeyFrontGivesTask Value = "key-event-front-server-gives-task-package". 
+ 
+[23:43:45 INF (4) ConstantData.MonitorLoop.DictionaryTest - 158] 
+ SettingConstants EventKeyFrontGivesTask LifeTime = 0.999. 
+ 
+[23:43:45 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 0. 
+ 
+[23:43:45 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 76] 
+ ConstantData send constants to SetStartConstants. 
+ 
+[23:43:45 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: null } 
+ 
+[23:43:45 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:53761a63-35f2-4ed8-ac3d-901e1ed50106":1. 
+ 

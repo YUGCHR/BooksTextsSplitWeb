@@ -1,0 +1,14 @@
+
+[21:24:31 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[21:24:32 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 26] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[21:24:32 INF (4) Shared.Library.Services.SharedDataAccess.SubscribeOnAllConstantsEvent - 149] 
+ SharedDataAccess will be subscribed on keyGuid "constant:data:ff932b89-0350-41c7-aed6-fa3faf376681". 
+ 
+[21:24:32 INF (4) Shared.Library.Services.SharedDataAccess.SubscribeOnAllConstantsEvent - 168] 
+ SharedDataAccess was subscribed on keyGuid "constant:data:ff932b89-0350-41c7-aed6-fa3faf376681". 
+ 
