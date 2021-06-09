@@ -1,0 +1,105 @@
+[19:47:32 Debug] 
+BackServer's MonitorLoop is starting.
+in method  at :
+
+[19:47:32 Information] 
+INIT { ServerId: "backserver:3de66615-8bbc-4fd3-825d-6c6de3cc504c" } was fetched in MonitorLoop.
+in method  at :
+
+[19:47:32 Debug] 
+Is Cancellation Token obtained? - { IsCancelled: False }
+in method  at :
+
+[19:49:08 Debug] 
+BackServer's MonitorLoop is starting.
+in method  at :
+
+[19:49:08 Information] BackgroundTasksQueue.MonitorLoop
+Hello, world!
+in method Monitor at C:\Users\yurig\!My_Solutions\DispatcherisedBackgroundServers\BackgroundTasksQueue\MonitorLoop.cs:67
+
+[19:49:09 Information] 
+INIT { ServerId: "backserver:554ad42d-995e-461c-92a4-19901b94f1cb" } was fetched in MonitorLoop.
+in method  at :
+
+[19:49:09 Debug] 
+Is Cancellation Token obtained? - { IsCancelled: False }
+in method  at :
+
+[19:50:09 Debug] 
+BackServer's MonitorLoop is starting.
+in method  at :
+
+[19:50:09 Information] 
+Hello, world!
+in method Monitor at C:\Users\yurig\!My_Solutions\DispatcherisedBackgroundServers\BackgroundTasksQueue\MonitorLoop.cs:67
+
+[19:50:09 Information] 
+INIT { ServerId: "backserver:32eddfc6-f514-4ca7-bcba-ada3287e58fe" } was fetched in MonitorLoop.
+in method  at :
+
+[19:50:09 Debug] 
+Is Cancellation Token obtained? - { IsCancelled: False }
+in method  at :
+
+[19:53:09 Debug] 
+BackServer's MonitorLoop is starting.
+in method  at :
+
+[19:53:09 Information] BackgroundTasksQueue.MonitorLoop
+Hello, world!
+in method Monitor at C:\Users\yurig\!My_Solutions\DispatcherisedBackgroundServers\BackgroundTasksQueue\MonitorLoop.cs:67
+
+[19:53:10 Information] 
+INIT { ServerId: "backserver:4c456e33-9821-4a69-a0d3-76d49c751a74" } was fetched in MonitorLoop.
+in method  at :
+
+[19:53:10 Debug] 
+Is Cancellation Token obtained? - { IsCancelled: False }
+in method  at :
+
+[19:55:05 Debug] 
+BackServer's MonitorLoop is starting.
+in method  at :
+
+[19:55:05 Information] BackgroundTasksQueue.MonitorLoop
+Hello, world!
+in method  at :
+
+[19:55:05 Information] 
+INIT { ServerId: "backserver:dfb28c2f-afb8-49b2-8912-83dd86b77dc0" } was fetched in MonitorLoop.
+in method  at :
+
+[19:55:05 Debug] 
+Is Cancellation Token obtained? - { IsCancelled: False }
+in method  at :
+
+[19:57:28 DBG] (1)  BackServer's MonitorLoop is starting.[19:57:28 INF] (11) BackgroundTasksQueue.MonitorLoop Hello, world![19:57:28 INF] (11)  INIT { ServerId: "backserver:175bd4b9-760d-4686-8d68-18af853f719f" } was fetched in MonitorLoop.[19:57:29 DBG] (19)  Is Cancellation Token obtained? - { IsCancelled: False }[19:59:12 DBG] (1)  BackServer's MonitorLoop is starting. 
+ [19:59:12 INF] (4) BackgroundTasksQueue.MonitorLoop Hello, world! 
+ [19:59:12 INF] (4)  INIT { ServerId: "backserver:8d73ad6f-16fe-4c48-aa05-216de03ffd28" } was fetched in MonitorLoop. 
+ [19:59:12 DBG] (19)  Is Cancellation Token obtained? - { IsCancelled: False } 
+ [20:02:15 DBG (1) ] BackServer's MonitorLoop is starting. 
+ [20:02:15 INF (4) BackgroundTasksQueue.MonitorLoop] Hello, world! 
+ [20:02:15 INF (4) ] INIT { ServerId: "backserver:439438a2-e1ce-4735-874b-8a227d0b85dc" } was fetched in MonitorLoop. 
+ [20:02:15 DBG (19) ] Is Cancellation Token obtained? - { IsCancelled: False } 
+ [20:04:52 DBG (1) ] BackServer's MonitorLoop is starting. 
+ [20:04:52 INF (4) BackgroundTasksQueue.MonitorLoop] Hello, world! 
+ [20:04:52 INF (17) ] INIT { ServerId: "backserver:545be75d-a775-4b3d-80e4-25308e80da9f" } was fetched in MonitorLoop. 
+ [20:04:52 DBG (4) ] Is Cancellation Token obtained? - { IsCancelled: False } 
+ [20:07:35 INF (1) ] The global logger Serilog has been configured. 
+ [20:07:35 DBG (1) ] BackServer's MonitorLoop is starting. 
+ [20:07:35 INF (4) BackgroundTasksQueue.MonitorLoop] Hello, world! 
+ [20:07:36 INF (17) ] INIT { ServerId: "backserver:772c9636-2080-49d8-95a2-dac17641db09" } was fetched in MonitorLoop. 
+ [20:07:36 DBG (19) ] Is Cancellation Token obtained? - { IsCancelled: False } 
+ [20:10:36 INF (1) BackgroundTasksQueue.Program] The global logger Serilog has been configured. 
+ [20:10:37 DBG (1) ] BackServer's MonitorLoop is starting. 
+ [20:10:37 INF (4) BackgroundTasksQueue.MonitorLoop] Hello, world! 
+ [20:10:37 INF (17) ] INIT { ServerId: "backserver:6c653b26-e49b-492a-8361-8dc8045ebaed" } was fetched in MonitorLoop. 
+ [20:10:37 DBG (17) ] Is Cancellation Token obtained? - { IsCancelled: False } 
+ [20:11:38 INF (1) BackgroundTasksQueue.Program] The global logger Serilog has been configured.
+ 
+ [20:11:38 DBG (1) ] BackServer's MonitorLoop is starting. 
+ [20:11:38 INF (4) BackgroundTasksQueue.MonitorLoop] Hello, world! 
+ [20:11:38 INF (19) ] INIT { ServerId: "backserver:1828a9fb-bd8b-4911-becd-88a04d05e8cf" } was fetched in MonitorLoop. 
+ [20:11:38 DBG (4) ] Is Cancellation Token obtained? - { IsCancelled: False } 
+ 

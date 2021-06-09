@@ -1,0 +1,194 @@
+
+[18:41:07 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[18:41:07 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 49] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[18:41:07 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 63] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 1. 
+ 
+[18:41:07 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 67] 
+ ConstantData send constants {0} to SetStartConstants. 
+ 
+[18:41:07 INF (20) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: "update" } 
+ 
+[18:41:07 INF (20) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:529cc87f-17ea-40fe-bd12-3e69b9ad93db":1. 
+ 
+[18:41:48 INF (24) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 61] 
+ Constant update fetched and set = 500. 
+ 
+[18:42:06 INF (24) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 61] 
+ Constant update fetched and set = 200. 
+ 
+[18:43:30 INF (32) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 61] 
+ Constant update fetched and set = 500. 
+ 
+[18:45:43 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[18:45:43 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 49] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[18:45:43 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 63] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 1. 
+ 
+[18:45:43 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 67] 
+ ConstantData send constants {0} to SetStartConstants. 
+ 
+[18:45:43 INF (18) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: "update" } 
+ 
+[18:45:43 INF (18) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:953466b5-5074-481f-bc30-15b30ac46fe3":1. 
+ 
+[18:45:51 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 61] 
+ Constant update fetched and set = 500. 
+ 
+[18:45:51 INF (19) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 64] 
+ Updated constant set on key "constant:data:953466b5-5074-481f-bc30-15b30ac46fe3". 
+ 
+[18:58:42 INF (45) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 61] 
+ Constant update fetched and set = 200. 
+ 
+[18:58:42 INF (45) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 64] 
+ Updated constant set on key "constant:data:953466b5-5074-481f-bc30-15b30ac46fe3". 
+ 
+[19:04:56 INF (56) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 61] 
+ Constant update fetched and set = 100. 
+ 
+[19:04:56 INF (56) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 64] 
+ Updated constant set on key "constant:data:953466b5-5074-481f-bc30-15b30ac46fe3". 
+ 
+[19:08:52 INF (63) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 61] 
+ Constant update fetched and set = 100. 
+ 
+[19:08:52 INF (63) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 64] 
+ Updated constant set on key "constant:data:953466b5-5074-481f-bc30-15b30ac46fe3". 
+ 
+[19:11:06 INF (65) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 61] 
+ Constant update fetched and set = 800. 
+ 
+[19:11:06 INF (65) ConstantData.Services.OnKeysEventsSubscribeService.CheckKeyUpdateConstants - 64] 
+ Updated constant set on key "constant:data:953466b5-5074-481f-bc30-15b30ac46fe3". 
+ 
+[21:10:47 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[21:10:47 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 49] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[21:10:47 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 63] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 1. 
+ 
+[21:10:47 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 67] 
+ ConstantData send constants {0} to SetStartConstants. 
+ 
+[21:10:47 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: "update" } 
+ 
+[21:10:47 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:78fb638a-5c64-4318-b4d9-a10dd70325b2":1. 
+ 
+[21:13:14 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[21:13:15 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 49] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[21:13:15 INF (4) ConstantData.MonitorLoop.DictionaryTest - 148] 
+ SDictionaryTest started. 
+ 
+[21:17:10 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[21:17:10 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 49] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[21:17:10 INF (5) ConstantData.MonitorLoop.DictionaryTest - 148] 
+ SDictionaryTest started. 
+ 
+[21:17:52 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[21:17:53 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 49] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[21:17:53 INF (4) ConstantData.MonitorLoop.DictionaryTest - 148] 
+ SDictionaryTest started. 
+ 
+[21:21:22 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[21:21:22 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 51] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[21:21:22 INF (4) ConstantData.MonitorLoop.DictionaryTest - 150] 
+ SDictionaryTest started. 
+ 
+[21:21:22 INF (4) ConstantData.MonitorLoop.DictionaryTest - 155] 
+ Show new constants in Dictionary - key = "From", value = "info@mydomain.com". 
+ 
+[21:21:22 INF (4) ConstantData.MonitorLoop.DictionaryTest - 155] 
+ Show new constants in Dictionary - key = "Port", value = "25". 
+ 
+[21:21:22 INF (4) ConstantData.MonitorLoop.DictionaryTest - 155] 
+ Show new constants in Dictionary - key = "Server", value = "http://mail.mydomain.com". 
+ 
+[21:21:22 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 68] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 1. 
+ 
+[21:21:22 INF (4) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantData send constants {0} to SetStartConstants. 
+ 
+[21:21:22 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: "update" } 
+ 
+[21:21:22 INF (4) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:089631e8-d5a6-4bde-b861-01e7845d1509":1. 
+ 
+[21:22:07 INF (1) ConstantData.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[21:22:07 INF (1) ConstantData.MonitorLoop.StartMonitorLoop - 51] 
+ ConstantsMountingMonitor Loop is starting. 
+ 
+[21:22:07 INF (19) ConstantData.MonitorLoop.DictionaryTest - 150] 
+ Constants in Dictionary Test started. 
+ 
+[21:22:07 INF (19) ConstantData.MonitorLoop.DictionaryTest - 155] 
+ Show new constants in Dictionary - key = "From", value = "info@mydomain.com". 
+ 
+[21:22:07 INF (19) ConstantData.MonitorLoop.DictionaryTest - 155] 
+ Show new constants in Dictionary - key = "Port", value = "25". 
+ 
+[21:22:07 INF (19) ConstantData.MonitorLoop.DictionaryTest - 155] 
+ Show new constants in Dictionary - key = "Server", value = "http://mail.mydomain.com". 
+ 
+[21:22:07 INF (19) ConstantData.MonitorLoop.ConstantsMountingMonitor - 68] 
+ ConstantCheck EventKeyFrontGivesTaskTimeDays = 1. 
+ 
+[21:22:07 INF (19) ConstantData.MonitorLoop.ConstantsMountingMonitor - 72] 
+ ConstantData send constants {0} to SetStartConstants. 
+ 
+[21:22:07 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 39] 
+ ConstantsData subscribed on EventKey. 
+ { EventKey: "update" } 
+ 
+[21:22:07 INF (17) ConstantData.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdate - 40] 
+ Constants version is "constant:data:929d9c86-ed88-4a8a-bfee-6678a43a862d":1. 
+ 

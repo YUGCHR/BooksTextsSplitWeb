@@ -1,347 +1,164 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using BooksTextsSplit.Library.Models;
-using System.IO;
-using System.Text.Json;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using CachingFramework.Redis.Contracts.Providers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Shared.Library.Models;
+using Shared.Library.Services;
 
 namespace BackgroundTasksQueue.Services
 {
     public interface IBackgroundTasksService
     {
-        void BackgroundRecordBookToDb(IFormFile bookFile, string jsonBookDescription, string guid);
-        void WorkerSample(string guid);
+        void StartWorkItem(ConstantsSet constantsSet, string tasksPackageGuidField, double tasksPackageTtl, string singleTaskGuid, TaskDescriptionAndProgress assignmentTerms, CancellationToken stoppingToken);
     }
+
     public class BackgroundTasksService : IBackgroundTasksService
     {
         private readonly IBackgroundTaskQueue _taskQueue;
-        private readonly ILogger<BackgroundTasksService> _logger;
-        private readonly ISettingConstants _constant;
-        private readonly IControllerDataManager _data;
-        private readonly IAccessCacheData _access;
-        private readonly ICosmosDbService _context;
+        private readonly ICacheManageService _cache;
 
         public BackgroundTasksService(
             IBackgroundTaskQueue taskQueue,
-            ILogger<BackgroundTasksService> logger,
-            ISettingConstants constant,
-            IControllerDataManager data,
-            ICosmosDbService cosmosDbService,
-            IAccessCacheData access)
+            ICacheManageService cache
+        )
         {
             _taskQueue = taskQueue;
-            _logger = logger;
-            _constant = constant;
-            _data = data;
-            _access = access;
-            _context = cosmosDbService;
+            _cache = cache;
         }
 
-        private void BackgroundUpdateKeys(string taskGuid)
+        private static Serilog.ILogger Logs => Serilog.Log.ForContext<BackgroundTasksService>();
+
+        public void StartWorkItem(ConstantsSet constantsSet, string tasksPackageGuidField, double tasksPackageTtl, string singleTaskGuid, TaskDescriptionAndProgress taskDescription, CancellationToken stoppingToken)
         {
+            Logs.Here().Debug("Single Task processing was started. \n {@P} \n {@S}", new { Package = tasksPackageGuidField }, new { Task = singleTaskGuid });
             // Enqueue a background work item
             _taskQueue.QueueBackgroundWorkItem(async token =>
             {
+                // Simulate loopCount 3-second tasks to complete for each enqueued work item
+                bool isTaskCompleted = await ActualTaskSolution(taskDescription, tasksPackageGuidField, tasksPackageTtl, singleTaskGuid, stoppingToken);
+                // если задача завершилась полностью, удалить поле регистрации из ключа сервера
+                // пока (или совсем) не удаляем, а уменьшаем на единичку значение, пока не станет 0 - тогда выполнение пакета закончено
+                bool isTaskFinished = await ActualTaskCompletion(constantsSet, isTaskCompleted, taskDescription, tasksPackageGuidField, tasksPackageTtl, singleTaskGuid, stoppingToken);
+            });
+        }
+
+        private async Task<bool> ActualTaskSolution(TaskDescriptionAndProgress taskDescription, string tasksPackageGuidField, double tasksPackageTtl, string singleTaskGuid, CancellationToken cancellationToken)
+        {
+            int assignmentTerms = taskDescription.TaskDescription.CycleCount;
+            double taskDelayTimeSpanFromMilliseconds = taskDescription.TaskDescription.TaskDelayTimeFromMilliSeconds / 1000D;
+            int delayLoop = 0;
+            int loopRemain = assignmentTerms;
+
+            Logs.Here().Debug("Queued Background Task is starting with {0} cycles. \n {@P} \n {@S}", assignmentTerms, new { Package = tasksPackageGuidField }, new { Task = singleTaskGuid });
+
+            taskDescription.TaskState.IsTaskRunning = true;
+            // заменить while на for в отдельном методе с выходом из цикла по условию и return
+            // потом можно попробовать рекурсию
+            while (!cancellationToken.IsCancellationRequested && delayLoop < assignmentTerms)
+            {
                 try
                 {
-                    _logger.LogInformation("Queued Background Task UpdateKeys {Guid} is starting", taskGuid);
-                    TaskUploadPercents updateTaskState = _data.CreateTaskGuidPercentsKeys(taskGuid);
-                    updateTaskState.IsTaskRunning = true;
-                    bool resultSetKey = await _data.SetTaskState(updateTaskState, 3);
+                    await Task.Delay(TimeSpan.FromSeconds(taskDelayTimeSpanFromMilliseconds), cancellationToken);
                 }
                 catch (OperationCanceledException)
                 {
                     // Prevent throwing if the Delay is cancelled
                 }
-            });
-        }
+                // здесь записать в ключ ??? и поле ??? номер текущего цикла и всего циклов, а также время и так далее (потом)
+                // рассмотреть два варианта - ключ - сервер, поле - пакет, а в значении указать номер конкретной задачи и прочее в модели
+                // второй вариант - ключ - пакет, поле - задача, а в значении сразу проценты (int)
+                // ключ - сервер не имеет большого смысла, пакет и так не потеряется, а искать его будут именно по номеру пакета, поэтому пока второй вариант
+                loopRemain--;
 
-        public void BackgroundRecordBookToDb(IFormFile bookFile, string jsonBookDescription, string guid)
-        {
-            JsonSerializerOptions options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, };
-            TextSentence bookDescription = JsonSerializer.Deserialize<TextSentence>(jsonBookDescription, options);
-            int desiredTextLanguage = bookDescription.LanguageId;
+                double completionDouble = delayLoop * 100D / assignmentTerms;
+                int completionTaskPercentage = (int)completionDouble;
+                taskDescription.TaskState.TaskCompletedOnPercent = completionTaskPercentage;
 
-            // Define the cancellation token for Task.Delay
-            CancellationTokenSource source = new CancellationTokenSource();
-            CancellationToken tokenDelay = source.Token;
+                Logs.Here().Verbose("completionDouble {0}% = delayLoop {1} / assignmentTerms {2}, IsTaskRunning = {3}", completionDouble, delayLoop, assignmentTerms, taskDescription.TaskState.IsTaskRunning);
 
-            // move to FetchBookTextSentences?
-            string fileName = bookFile.FileName;
-            StreamReader reader = new StreamReader(bookFile.OpenReadStream());
-            string text = reader.ReadToEnd();
+                // обновляем отчёт о прогрессе выполнения задания
+                await _cache.WriteHashedAsync<TaskDescriptionAndProgress>(tasksPackageGuidField, singleTaskGuid, taskDescription, tasksPackageTtl);
 
-            TextSentence[] textSentences = FetchBookTextSentences(text, bookDescription, desiredTextLanguage);
-            int textSentencesLength = textSentences.Length;
-
-            // Enqueue a background work item
-            _taskQueue.QueueBackgroundWorkItem(async token =>
-            {
-                TaskUploadPercents isExistBackgroundUpdateKeys = await _data.IsExistBackgroundUpdateKeys();
-                if (!isExistBackgroundUpdateKeys.IsTaskRunning)
-                {
-                    // BackgroundUpdateKeys(isExistBackgroundUpdateKeys.CurrentTaskGuid);
-                }
-
-                try
-                {
-                    _logger.LogInformation("Queued Background Task RecordFileToDb {Guid} is starting", guid);
-
-                    TaskUploadPercents uploadPercents = _data.CreateTaskGuidPercentsKeys(guid, bookDescription, textSentencesLength);
-                    uploadPercents.IsTaskRunning = true;  //inform all the task is started
-                    bool resultSetKey = await _data.SetTaskState(uploadPercents);
-
-                    try
-                    {
-                        _logger.LogInformation($"Queued Background Task RecordFileToDb {guid} is running", guid);
-
-                        for (int tsi = 0; tsi < textSentencesLength; tsi++)
-                        {
-                            // Check the time of one cycle, calculate the whole task run time, if it is more 10 sec, than percents will be shown - 1 state per second
-                            Stopwatch stopWatch = new Stopwatch();
-                            stopWatch.Start();
-
-                            if (textSentencesLength < 20)
-                            {
-                                await Task.Delay(_constant.GetTaskDelayTimeInSeconds * 1000, tokenDelay); // delay to emulate upload of a real book - 
-                            }
-
-                            await _context.AddItemAsync(textSentences[tsi]); // возвращать значение charges - если не нулевое, значит что-то записалось
-
-                            stopWatch.Stop();
-                            TimeSpan ts = stopWatch.Elapsed; // Get the elapsed time as a TimeSpan value.
-                            bool resultSetKey1 = await SetTaskState(uploadPercents, ts, tsi);
-                        };
-
-                        // ключ guid создавать через хэш
-                        bool removingResult = await UpdateKeysAfterRecording(desiredTextLanguage, guid);
-
-                        // здесь проверить, что задание последнее и если да, то восстановить ключи данных
-                        // to create sentenceCounts for current language
-                        await _data.TotalRecordsCountWhereLanguageId(desiredTextLanguage);
-                        //int totalLangSentences = await _data.FetchDataFromCache(desiredTextLanguage) ?? 0;
-
-                        _logger.LogInformation("Queued Background Task RecordFileToDb {Guid} recorded " + textSentencesLength.ToString() + " records to DB", guid);
-                    }
-                    catch (Exception ex)
-                    {
-                        string message = $"Queued Background Task RecordFileToDb {guid} is crashed. \n {ex.Message} \n";
-                        _logger.LogInformation(message, guid, ex.Message);
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    // Prevent throwing if the Delay is cancelled
-                }
-            });
-            //return "Task " + guid + " was Queued Background";
-        }
-        
-        private async Task<bool> SetTaskState(TaskUploadPercents uploadPercents, TimeSpan ts, int tsi)
-        {
-            int tsMs = ts.Milliseconds;
-            uploadPercents.CurrentUploadingRecord = tsi;
-            uploadPercents.CurrentUploadedRecordRealTime = tsMs;
-            uploadPercents.TotalUploadedRealTime += tsMs;
-            return await _data.SetTaskState(uploadPercents);
-        }
-        
-        private async Task<bool> UpdateKeysAfterRecording(int languageId, string guid)
-        {
-            // здесь проверить наличие ключей других процессов и параметр isRunning в них
-            // ещё можно проверять с каким языком процесс, но пока непонятно зачем
-            // update key with all bookIds in all languages with all versions
-            await _data.FetchBooksNamesVersionsProperties();
-
-            // TO update key with TotalCount(s) here
-            await _data.FetchTotalCounts(languageId);
-
-            _logger.LogInformation("QBTask {Guid} has updated key successfully - {languageId}", guid, languageId.ToString());
-
-            return true;
-        }
-
-        private TextSentence[] FetchBookTextSentences(string text, TextSentence bookDescription, int desiredTextLanguage)
-        {
-            // получение плоского текста из анализатора книги
-            TextSentenceFlat[] textSentences = AnalyseTextBook(text, desiredTextLanguage);
-
-            int textSentencesLength = textSentences.Length;
-            int inChapterParagraphsCount = 0;
-            int inChapterSentencesCount = 0;
-            int inBookChapterCount = 0;
-            int inBookParagraphsCount = 0;
-            int inBookSentencesCount = 0;
-
-            // сохранение плоского текста в структуру типа - одна запись - одна глава            
-            List<TextSentence.BookContentInChapters.BookContentInParagraphs> bp = new List<TextSentence.BookContentInChapters.BookContentInParagraphs>();
-            List<TextSentence.BookContentInChapters> bc = new List<TextSentence.BookContentInChapters>();
-            List<TextSentence> bt = new List<TextSentence>();
-
-            for (int i = 0; i < textSentencesLength - 1; i++) //-------------------------------------------------------
-            {
-                // если номер главы не изменился и номер абзаца не изменился - продолжаем записывать предложения в тот же bp (всегда записываем предложения в bp)
-                TextSentence.BookContentInChapters.BookContentInParagraphs p = new TextSentence.BookContentInChapters.BookContentInParagraphs
-                {
-                    BookSentenceId = textSentences[i].BookSentenceId,
-                    SentenceId = textSentences[i].SentenceId,
-                    SentenceText = textSentences[i].SentenceText
-                };
-                p.InParagraphSentencesCounts++;
-                inChapterSentencesCount++;
-                inBookSentencesCount++;
-                bp.Add(p);
-                // если в следующей строке абзац поменяется на новый, записываем текущий в главу и начинаем новый абзац
-                if (textSentences[i + 1].ParagraphId > textSentences[i].ParagraphId)
-                {
-                    bc.Add(new TextSentence.BookContentInChapters
-                    {
-                        ParagraphId = textSentences[i].ParagraphId,
-                        ParagraphName = textSentences[i].ParagraphName,
-                        BookContentInParagraph = bp
-                    });
-                    inChapterParagraphsCount++;
-                    inBookParagraphsCount++;
-                    bp = new List<TextSentence.BookContentInChapters.BookContentInParagraphs>(); //bp.Clear();
-                }
-                // если в следующей строке глава поменяется на новую, записываем текущую в TextSentence и начинаем новую главу
-                if (textSentences[i + 1].ChapterId > textSentences[i].ChapterId)
-                {
-                    TextSentence t = new TextSentence
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        BookId = bookDescription.BookId,
-                        //RecordActualityLevel = Constants.RecordActualityLevel, // Model TextSentence ver.6
-                        RecordActualityLevel = _constant.GetRecordActualityLevel, // Constants.RecordActualityLevel;
-                        BookProperties = new TextSentence.BookPropertiesInLanguage
-                        {
-                            AuthorNameId = bookDescription.BookProperties.AuthorNameId,
-                            AuthorName = bookDescription.BookProperties.AuthorName,
-                            BookNameId = bookDescription.BookProperties.BookNameId,
-                            BookName = bookDescription.BookProperties.BookName,
-                            BookAnnotation = bookDescription.BookProperties.BookAnnotation,
-                        },
-                        UploadVersion = bookDescription.UploadVersion + 1, // have obtained data about last existed version from UI
-                        LanguageId = desiredTextLanguage,
-                        RecordId = inBookChapterCount,
-                        ChapterId = textSentences[i].ChapterId,
-                        ChapterName = textSentences[i].ChapterName,
-                        InChapterParagraphsCount = inChapterParagraphsCount,
-                        InChapterSentencesCount = inChapterSentencesCount,
-                        BookContentInChapter = bc
-                    };
-                    inBookChapterCount++;
-                    bt.Add(t);
-                    inChapterParagraphsCount = 0;
-                    inChapterSentencesCount = 0;
-
-                    bc = new List<TextSentence.BookContentInChapters>(); //bc.Clear();                                        
-                }
+                delayLoop++;
+                Logs.Here().Verbose("Task {0} is running. Loop = {1} / Remaining = {2} - {3}%", singleTaskGuid, delayLoop, loopRemain, completionTaskPercentage);
             }
-            // set TotalBooksCounts Counts
-            TextSentence.TotalBooksCounts tc = new TextSentence.TotalBooksCounts
+            // возвращаем true, если задача успешно завершилась
+            // а если безуспешно, то вообще не возвращаемся (скорее всего)
+            bool isTaskCompleted = delayLoop == assignmentTerms;
+            Logs.Here().Debug("Background Task is completed. \n {@P} \n {@S} \n {@C}, {@R}, {@I}", new { Package = tasksPackageGuidField }, new { Task = singleTaskGuid }, new { CurrentState = delayLoop }, new { Remain = loopRemain }, new { TaskIsCompleted = isTaskCompleted });
+
+            return isTaskCompleted;
+        }
+
+        private async Task<bool> ActualTaskCompletion(ConstantsSet constantsSet, bool isTaskCompleted, TaskDescriptionAndProgress taskDescription, string tasksPackageGuidField, double tasksPackageTtl, string singleTaskGuid, CancellationToken cancellationToken)
+        {
+            string backServerPrefixGuid = constantsSet.BackServerPrefixGuid.Value;
+            string prefixPackageControl = constantsSet.PrefixPackageControl.Value;
+            string prefixPackageCompleted = constantsSet.PrefixPackageCompleted.Value;
+            Logs.Here().Debug("in PrefixPackageControl fetched {0}.", prefixPackageControl);
+
+            // сюда попадаем только если isTaskCompleted true, поэтому if и передачу значения isTaskCompleted можно убрать
+            if (isTaskCompleted)
             {
-                InBookChaptersCount = inBookChapterCount,
-                InBookParagraphsCount = inBookParagraphsCount,
-                InBookSentencesCount = inBookSentencesCount
-            };
-            // можно просуммировать все счётчики по главам и абзацам и сравнить их с общими
-            //bt.Select(t => t.TotalBookCounts.InBookChaptersCount = tc.InBookChaptersCount);
-            //bt.Select(t => t.TotalBookCounts = tc);
-            foreach (TextSentence t in bt)
-            {
-                //TextSentence.TotalBooksCounts tt = new TextSentence.TotalBooksCounts();
-                t.TotalBookCounts = tc;
+                // отдельные задачи ни в каком ключе, кроме ключа пакета, пока (или совсем) не регистрируем
+                //bool isDeletedSuccess = await _cache.RemoveHashedAsync(backServerPrefixGuid, singleTaskGuid); //HashExistsAsync
+                // тут записать в описание, что задача закончилась
+
+                taskDescription.TaskState.IsTaskRunning = false;
+
+                await _cache.WriteHashedAsync(tasksPackageGuidField, singleTaskGuid, taskDescription, tasksPackageTtl);
+
+                // тут уменьшить на единичку значение ключа сервера и прочее пакета задач
+                int oldValue = await _cache.FetchHashedAsync<int>(backServerPrefixGuid, tasksPackageGuidField);
+                int newValue = oldValue - 1;
+                await _cache.WriteHashedAsync(backServerPrefixGuid, tasksPackageGuidField, newValue, constantsSet.BackServerPrefixGuid.LifeTime);
+                
+                // ещё можно при достижении нуля удалить поле пакета, а уже из этого делать выводы (это на потом)
+                Logs.Here().Debug("One Task in the Package is completed, was = {0}, is = {1}. \n {@P} \n {@T}", oldValue, newValue, new{Package = tasksPackageGuidField}, new{Task = singleTaskGuid });
+
+                string prefixControlTasksPackageGuid = $"{prefixPackageControl}:{tasksPackageGuidField}";
+                int sequentialSingleTaskNumber = await _cache.FetchHashedAsync<int>(prefixControlTasksPackageGuid, singleTaskGuid);
+                Logs.Here().Debug("Completed Task {0} on the control package key. \n {@S} \n {@K}", sequentialSingleTaskNumber, new{SingleTask = singleTaskGuid }, new{ControlKey = prefixControlTasksPackageGuid });
+                
+                bool isDeleteSuccess = await _cache.DelFieldAsync(prefixControlTasksPackageGuid, singleTaskGuid);
+                Logs.Here().Debug("Attempt to delete field was {0}. \n {@P} \n {@S}", isDeleteSuccess, new { Package = tasksPackageGuidField }, new { SingleTask = singleTaskGuid });
+
+                if (isDeleteSuccess)
+                {
+                    bool isExistEventKeyFrontGivesTask = await _cache.IsKeyExist(prefixControlTasksPackageGuid);
+                    Logs.Here().Debug("Check of control key existing was {0}. \n {@P} \n {@S}", isExistEventKeyFrontGivesTask, new { Package = tasksPackageGuidField }, new { SingleTask = singleTaskGuid });
+
+                    if (isExistEventKeyFrontGivesTask)
+                    {
+                        Logs.Here().Debug("Completed Task {0} was not the last. \n {@P} \n {@S}", sequentialSingleTaskNumber, new { Package = tasksPackageGuidField }, new { SingleTask = singleTaskGuid });
+                        return true;
+                    }
+                    // ключ исчез, значит задача была последняя и надо об этом сообщить
+                    Logs.Here().Information("Completed Task {0} was the last. \n {@P} \n {@S}", sequentialSingleTaskNumber, new { Package = tasksPackageGuidField }, new { SingleTask = singleTaskGuid });
+
+                    // вот здесь об этом и сообщаем
+                    string prefixCompletedTasksPackageGuid = $"{prefixPackageCompleted}:{tasksPackageGuidField}";
+                    await _cache.WriteHashedAsync(prefixCompletedTasksPackageGuid, tasksPackageGuidField, sequentialSingleTaskNumber, constantsSet.PrefixBackServer.LifeTime);
+                    Logs.Here().Debug("Key was hashSet, Event was created. \n {@K} \n {@S}", new{KeyEvent = prefixCompletedTasksPackageGuid}, new { SingleTask = singleTaskGuid });
+
+                    return true;
+                }
+
+                Logs.Here().Fatal("Something went wrong, it cannot be so");
+                return true;
             }
-            return bt.ToArray();
-        }
-
-        public TextSentenceFlat[] AnalyseTextBook(string text, int desiredTextLanguage)
-        {
-            IAllBookData _bookData = new AllBookData();
-            ITextAnalysisLogicExtension analysisLogic = new TextAnalysisLogicExtension(_bookData);
-            ISentencesDividingAnalysis sentenceAnalyser = new SentencesDividingAnalysis(_bookData, analysisLogic);
-            //IAnalysisLogicParagraph paragraphAnalysis = new noneAnalysisLogicParagraph(bookData, msgService, analysisLogic);
-            IChapterDividingAnalysis chapterAnalyser = new ChapterDividingAnalysis(_bookData, analysisLogic);
-            IAllBookAnalysis bookAnalysis = new AllBookAnalysis(_bookData, analysisLogic, chapterAnalyser, sentenceAnalyser);
-
-            //int desiredTextLanguage = bookDescription.LanguageId;
-            //создание нужной инструкции ToDo
-            _bookData.SetFileToDo((int)WhatNeedDoWithFiles.AnalyseText, desiredTextLanguage);
-            //bookData.SetFilePath(_filePath, desiredTextLanguage);
-
-            //List<TextSentence> requestedSelectResult = await cache.Cache.FetchObjectAsync<List<TextSentence>>(booksPairTextsKey, () => FetchBooksTextsFromDb(where1, where1Value));
-            //await cache.Cache.SetObjectAsync(createdKeyNameFromRequest, requestedSelectResult, TimeSpan.FromDays(1));
-
-            string fileContent = text;
-            _bookData.SetFileContent(fileContent, desiredTextLanguage);
-
-            // получение плоского текста из анализатора книги
-            TextSentenceFlat[] textSentences = bookAnalysis.AnalyseTextBook();
-
-            return textSentences;
-        }
-
-
-
-        public void WorkerSample(string guid)
-        {
-            // Enqueue a background work item
-            _taskQueue.QueueBackgroundWorkItem(async token =>
+            else
             {
-                // Simulate three 5-second tasks to complete
-                // for each enqueued work item
+                Logs.Here().Verbose("Task {0} is not completed", singleTaskGuid);
 
-                int delayLoop = 0;
-                //string guid = Guid.NewGuid().ToString();
-
-                //Console.WriteLine(
-                //    "Queued Background Task {0} is starting.", guid);
-                _logger.LogInformation(
-                        "Queued Background Task {Guid} is starting.", guid);
-
-                while (!token.IsCancellationRequested && delayLoop < 3)
-                {
-                    try
-                    {
-                        await Task.Delay(TimeSpan.FromSeconds(5), token);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        // Prevent throwing if the Delay is cancelled
-                    }
-
-                    delayLoop++;
-
-                    //Console.WriteLine(
-                    //    "Queued Background Task {0} is running. " +
-                    //    "{1}/3", guid, delayLoop);
-                    _logger.LogInformation(
-                            "Queued Background Task {Guid} is running. " +
-                            "{DelayLoop}/3", guid, delayLoop);
-                }
-
-                if (delayLoop == 3)
-                {
-                    //Console.WriteLine(
-                    //    "Queued Background Task {0} is complete.", guid);
-                    _logger.LogInformation(
-                            "Queued Background Task {Guid} is complete.", guid);
-                }
-                else
-                {
-                    //Console.WriteLine(
-                    //    "Queued Background Task {0} was cancelled.", guid);
-                    _logger.LogInformation(
-                            "Queued Background Task {Guid} was cancelled.", guid);
-                }
-            });
+                // тут тоже что-то записать
+                return false;
+            }
         }
     }
 }
-
-// RabbitMQ - войти через браузер на http://localhost:15672. По умолчанию, логин и пароль для входа в RabbitMQ Managment Plugin: guest/guest

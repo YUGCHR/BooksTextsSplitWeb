@@ -1,0 +1,53 @@
+
+[15:01:56 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[15:01:56 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 27] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[15:01:57 DBG (4) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 40] 
+ EventKeyNames fetched constants in EventKeyNames - { CycleDelay: 300 }. 
+ 
+[15:01:57 INF (5) BackgroundTasksQueue.Services.QueuedHostedService.ConstantInitializer - 75] 
+ Server Guid was fetched and stored into EventKeyNames. 
+ { ServerId: "backserver:da59d2a1-1484-47b7-96ca-eab55c9f947d" } 
+ 
+[15:01:57 INF (5) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdatesConstant - 89] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-constants-updating-is-necessary" } 
+ 
+[15:01:57 INF (5) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 130] 
+ BackServer subscribed on EventKey. 
+ { EventKey: "key-event-front-server-gives-task-package" } 
+ 
+[15:01:57 DBG (5) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventRun - 156] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-front-server-gives-task-package, Command = HashSet" } 
+ 
+[15:01:57 DBG (5) BackgroundTasksQueue.Services.OnKeysEventsSubscribeService.SubscribeOnEventUpdatesConstant - 116] 
+ You subscribed on EventSet. 
+ { EventSet: "Key = key-event-constants-updating-is-necessary, Command = HashSet" } 
+ 
+[18:20:24 INF (1) BackgroundTasksQueue.Program. - ] 
+ The global logger Serilog has been configured.
+ 
+ 
+[18:20:25 INF (1) BackgroundTasksQueue.Services.QueuedHostedService.ExecuteAsync - 27] 
+ Queued Hosted Service is running. BackgroundProcessing will be called now. 
+ 
+[18:20:25 WRN (4) Shared.Library.Services.SharedDataAccess.FetchAllConstants - 59] 
+ eventKeysSet was NOT Init. 
+ 
+[18:20:25 INF (4) Shared.Library.Services.SharedDataAccess.SubscribeOnAllConstantsEvent - 74] 
+ SharedDataAccess subscribed on key "constants". 
+ 
+[18:20:25 DBG (4) Shared.Library.Services.SharedDataAccess.SubscribeOnAllConstantsEvent - 93] 
+ You subscribed on event - "Key = constants, Command = HashSet". 
+ 
+[18:20:25 WRN (4) Shared.Library.Services.SharedDataAccess.FetchAllConstants - 65] 
+ SharedDataAccess cannot find constants and will wait them! 
+ 
+[18:20:41 DBG (19) Shared.Library.Services.SharedDataAccess.FetchAllConstantsWhenAppeared - 110] 
+ SharedDataAccess still waits the constants! - 10 sec. 
+ 
